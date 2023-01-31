@@ -1,0 +1,96 @@
+﻿@model NurseryProject.Models.Expens
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " مصروف  ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "المصروفات";
+
+}
+@using (Html.BeginForm(action, "Expenses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("مكان الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyPlaceId, new SelectList(ViewBag.StudyPlaces, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyPlaceId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyYearId, new SelectList(ViewBag.StudyYears, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyYearId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع المصروف", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.ExpenseTypeId, new SelectList(ViewBag.ExpensesTypes, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ExpenseTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("قيمة المصروف", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.ExpenseValue, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.ExpenseValue, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("بيد ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.EmployeeId, new SelectList(ViewBag.Employees, "Id", "Name"), "--اختر--", new { @class = "form-control searchable", required = "required" })
+                        @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("التاريخ ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.ExpenseDate, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.ExpenseDate, type = "date", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.ExpenseDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("ملاحظات ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+    var now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        if (document.getElementById('ExpenseDate').value == "") {
+            document.getElementById('ExpenseDate').value = now.toISOString().slice(0, 10);
+    }
+    </script>}

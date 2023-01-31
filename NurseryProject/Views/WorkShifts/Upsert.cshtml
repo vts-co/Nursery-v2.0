@@ -1,0 +1,94 @@
+﻿@model NurseryProject.Dtos.WorkShifts.WorkShiftsDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " فترة عمل  ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "فترات العمل";
+    List<string> days = new List<string> { "الجمعة", "السبت", "الاحد", "الاتنين", "الثلاثاء", "الاربعاء", "الخميس" };
+}
+@using (Html.BeginForm(action, "WorkShifts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row ">
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("مسمي الفترة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group text-center mb-3 col-sm-4">
+                    <div class="col-12">
+                        @Html.Label("اليوم", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="form-group text-center mb-3 col-sm-4">
+                    <div class="col-12">
+                        @Html.Label("من", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="form-group text-center mb-3 col-sm-4">
+                    <div class="col-12">
+                        @Html.Label("إلي", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div>
+                @for (int i = 0; i < days.Count(); i++)
+                {
+                    <div class="form-group mb-3 col-sm-1">
+                        <div class="col-12">
+                            @Html.CheckBoxFor(model => model.ShiftTimes[i].IsFound,  new { @class = "form-check-input"})
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 col-sm-3">
+                        <div class="col-12">
+                            @Html.EditorFor(model => model.ShiftTimes[i].DayName, new { htmlAttributes = new { @class = "form-control", @Value = days[i], @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.ShiftTimes[i].DayName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 col-sm-4">
+                        <div class="col-12">
+                            @Html.EditorFor(model => model.ShiftTimes[i].TimeFrom, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 col-sm-4">
+                        <div class="col-12">
+                            @Html.EditorFor(model => model.ShiftTimes[i].TimeTo, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                        </div>
+                    </div>
+                }
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("ملاحظات ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+  
+}

@@ -1,0 +1,568 @@
+﻿
+@{
+    var lang = "ar-EG";
+    var userInfo = TempData["UserInfo"];
+
+}
+<!doctype html>
+<html lang="en" @(lang != "en" ? "dir=rtl" : "")>
+
+<head>
+
+    <meta charset="utf-8" />
+    <title> لوحة التحكم | @ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo1.jpeg">
+    <link href="~/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
+    <style>
+        @@font-face {
+            font-family: 'thesansbold';
+            src: url('../../../../assets/fonts/thesans bold.otf') format('opentype');
+        }
+
+        html, body {
+            font-family: thesansbold !important
+        }
+
+        [dir=rtl] input {
+            text-align: start !important;
+        }
+
+        #sidebar-menu ul li ul.sub-menu li a {
+            font-size: 0.78rem !important;
+        }
+
+        #sidebar-menu ul li a i {
+            font-size: 1rem !important;
+            min-width: 1rem !important;
+        }
+    </style>
+
+    <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+
+    <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+    <!-- preloader css -->
+    <link rel="stylesheet" href="~/assets/css/@(lang == "en" ? "preloader.min.css" : "preloader-rtl.min.css")" type="text/css" />
+
+    <!-- Bootstrap Css -->
+    <link href="~/assets/css/@(lang == "en" ? "bootstrap.min.css" : "bootstrap-rtl.min.css")" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assets/css/@(lang == "en" ? "app.min.css" : "app-rtl.min.css")" id="app-style" rel="stylesheet" type="text/css" />
+
+    @RenderSection("Styles", false)
+</head>
+
+<body>
+    <!-- <body data-layout="horizontal"> -->
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box">
+                        <a href="@Url.Action("Index","Home")" class="logo logo-dark">
+                            <span class="logo-sm">
+                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" />
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" /> <span class="logo-txt">حضانة المهندس</span>
+                            </span>
+                        </a>
+
+                        <a href="@Url.Action("Index","Home")" class="logo logo-light">
+                            <span class="logo-sm">
+                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" />
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" /> <span class="logo-txt">حضانة المهندس</span>
+                            </span>
+                        </a>
+                    </div>
+
+                    <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn">
+                        <i class="fa fa-fw fa-bars"></i>
+                    </button>
+
+                </div>
+
+                <div class="d-flex">
+
+                    <div class="dropdown d-inline-block d-lg-none ms-2">
+                        <button type="button" class="btn header-item" id="page-header-search-dropdown"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i data-feather="search" class="icon-lg"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                             aria-labelledby="page-header-search-dropdown">
+
+                            <form class="p-3">
+                                <div class="form-group m-0">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search ..." aria-label="Search">
+
+                                        <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="dropdown d-none d-sm-inline-block">
+                        <button type="button" class="btn header-item" onclick="setdarkmode()" id="mode-setting-btn">
+                            <i data-feather="moon" class="icon-lg layout-mode-dark"></i>
+                            <i data-feather="sun" class="icon-lg layout-mode-light"></i>
+                        </button>
+                    </div>
+
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle header-profile-user" alt="User Picture" src="" onError="this.onerror=null;this.src='../../../assets/images/logo1.jpeg';">
+                            <span class="d-none d-xl-inline-block ms-1 fw-medium">Admin</span>
+                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="@Url.Action("Index","Home")"><i class="bx bx-home font-size-16 align-middle me-1"></i>الرئيسية</a>
+                            <!-- item-->
+                            @*<a class="dropdown-item" href="@Url.Action("Index","Account",new { area = "" })"><i class="bx bx-user font-size-16 align-middle me-1"></i> Profile</a>*@
+
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action( "SignOut", "Account")"><i class="bx bx-log-out font-size-16 align-middle me-1"></i> تسجيل الخروج </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </header>
+
+        <!-- Loading side bar -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="vertical-menu">
+
+            <div data-simplebar class="h-100">
+
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <!-- Left Menu Start -->
+                    <ul class="metismenu list-unstyled" id="side-menu">
+
+                        <li>
+                            <a href="/Home/Index">
+                                <i class="bx bxs-dashboard"></i>
+                                <span data-key="t-dashboard">Admin Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fa fa-list"></i>
+                                <span data-key="t-apps">التعريفات الاساسية </span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","Cities")"><i class="fas fa-city p-1"></i> المراكز </a></li>
+                                <li><a href="@Url.Action("Index","Destricts")"><i class="fas fa-building p-1"></i>المناطق  </a></li>
+                                <li><a href="@Url.Action("Index","RegistrationTypes")"><i class="fas fa-search-minus p-1"></i> حالات قيد الطلاب </a></li>
+                                <li><a href="@Url.Action("Index","Departments")"><i class="fas fa-list p-1"></i>الادارات (للعاملين)  </a></li>
+                                <li><a href="@Url.Action("Index","Jops")"><i class="fas fa-list-alt p-1"></i>الوظائف (للعاملين)  </a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fa fa-list-alt"></i>
+                                <span data-key="t-apps">التعريفات الدراسية</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","StudyYears")"><i class="fas fa-hourglass-start p-1"></i> العام الدراسي </a></li>
+                                <li><a href="@Url.Action("Index","StudyClasses")"><i class="fas fa-list p-1"></i> الفصول الدراسية</a></li>
+
+                                <li><a href="@Url.Action("Index","StudyTypes")"><i class="fas fa-list-alt p-1"></i>أنواع الدراسة </a></li>
+                                <li><a href="@Url.Action("Index","StudyPlaces")"><i class="fas fa-building p-1"></i> أماكن الدراسة</a></li>
+                                <li><a href="@Url.Action("Index","Levels")"><i class="fas fa-bars p-1"></i> الصفوف/المستويات الدراسية </a></li>
+
+                                <li><a href="@Url.Action("Index","Classes")"><i class="fas fa-list-alt p-1"></i>الفصول  </a></li>
+                                <li><a href="@Url.Action("Index","Subjects")"><i class="fas fa-list-ol p-1"></i>المواد الدراسية </a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-clock p-1"></i>
+                                <span data-key="t-apps">فترات العمل</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","WorkShifts")"><i class="fas fa-clock p-1"></i>ادارة فترات العمل </a></li>
+                                <li><a href="@Url.Action("Index","EmployeesWorkShifts")"><i class="fas fa-clock p-1"></i>ادارة فترات الموظفين </a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-id-card p-1"></i>
+                                <span data-key="t-apps">الاشتراكات</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","SubscriptionsTypes")"><i class="fas fa-id-card p-1"></i>انواع الاشتراكات </a></li>
+                                <li><a href="@Url.Action("Index","Subscriptions")"><i class="fas fa-credit-card p-1"></i> طرق الاشتراكات </a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-list-ul p-1"></i>
+                                <span data-key="t-apps">الاختبارات</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","ExamsTypes")"><i class="fas fa-list-ul p-1"></i>انواع الاختبارات </a></li>
+                                <li><a href="@Url.Action("Index","Exams")"><i class="fas fa-list-ul p-1"></i>  تسجيل الاختبارات </a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-users p-1"></i>
+                                <span data-key="t-apps">الطلاب</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","Students")"><i class="fas fa-users p-1"></i> ادارة الطلاب</a></li>
+                                <li><a href="@Url.Action("Index","StudentsClass")"><i class="fas fa-users p-1"></i> التحاق الطلاب</a></li>
+                                <li><a href="@Url.Action("Index","StudentsAttendance")"><i class="fas fa-users p-1"></i> غياب الطلاب</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-users-cog p-1"></i>
+                                <span data-key="t-apps">الموظفين</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","Employees")"><i class="fas fa-users p-1"></i> ادارة الموظفين</a></li>
+                                <li><a href="@Url.Action("Index","EmployeeClasses")"><i class="fas fa-users p-1"></i> ادارة المعلمين بالفصول</a></li>
+                                <li><a href="@Url.Action("Index","BuildingSupervisors")"><i class="fas fa-users p-1"></i> ادارة مشرفي المبني</a></li>
+                                <li><a href="@Url.Action("Index","ClassesLeaders")"><i class="fas fa-users p-1"></i> ادارة رواد الفصول</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-credit-card p-1"></i>
+                                <span data-key="t-apps">المصروفات</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","ExpensesTypes")"><i class="fas fa-credit-card p-1"></i> انواع المصروفات</a></li>
+                                <li><a href="@Url.Action("Index","Expenses")"><i class="fas fa-coins p-1"></i> تسجيل المصروفات</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-credit-card p-1"></i>
+                                <span data-key="t-apps">الايرادات</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","RevenuesTypes")"><i class="fas fa-credit-card p-1"></i> انواع الايرادات</a></li>
+                                <li><a href="@Url.Action("Index","Revenues")"><i class="fas fa-coins p-1"></i> تسجيل الايرادات</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-coins p-1"></i>
+                                <span data-key="t-apps">الامور المالية للموظفين</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","VacationsTypes")"><i class="fas fa-list p-1"></i>انواع الاجازات  </a></li>
+                                <li><a href="@Url.Action("Index","EmployeesVacation")"><i class="fas fa-coins p-1"></i> ادارة الاجازات</a></li>
+
+                                @*<li><a href="@Url.Action("Index","EmployeesDelay")"><i class="fas fa-coins p-1"></i> ادارة التأخيرات</a></li>*@
+                                <li><a href="@Url.Action("Index","IncreasesTypes")"><i class="fas fa-list p-1"></i> ادارة انواع الاضافات</a></li>
+                                <li><a href="@Url.Action("Index","EmployeesIncreases")"><i class="fas fa-coins p-1"></i> ادارة الاضافات</a></li>
+
+                                <li><a href="@Url.Action("Index","DiscountsTypes")"><i class="fas fa-list p-1"></i> ادارة انواع الخصومات</a></li>
+                                <li><a href="@Url.Action("Index","EmployeesDiscounts")"><i class="fas fa-coins p-1"></i> ادارة الخصومات</a></li>
+                                @*<li><a href="@Url.Action("Index","EmployeesTransferAllowance")"><i class="fas fa-coins p-1"></i> ادارة بدل الانتقالات</a></li>*@
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fas fa-file p-1"></i>
+                                <span data-key="t-apps">التقارير</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Search","Students")"><i class="fas fa-users p-1"></i> استعلام عن الطلاب</a></li>
+                                <li><a href="@Url.Action("Reports","Subscriptions")"><i class="fas fa-credit-card p-1"></i> استعلام عن إشترك طالب</a></li>
+                                <li><a href="@Url.Action("LatecomersReports","Subscriptions")"><i class="fas fa-credit-card p-1"></i>   الاقساط المتأخرة</a></li>
+                                <li><a href="@Url.Action("NoInstallmentsReports","StudentsClass")"><i class="fas fa-credit-card p-1"></i> تقارير الطلاب المعفيين </a></li>
+
+                                <li><a href="@Url.Action("Reports","Expenses")"><i class="fas fa-list p-1"></i> تقارير المصروفات</a></li>
+                                <li><a href="@Url.Action("Reports","Revenues")"><i class="fas fa-list-alt p-1"></i> تقارير الايرادات</a></li>
+
+                                <li><a href="@Url.Action("Reports","EmployeeClasses")"><i class="fas fa-list p-1"></i> تقارير بمعلمي الفصول</a></li>
+                                <li><a href="@Url.Action("Reports","StudentsClass")"><i class="fas fa-list-alt p-1"></i> تقارير بمعلمي الطالب</a></li>
+                                <li><a href="@Url.Action("Reports","StudentsAttendance")"><i class="fas fa-users p-1"></i> تقرير حضور وغياب الطلاب</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Sidebar -->
+            </div>
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0 font-size-18">@ViewBag.Title </h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        @if (ViewBag.MainPage != null)
+                                        {
+                                            <li class="breadcrumb-item">@ViewBag.MainPage</li>
+                                        }
+                                        <li class="breadcrumb-item active">@ViewBag.Title</li>
+
+
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    @RenderBody()
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> © Elmohandes Nursery
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Designed & Developed by <a href="https://vts-co.com/" class="text-decoration-underline">VTS-Co</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+    <!-- JAVASCRIPT -->
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/assets/libs/feather-icons/feather.min.js"></script>
+    <!-- pace js -->
+    <script src="~/assets/libs/pace-js/pace.min.js"></script>
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+        var elements = document.getElementsByClassName("searchable");
+        for (var i = 0; i < elements.length; i++) {
+            const choices = new Choices(elements[i], { shouldSort: false });
+        }
+    </script>
+    <script src="~/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="~/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+
+
+    <script>
+            $(document).ready(function () {
+                $('#datatable').DataTable({
+                    ordering: false,
+                    order: false,
+                    language: {
+                        search: "بحث:",
+                        lengthMenu: "عرض _MENU_ عنصر لكل صفحة",
+                        info: "العناصر من _START_ الي _END_ من اصل _TOTAL_ عنصر",
+                        processing: "جارى التحميل",
+                        zeroRecords: "لا يوجد سجلات لعرضها",
+                        infoFiltered: "",
+                        infoEmpty: 'لا يوجد سجلات متاحه',
+                        paginate: {
+                            first: "الاول",
+                            last: "الاخير",
+                            next: 'التالي',
+                            previous: 'السابق'
+                        }
+                    }
+                });
+
+                $('.datatable').each(function () {
+                    $(this).DataTable({
+                        ordering: false,
+                        order: false,
+                        language: {
+                            search: "بحث:",
+                            lengthMenu: "عرض _MENU_ عنصر لكل صفحة",
+                            info: "العناصر من _START_ الي _END_ من اصل _TOTAL_ عنصر",
+                            processing: "جارى التحميل",
+                            zeroRecords: "لا يوجد سجلات لعرضها",
+                            infoFiltered: "",
+                            infoEmpty: 'لا يوجد سجلات متاحه',
+                            paginate: {
+                                first: "الاول",
+                                last: "الاخير",
+                                next: 'التالي',
+                                previous: 'السابق'
+                            }
+                        }
+                    });
+                });
+
+
+
+                $('.datatabletotal').each(function () {
+                    var colNum = $(this).data("colnum");
+                    $(this).DataTable({
+                        ordering: false,
+                        order: false,
+                        language: {
+                            search: "بحث:",
+                            lengthMenu: "عرض _MENU_ عنصر لكل صفحة",
+                            info: "العناصر من _START_ الي _END_ من اصل _TOTAL_ عنصر",
+                            processing: "جارى التحميل",
+                            zeroRecords: "لا يوجد سجلات لعرضها",
+                            infoFiltered: "",
+                            infoEmpty: 'لا يوجد سجلات متاحه',
+                            paginate: {
+                                first: "الاول",
+                                last: "الاخير",
+                                next: 'التالي',
+                                previous: 'السابق'
+                            }
+                        },
+                        footerCallback: function (row, data, start, end, display) {
+                            var api = this.api();
+
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function (i) {
+                                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                            };
+
+                            // Total over all pages
+                            total = api
+                                .column(colNum)
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            // Total over this page
+                            pageTotal = api
+                                .column(colNum, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            // Update footer
+                            $(api.column(colNum).footer()).html('الاجمالي ' + pageTotal + ' (الكلي:' + total + ')');
+                        },
+                    });
+                });
+
+
+            });
+    </script>
+
+    <script>
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        function eraseCookie(name) {
+            document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+        var darkmode = getCookie('darkmode');
+        if (darkmode == 'on') {
+            $('body').attr('data-layout-mode', 'dark');
+            $('body').attr('data-sidebar', 'dark');
+            $('body').attr('data-topbar', 'dark');
+        }
+        function setdarkmode() {
+            if (darkmode == 'on') {
+                setCookie('darkmode', 'off', 120);
+            }
+            else {
+                setCookie('darkmode', 'on', 120);
+            }
+        }
+    </script>
+    <script src="~/assets/Custome/popupfunctions.js"></script>
+    <script src="~/assets/js/pages/fontawesome.init.js"></script>
+
+    @if (TempData["warning"] != null)
+    {
+        <script>
+
+        invokeAlert('@TempData["warning"]', '', 'warning', 2000);
+        </script>
+        TempData["warning"] = null;
+    }
+    @if (TempData["success"] != null)
+    {
+        <script>
+
+            invokeAlert('@TempData["success"]','', 'success', 2000);
+        </script>
+        TempData["success"] = null;
+    }
+    @if (TempData["danger"] != null)
+    {
+        <script>
+        invokeAlert('@TempData["danger"]', '', 'danger', 2000);
+        </script>
+        TempData["danger"] = null;
+    }
+    @if (TempData["info"] != null)
+    {
+        <script>
+        invokeAlert('@TempData["info"]', '', 'info', 2000);
+        </script>
+        TempData["info"] = null;
+    }
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>

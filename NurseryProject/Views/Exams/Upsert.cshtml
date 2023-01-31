@@ -1,0 +1,258 @@
+﻿@model NurseryProject.Dtos.Exams.ExamsDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " اختبار    ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "الاختبارات  ";
+
+}
+@using (Html.BeginForm(action, "Exams", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            
+            <div class="row">
+
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.LevelId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.LevelId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("المادة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.SubjectId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الاختبار", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.ExamTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ExamTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    <div class="col-12 mt-4">
+
+                        @Html.Label("سؤال واحد", htmlAttributes: new { @class = "control-label ms-3" })
+
+                        @Html.CheckBoxFor(model => model.IsOneQuestion, new { @class = "form-check-input" })
+
+                        @Html.Label("عدة اسئلة", htmlAttributes: new { @class = "control-label ms-3" })
+
+                        @Html.CheckBox("IsMore", new { @class = "form-check-input" })
+
+
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6" id="OneQuestion">
+                    @Html.Label("الدرجة الكلية", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.TotalDegree, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="MoreQuestion">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("عدد الاسئلة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("NumQuestions", new { htmlAttributes = new { @class = "form-control", @onchange = "QuestionsNum()" } })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الدرجة الكلية", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("TotalDegree2", new { htmlAttributes = new { @class = "form-control", @onchange = "QuestionsNum()" } })
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="ExamDegreesDiv">
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        if ($("#Id").val() == "00000000-0000-0000-0000-000000000000") {
+            document.getElementById("IsOneQuestion").checked = true;
+            $("#OneQuestion").show();
+            $("#MoreQuestion").hide();
+            $("#ExamDegreesDiv").empty();
+        }
+        else {
+            if (document.getElementById("IsOneQuestion").checked == false) {
+                document.getElementById("IsMore").checked = true;
+                document.getElementById("TotalDegree2").value = document.getElementById("TotalDegree").value;
+                document.getElementById("NumQuestions").value = "";
+                $.get('/Exams/getExamDegrees', { Id: $("#Id").val() }, function (data) {
+                    $.each(data, function (key, value) {
+                        document.getElementById("TotalDegree2").value = value["total"];
+                        document.getElementById("TotalDegree").value = value["total"];
+                        document.getElementById("NumQuestions").value = value["count"];
+                        var count = parseInt(value["count"]);
+                        $("#ExamDegreesDiv").empty();
+                        $("#ExamDegreesDiv").append("<hr>");
+
+                        var j = 1;
+                        for (var i = 0; i < count; i++) {
+                            $("#ExamDegreesDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">درجة السؤال رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Degrees"][i].Degree+' id="MoreQuestion[' + i + '].Degree" name="MoreQuestion[' + i + '].Degree" onchange = "QuestionsNum2(' + count + ')" required /></div></div>');
+                            j++;
+                        }
+                    });
+                });
+            }
+        }
+        $("#StudyTypeId").change(function () {
+            $.get('/Exams/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/Exams/getSubjects', { Id: $("#LevelId").val() }, function (data) {
+                $("#SubjectId").empty();
+                $("#SubjectId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#SubjectId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+
+        });
+
+
+        if (document.getElementById("IsOneQuestion").checked) {
+            document.getElementById("IsMore").checked = false;
+
+            $("#OneQuestion").show();
+            $("#MoreQuestion").hide();
+            $("#ExamDegreesDiv").empty();
+
+            $("#NumQuestions").val("");
+            $("#TotalDegree2").val("");
+
+
+        }
+        else {
+            $("#MoreQuestion").show();
+            $("#OneQuestion").hide();
+            $("#TotalDegree").val("");
+
+        }
+        if (document.getElementById("IsMore").checked) {
+            document.getElementById("IsOneQuestion").checked = false;
+            $("#OneQuestion").hide();
+            $("#MoreQuestion").show();
+            $("#TotalDegree").val("");
+
+        }
+        else {
+
+            $("#OneQuestion").show();
+            $("#MoreQuestion").hide();
+            $("#ExamDegreesDiv").empty();
+            $("#NumQuestions").val("");
+            $("#TotalDegree2").val("");
+        }
+
+        $("#IsOneQuestion").change(function () {
+            if (document.getElementById("IsOneQuestion").checked) {
+                document.getElementById("IsMore").checked = false;
+
+                $("#OneQuestion").show();
+                $("#MoreQuestion").hide();
+                $("#ExamDegreesDiv").empty();
+                $("#NumQuestions").val("");
+                $("#TotalDegree2").val("");
+            }
+            else {
+                $("#MoreQuestion").show();
+                $("#OneQuestion").hide();
+                $("#TotalDegree").val("");
+
+            }
+        });
+        $("#IsMore").change(function () {
+            if (document.getElementById("IsMore").checked) {
+                document.getElementById("IsOneQuestion").checked = false;
+                $("#OneQuestion").hide();
+                $("#MoreQuestion").show();
+                $("#TotalDegree").val("");
+
+            }
+            else {
+
+                $("#OneQuestion").show();
+                $("#MoreQuestion").hide();
+                $("#ExamDegreesDiv").empty();
+                $("#NumQuestions").val("");
+                $("#TotalDegree2").val("");
+            }
+        });
+        function QuestionsNum() {
+            $("#ExamDegreesDiv").empty();
+            $("#ExamDegreesDiv").append("<hr>");
+
+            var count = document.getElementById("NumQuestions").value;
+            var amount = document.getElementById("TotalDegree2").value;
+            document.getElementById("TotalDegree").value = amount;
+
+            console.log(count);
+            var j = 1;
+            for (var i = 0; i < count; i++) {
+                $("#ExamDegreesDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">درجة السؤال رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + amount / count + ' id="MoreQuestion[' + i + '].Degree" name="MoreQuestion[' + i + '].Degree" onchange = "QuestionsNum2(' + count + ')" required /></div></div>');
+                j++;
+            }
+
+        }
+        function QuestionsNum2(count) {
+            var amount2 = 0;
+            for (var i = 0; i < count; i++) {
+                var amount = parseFloat(document.getElementById("MoreQuestion[" + i + "].Degree").value);
+                amount2 += amount;
+            }
+            document.getElementById("TotalDegree2").value = amount2;
+            document.getElementById("TotalDegree").value = amount2;
+
+        }
+        
+    </script>
+}

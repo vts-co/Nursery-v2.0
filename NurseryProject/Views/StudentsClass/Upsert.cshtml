@@ -1,0 +1,289 @@
+﻿@model NurseryProject.Dtos.StudentsClass.StudentsClassDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " التحاق طالب   ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "التحاق الطلاب ";
+
+}
+@using (Html.BeginForm(action, "StudentsClass", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+                <div class="form-group mb-3 col-sm-10">
+                    @Html.Label("الطالب", htmlAttributes: new { @class = "control-label text-center mb-2" })
+
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudentId, null, "--اختر--", new { @class = "form-control searchable", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-2">
+                    <div class="col-12">
+                        <a href="/Students/Create" class='btn btn-primary mt-4 btn-sm p-4 py-3  fas fa-plus' ></a>
+                    </div>
+                </div>
+                <hr />
+                @Html.Label("البيانات الدراسية", htmlAttributes: new { @class = "control-label text-center mb-3 bg-warning" })
+                <hr />
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyYearId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyYearId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.LevelId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.LevelId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.ClassId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+            <hr />
+            <div class="form-group mb-3 col-sm-12 text-center bg-warning">طريقة الدفع </div>
+            <hr />
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("طريقة الاشتراك", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.SubscriptionId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.SubscriptionId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="SubscriptionDiv">
+
+            </div>
+            <div class="row" id="SubscriptionDiv2">
+
+            </div>
+
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" })
+                        @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("حالة الطالب ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("RegistrationTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("RegistrationTypeId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("ملاحظات ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        if (document.getElementById('JoiningDate').value == "") {
+            document.getElementById('JoiningDate').value = now.toISOString().slice(0, 10);
+        }
+        $("#StudyTypeId").change(function () {
+            $.get('/StudentsClass/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/StudentsClass/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+            $.get('/StudentsClass/getSubscriptions', { Id: $("#LevelId").val() }, function (data) {
+                $("#SubscriptionId").empty();
+                $("#SubscriptionId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#SubscriptionId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        if (document.getElementById("IsAnother").checked) {
+            $("#SubscriptionId").val("");
+            $("#SubscriptionId").prop("disabled", true);
+
+            $("#SubscriptionDiv").empty();
+
+        }
+        else {
+            $("#SubscriptionDiv").empty();
+            $("#SubscriptionId").prop("disabled", false);
+        }
+        $.get('/StudentsClass/getSubscriptionsMethods', { Id: $("#Id").val() }, function (data) {
+            $("#SubscriptionDiv").empty();
+            $("#SubscriptionDiv2").empty();
+
+            var j = 1;
+            var i = 0;
+            if (data.Num > 0) {
+                $("#SubscriptionDiv").append('<hr>');
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
+                $("#SubscriptionDiv").append('<hr>');
+
+            }
+
+            if (!data.IsAnother) {
+
+                $.each(data.result, function (key, value) {
+
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                    j++;
+                    i++;
+                });
+            }
+            else {
+
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">المبلغ : </label><div class="col-12"><input class="form-control" value=' + data.Amoun + ' id="Amount1" name="Amount1" type="number" onchange="Numbers()" required /></div></div>')
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-5"><label class="control-label">عدد الاقساط : </label><div class="col-12"><input class="form-control" value=' + data.Num + ' id="InstallmentsNumber1" name="InstallmentsNumber1" type="number" onchange="Numbers()" required /></div></div>')
+                $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success" id="" name="" type="button" onclick="Numbers()"><i class"fa fa-calculator"></i>احسب</button></div></div>')
+
+                $.each(data.result, function (key, value) {
+                    $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                    $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                    j++;
+                    i++;
+                });
+            }
+
+
+            $("#SubscriptionDiv2").append('<hr>');
+
+        });
+
+
+        $("#SubscriptionId").change(function () {
+            $.get('/StudentsClass/getSubscriptionsById', { Id: $("#SubscriptionId").val() }, function (data) {
+                $("#SubscriptionDiv").empty();
+                $("#SubscriptionDiv2").empty();
+
+                var now1 = new Date();
+                now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
+                $.each(data, function (key, value) {
+                    var amount = parseInt(value["InstallmentsNumber"]);
+                    $("#SubscriptionDiv").append('<hr>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
+                    $("#SubscriptionDiv").append('<hr>');
+
+                    var j = 1;
+                    for (var i = 0; i < amount; i++) {
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] / value["InstallmentsNumber"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>')
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>')
+                        now1.setMonth(now1.getMonth() + 1);
+                        j++;
+                    }
+
+                });
+            });
+        });
+        $("#IsAnother").change(function () {
+            if (document.getElementById("IsAnother").checked) {
+                $("#SubscriptionId").val("");
+                $("#SubscriptionId").prop("disabled", true);
+
+                $("#SubscriptionDiv").empty();
+
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">المبلغ : </label><div class="col-12"><input class="form-control" id="Amount1" name="Amount1" type="number" onchange="Numbers()" required /></div></div>')
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-5"><label class="control-label">عدد الاقساط : </label><div class="col-12"><input class="form-control" id="InstallmentsNumber1" name="InstallmentsNumber1" type="number" required /></div></div>')
+                $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success" id="" name="" type="button" onclick="Numbers()"><i class"fa fa-calculator"></i>احسب</button></div></div>')
+
+                $("#SubscriptionDiv").append('<hr>');
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
+                $("#SubscriptionDiv").append('<hr>');
+            }
+            else {
+                $("#SubscriptionDiv").empty();
+                $("#SubscriptionDiv2").empty();
+
+                $("#SubscriptionId").prop("disabled", false);
+            }
+        });
+
+        function Numbers() {
+            $("#SubscriptionDiv2").empty();
+            var amount1 = document.getElementById("Amount1").value;
+            var amount2 = document.getElementById("InstallmentsNumber1").value;
+            if (parseFloat(amount2) > 12) {
+                alert("عدد الاقساط المدخلة اكتر من 12 قسط");
+            }
+            var now1 = new Date();
+            now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
+            var j = 1;
+            for (var i = 0; i < amount2; i++) {
+                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + amount1 / amount2 + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                now1.setMonth(now1.getMonth() + 1);
+                j++;
+            }
+            if (amount2 > 0) {
+                $("#SubscriptionDiv2").append('<hr>');
+            }
+        }
+    </script>
+}

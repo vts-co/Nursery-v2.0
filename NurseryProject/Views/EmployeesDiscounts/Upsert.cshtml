@@ -1,0 +1,85 @@
+﻿@model NurseryProject.Models.EmployeesDiscount
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " خصم لموظف  ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "الموظفين";
+
+}
+@using (Html.BeginForm(action, "EmployeesDiscounts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الخصم", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.DiscountTypeId, new SelectList(ViewBag.DiscountsTypes, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.DiscountTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("اسم الموظف", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.EmployeeId, new SelectList(ViewBag.Employees, "Id", "Name"), "--اختر--", new { @class = "form-control searchable", required = "required" })
+                        @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label(" تاريخ الخصم", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.DiscountDate, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.Date, type = "date", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.DiscountDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("قيمة الخصم", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.DiscountValue, new { htmlAttributes = new { @class = "form-control", type = "number", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.DiscountValue, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("سبب الخصم", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.DiscountReason, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DiscountReason, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        if (document.getElementById('DiscountDate').value == "") {
+            document.getElementById('DiscountDate').value = now.toISOString().slice(0, 10);
+        }
+
+    </script>
+}

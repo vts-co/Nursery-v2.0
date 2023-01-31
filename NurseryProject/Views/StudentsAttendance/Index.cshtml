@@ -1,0 +1,95 @@
+﻿@model IEnumerable<NurseryProject.Dtos.StudentsAttendance.StudentsAttendanceDto>
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "ادارة الغياب للطلاب  ";
+}
+<div class="card">
+    <div class="card-header">
+
+        <div class="row">
+            <h2 class="col">  </h2>
+            <p class="col-auto">
+                @Url.Create()
+            </p>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("المكان ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("العام الدراسي ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("نوع الدراسة ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الصف الدراسي ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الفصل الدراسي ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الفصل ")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("عدد طلاب الفصل ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عدد الحضور ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("التاريخ ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عمليات")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudyPlaceName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudyYearName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudyTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LevelName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudyClassName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumAllAttend)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumAttend)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+
+                    <td>
+                        @*@Url.Edit(routeValues: new { id = item.Id })*@
+                        @Url.Delete(routeValues: new { id = item.Id })
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

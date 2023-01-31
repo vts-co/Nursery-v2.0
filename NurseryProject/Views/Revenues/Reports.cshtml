@@ -1,0 +1,107 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير الايرادات";
+    ViewBag.MainPage = "الايرادات";
+
+}
+@using (Html.BeginForm("Reports", "Revenues", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month" } })
+                        @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6 mt-2">
+                    @Html.Label("طوال العام ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.CheckBox("AllYear", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Revenues != null)
+{
+    <div class="card">
+        <div class="card-header">
+            تقرير الايرادات
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("نوع الايراد")
+                        </th>
+                        <th>
+                            @Html.DisplayName("قيمة الايراد")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المستلم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("التاريخ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("ملاحظات")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عمليات")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Revenues)
+                    {
+                        <tr>
+                            <td>
+                                @item.RevenueTypeName
+                            </td>
+                            <td>
+                                @item.Value
+                            </td>
+                            <td>
+                                @item.EmployeeName
+                            </td>
+                            <td>
+                                @item.Date.Date.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @item.Notes
+                            </td>
+                            <td>
+                                @Url.Edit(routeValues: new { id = item.Id })
+                                @Url.Delete(routeValues: new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+@section scripts{
+
+}

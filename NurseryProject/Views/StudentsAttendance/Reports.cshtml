@@ -1,0 +1,185 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير حضور وغياب الطلاب";
+    ViewBag.MainPage = "تقرير حضور وغياب الطلاب";
+    var i = 1;
+}
+@using (Html.BeginForm("Reports", "StudentsAttendance", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("الطالب", htmlAttributes: new { @class = "control-label text-center mb-2" })
+
+                    <div class="col-12">
+                        @Html.DropDownList("StudentId", new SelectList(ViewBag.Students, "Id", "Name"), "--اختر--", new { @class = "form-control searchable", required = "required" })
+                        @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12 text-center">
+                    @Html.Label("البحث ب : ", htmlAttributes: new { @class = "control-label text-center mb-2" })
+
+                    <div class="col-12">
+                        @Html.Label("العام الدراسي  ", htmlAttributes: new { @class = "control-label text-center mb-2" })
+                        <input type="radio" id="By" name="By" class="" value="3"  checked/>
+
+                        @Html.Label("الفصل الدراسي  ", htmlAttributes: new { @class = "control-label text-center mb-2" })
+                        <input type="radio" id="By" name="By" class="" value="2" />
+
+                        @Html.Label("الشهر ", htmlAttributes: new { @class = "control-label text-center mb-2" })
+                        <input type="radio" id="By" name="By" class="" value="1"  />
+                    </div>
+                </div>
+
+
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("الفصل الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyClassId", null, "--اختر--", new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        @Html.ValidationMessage("StudyClassId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", required = "required", type = "month", @disabled = "disabled" } })
+                        @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Attendance != null)
+{
+    <div class="text-center mb-3">
+        عدد ايام الغياب : @ViewBag.Count
+    </div>
+    <div class="card">
+        <div class="card-header">
+            تقرير حضور وغياب الطلاب
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("م")
+                        </th>
+                        <th>
+                            @Html.DisplayName("التاريخ")
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in ViewBag.Attendance)
+                    {
+                        if (@item.IsAttend == true)
+                        {
+                            <tr class="text-success">
+                                <td>
+                                    @i
+                                </td>
+
+                                <td>
+                                    @item.Date
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="text-danger">
+                                <td>
+                                    @i
+                                </td>
+
+                                <td>
+                                    @item.Date
+                                </td>
+                            </tr>
+                        }
+
+                        i++;
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+@section scripts{
+
+    <script>
+        $.get('/StudentsAttendance/getStudyClass', { StudyYearId: $("#StudyYearId").val() }, function (data) {
+            $("#StudyClassId").empty();
+            $("#StudyClassId").append("<option value=''>--اختر--</option>")
+            $.each(data, function (key, value) {
+                $("#StudyClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+            });
+        });
+        $("#StudyYearId").change(function () {
+            $.get('/StudentsAttendance/getStudyClass', { StudyYearId: $("#StudyYearId").val() }, function (data) {
+                $("#StudyClassId").empty();
+                $("#StudyClassId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#StudyClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        if ($("input[name='By']:checked").val() == "1") {
+            $("#Month").prop("disabled", false);
+            $("#StudyYearId").prop("disabled", true);
+            $("#StudyClassId").prop("disabled", true);
+        }
+        else if ($("input[name='By']:checked").val() == "2") {
+            $("#Month").prop("disabled", true);
+            $("#StudyYearId").prop("disabled", false);
+            $("#StudyClassId").prop("disabled", false);
+        }
+        else if ($("input[name='By']:checked").val() == "3") {
+            $("#Month").prop("disabled", true);
+            $("#StudyYearId").prop("disabled", false);
+            $("#StudyClassId").prop("disabled", true);
+        }
+        $("input[type=radio][name='By']").change(function () {
+            if (this.value == "1") {
+                $("#Month").prop("disabled", false);
+                $("#StudyYearId").prop("disabled", true);
+                $("#StudyClassId").prop("disabled", true);
+            }
+            else if (this.value == "2") {
+                $("#Month").prop("disabled", true);
+                $("#StudyYearId").prop("disabled", false);
+                $("#StudyClassId").prop("disabled", false);
+            }
+            else if (this.value == "3") {
+                $("#Month").prop("disabled", true);
+                $("#StudyYearId").prop("disabled", false);
+                $("#StudyClassId").prop("disabled", true);
+            }
+        });
+    </script>
+}

@@ -1,0 +1,177 @@
+﻿@model NurseryProject.Models.EmployeeClass
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = " تقرير معلمي الفصل ";
+    ViewBag.MainPage = "معلمي الفصول ";
+
+}
+@using (Html.BeginForm("Reports", "EmployeeClasses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyYearId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyYearId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.ClassId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("المادة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.SubjectId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+
+            </div>
+        </div>
+    </div>
+}
+@if (ViewBag.Reports != null)
+{
+    <div class="card">
+        <div class="card-header">
+            تقرير بمعلمي الفصل
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("مكان الدراسة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("العام الدراسي")
+                        </th>
+                        <th>
+                            @Html.DisplayName("نوع الدراسة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الصف الدراسي")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("الفصل ")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("المادة ")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("المعلم ")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("عمليات")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Reports)
+                    {
+                    <tr>
+                        <td>
+                            @item.StudyPlaceName
+                        </td>
+                        <td>
+                            @item.StudyYearName
+                        </td>
+                        <td>
+                            @item.StudyTypeName
+                        </td>
+                        <td>
+                            @item.LevelName
+                        </td>
+                        <td>
+                            @item.ClassName
+                        </td>
+
+                        <td>
+                            @item.SubjecName
+                        </td>
+                        <td>
+                            @item.EmployeeName
+                        </td>
+                        <td>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#StudyTypeId").change(function () {
+            $.get('/EmployeeClasses/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/EmployeeClasses/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+            $.get('/EmployeeClasses/getSubjects', { Id: $("#LevelId").val() }, function (data) {
+                $("#SubjectId").empty();
+                $("#SubjectId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#SubjectId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+    </script>
+}

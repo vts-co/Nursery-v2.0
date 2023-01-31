@@ -1,0 +1,162 @@
+﻿@model NurseryProject.Models.Subscription
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " طريقة اشتراك ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "الاشتراكات ";
+
+}
+@using (Html.BeginForm(action, "Subscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.LevelId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.LevelId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6" id="subtyp">
+                    @Html.Label("نوع الاشتراك", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.SubscriptionTypeId, new SelectList(ViewBag.SubscriptionTypes, "Id", "Name"), "--اختر--", new { @id= "SubscriptionTypeId",@class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.SubscriptionTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @*<div class="form-group mb-3 col-sm-6 mt-2" >
+                    @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.CheckBox("IsAnother", new { @class = "form-check-input " })
+                        @Html.ValidationMessageFor(model => model.IsAnother, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                @*<div class="form-group mb-3 col-sm-6" id="nam">
+                    @Html.Label("المسمي ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required"} })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="form-group mb-3 col-sm-6" id="amo">
+                    @Html.Label("المبلغ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @type = "number", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6" id="num">
+                    @Html.Label("عدد الاقساط", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.InstallmentsNumber, new { htmlAttributes = new { @class = "form-control", @type = "number", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.InstallmentsNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @*<div class="form-group mb-3 col-sm-6" id="numamo">
+                    @Html.Label("قيمة الاقساط", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("InstallmentsAmount", new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", required = "required" } })
+                        @Html.ValidationMessage("InstallmentsAmount", "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#StudyTypeId").change(function () {
+            $.get('/Subscriptions/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"]+"</option>")
+                });
+            });
+        });
+        //if (document.getElementById("IsAnother").checked) {
+        //    $("#SubscriptionTypeId").val("");
+        //    document.getElementById("Amount").value = "";
+        //    document.getElementById("InstallmentsNumber").value = "";
+        //    $("#SubscriptionTypeId").prop("disabled", true);
+        //    document.getElementById("amo").style.display = "none";
+        //    document.getElementById("num").style.display = "none";
+        //    document.getElementById("nam").style.display = "block";
+        //}
+        //else {
+        //    $("#SubscriptionTypeId").prop("disabled", false);
+        //    document.getElementById("amo").style.display = "block";
+        //    document.getElementById("num").style.display = "block";
+        //    document.getElementById("nam").style.display = "none";
+        //}
+        //$('#IsAnother').click(function () {
+        //    if (this.checked) {
+        //        $("#SubscriptionTypeId").val("");
+        //        Name
+        //        document.getElementById("Amount").value = "";
+        //        document.getElementById("InstallmentsNumber").value = "";
+        //        $("#SubscriptionTypeId").prop("disabled", true);
+        //        document.getElementById("amo").style.display = "none";
+        //        document.getElementById("num").style.display = "none";
+        //        document.getElementById("nam").style.display = "block";
+
+        //    }
+        //    else {
+        //        $("#SubscriptionTypeId").prop("disabled", false);
+        //        document.getElementById("amo").style.display = "block";
+        //        document.getElementById("num").style.display = "block";
+        //        document.getElementById("nam").style.display = "none";
+        //    }
+        //});
+
+       
+        //$('#Amount').change(function () {
+        //    var amount = document.getElementById("Amount").value;
+        //    var number = document.getElementById("InstallmentsNumber").value;
+        //    if (number <= 0) {
+        //        number = 1;
+        //    }
+        //    document.getElementById("InstallmentsAmount").value = amount / number;
+        //});
+
+        //$('#InstallmentsNumber').change(function () {
+        //    var amount = document.getElementById("Amount").value;
+        //    var number = document.getElementById("InstallmentsNumber").value;
+        //    if (number <= 0) {
+        //        number = 1;
+        //    }
+        //    document.getElementById("InstallmentsAmount").value = amount / number;
+        //});
+    </script>
+}

@@ -1,0 +1,193 @@
+﻿@model NurseryProject.Models.Student
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "استعلام عن طالب";
+    ViewBag.MainPage = "الطلاب";
+
+}
+@using (Html.BeginForm("Search", "Students", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("كود الطالب", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("اسم الطالب", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("النوع ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.GenderId, null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("حالة الطالب ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.RegistrationTypeId, null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("المركز ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("CityId", null, "--اختر--", new { @class = "form-control" })
+                        @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("المنطقة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.DestrictId, null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("رقم التليفون", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control"} })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+
+}
+@if (ViewBag.Students != null)
+{
+    <div class="card">
+        <div class="card-header">
+            الطلاب المتطابقين
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("تاريخ الميلاد")
+                        </th>
+                        <th>
+                            @Html.DisplayName("النوع")
+                        </th>
+                        <th>
+                            @Html.DisplayName("حالة الطالب")
+                        </th>
+                        <th>
+                            @Html.DisplayName("اسم الأم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("العنوان")
+                        </th>
+                        <th>
+                            @Html.DisplayName("رقم التليفون")
+                        </th>
+                        <th>
+                            @Html.DisplayName("ملاحظات")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عمليات")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Students)
+                    {
+                        <tr>
+                            <td>
+                                @item.Code
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.BirthDate
+                            </td>
+                            <td>
+                                @item.GenderName
+                            </td>
+                            <td>
+                                @item.RegistrationTypeName
+                            </td>
+                            <td>
+                                @item.MotherName
+                            </td>
+                            <td>
+                                @item.Address
+                            </td>
+                            <td>
+                                @item.Phone
+                            </td>
+                            <td>
+                                @item.Notes
+                            </td>
+                            <td>
+                                @Url.Edit(routeValues: new { id = item.Id })
+                                @Url.Delete(routeValues: new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+@section scripts{
+    <script type="text/javascript">
+        $("#CityId").change(function () {
+            $.get('/Students/getDestricts', { Id: $("#CityId").val() }, function (data) {
+                $("#DestrictId").empty();
+                $("#DestrictId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#DestrictId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        if (document.getElementById('BirthDate').value == "") {
+            document.getElementById('BirthDate').value = now.toISOString().slice(0, 10);
+        }
+        if (document.getElementById('JoiningDate').value == "") {
+            now.setFullYear(now.getFullYear() + 1);
+            document.getElementById('JoiningDate').value = now.toISOString().slice(0, 10);
+        }
+
+    </script>
+}

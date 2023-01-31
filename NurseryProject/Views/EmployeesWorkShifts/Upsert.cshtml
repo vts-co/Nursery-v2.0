@@ -1,0 +1,115 @@
+﻿@model NurseryProject.Models.EmployeesWorkShift
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " فترة موظف  ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "فترات الموظفين";
+
+}
+@using (Html.BeginForm(action, "EmployeesWorkShifts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyYearId, new SelectList(ViewBag.StudyYears, "Id", "Name"), "--اختر--", new { @class = "form-control ", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyYearId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الادارة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control ", required = "required" })
+                        @Html.ValidationMessage("DepartmentId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @*<div class="form-group mb-3 col-sm-6" id="empId" style="height:200px;overflow-y:scroll">
+            @Html.Label("الموظف", htmlAttributes: new { @class = "control-label" })
+            <div class="col-12">
+                @Html.DropDownListFor(model => model.EmployeeId, null, "--اختر--", new { @class = "form-control ", required = "required" })
+                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفترة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.WorkShiftId, new SelectList(ViewBag.WorkShifts, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.WorkShiftId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6" id="empId" style="height:110px;overflow-y:scroll">
+                    <label>الموظفين</label>
+                </div>
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("ملاحظات ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        //$("#DepartmentId").change(function () {
+        //    $.get('/ClassesLeaders/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
+        //        $("#EmployeeId").empty();
+        //        $("#EmployeeId").append("<option value=''>--اختر--</option>")
+        //        $.each(data, function (key, value) {
+        //            $("#EmployeeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+
+        //        });
+        //    });
+        //});
+        $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
+            $("#empId").empty();
+            $("#empId").append("<label>الموظفين</label><ul>");
+
+            $.each(data, function (key, value) {
+                $("#empId").append("<li><input type='checkbox' class='form-check-input' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/>" + value["Name"] + " </li >")
+            });
+            $("#empId").append("</ul>")
+
+        });
+        $("#DepartmentId").change(function () {
+            $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
+                $("#empId").empty();
+                $("#empId").append("<label>الموظفين</label><ul>");
+
+                $.each(data, function (key, value) {
+                    $("#empId").append("<li><input type='checkbox' class='form-check-input' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/>"  + value["Name"] + " </li >")
+                });
+                $("#empId").append("</ul>")
+
+            });
+        });
+    </script>
+}

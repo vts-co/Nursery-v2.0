@@ -1,0 +1,172 @@
+﻿
+@{
+    Layout = null;
+
+}
+
+<!doctype html>
+<html lang="en" dir="rtl">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>تسجيل الدخول </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo1.jpeg">
+
+    <!-- preloader css -->
+    <link rel="stylesheet" href="~/assets/css/preloader.min.css" type="text/css" />
+
+    <!-- Bootstrap Css -->
+    <link href="~/assets/css/bootstrap-rtl.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assets/css/app-rtl.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/vts-rtl-style.css" rel="stylesheet" />
+    <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i">
+
+    <style>
+        @@font-face {
+            font-family: 'thesansbold';
+            src: url('../../../../assets/fonts/thesans bold.otf') format('opentype');
+        }
+
+        html, body {
+            font-family: thesansbold !important
+        }
+
+        [dir=rtl] input {
+            text-align: start !important;
+        }
+
+        #sidebar-menu ul li ul.sub-menu li a {
+            font-size: 0.78rem !important;
+        }
+
+        #sidebar-menu ul li a i {
+            font-size: 1rem !important;
+            min-width: 1rem !important;
+        }
+    </style>
+</head>
+
+<body class="din-med">
+
+    <!-- <body data-layout="horizontal"> -->
+    <div class="auth-page">
+        <div class="container-fluid auth-bg p-0">
+            <div class="bg-overlay bg-primary"></div>
+          
+            <div class="row g-0">
+                <div class="col-xxl-4 col-lg-4">
+                   
+                </div>
+                <div class="col-xxl-4 col-lg-4">
+                    <div class="d-flex p-sm-5 p-4">
+                        <div class="w-100" style="background-color:white; border-radius:7%;">
+                            <div class="d-flex flex-column">
+                                <div class="mb-4 mb-md-5 text-center">
+                                    <a href="~/Home/Index" class="d-block auth-logo" style="margin-top:20px;">
+                                        @*<img src="~/assets/images/Logos/easylifeLogo.jpeg" height="100" />*@
+                                        <img src="~/assets/images/logo1.jpeg" alt="" height="28"> <span class="logo-txt din-bold">حضانة المهندس</span>
+                                    </a>
+                                </div>
+                                <div class="auth-content">
+                                    <div class="text-center">
+                                        <h5 class="din-bold">تسجيل الدخول</h5>
+                                        @*<p class="text-muted mt-2 din-med">أدخل التفاصيل الخاصة بك لتسجيل الدخول إلى حسابك</p>*@
+
+                                    </div>
+                                    @using (Html.BeginForm("SignIn", "Account", FormMethod.Post, new { id = "kt_login_signin_form", @class = "mt-4 pt-2", style = "padding-left:20px; padding-right:20px;" }))
+                                    {<div class="mb-3">
+                                            <label class="form-label din-bold">اسم المستخدم</label>
+                                            <input type="text" class="form-control din-med" id="Username" name="Username" placeholder="اسم المستخدم" style="text-align:right;">
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex align-items-start">
+                                                <div class="flex-grow-1">
+                                                    <label class="form-label din-bold">كلمة المرور</label>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="input-group auth-pass-inputgroup">
+                                                <input type="password" class="form-control din-med" placeholder="كلمة المرور" aria-label="Pass" id="Password" name="Password" aria-describedby="password-addon" style="text-align:right;">
+                                                <button class="btn btn-light shadow-none ms-0" type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <button class="btn btn-primary w-100 waves-effect waves-light din-bold" id="btnLogin" type="submit">تسجيل دخول</button>
+                                        </div>
+                                    }
+
+                                </div>
+                                <br />
+                                <br />
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end auth full page content -->
+                </div>
+                <!-- end col -->
+                <!-- end col -->
+            </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- end container fluid -->
+                </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/assets/libs/feather-icons/feather.min.js"></script>
+    <!-- pace js -->
+    <script src="~/assets/libs/pace-js/pace.min.js"></script>
+    <!-- password addon init -->
+    <script src="~/assets/js/pages/pass-addon.init.js"></script>
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- Sweet alert init js-->
+    <script src="~/assets/js/pages/sweetalert.init.js"></script>
+    <script>
+        function savedSL(link) {
+            return invokeAlertWithLink("تم تسجيل الدخول بنجاح!", '', 'success', 1400, link);
+        }
+        function savedF(reson) {
+            return invokeAlert("بيانات دخول غير صحيحة!", reson, 'warning', 5000);
+        }
+        function invokeAlert(title, text, icon, time) {
+            Swal.fire({
+                title: title,
+                html: text,
+                icon: icon,
+                timer: time,
+                timerProgressBar: true,
+                customClass: {
+                    title: 'din-bold',
+                    content: 'din-bold'
+                }
+            });
+        }
+
+        function invokeAlertWithLink(title, text, icon, time, link, linkPrint) {
+            invokeAlert(title, text, icon, time);
+            if (link != '') {
+                setTimeout(function () { location.href = link; }, time);
+            }
+        }
+    </script>
+</body>
+
+</html>
