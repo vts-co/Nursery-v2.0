@@ -12,20 +12,17 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Exam
+    public partial class ClassExam
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Exam()
+        public ClassExam()
         {
-            this.ClassExams = new HashSet<ClassExam>();
-            this.ExamDegrees = new HashSet<ExamDegree>();
+            this.StudentsExamDegrees = new HashSet<StudentsExamDegree>();
         }
     
         public System.Guid Id { get; set; }
-        public Nullable<System.Guid> ExamTypeId { get; set; }
-        public Nullable<System.Guid> SubjectId { get; set; }
-        public Nullable<bool> IsOneQuestion { get; set; }
-        public string TotalDegree { get; set; }
+        public Nullable<System.Guid> ClassId { get; set; }
+        public Nullable<System.Guid> ExamId { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
@@ -34,11 +31,9 @@ namespace NurseryProject.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
     
+        public virtual Class Class { get; set; }
+        public virtual Exam Exam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ClassExam> ClassExams { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExamDegree> ExamDegrees { get; set; }
-        public virtual ExamsType ExamsType { get; set; }
-        public virtual Subject Subject { get; set; }
+        public virtual ICollection<StudentsExamDegree> StudentsExamDegrees { get; set; }
     }
 }

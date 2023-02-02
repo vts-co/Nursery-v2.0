@@ -1,0 +1,214 @@
+﻿@model NurseryProject.Dtos.StudentExamDegrees.StudentExamDegreesDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " درجات الاختبار  ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "درجات الاختبار";
+
+}
+
+@using (Html.BeginForm(action, "StudentsExamDegrees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row">
+
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.StudyTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.StudyTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.LevelId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.LevelId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.ClassId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label(" الاختبار", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.ExamId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ExamId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.CheckBoxFor(model => model.IsOneQuestion, new { @class = "form-check-input", hidden = "hidden" })
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-12">
+                    <div class="card-body">
+                        <table class="table table-primary w-100" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("الكود ")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("الاسم ")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("عمليات")
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="Questions" class="mt-2">
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12" id="MoreQuestion">
+
+                </div>
+            </div>
+            <div class="row" id="ExamDegreesDiv">
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        if ($("#Id").val() == "00000000-0000-0000-0000-000000000000") {
+            $("#OneQuestion").show();
+            $("#MoreQuestion").hide();
+        }
+
+        $("#StudyTypeId").change(function () {
+            $.get('/Exams/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>");
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/StudentsExamDegrees/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>");
+                });
+            });
+            $.get('/StudentsExamDegrees/getExams', { Id: $("#LevelId").val() }, function (data) {
+                $("#ExamId").empty();
+                $("#ExamId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ExamId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>");
+                });
+            });
+        });
+        $("#ExamId").change(function () {
+            $.get('/StudentsExamDegrees/get', { Id: $("#ExamId").val() }, function (data) {
+                $.each(data, function (key, value) {
+                    
+                    if (value["IsOneQuestion"] == true) {
+                        $.get('/StudentsExamDegrees/getStudents', { Id: $("#ClassId").val() }, function (data2) {
+                            $("#MoreQuestion").empty();
+                            $("#OneQuestion").empty();
+
+                            $("#OneQuestion").append("<div class='row'><table class='table'>" + "<thead>" +
+                                "<tr>" +
+                                "<th>الكود</th>" +
+                                "<th>الاسم</th>" +
+                                "<th>الدرجة الكلية</th>" +
+                                "<th>التاريخ</th>" +
+                                "</tr>" +
+                                "</thead>" + "<tbody>");
+
+                            $.each(data2, function (key, value) {
+                                $("#OneQuestion").append(
+                                    "<tr>" +
+                                    "<td>" + value["Code"] + "</td>" +
+                                    "<td>" + value["Name"] + "</td>" +
+                                    "<td>" +
+                                    "<input id='Students[" + key + "].StudentId' name='Students[" + key + "].StudentId' value='" + value["Id"] + "' hidden />" +
+                                    "<input id='Students[" + key + "].TotalDegree' name='Students[" + key + "].TotalDegree' class = 'form-control' required />" +
+                                    "</td>" +
+                                    "<td><input id='Students[" + key + "].Date' name='Students[" + key + "].Date' class = 'form-control' required type='date' /></td>" +
+                                    "</tr>");
+                            });
+                            $("#OneQuestion").append("</tbody></table></div>");
+
+                        });
+                    }
+                    else {
+                        $.get('/StudentsExamDegrees/getStudents', { Id: $("#ClassId").val() }, function (data2) {
+                            $("#MoreQuestion").empty();
+                            $("#OneQuestion").empty();
+
+                            $("#OneQuestion").append("<div class='row'><table class='table'>" + "<thead>" +
+                                "<tr>" +
+                                "<th>الكود</th>" +
+                                "<th>الاسم</th>" +
+                                "<th>إدخال الدرجات</th>" +
+                                "</tr>" +
+                                "</thead>" + "<tbody>");
+
+                            $.each(data2, function (key, value) {
+                                $("#OneQuestion").append(
+                                    "<tr>" +
+                                    "<td>" + value["Code"] + "</td>" +
+                                    "<td>" + value["Name"] + "</td>" +
+                                    "<td>" +
+                                    "<input id='Students[" + key + "].StudentId' name='Students[" + key + "].StudentId' value='" + value["Id"] + "' hidden />" +
+                                    "<input id='Students[" + key + "].TotalDegree' name='Students[" + key + "].TotalDegree' class = 'form-control bg-success' value='إدخال الدرجات' type='button' />" +
+                                    "</td>" +
+                                    "</tr>");
+                            });
+                            $("#OneQuestion").append("</tbody></table></div>");
+
+                        });
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+}

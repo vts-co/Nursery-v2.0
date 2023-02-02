@@ -1,9 +1,9 @@
 ﻿@model NurseryProject.Models.StudyPlace
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " مكان الدراسة  ";
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " فرع  ";
     string action = Model.Id == Guid.Empty ? "Create" : "Edit";
-    ViewBag.MainPage = "اماكن الدراسة";
+    ViewBag.MainPage = "الفروع ";
 
 }
 @using (Html.BeginForm(action, "StudyPlaces", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -20,7 +20,7 @@
             @Html.HiddenFor(model => model.Id)
             <div class="row">
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("اسم المكان", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("اسم الفرع", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })

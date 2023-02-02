@@ -160,6 +160,7 @@
     <Compile Include="Controllers\StudentsAttendanceController.cs" />
     <Compile Include="Controllers\StudentsClassController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Controllers\StudentsExamDegreesController.cs" />
     <Compile Include="Controllers\StudyClassesController.cs" />
     <Compile Include="Controllers\StudyPlacesController.cs" />
     <Compile Include="Controllers\StudyTypesController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Dtos\RegistrationTypes\RegistrationTypesDto.cs" />
     <Compile Include="Dtos\Revenues\RevenuesDto.cs" />
     <Compile Include="Dtos\ShiftsTimes\ShiftsTimesDto.cs" />
+    <Compile Include="Dtos\StudentExamDegrees\StudentExamDegreesDto.cs" />
     <Compile Include="Dtos\StudentsAttendance\StudentsAttendanceDto.cs" />
     <Compile Include="Dtos\StudentsClass\StudentsClassDto.cs" />
     <Compile Include="Dtos\Students\StudentsDto.cs" />
@@ -209,6 +211,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ClassesLeader.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ClassExam.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Department.cs">
@@ -298,13 +303,16 @@
     <Compile Include="Models\Student.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\StudentExamDegree.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\StudentsAttendance.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentsAttendanceDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\StudentsClass.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentsExamDegree.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StudyClass.cs">
@@ -349,6 +357,7 @@
     <Compile Include="Services\IncreasesTypes\IncreasesTypesServices.cs" />
     <Compile Include="Services\EmployeesTransferAllowance\EmployeesTransferAllowanceServices.cs" />
     <Compile Include="Services\ExamsTypes\ExamsTypesServices.cs" />
+    <Compile Include="Services\StudentExamDegrees\StudentExamDegreesServices.cs" />
     <Compile Include="Services\StudentsAttendance\StudentsAttendanceServices.cs" />
     <Compile Include="Services\StudentsClass\StudentsClassServices.cs" />
     <Compile Include="Services\SubscriptionsTypes\SubscriptionsTypesServices.cs" />
@@ -1929,6 +1938,8 @@
     <Content Include="Views\Exams\Index.cshtml" />
     <Content Include="Views\Exams\Upsert.cshtml" />
     <Content Include="Views\StudentsClass\NoInstallmentsReports.cshtml" />
+    <Content Include="Views\StudentsExamDegrees\Index.cshtml" />
+    <Content Include="Views\StudentsExamDegrees\Upsert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

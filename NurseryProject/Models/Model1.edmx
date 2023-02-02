@@ -69,6 +69,21 @@
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="ClassExams">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClassId" Type="uniqueidentifier" />
+          <Property Name="ExamId" Type="uniqueidentifier" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
         <EntityType Name="Departments">
           <Key>
             <PropertyRef Name="Id" />
@@ -458,24 +473,6 @@
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
         </EntityType>
-        <EntityType Name="StudentExamDegrees">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ClassId" Type="uniqueidentifier" />
-          <Property Name="StudentId" Type="uniqueidentifier" />
-          <Property Name="ExamId" Type="uniqueidentifier" />
-          <Property Name="TotalDegree" Type="nvarchar" MaxLength="50" />
-          <Property Name="Date" Type="date" />
-          <Property Name="CreatedOn" Type="datetime" />
-          <Property Name="CreatedBy" Type="uniqueidentifier" />
-          <Property Name="ModifiedOn" Type="datetime" />
-          <Property Name="ModifiedBy" Type="uniqueidentifier" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
-          <Property Name="DeletedOn" Type="datetime" />
-          <Property Name="DeletedBy" Type="uniqueidentifier" />
-        </EntityType>
         <EntityType Name="Students">
           <Key>
             <PropertyRef Name="Id" />
@@ -508,9 +505,25 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StudyClassId" Type="uniqueidentifier" />
           <Property Name="ClassId" Type="uniqueidentifier" />
+          <Property Name="IsAttend" Type="bit" />
+          <Property Name="StudentId" Type="uniqueidentifier" />
+          <Property Name="Date" Type="date" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="StudentsAttendanceDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudentsAttendanceId" Type="uniqueidentifier" />
           <Property Name="StudentId" Type="uniqueidentifier" />
           <Property Name="IsAttend" Type="bit" />
-          <Property Name="Date" Type="date" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -531,6 +544,24 @@
           <Property Name="IsAnother" Type="bit" />
           <Property Name="JoiningDate" Type="date" />
           <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="StudentsExamDegrees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClassExamId" Type="uniqueidentifier" />
+          <Property Name="ExamDegreeId" Type="uniqueidentifier" />
+          <Property Name="StudentId" Type="uniqueidentifier" />
+          <Property Name="Degree" Type="float" />
+          <Property Name="Date" Type="date" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -727,18 +758,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Attendance_Students">
-          <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
-          <End Role="StudentsAttendance" Type="Self.StudentsAttendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Students">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StudentsAttendance">
-              <PropertyRef Name="StudentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BuildingSupervisors_Employees">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="BuildingSupervisors" Type="Self.BuildingSupervisors" Multiplicity="*" />
@@ -808,6 +827,30 @@
             </Principal>
             <Dependent Role="ClassesLeaders">
               <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassExams_Classes">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
+          <End Role="ClassExams" Type="Self.ClassExams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassExams">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassExams_Exams">
+          <End Role="Exams" Type="Self.Exams" Multiplicity="0..1" />
+          <End Role="ClassExams" Type="Self.ClassExams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exams">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassExams">
+              <PropertyRef Name="ExamId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1051,42 +1094,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ExamsDegrees_Classes">
-          <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
-          <End Role="StudentExamDegrees" Type="Self.StudentExamDegrees" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Classes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StudentExamDegrees">
-              <PropertyRef Name="ClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExamsDegrees_Exams">
-          <End Role="Exams" Type="Self.Exams" Multiplicity="0..1" />
-          <End Role="StudentExamDegrees" Type="Self.StudentExamDegrees" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Exams">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StudentExamDegrees">
-              <PropertyRef Name="ExamId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExamsDegrees_Students">
-          <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
-          <End Role="StudentExamDegrees" Type="Self.StudentExamDegrees" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Students">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StudentExamDegrees">
-              <PropertyRef Name="StudentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Expenses_Employees">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
@@ -1243,6 +1250,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentsAttendance_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
+          <End Role="StudentsAttendance" Type="Self.StudentsAttendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsAttendance">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_StudentsAttendance_StudyClasses">
           <End Role="StudyClasses" Type="Self.StudyClasses" Multiplicity="0..1" />
           <End Role="StudentsAttendance" Type="Self.StudentsAttendance" Multiplicity="*" />
@@ -1300,6 +1319,42 @@
             </Principal>
             <Dependent Role="StudentsClass">
               <PropertyRef Name="SubscriptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentsExamDegrees_ClassExams">
+          <End Role="ClassExams" Type="Self.ClassExams" Multiplicity="0..1" />
+          <End Role="StudentsExamDegrees" Type="Self.StudentsExamDegrees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassExams">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsExamDegrees">
+              <PropertyRef Name="ClassExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentsExamDegrees_ExamDegrees">
+          <End Role="ExamDegrees" Type="Self.ExamDegrees" Multiplicity="0..1" />
+          <End Role="StudentsExamDegrees" Type="Self.StudentsExamDegrees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExamDegrees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsExamDegrees">
+              <PropertyRef Name="ExamDegreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentsExamDegrees_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
+          <End Role="StudentsExamDegrees" Type="Self.StudentsExamDegrees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsExamDegrees">
+              <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1368,6 +1423,7 @@
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassesLeaders" EntityType="Self.ClassesLeaders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassExams" EntityType="Self.ClassExams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Destricts" EntityType="Self.Destricts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiscountsTypes" EntityType="Self.DiscountsTypes" Schema="dbo" store:Type="Tables" />
@@ -1391,10 +1447,11 @@
           <EntitySet Name="Revenues" EntityType="Self.Revenues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RevenuesTypes" EntityType="Self.RevenuesTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShiftsTimes" EntityType="Self.ShiftsTimes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="StudentExamDegrees" EntityType="Self.StudentExamDegrees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentsAttendance" EntityType="Self.StudentsAttendance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentsAttendanceDetails" EntityType="Self.StudentsAttendanceDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentsClass" EntityType="Self.StudentsClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentsExamDegrees" EntityType="Self.StudentsExamDegrees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudyClasses" EntityType="Self.StudyClasses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudyPlaces" EntityType="Self.StudyPlaces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudyTypes" EntityType="Self.StudyTypes" Schema="dbo" store:Type="Tables" />
@@ -1408,10 +1465,6 @@
           <EntitySet Name="WorkShifts" EntityType="Self.WorkShifts" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Attendance_Classes" Association="Self.FK_Attendance_Classes">
             <End Role="Classes" EntitySet="Classes" />
-            <End Role="StudentsAttendance" EntitySet="StudentsAttendance" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_Students" Association="Self.FK_Attendance_Students">
-            <End Role="Students" EntitySet="Students" />
             <End Role="StudentsAttendance" EntitySet="StudentsAttendance" />
           </AssociationSet>
           <AssociationSet Name="FK_BuildingSupervisors_Employees" Association="Self.FK_BuildingSupervisors_Employees">
@@ -1437,6 +1490,14 @@
           <AssociationSet Name="FK_ClassesLeaders_Employees" Association="Self.FK_ClassesLeaders_Employees">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="ClassesLeaders" EntitySet="ClassesLeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassExams_Classes" Association="Self.FK_ClassExams_Classes">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="ClassExams" EntitySet="ClassExams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassExams_Exams" Association="Self.FK_ClassExams_Exams">
+            <End Role="Exams" EntitySet="Exams" />
+            <End Role="ClassExams" EntitySet="ClassExams" />
           </AssociationSet>
           <AssociationSet Name="FK_Destricts_Cities" Association="Self.FK_Destricts_Cities">
             <End Role="Cities" EntitySet="Cities" />
@@ -1518,18 +1579,6 @@
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Exams" EntitySet="Exams" />
           </AssociationSet>
-          <AssociationSet Name="FK_ExamsDegrees_Classes" Association="Self.FK_ExamsDegrees_Classes">
-            <End Role="Classes" EntitySet="Classes" />
-            <End Role="StudentExamDegrees" EntitySet="StudentExamDegrees" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExamsDegrees_Exams" Association="Self.FK_ExamsDegrees_Exams">
-            <End Role="Exams" EntitySet="Exams" />
-            <End Role="StudentExamDegrees" EntitySet="StudentExamDegrees" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExamsDegrees_Students" Association="Self.FK_ExamsDegrees_Students">
-            <End Role="Students" EntitySet="Students" />
-            <End Role="StudentExamDegrees" EntitySet="StudentExamDegrees" />
-          </AssociationSet>
           <AssociationSet Name="FK_Expenses_Employees" Association="Self.FK_Expenses_Employees">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Expenses" EntitySet="Expenses" />
@@ -1582,6 +1631,10 @@
             <End Role="RegistrationTypes" EntitySet="RegistrationTypes" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
+          <AssociationSet Name="FK_StudentsAttendance_Students" Association="Self.FK_StudentsAttendance_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentsAttendance" EntitySet="StudentsAttendance" />
+          </AssociationSet>
           <AssociationSet Name="FK_StudentsAttendance_StudyClasses" Association="Self.FK_StudentsAttendance_StudyClasses">
             <End Role="StudyClasses" EntitySet="StudyClasses" />
             <End Role="StudentsAttendance" EntitySet="StudentsAttendance" />
@@ -1601,6 +1654,18 @@
           <AssociationSet Name="FK_StudentsClass_Subscriptions" Association="Self.FK_StudentsClass_Subscriptions">
             <End Role="Subscriptions" EntitySet="Subscriptions" />
             <End Role="StudentsClass" EntitySet="StudentsClass" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentsExamDegrees_ClassExams" Association="Self.FK_StudentsExamDegrees_ClassExams">
+            <End Role="ClassExams" EntitySet="ClassExams" />
+            <End Role="StudentsExamDegrees" EntitySet="StudentsExamDegrees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentsExamDegrees_ExamDegrees" Association="Self.FK_StudentsExamDegrees_ExamDegrees">
+            <End Role="ExamDegrees" EntitySet="ExamDegrees" />
+            <End Role="StudentsExamDegrees" EntitySet="StudentsExamDegrees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentsExamDegrees_Students" Association="Self.FK_StudentsExamDegrees_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentsExamDegrees" EntitySet="StudentsExamDegrees" />
           </AssociationSet>
           <AssociationSet Name="FK_StudyClasses_StudyClasses" Association="Self.FK_StudyClasses_StudyClasses">
             <End Role="StudyYears" EntitySet="StudyYears" />
@@ -1632,6 +1697,7 @@
           <EntitySet Name="Cities" EntityType="almohandes_DbModel.City" />
           <EntitySet Name="Classes" EntityType="almohandes_DbModel.Class" />
           <EntitySet Name="ClassesLeaders" EntityType="almohandes_DbModel.ClassesLeader" />
+          <EntitySet Name="ClassExams" EntityType="almohandes_DbModel.ClassExam" />
           <EntitySet Name="Departments" EntityType="almohandes_DbModel.Department" />
           <EntitySet Name="Destricts" EntityType="almohandes_DbModel.Destrict" />
           <EntitySet Name="DiscountsTypes" EntityType="almohandes_DbModel.DiscountsType" />
@@ -1655,10 +1721,11 @@
           <EntitySet Name="Revenues" EntityType="almohandes_DbModel.Revenue" />
           <EntitySet Name="RevenuesTypes" EntityType="almohandes_DbModel.RevenuesType" />
           <EntitySet Name="ShiftsTimes" EntityType="almohandes_DbModel.ShiftsTime" />
-          <EntitySet Name="StudentExamDegrees" EntityType="almohandes_DbModel.StudentExamDegree" />
           <EntitySet Name="Students" EntityType="almohandes_DbModel.Student" />
           <EntitySet Name="StudentsAttendances" EntityType="almohandes_DbModel.StudentsAttendance" />
+          <EntitySet Name="StudentsAttendanceDetails" EntityType="almohandes_DbModel.StudentsAttendanceDetail" />
           <EntitySet Name="StudentsClasses" EntityType="almohandes_DbModel.StudentsClass" />
+          <EntitySet Name="StudentsExamDegrees" EntityType="almohandes_DbModel.StudentsExamDegree" />
           <EntitySet Name="StudyClasses" EntityType="almohandes_DbModel.StudyClass" />
           <EntitySet Name="StudyPlaces" EntityType="almohandes_DbModel.StudyPlace" />
           <EntitySet Name="StudyTypes" EntityType="almohandes_DbModel.StudyType" />
@@ -1698,13 +1765,13 @@
             <End Role="Class" EntitySet="Classes" />
             <End Role="ClassesLeader" EntitySet="ClassesLeaders" />
           </AssociationSet>
+          <AssociationSet Name="FK_ClassExams_Classes" Association="almohandes_DbModel.FK_ClassExams_Classes">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="ClassExam" EntitySet="ClassExams" />
+          </AssociationSet>
           <AssociationSet Name="FK_EmployeeClasses_EmployeeClasses" Association="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses">
             <End Role="Class" EntitySet="Classes" />
             <End Role="EmployeeClass" EntitySet="EmployeeClasses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExamsDegrees_Classes" Association="almohandes_DbModel.FK_ExamsDegrees_Classes">
-            <End Role="Class" EntitySet="Classes" />
-            <End Role="StudentExamDegree" EntitySet="StudentExamDegrees" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentsClass_Classes" Association="almohandes_DbModel.FK_StudentsClass_Classes">
             <End Role="Class" EntitySet="Classes" />
@@ -1713,6 +1780,14 @@
           <AssociationSet Name="FK_ClassesLeaders_Employees" Association="almohandes_DbModel.FK_ClassesLeaders_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="ClassesLeader" EntitySet="ClassesLeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassExams_Exams" Association="almohandes_DbModel.FK_ClassExams_Exams">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="ClassExam" EntitySet="ClassExams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentsExamDegrees_ClassExams" Association="almohandes_DbModel.FK_StudentsExamDegrees_ClassExams">
+            <End Role="ClassExam" EntitySet="ClassExams" />
+            <End Role="StudentsExamDegree" EntitySet="StudentsExamDegrees" />
           </AssociationSet>
           <AssociationSet Name="FK_Jops_Departments" Association="almohandes_DbModel.FK_Jops_Departments">
             <End Role="Department" EntitySet="Departments" />
@@ -1794,6 +1869,10 @@
             <End Role="Exam" EntitySet="Exams" />
             <End Role="ExamDegree" EntitySet="ExamDegrees" />
           </AssociationSet>
+          <AssociationSet Name="FK_StudentsExamDegrees_ExamDegrees" Association="almohandes_DbModel.FK_StudentsExamDegrees_ExamDegrees">
+            <End Role="ExamDegree" EntitySet="ExamDegrees" />
+            <End Role="StudentsExamDegree" EntitySet="StudentsExamDegrees" />
+          </AssociationSet>
           <AssociationSet Name="FK_Exams_ExamsTypes" Association="almohandes_DbModel.FK_Exams_ExamsTypes">
             <End Role="ExamsType" EntitySet="ExamsTypes" />
             <End Role="Exam" EntitySet="Exams" />
@@ -1801,10 +1880,6 @@
           <AssociationSet Name="FK_Exams_Subjects" Association="almohandes_DbModel.FK_Exams_Subjects">
             <End Role="Subject" EntitySet="Subjects" />
             <End Role="Exam" EntitySet="Exams" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExamsDegrees_Exams" Association="almohandes_DbModel.FK_ExamsDegrees_Exams">
-            <End Role="Exam" EntitySet="Exams" />
-            <End Role="StudentExamDegree" EntitySet="StudentExamDegrees" />
           </AssociationSet>
           <AssociationSet Name="FK_Expenses_ExpensesTypes" Association="almohandes_DbModel.FK_Expenses_ExpensesTypes">
             <End Role="ExpensesType" EntitySet="ExpensesTypes" />
@@ -1850,17 +1925,17 @@
             <End Role="WorkShift" EntitySet="WorkShifts" />
             <End Role="ShiftsTime" EntitySet="ShiftsTimes" />
           </AssociationSet>
-          <AssociationSet Name="FK_ExamsDegrees_Students" Association="almohandes_DbModel.FK_ExamsDegrees_Students">
-            <End Role="Student" EntitySet="Students" />
-            <End Role="StudentExamDegree" EntitySet="StudentExamDegrees" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_Students" Association="almohandes_DbModel.FK_Attendance_Students">
+          <AssociationSet Name="FK_StudentsAttendance_Students" Association="almohandes_DbModel.FK_StudentsAttendance_Students">
             <End Role="Student" EntitySet="Students" />
             <End Role="StudentsAttendance" EntitySet="StudentsAttendances" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentsClass_Students" Association="almohandes_DbModel.FK_StudentsClass_Students">
             <End Role="Student" EntitySet="Students" />
             <End Role="StudentsClass" EntitySet="StudentsClasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentsExamDegrees_Students" Association="almohandes_DbModel.FK_StudentsExamDegrees_Students">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="StudentsExamDegree" EntitySet="StudentsExamDegrees" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentsAttendance_StudyClasses" Association="almohandes_DbModel.FK_StudentsAttendance_StudyClasses">
             <End Role="StudyClass" EntitySet="StudyClasses" />
@@ -1941,8 +2016,8 @@
           <NavigationProperty Name="Level" Relationship="almohandes_DbModel.FK_Classes_Levels" FromRole="Class" ToRole="Level" />
           <NavigationProperty Name="StudyPlace" Relationship="almohandes_DbModel.FK_Classes_StudyPlaces" FromRole="Class" ToRole="StudyPlace" />
           <NavigationProperty Name="ClassesLeaders" Relationship="almohandes_DbModel.FK_ClassesLeaders_Classes" FromRole="Class" ToRole="ClassesLeader" />
+          <NavigationProperty Name="ClassExams" Relationship="almohandes_DbModel.FK_ClassExams_Classes" FromRole="Class" ToRole="ClassExam" />
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses" FromRole="Class" ToRole="EmployeeClass" />
-          <NavigationProperty Name="StudentExamDegrees" Relationship="almohandes_DbModel.FK_ExamsDegrees_Classes" FromRole="Class" ToRole="StudentExamDegree" />
           <NavigationProperty Name="StudentsClasses" Relationship="almohandes_DbModel.FK_StudentsClass_Classes" FromRole="Class" ToRole="StudentsClass" />
         </EntityType>
         <EntityType Name="ClassesLeader">
@@ -1962,6 +2037,24 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_ClassesLeaders_Classes" FromRole="ClassesLeader" ToRole="Class" />
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_ClassesLeaders_Employees" FromRole="ClassesLeader" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="ClassExam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="ClassId" Type="Guid" />
+          <Property Name="ExamId" Type="Guid" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_ClassExams_Classes" FromRole="ClassExam" ToRole="Class" />
+          <NavigationProperty Name="Exam" Relationship="almohandes_DbModel.FK_ClassExams_Exams" FromRole="ClassExam" ToRole="Exam" />
+          <NavigationProperty Name="StudentsExamDegrees" Relationship="almohandes_DbModel.FK_StudentsExamDegrees_ClassExams" FromRole="ClassExam" ToRole="StudentsExamDegree" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -2202,6 +2295,7 @@
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Exam" Relationship="almohandes_DbModel.FK_ExamDegrees_Exams" FromRole="ExamDegree" ToRole="Exam" />
+          <NavigationProperty Name="StudentsExamDegrees" Relationship="almohandes_DbModel.FK_StudentsExamDegrees_ExamDegrees" FromRole="ExamDegree" ToRole="StudentsExamDegree" />
         </EntityType>
         <EntityType Name="Exam">
           <Key>
@@ -2219,10 +2313,10 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="ClassExams" Relationship="almohandes_DbModel.FK_ClassExams_Exams" FromRole="Exam" ToRole="ClassExam" />
           <NavigationProperty Name="ExamDegrees" Relationship="almohandes_DbModel.FK_ExamDegrees_Exams" FromRole="Exam" ToRole="ExamDegree" />
           <NavigationProperty Name="ExamsType" Relationship="almohandes_DbModel.FK_Exams_ExamsTypes" FromRole="Exam" ToRole="ExamsType" />
           <NavigationProperty Name="Subject" Relationship="almohandes_DbModel.FK_Exams_Subjects" FromRole="Exam" ToRole="Subject" />
-          <NavigationProperty Name="StudentExamDegrees" Relationship="almohandes_DbModel.FK_ExamsDegrees_Exams" FromRole="Exam" ToRole="StudentExamDegree" />
         </EntityType>
         <EntityType Name="ExamsType">
           <Key>
@@ -2408,27 +2502,6 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="WorkShift" Relationship="almohandes_DbModel.FK_ShiftsTimes_WorkShifts" FromRole="ShiftsTime" ToRole="WorkShift" />
         </EntityType>
-        <EntityType Name="StudentExamDegree">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="ClassId" Type="Guid" />
-          <Property Name="StudentId" Type="Guid" />
-          <Property Name="ExamId" Type="Guid" />
-          <Property Name="TotalDegree" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Guid" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="DeletedBy" Type="Guid" />
-          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_ExamsDegrees_Classes" FromRole="StudentExamDegree" ToRole="Class" />
-          <NavigationProperty Name="Exam" Relationship="almohandes_DbModel.FK_ExamsDegrees_Exams" FromRole="StudentExamDegree" ToRole="Exam" />
-          <NavigationProperty Name="Student" Relationship="almohandes_DbModel.FK_ExamsDegrees_Students" FromRole="StudentExamDegree" ToRole="Student" />
-        </EntityType>
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="Id" />
@@ -2455,9 +2528,9 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Destrict" Relationship="almohandes_DbModel.FK_Students_Destricts" FromRole="Student" ToRole="Destrict" />
           <NavigationProperty Name="RegistrationType" Relationship="almohandes_DbModel.FK_Students_RegistrationTypes" FromRole="Student" ToRole="RegistrationType" />
-          <NavigationProperty Name="StudentExamDegrees" Relationship="almohandes_DbModel.FK_ExamsDegrees_Students" FromRole="Student" ToRole="StudentExamDegree" />
-          <NavigationProperty Name="StudentsAttendances" Relationship="almohandes_DbModel.FK_Attendance_Students" FromRole="Student" ToRole="StudentsAttendance" />
+          <NavigationProperty Name="StudentsAttendances" Relationship="almohandes_DbModel.FK_StudentsAttendance_Students" FromRole="Student" ToRole="StudentsAttendance" />
           <NavigationProperty Name="StudentsClasses" Relationship="almohandes_DbModel.FK_StudentsClass_Students" FromRole="Student" ToRole="StudentsClass" />
+          <NavigationProperty Name="StudentsExamDegrees" Relationship="almohandes_DbModel.FK_StudentsExamDegrees_Students" FromRole="Student" ToRole="StudentsExamDegree" />
         </EntityType>
         <EntityType Name="StudentsAttendance">
           <Key>
@@ -2466,8 +2539,8 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="StudyClassId" Type="Guid" />
           <Property Name="ClassId" Type="Guid" />
-          <Property Name="StudentId" Type="Guid" />
           <Property Name="IsAttend" Type="Boolean" />
+          <Property Name="StudentId" Type="Guid" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -2477,8 +2550,24 @@
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_Attendance_Classes" FromRole="StudentsAttendance" ToRole="Class" />
-          <NavigationProperty Name="Student" Relationship="almohandes_DbModel.FK_Attendance_Students" FromRole="StudentsAttendance" ToRole="Student" />
+          <NavigationProperty Name="Student" Relationship="almohandes_DbModel.FK_StudentsAttendance_Students" FromRole="StudentsAttendance" ToRole="Student" />
           <NavigationProperty Name="StudyClass" Relationship="almohandes_DbModel.FK_StudentsAttendance_StudyClasses" FromRole="StudentsAttendance" ToRole="StudyClass" />
+        </EntityType>
+        <EntityType Name="StudentsAttendanceDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="StudentsAttendanceId" Type="Guid" />
+          <Property Name="StudentId" Type="Guid" />
+          <Property Name="IsAttend" Type="Boolean" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
         </EntityType>
         <EntityType Name="StudentsClass">
           <Key>
@@ -2504,6 +2593,27 @@
           <NavigationProperty Name="StudyYear" Relationship="almohandes_DbModel.FK_StudentsClass_StudentsClass" FromRole="StudentsClass" ToRole="StudyYear" />
           <NavigationProperty Name="Subscription" Relationship="almohandes_DbModel.FK_StudentsClass_Subscriptions" FromRole="StudentsClass" ToRole="Subscription" />
           <NavigationProperty Name="SubscriptionMethods" Relationship="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod" FromRole="StudentsClass" ToRole="SubscriptionMethod" />
+        </EntityType>
+        <EntityType Name="StudentsExamDegree">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="ClassExamId" Type="Guid" />
+          <Property Name="ExamDegreeId" Type="Guid" />
+          <Property Name="StudentId" Type="Guid" />
+          <Property Name="Degree" Type="Double" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="ClassExam" Relationship="almohandes_DbModel.FK_StudentsExamDegrees_ClassExams" FromRole="StudentsExamDegree" ToRole="ClassExam" />
+          <NavigationProperty Name="ExamDegree" Relationship="almohandes_DbModel.FK_StudentsExamDegrees_ExamDegrees" FromRole="StudentsExamDegree" ToRole="ExamDegree" />
+          <NavigationProperty Name="Student" Relationship="almohandes_DbModel.FK_StudentsExamDegrees_Students" FromRole="StudentsExamDegree" ToRole="Student" />
         </EntityType>
         <EntityType Name="StudyClass">
           <Key>
@@ -2789,6 +2899,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ClassExams_Classes">
+          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.ClassExam" Role="ClassExam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassExam">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EmployeeClasses_EmployeeClasses">
           <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.EmployeeClass" Role="EmployeeClass" Multiplicity="*" />
@@ -2797,18 +2919,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="EmployeeClass">
-              <PropertyRef Name="ClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExamsDegrees_Classes">
-          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.StudentExamDegree" Role="StudentExamDegree" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Class">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StudentExamDegree">
               <PropertyRef Name="ClassId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2834,6 +2944,30 @@
             </Principal>
             <Dependent Role="ClassesLeader">
               <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassExams_Exams">
+          <End Type="almohandes_DbModel.Exam" Role="Exam" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.ClassExam" Role="ClassExam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassExam">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentsExamDegrees_ClassExams">
+          <End Type="almohandes_DbModel.ClassExam" Role="ClassExam" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentsExamDegree" Role="StudentsExamDegree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassExam">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsExamDegree">
+              <PropertyRef Name="ClassExamId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3077,6 +3211,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentsExamDegrees_ExamDegrees">
+          <End Type="almohandes_DbModel.ExamDegree" Role="ExamDegree" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentsExamDegree" Role="StudentsExamDegree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExamDegree">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsExamDegree">
+              <PropertyRef Name="ExamDegreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Exams_ExamsTypes">
           <End Type="almohandes_DbModel.ExamsType" Role="ExamsType" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.Exam" Role="Exam" Multiplicity="*" />
@@ -3098,18 +3244,6 @@
             </Principal>
             <Dependent Role="Exam">
               <PropertyRef Name="SubjectId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExamsDegrees_Exams">
-          <End Type="almohandes_DbModel.Exam" Role="Exam" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.StudentExamDegree" Role="StudentExamDegree" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Exam">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StudentExamDegree">
-              <PropertyRef Name="ExamId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3245,19 +3379,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ExamsDegrees_Students">
-          <End Type="almohandes_DbModel.Student" Role="Student" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.StudentExamDegree" Role="StudentExamDegree" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StudentExamDegree">
-              <PropertyRef Name="StudentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attendance_Students">
+        <Association Name="FK_StudentsAttendance_Students">
           <End Type="almohandes_DbModel.Student" Role="Student" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.StudentsAttendance" Role="StudentsAttendance" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3277,6 +3399,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="StudentsClass">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentsExamDegrees_Students">
+          <End Type="almohandes_DbModel.Student" Role="Student" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentsExamDegree" Role="StudentsExamDegree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsExamDegree">
               <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3422,6 +3556,22 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassExams">
+            <EntityTypeMapping TypeName="almohandes_DbModel.ClassExam">
+              <MappingFragment StoreEntitySet="ClassExams">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
                 <ScalarProperty Name="ClassId" ColumnName="ClassId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -3839,25 +3989,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="StudentExamDegrees">
-            <EntityTypeMapping TypeName="almohandes_DbModel.StudentExamDegree">
-              <MappingFragment StoreEntitySet="StudentExamDegrees">
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="TotalDegree" ColumnName="TotalDegree" />
-                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
-                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
-                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="almohandes_DbModel.Student">
               <MappingFragment StoreEntitySet="Students">
@@ -3895,10 +4026,27 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
                 <ScalarProperty Name="ClassId" ColumnName="ClassId" />
                 <ScalarProperty Name="StudyClassId" ColumnName="StudyClassId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsAttendanceDetails">
+            <EntityTypeMapping TypeName="almohandes_DbModel.StudentsAttendanceDetail">
+              <MappingFragment StoreEntitySet="StudentsAttendanceDetails">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="StudentsAttendanceId" ColumnName="StudentsAttendanceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3920,6 +4068,25 @@
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="StudyYearId" ColumnName="StudyYearId" />
                 <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsExamDegrees">
+            <EntityTypeMapping TypeName="almohandes_DbModel.StudentsExamDegree">
+              <MappingFragment StoreEntitySet="StudentsExamDegrees">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Degree" ColumnName="Degree" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="ExamDegreeId" ColumnName="ExamDegreeId" />
+                <ScalarProperty Name="ClassExamId" ColumnName="ClassExamId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

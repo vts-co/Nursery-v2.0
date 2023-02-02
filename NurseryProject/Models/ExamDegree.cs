@@ -14,6 +14,12 @@ namespace NurseryProject.Models
     
     public partial class ExamDegree
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ExamDegree()
+        {
+            this.StudentsExamDegrees = new HashSet<StudentsExamDegree>();
+        }
+    
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> ExamId { get; set; }
         public string Degree { get; set; }
@@ -26,5 +32,7 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> DeletedBy { get; set; }
     
         public virtual Exam Exam { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentsExamDegree> StudentsExamDegrees { get; set; }
     }
 }

@@ -8,6 +8,8 @@ namespace NurseryProject.Dtos.Exams
     public class ExamsDto
     {
         public Guid Id { get; set; }
+        public string Name { get; set; }
+
         public Guid StudyTypeId { get; set; }
         public string StudyTypeName { get; set; }
         public Guid LevelId { get; set; }

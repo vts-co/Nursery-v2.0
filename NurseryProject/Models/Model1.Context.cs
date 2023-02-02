@@ -29,6 +29,7 @@ namespace NurseryProject.Models
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassesLeader> ClassesLeaders { get; set; }
+        public virtual DbSet<ClassExam> ClassExams { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Destrict> Destricts { get; set; }
         public virtual DbSet<DiscountsType> DiscountsTypes { get; set; }
@@ -52,10 +53,11 @@ namespace NurseryProject.Models
         public virtual DbSet<Revenue> Revenues { get; set; }
         public virtual DbSet<RevenuesType> RevenuesTypes { get; set; }
         public virtual DbSet<ShiftsTime> ShiftsTimes { get; set; }
-        public virtual DbSet<StudentExamDegree> StudentExamDegrees { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentsAttendance> StudentsAttendances { get; set; }
+        public virtual DbSet<StudentsAttendanceDetail> StudentsAttendanceDetails { get; set; }
         public virtual DbSet<StudentsClass> StudentsClasses { get; set; }
+        public virtual DbSet<StudentsExamDegree> StudentsExamDegrees { get; set; }
         public virtual DbSet<StudyClass> StudyClasses { get; set; }
         public virtual DbSet<StudyPlace> StudyPlaces { get; set; }
         public virtual DbSet<StudyType> StudyTypes { get; set; }

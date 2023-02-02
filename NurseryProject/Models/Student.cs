@@ -17,9 +17,9 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Student()
         {
-            this.StudentExamDegrees = new HashSet<StudentExamDegree>();
             this.StudentsAttendances = new HashSet<StudentsAttendance>();
             this.StudentsClasses = new HashSet<StudentsClass>();
+            this.StudentsExamDegrees = new HashSet<StudentsExamDegree>();
         }
     
         public System.Guid Id { get; set; }
@@ -46,10 +46,10 @@ namespace NurseryProject.Models
         public virtual Destrict Destrict { get; set; }
         public virtual RegistrationType RegistrationType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StudentExamDegree> StudentExamDegrees { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsAttendance> StudentsAttendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsClass> StudentsClasses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentsExamDegree> StudentsExamDegrees { get; set; }
     }
 }

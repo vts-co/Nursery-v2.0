@@ -31,7 +31,7 @@
                         @Html.DisplayName("نوع الاختبار ")
                     </th>
                     <th>
-                        @Html.DisplayName("سؤال أم عدة اسئلة ")
+                        <label>سؤال <i class="fas fa-check-square"></i> | عدد اسئلة <i class="far fa-square"></i></label>
                     </th>
                     <th>
                         @Html.DisplayName("الدرجة الكلية ")
@@ -62,6 +62,7 @@
 
                     <td>
                         @Html.DisplayFor(modelItem => item.IsOneQuestion)
+                        
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TotalDegree)

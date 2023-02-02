@@ -29,7 +29,7 @@ namespace NurseryProject.Services.StudentsClass
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
                     StudentId = x.Student.Id,
-                    StudentName = x.Student.Code + "|" + x.Student.Name + "|" + x.Student.Phone,
+                    StudentName = x.Student.Name ,
                     IsAnother = x.IsAnother.Value,
                     SubscriptionId = x.SubscriptionId.Value,
                     SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
@@ -82,7 +82,7 @@ namespace NurseryProject.Services.StudentsClass
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
                     StudentId = x.Student.Id,
-                    StudentName = x.Student.Code + "|" + x.Student.Name + "|" + x.Student.Phone,
+                    StudentName = x.Student.Name,
                     IsAnother = x.IsAnother.Value,
 
                     SubscriptionId = x.SubscriptionId.Value,

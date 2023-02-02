@@ -12,13 +12,13 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class StudentsAttendance
+    public partial class StudentsExamDegree
     {
         public System.Guid Id { get; set; }
-        public Nullable<System.Guid> StudyClassId { get; set; }
-        public Nullable<System.Guid> ClassId { get; set; }
-        public Nullable<bool> IsAttend { get; set; }
+        public Nullable<System.Guid> ClassExamId { get; set; }
+        public Nullable<System.Guid> ExamDegreeId { get; set; }
         public Nullable<System.Guid> StudentId { get; set; }
+        public Nullable<double> Degree { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
@@ -28,8 +28,8 @@ namespace NurseryProject.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
     
-        public virtual Class Class { get; set; }
+        public virtual ClassExam ClassExam { get; set; }
+        public virtual ExamDegree ExamDegree { get; set; }
         public virtual Student Student { get; set; }
-        public virtual StudyClass StudyClass { get; set; }
     }
 }
