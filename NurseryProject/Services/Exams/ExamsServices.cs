@@ -16,7 +16,7 @@ namespace NurseryProject.Services.Exams
                 var model = dbContext.Exams.Where(x => x.IsDeleted == false&&x.Subject.IsDeleted==false&&x.ExamsType.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new ExamsDto
                 {
                     Id = x.Id,
-                    Name=x.Subject.Name+"/"+x.ExamsType.Name+"/"+x.Subject.Level.Name,
+                    Name = x.IsOneQuestion == true ? x.Subject.Name + "/" + x.ExamsType.Name + "/" + "سؤال" + "/" + x.TotalDegree : x.Subject.Name + "/" + x.ExamsType.Name + "/" + "عدة اسئلة" + "/" + x.TotalDegree,
                     StudyTypeId = x.Subject.Level.StudyType.Id,
                     StudyTypeName = x.Subject.Level.StudyType.Name,
                     LevelId = x.Subject.Level.Id,

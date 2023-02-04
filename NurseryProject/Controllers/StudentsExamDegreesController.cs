@@ -68,6 +68,48 @@ namespace NurseryProject.Controllers
             return View("Upsert", new StudentExamDegreesDto());
         }
 
+        public ActionResult Edit(Guid Id)
+        {
+            var model = studentExamDegreesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+
+            var studyTypes = studyTypesServices.GetAll();
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", model.StudyTypeId);
+
+            var exams = examsServices.GetAll();
+            ViewBag.ExamId = new SelectList(exams, "Id", "Name", model.ExamId);
+
+            var level = levelsServices.GetAll();
+            ViewBag.LevelId = new SelectList(level, "Id", "Name", model.LevelId);
+
+            var class1 = classesServices.GetAll();
+            ViewBag.ClassId = new SelectList(class1, "Id", "Name", model.ClassId);
+
+            return View("Upsert", model);
+        }
+        [HttpPost]
+        public ActionResult Edit(StudentExamDegreesDto studentExamDegreesDto)
+        {
+            var model = studentExamDegreesServices.Edit(studentExamDegreesDto, (Guid)TempData["UserId"]);
+            if (model.IsSuccess)
+            {
+                TempData["success"] = model.Message;
+                return RedirectToAction("Index");
+            }
+            var studyTypes = studyTypesServices.GetAll();
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", studentExamDegreesDto.StudyTypeId);
+
+            var level = levelsServices.GetAll().Where(x => x.StudyTypeId == studentExamDegreesDto.StudyTypeId);
+            ViewBag.LevelId = new SelectList(level, "Id", "Name", studentExamDegreesDto.LevelId);
+
+            var class1 = classesServices.GetAll().Where(x => x.LevelId == studentExamDegreesDto.LevelId);
+            ViewBag.ClassId = new SelectList(class1, "Id", "Name", studentExamDegreesDto.ClassId);
+
+            var exams = examsServices.GetAll().Where(x => x.LevelId == studentExamDegreesDto.LevelId); ;
+            ViewBag.ExamId = new SelectList(exams, "Id", "Name", studentExamDegreesDto.ExamId);
+
+            return View("Upsert", new StudentExamDegreesDto());
+        }
+
         public ActionResult Delete(Guid Id)
         {
             var result = studentExamDegreesServices.Delete(Id, (Guid)TempData["UserId"]);
@@ -89,18 +131,79 @@ namespace NurseryProject.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult get(Guid Id)
-        { 
-            var model = examsServices.GetAll().Where(x => x.Id == Id).Select(x => new { x.Id, Name = x.Name,x.IsOneQuestion}).ToList();
+        {
+            var model = examsServices.GetAll().Where(x => x.Id == Id).Select(x => new { x.Id, Name = x.Name, x.IsOneQuestion, x.TotalDegree, x.MoreQuestion }).ToList();
+
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getStudents(Guid Id)
         {
-            var model = studentsClassServices.GetAll().Where(x => x.ClassId == Id).Select(x => new { Id=x.StudentId,x.Code, Name = x.StudentName }).ToList();
+            var model = studentsClassServices.GetAll().Where(x => x.ClassId == Id).Select(x => new { Id = x.StudentId, x.Code, Name = x.StudentName }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getExams(Guid Id)
         {
-            var model = examsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.SubjectName + "/" + x.ExamTypeName + "/" + x.SubjectName, x.IsOneQuestion }).ToList();
+            var model = examsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getExamClass(Guid Id)
+        {
+            var model = studentExamDegreesServices.GetAll().Where(x => x.Id == Id).ToList();
+            var students = studentsClassServices.GetAll().Where(x => x.ClassId == model[0].ClassId).ToList();
+            var count = model[0].Students.Count();
+
+            foreach (var item in model)
+            {
+                for (int i = 0; i < students.Count(); i++)
+                {
+                    for (int j = 0; j < count; j++)
+                    {
+                        if (item.Students[j].StudentId != students[i].StudentId)
+                        {
+                            StudentExamDegreesDetailsDto studentExamDegreesDetailsDto = new StudentExamDegreesDetailsDto()
+                            {
+                                Code = students[i].Code,
+                                StudentId = students[i].StudentId,
+                                StudentName = students[i].StudentName,
+                                TotalDegree="",
+                                Count = "0"
+                            };
+                            item.Students.Add(studentExamDegreesDetailsDto);
+                        }
+                        else
+                        {
+                            item.Students[j].Count = "1";
+                        }
+                    }
+                }
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getStudentExamDegrees(Guid Id, Guid StudentId, Guid ExamId)
+        {
+            List<StudentExamDegreesDetailsDto> studentExamDegreesDetailsDtos = new List<StudentExamDegreesDetailsDto>();
+            var model = studentExamDegreesServices.StudentExamDegrees(Id, StudentId).ToList();
+            var model1 = examsServices.GetAll().Where(x => x.Id == ExamId).FirstOrDefault();
+
+            var students = studentsClassServices.GetAll().Where(x => x.StudentId == StudentId).ToList();
+            if (model.Count() == 0)
+            {
+                foreach (var item in students)
+                {
+                    StudentExamDegreesDetailsDto studentExamDegreesDetailsDto = new StudentExamDegreesDetailsDto();
+
+                    foreach (var item3 in model1.MoreQuestion)
+                    {
+                        studentExamDegreesDetailsDto.Code = item.Code;
+                        studentExamDegreesDetailsDto.StudentId = item.StudentId;
+                        studentExamDegreesDetailsDto.StudentName = item.StudentName;
+                        studentExamDegreesDetailsDto.TotalDegree = "";
+                        model.Add(studentExamDegreesDetailsDto);
+                    }
+
+                }
+            }
+
             return Json(model, JsonRequestBehavior.AllowGet);
         }
     }

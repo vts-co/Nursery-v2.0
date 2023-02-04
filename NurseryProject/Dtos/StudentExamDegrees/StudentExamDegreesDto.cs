@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NurseryProject.Dtos.Exams;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,9 +19,11 @@ namespace NurseryProject.Dtos.StudentExamDegrees
         public string ClassName { get; set; }
         public Guid ExamId { get; set; }
         public string ExamName { get; set; }
-        public bool IsOneQuestion { get; set; }
+        public string ExamDegree { get; set; }
 
+        public bool IsOneQuestion { get; set; }
         public string Date { get; set; }
+        public string Count { get; set; }
 
         public List<StudentExamDegreesDetailsDto> Students { get; set; }
 
@@ -28,10 +31,13 @@ namespace NurseryProject.Dtos.StudentExamDegrees
     public class StudentExamDegreesDetailsDto
     {
         public Guid Id { get; set; }
+        public string Code { get; set; }
+        public string Count { get; set; }
         public Guid StudentId { get; set; }
         public string StudentName { get; set; }
         public Guid ExamDegreeId { get; set; }
         public string TotalDegree { get; set; }
         public string Date { get; set; }
+
     }
 }

@@ -63,7 +63,7 @@
 
                 <div class="form-group mb-3 col-sm-12">
                     <div class="card-body">
-                        <table class="table table-primary w-100" id="table1">
+                        <table class="table table-striped dt-responsive  nowrap w-100" id="table1">
                             <thead>
                                 <tr>
                                     <th>
@@ -72,8 +72,9 @@
                                     <th>
                                         @Html.DisplayName("الاسم ")
                                     </th>
+
                                     <th>
-                                        @Html.DisplayName("عمليات")
+                                        @Html.DisplayName("الدرجات")
                                     </th>
 
                                 </tr>
@@ -81,31 +82,39 @@
                             <tbody id="Questions" class="mt-2">
                             </tbody>
                         </table>
-
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-12" id="MoreQuestion">
 
+            </div>
+
+
+            <div class="card-footer">
+                <div class="row justify-content-end">
+                    @if (Model.Id == Guid.Empty)
+                    {
+                        @Url.SubmitAdd()
+                    }
+                    else
+                    {
+                        @Url.SubmitSave()
+                    }
                 </div>
             </div>
-            <div class="row" id="ExamDegreesDiv">
-
-            </div>
         </div>
-        <div class="card-footer">
-            <div class="row justify-content-end">
-                @if (Model.Id == Guid.Empty)
-                {
-                    @Url.SubmitAdd()
-                }
-                else
-                {
-                    @Url.SubmitSave()
-                }
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-body">
+
+                </div>
+
             </div>
         </div>
     </div>
 }
+
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
@@ -114,6 +123,70 @@
         if ($("#Id").val() == "00000000-0000-0000-0000-000000000000") {
             $("#OneQuestion").show();
             $("#MoreQuestion").hide();
+        }
+        else {
+            $.get('/StudentsExamDegrees/getExamClass', { Id: $("#Id").val() }, function (data) {
+                $.each(data, function (key, value) {
+                    $("#Questions").empty();
+                    if (value.IsOneQuestion == true) {
+                        $.each(value.Students, function (key1, value1) {
+                            $("#Questions").append(
+                                "<tr>" +
+                                "<td>" + value1.Code + "</td>" +
+                                "<td>" + value1.StudentName + "</td>" +
+                                "<td>" +
+
+                                "<input id='Students[" + key1 + "].StudentId' name='Students[" + key1 + "].StudentId' value='" + value1.StudentId + "' hidden />" +
+                                "<input id='Students[" + key1 + "].StudentName' name='Students[" + key1 + "].StudentName' value='" + value1.StudentName + "' hidden />" +
+
+                                "<label>الدرجة : </label><input id='Students[" + key1 + "].TotalDegree' name='Students[" + key1 + "].TotalDegree' value='" + value1.TotalDegree + "' class = 'form-control' required />" +
+                                "</td>" +
+                                "<td><label>التاريخ : </label><input id='Students[" + key1 + "].Date' name='Students[" + key1 + "].Date' value='" + value1.Date + "' class = 'form-control' required type='date' /></td>" +
+                                "</tr>");
+                        });
+
+
+                    }
+                    else {
+                        $.each(value.Students, function (key1, value1) {
+                            if (value1.Count == "0") {
+                                $("#Questions").append(
+                                    "<tr>" +
+                                    "<td>" + value1.Code + "</td>" +
+                                    "<td>" + value1.StudentName + "</td>" +
+
+                                    "<td>" +
+
+                                    "<input id='S[" + key1 + "].StudentId' name='S[" + key1 + "].StudentId' value='" + value1.StudentId + "' hidden />" +
+                                    "<input id='S[" + key1 + "].StudentName' name='S[" + key1 + "].StudentName' value='" + value1.StudentName + "' hidden />" +
+
+                                    "<button class = 'form-control bg-success text-center ' type='button' onclick='Insert2(" + key1 + ")' >إدخال الدرجات(لم يتم ادخالها بعد)</button>" +
+                                    "</td>" +
+                                    "</tr>");
+                            }
+                            else {
+                                $("#Questions").append(
+                                    "<tr>" +
+                                    "<td>" + value1.Code + "</td>" +
+                                    "<td>" + value1.StudentName + "</td>" +
+
+                                    "<td>" +
+
+                                    "<input id='S[" + key1 + "].StudentId' name='S[" + key1 + "].StudentId' value='" + value1.StudentId + "' hidden />" +
+                                    "<input id='S[" + key1 + "].StudentName' name='S[" + key1 + "].StudentName' value='" + value1.StudentName + "' hidden />" +
+
+                                    "<button class = 'form-control bg-success text-center ' type='button' onclick='Insert2(" + key1 + ")' >إدخال الدرجات( تم ادخالها )</button>" +
+                                    "</td>" +
+                                    "</tr>");
+                            }
+                        });
+
+                    }
+
+                });
+
+            });
+
         }
 
         $("#StudyTypeId").change(function () {
@@ -144,62 +217,45 @@
         $("#ExamId").change(function () {
             $.get('/StudentsExamDegrees/get', { Id: $("#ExamId").val() }, function (data) {
                 $.each(data, function (key, value) {
-                    
+                    var degree = parseFloat(value["TotalDegree"]);
                     if (value["IsOneQuestion"] == true) {
                         $.get('/StudentsExamDegrees/getStudents', { Id: $("#ClassId").val() }, function (data2) {
-                            $("#MoreQuestion").empty();
-                            $("#OneQuestion").empty();
-
-                            $("#OneQuestion").append("<div class='row'><table class='table'>" + "<thead>" +
-                                "<tr>" +
-                                "<th>الكود</th>" +
-                                "<th>الاسم</th>" +
-                                "<th>الدرجة الكلية</th>" +
-                                "<th>التاريخ</th>" +
-                                "</tr>" +
-                                "</thead>" + "<tbody>");
-
+                            $("#Questions").empty();
                             $.each(data2, function (key, value) {
-                                $("#OneQuestion").append(
+                                $("#Questions").append(
                                     "<tr>" +
                                     "<td>" + value["Code"] + "</td>" +
                                     "<td>" + value["Name"] + "</td>" +
                                     "<td>" +
+
                                     "<input id='Students[" + key + "].StudentId' name='Students[" + key + "].StudentId' value='" + value["Id"] + "' hidden />" +
-                                    "<input id='Students[" + key + "].TotalDegree' name='Students[" + key + "].TotalDegree' class = 'form-control' required />" +
+                                    "<input id='Students[" + key + "].StudentName' name='Students[" + key + "].StudentName' value='" + value["Name"] + "' hidden />" +
+
+                                    "<label>الدرجة : </label><input id='Students[" + key + "].TotalDegree' name='Students[" + key + "].TotalDegree' class = 'form-control' required />" +
                                     "</td>" +
-                                    "<td><input id='Students[" + key + "].Date' name='Students[" + key + "].Date' class = 'form-control' required type='date' /></td>" +
+                                    "<td><label>التاريخ : </label><input id='Students[" + key + "].Date' name='Students[" + key + "].Date' class = 'form-control' required type='date' /></td>" +
                                     "</tr>");
                             });
-                            $("#OneQuestion").append("</tbody></table></div>");
 
                         });
                     }
                     else {
                         $.get('/StudentsExamDegrees/getStudents', { Id: $("#ClassId").val() }, function (data2) {
-                            $("#MoreQuestion").empty();
-                            $("#OneQuestion").empty();
-
-                            $("#OneQuestion").append("<div class='row'><table class='table'>" + "<thead>" +
-                                "<tr>" +
-                                "<th>الكود</th>" +
-                                "<th>الاسم</th>" +
-                                "<th>إدخال الدرجات</th>" +
-                                "</tr>" +
-                                "</thead>" + "<tbody>");
-
+                            $("#Questions").empty();
                             $.each(data2, function (key, value) {
-                                $("#OneQuestion").append(
+                                $("#Questions").append(
                                     "<tr>" +
                                     "<td>" + value["Code"] + "</td>" +
                                     "<td>" + value["Name"] + "</td>" +
                                     "<td>" +
-                                    "<input id='Students[" + key + "].StudentId' name='Students[" + key + "].StudentId' value='" + value["Id"] + "' hidden />" +
-                                    "<input id='Students[" + key + "].TotalDegree' name='Students[" + key + "].TotalDegree' class = 'form-control bg-success' value='إدخال الدرجات' type='button' />" +
+
+                                    "<input id='S[" + key + "].StudentId' name='S[" + key + "].StudentId' value='" + value["Id"] + "' hidden />" +
+                                    "<input id='S[" + key + "].StudentName' name='S[" + key + "].StudentName' value='" + value["Name"] + "' hidden />" +
+
+                                    "<button class = 'form-control bg-success text-center ' type='button' onclick='Insert(" + key + ")' >إدخال الدرجات</button>" +
                                     "</td>" +
                                     "</tr>");
                             });
-                            $("#OneQuestion").append("</tbody></table></div>");
 
                         });
                     }
@@ -210,5 +266,70 @@
 
         });
 
+        function Insert(i) {
+            var StudentId = document.getElementById("S[" + i + "].StudentId").value;
+            var StudentName = document.getElementById("S[" + i + "].StudentName").value;
+
+            $.get('/StudentsExamDegrees/get', { Id: $("#ExamId").val() }, function (data) {
+                var j = 1;
+                var t = '';
+                var total = 0;
+                t += "<div class='row'>";
+
+                $.each(data, function (key, value) {
+                    t += "<div class='col-12 text-center mt-2 mb-2'>الطالب : " + StudentName + " </div> <hr>";
+
+                    $.each(value["MoreQuestion"], function (key1, value1) {
+                        total += parseFloat(value1["Degree"]);
+                        t +=
+                            "<div class='col-6'>" +
+                            "<input id='Students[" + key1 + "].StudentId' name='Students[" + key1 + "].StudentId' value='" + StudentId + "' hidden />" +
+                            "<input id='Students[" + key1 + "].ExamDegreeId' name='Students[" + key1 + "].ExamDegreeId' value='" + value1["Id"] + "' hidden />" +
+                            "<label>درجة السؤال رقم " + j + "</label><input id='Students[" + key1 + "].TotalDegree' name='Students[" + key1 + "].TotalDegree' value='" + value1["Degree"] + "' value='fg' class = 'form-control' required />" +
+                            "</div>";
+                        j++;
+                    });
+
+                });
+                t += "<div class='col-12 mt-2'><label>التاريخ</label><input id='Students[0].Date' name='Students[0].Date' value='' class = 'form-control' required type='date' /></div>";
+                t += "<div class='col-12 text-center mt-2  mb-2'>اجمالي درجات الاختبار : " + total + " درجة ";
+                t += "</div><hr><div class='row'>" +
+                    "<button class = 'form-control bg-success text-center ' type='submit' >تسجيل الدرجات</button></div>";
+                $("#exampleModal").find(".modal-body").html(t);
+                $("#exampleModal").modal('show');
+
+            });
+        };
+
+        function Insert2(i) {
+            var StudentId = document.getElementById("S[" + i + "].StudentId").value;
+            var StudentName = document.getElementById("S[" + i + "].StudentName").value;
+
+            $.get('/StudentsExamDegrees/getStudentExamDegrees', { Id: $("#Id").val(), StudentId: StudentId, ExamId: $("#ExamId").val()}, function (data) {
+                var j = 1;
+                var t = '';
+                var total = 0;
+                var date = "";
+                t += "<div class='row'>";
+                t += "<div class='col-12 text-center mt-2 mb-2'>الطالب : " + StudentName + " </div> <hr>";
+
+                $.each(data, function (key1, value1) {
+                    t +=
+                        "<div class='col-6'>" +
+                        "<input id='Students[" + key1 + "].StudentId' name='Students[" + key1 + "].StudentId' value='" + StudentId + "' hidden />" +
+                        "<input id='Students[" + key1 + "].ExamDegreeId' name='Students[" + key1 + "].ExamDegreeId' value='" + value1["ExamDegreeId"] + "' hidden />" +
+                        "<label>درجة السؤال رقم " + j + "</label><input id='Students[" + key1 + "].TotalDegree' name='Students[" + key1 + "].TotalDegree' value='" + value1["TotalDegree"] + "' value='fg' class = 'form-control' required />" +
+                        "</div>";
+                    j++;
+                    date = value1["Date"];
+                });
+                t += "<div class='col-12 mt-2 mb-2'><label>التاريخ</label><input id='Students[0].Date' name='Students[0].Date' value='" + date + "' class = 'form-control' required type='date' /></div>";
+                t += "<hr><div class='row'>" +
+                    "<button class = 'form-control bg-success text-center ' type='submit' >تسجيل الدرجات</button></div>";
+                $("#exampleModal").find(".modal-body").html(t);
+                $("#exampleModal").modal('show');
+
+            });
+        };
     </script>
 }

@@ -65,7 +65,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Id == Id).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Student.IsDeleted == false && x.Subscription.IsDeleted == false && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -119,7 +119,7 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel = dbContext.StudentsClasses.Where(x=>x.StudentId==model.StudentId &&x.StudyYearId==model.StudyYearId &&x.IsDeleted==false && x.Class.Level.StudyTypeId==model.StudyTypeId).FirstOrDefault();
+                var Oldmodel = dbContext.StudentsClasses.Where(x=>x.StudentId==model.StudentId &&x.StudyYearId==model.StudyYearId && x.IsDeleted == false && x.Student.IsDeleted == false && x.Subscription.IsDeleted == false && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false && x.Class.Level.StudyTypeId==model.StudyTypeId).FirstOrDefault();
                 if(Oldmodel!=null)
                 {
                     result.IsSuccess = false;
