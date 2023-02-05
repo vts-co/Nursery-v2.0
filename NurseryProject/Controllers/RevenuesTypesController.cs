@@ -23,6 +23,9 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Create()
         {
+            var RevenuesTypes = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+            ViewBag.RevenuesTypes = RevenuesTypes;
+
             return View("Upsert", new RevenuesType());
         }
         [HttpPost, ValidateInput(false)]
@@ -38,14 +41,18 @@ namespace NurseryProject.Controllers
             else
             {
                 revenuesType.Id = Guid.Empty;
-
+                var RevenuesTypes = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+                ViewBag.RevenuesTypes = RevenuesTypes;
                 TempData["warning"] = result.Message;
                 return View("Upsert", revenuesType);
             }
         }
         public ActionResult Edit(Guid Id)
         {
-            var revenuesType = revenuesTypesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+            var RevenuesTypes = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+            ViewBag.RevenuesTypes = RevenuesTypes;
+
+            var revenuesType = revenuesTypesServices.Get(Id);
             return View("Upsert", revenuesType);
         }
         [HttpPost, ValidateInput(false)]
@@ -59,6 +66,9 @@ namespace NurseryProject.Controllers
             }
             else
             {
+                var RevenuesTypes = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+                ViewBag.RevenuesTypes = RevenuesTypes;
+
                 TempData["warning"] = result.Message;
                 return View("Upsert", revenuesType);
             }

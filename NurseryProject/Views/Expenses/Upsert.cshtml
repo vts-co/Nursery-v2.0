@@ -34,9 +34,16 @@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع المصروف الرئيسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ExpenseTypeParentId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("ExpenseTypeParentId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("نوع المصروف", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownListFor(model => model.ExpenseTypeId, new SelectList(ViewBag.ExpensesTypes, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.DropDownListFor(model => model.ExpenseTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.ExpenseTypeId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -87,10 +94,21 @@
 
 @section scripts{
     <script>
-    var now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
 
         if (document.getElementById('ExpenseDate').value == "") {
             document.getElementById('ExpenseDate').value = now.toISOString().slice(0, 10);
-    }
-    </script>}
+        }
+
+        $("#ExpenseTypeParentId").change(function () {
+            $.get('/Expenses/getExpensesTypes', { Id: $("#ExpenseTypeParentId").val() }, function (data) {
+                $("#ExpenseTypeId").empty();
+                $("#ExpenseTypeId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ExpenseTypeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+    </script>
+}

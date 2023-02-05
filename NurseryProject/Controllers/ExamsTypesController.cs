@@ -23,6 +23,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Create()
         {
+            
             return View("Upsert", new ExamsType());
         }
         [HttpPost, ValidateInput(false)]
@@ -38,13 +39,14 @@ namespace NurseryProject.Controllers
             else
             {
                 examsType.Id = Guid.Empty;
-
+               
                 TempData["warning"] = result.Message;
                 return View("Upsert", examsType);
             }
         }
         public ActionResult Edit(Guid Id)
         {
+          
             var examsType = examsTypesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
             return View("Upsert", examsType);
         }
@@ -60,6 +62,7 @@ namespace NurseryProject.Controllers
             }
             else
             {
+                
                 TempData["warning"] = result.Message;
                 return View("Upsert", examsType);
             }

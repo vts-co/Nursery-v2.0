@@ -157,6 +157,7 @@
     <Compile Include="Controllers\RegistrationTypesController.cs" />
     <Compile Include="Controllers\RevenuesController.cs" />
     <Compile Include="Controllers\RevenuesTypesController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\StudentsAttendanceController.cs" />
     <Compile Include="Controllers\StudentsClassController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
@@ -185,11 +186,13 @@
     <Compile Include="Dtos\EmployeesVacation\EmployeesVacationDto.cs" />
     <Compile Include="Dtos\EmployeesWorkShifts\EmployeesWorkShiftsDto.cs" />
     <Compile Include="Dtos\Employees\EmployeesDto.cs" />
+    <Compile Include="Dtos\ExpensesTypes\ExpensesTypesDto.cs" />
     <Compile Include="Dtos\Exams\ExamsDto.cs" />
     <Compile Include="Dtos\Expenses\ExpensesDto.cs" />
     <Compile Include="Dtos\Jops\JopsDto.cs" />
     <Compile Include="Dtos\Levels\LevelsDto.cs" />
     <Compile Include="Dtos\RegistrationTypes\RegistrationTypesDto.cs" />
+    <Compile Include="Dtos\RevenuesTypes\RevenuesTypesDto.cs" />
     <Compile Include="Dtos\Revenues\RevenuesDto.cs" />
     <Compile Include="Dtos\ShiftsTimes\ShiftsTimesDto.cs" />
     <Compile Include="Dtos\StudentExamDegrees\StudentExamDegreesDto.cs" />
@@ -288,6 +291,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Page.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RegistrationType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -295,6 +301,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RevenuesType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Setting.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ShiftsTime.cs">
@@ -357,6 +366,7 @@
     <Compile Include="Services\IncreasesTypes\IncreasesTypesServices.cs" />
     <Compile Include="Services\EmployeesTransferAllowance\EmployeesTransferAllowanceServices.cs" />
     <Compile Include="Services\ExamsTypes\ExamsTypesServices.cs" />
+    <Compile Include="Services\Settings\SettingsServices.cs" />
     <Compile Include="Services\StudentExamDegrees\StudentExamDegreesServices.cs" />
     <Compile Include="Services\StudentsAttendance\StudentsAttendanceServices.cs" />
     <Compile Include="Services\StudentsClass\StudentsClassServices.cs" />
@@ -1940,6 +1950,8 @@
     <Content Include="Views\StudentsClass\NoInstallmentsReports.cshtml" />
     <Content Include="Views\StudentsExamDegrees\Index.cshtml" />
     <Content Include="Views\StudentsExamDegrees\Upsert.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Settings\Upsert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,9 +49,11 @@ namespace NurseryProject.Models
         public virtual DbSet<IncreasesType> IncreasesTypes { get; set; }
         public virtual DbSet<Jop> Jops { get; set; }
         public virtual DbSet<Level> Levels { get; set; }
+        public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<RegistrationType> RegistrationTypes { get; set; }
         public virtual DbSet<Revenue> Revenues { get; set; }
         public virtual DbSet<RevenuesType> RevenuesTypes { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<ShiftsTime> ShiftsTimes { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentsAttendance> StudentsAttendances { get; set; }

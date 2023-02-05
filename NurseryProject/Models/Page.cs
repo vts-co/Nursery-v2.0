@@ -12,13 +12,19 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Page
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Page()
+        {
+            this.Pages1 = new HashSet<Page>();
+        }
+    
         public System.Guid Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public Nullable<int> RoleId { get; set; }
-        public string UserScreens { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> PageNumber { get; set; }
+        public string Link { get; set; }
+        public Nullable<System.Guid> ParentId { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
@@ -26,5 +32,9 @@ namespace NurseryProject.Models
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Page> Pages1 { get; set; }
+        public virtual Page Page1 { get; set; }
     }
 }

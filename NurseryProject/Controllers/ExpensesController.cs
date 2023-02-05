@@ -40,8 +40,10 @@ namespace NurseryProject.Controllers
             var studyYears = studyYearsServices.GetAll();
             ViewBag.StudyYears = studyYears;
 
-            var expensesTypesModel = expensesTypesServices.GetAll();
-            ViewBag.ExpensesTypes = expensesTypesModel;
+            var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x=>x.ParentId== Guid.Empty).ToList();
+            ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name");
+
+            ViewBag.ExpenseTypeId = new SelectList("");
 
             var employeesModel = employeesServices.GetAll();
             ViewBag.Employees = employeesModel;
@@ -60,39 +62,31 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                expens.Id = Guid.Empty;
-
-                var studyPlaces = studyPlacesServices.GetAll();
-                ViewBag.StudyPlaces = studyPlaces;
-
-                var studyYears = studyYearsServices.GetAll();
-                ViewBag.StudyYears = studyYears;
-
-                var expensesTypesModel = expensesTypesServices.GetAll();
-                ViewBag.ExpensesTypes = expensesTypesModel;
-
-                var employeesModel = employeesServices.GetAll();
-                ViewBag.Employees = employeesModel;
-
                 TempData["warning"] = result.Message;
-                return View("Upsert", expens);
+                return RedirectToAction("Index");
             }
         }
         public ActionResult Edit(Guid Id)
         {
+            var expenses = expensesServices.Get(Id);
+            var expensetype = expensesTypesServices.GetAll().Where(x => x.Id == expenses.ExpenseTypeId).FirstOrDefault();
+
+
             var studyPlaces = studyPlacesServices.GetAll();
             ViewBag.StudyPlaces = studyPlaces;
 
             var studyYears = studyYearsServices.GetAll();
             ViewBag.StudyYears = studyYears;
 
-            var expensesTypesModel = expensesTypesServices.GetAll();
-            ViewBag.ExpensesTypes = expensesTypesModel;
+            var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+            ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name", expensetype.ParentId);
+
+            var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == expensetype.ParentId).ToList();
+            ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel,"Id","Name", expenses.ExpenseTypeId);
 
             var employeesModel = employeesServices.GetAll();
             ViewBag.Employees = employeesModel;
 
-            var expenses = expensesServices.Get(Id);
             ViewBag.ExpenseDate = expenses.ExpenseDate.Value.ToString("yyyy-MM-dd");
 
             return View("Upsert", expenses);
@@ -109,22 +103,8 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                var studyPlaces = studyPlacesServices.GetAll();
-                ViewBag.StudyPlaces = studyPlaces;
-
-                var studyYears = studyYearsServices.GetAll();
-                ViewBag.StudyYears = studyYears;
-
-                var expensesTypesModel = expensesTypesServices.GetAll();
-                ViewBag.ExpensesTypes = expensesTypesModel;
-
-                var employeesModel = employeesServices.GetAll();
-                ViewBag.Employees = employeesModel;
-
-                ViewBag.ExpenseDate = expens.ExpenseDate.Value.ToString("yyyy-MM-dd");
-
                 TempData["warning"] = result.Message;
-                return View("Upsert", expens);
+                return RedirectToAction("Index");
             }
         }
         public ActionResult Delete(Guid Id)
@@ -163,5 +143,11 @@ namespace NurseryProject.Controllers
                 return View();
             }
         }
+        public ActionResult getExpensesTypes(Guid Id)
+        {
+            var model = expensesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        
     }
 }

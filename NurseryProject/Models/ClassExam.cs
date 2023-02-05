@@ -23,6 +23,7 @@ namespace NurseryProject.Models
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> ClassId { get; set; }
         public Nullable<System.Guid> ExamId { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }

@@ -192,7 +192,7 @@
         $("#StudyTypeId").change(function () {
             $.get('/Exams/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
-                $("#LevelId").append("<option>--اختر--</option>")
+                $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>");
                 });
@@ -201,14 +201,14 @@
         $("#LevelId").change(function () {
             $.get('/StudentsExamDegrees/getClasses', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
-                $("#ClassId").append("<option>--اختر--</option>")
+                $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>");
                 });
             });
             $.get('/StudentsExamDegrees/getExams', { Id: $("#LevelId").val() }, function (data) {
                 $("#ExamId").empty();
-                $("#ExamId").append("<option>--اختر--</option>")
+                $("#ExamId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#ExamId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>");
                 });

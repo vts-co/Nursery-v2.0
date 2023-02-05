@@ -86,7 +86,7 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("رقم التليفون", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -135,7 +135,7 @@
         $("#CityId").change(function () {
             $.get('/Students/getDestricts', { Id: $("#CityId").val() }, function (data) {
                 $("#DestrictId").empty();
-                $("#DestrictId").append("<option>--اختر--</option>")
+                $("#DestrictId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#DestrictId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });

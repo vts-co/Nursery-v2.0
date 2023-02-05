@@ -1,4 +1,5 @@
-﻿using NurseryProject.Models;
+﻿using NurseryProject.Dtos.ExpensesTypes;
+using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,29 @@ namespace NurseryProject.Services.ExpensesTypes
 {
     public class ExpensesTypesServices
     {
-        public List<ExpensesType> GetAll()
+        public List<ExpensesTypesDto> GetAll()
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.ExpensesTypes.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).ToList();
+                var model = dbContext.ExpensesTypes.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new ExpensesTypesDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ParentId = x.ParentId == null ? Guid.Empty : x.ParentId.Value,
+                    ParentName = x.ParentId == null ? "" : x.ExpensesType1.Name,
+                    Notes=x.Notes
+                }).ToList();
                 return model;
             }
         }
-
+        public ExpensesType Get(Guid Id)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.ExpensesTypes.Where(x => x.IsDeleted == false&&x.Id==Id).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                return model;
+            }
+        }
         public ResultDto<ExpensesType> Create(ExpensesType model, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -56,7 +71,7 @@ namespace NurseryProject.Services.ExpensesTypes
                 Oldmodel.ModifiedBy = UserId;
                 Oldmodel.Name = model.Name;
                 Oldmodel.Notes = model.Notes;
-
+                Oldmodel.ParentId = model.ParentId;
                 dbContext.SaveChanges();
                 result.IsSuccess = true;
                 result.Message = "تم تعديل البيانات بنجاح";

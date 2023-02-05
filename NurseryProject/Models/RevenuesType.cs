@@ -18,9 +18,11 @@ namespace NurseryProject.Models
         public RevenuesType()
         {
             this.Revenues = new HashSet<Revenue>();
+            this.RevenuesTypes1 = new HashSet<RevenuesType>();
         }
     
         public System.Guid Id { get; set; }
+        public Nullable<System.Guid> ParentId { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
@@ -33,5 +35,8 @@ namespace NurseryProject.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Revenue> Revenues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RevenuesType> RevenuesTypes1 { get; set; }
+        public virtual RevenuesType RevenuesType1 { get; set; }
     }
 }

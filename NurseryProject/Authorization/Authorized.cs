@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Enums;
+using NurseryProject.Services.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace NurseryProject.Authorization
         public Role Role { get; set; } = 0;
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            SettingsServices settingsServices = new SettingsServices();
             var controller = filterContext.Controller as Controller;
             if (controller != null)
             {
@@ -29,6 +31,9 @@ namespace NurseryProject.Authorization
                 }
                 filterContext.Controller.TempData["UserInfo"] = auth.CookieValues;
                 filterContext.Controller.TempData["UserId"] = auth.CookieValues.UserId;
+                var setting = settingsServices.GetAll();
+                filterContext.Controller.TempData["SettingLogo"] = setting.Logo;
+                filterContext.Controller.TempData["SettingTitle"] = setting.Title;
 
             }
         }

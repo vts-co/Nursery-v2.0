@@ -52,6 +52,9 @@
                 <thead>
                     <tr>
                         <th>
+                            @Html.DisplayName("نوع الايراد الرئيسي")
+                        </th>
+                        <th>
                             @Html.DisplayName("نوع الايراد")
                         </th>
                         <th>
@@ -74,27 +77,30 @@
                 <tbody>
                     @foreach (var item in ViewBag.Revenues)
                     {
-                        <tr>
-                            <td>
-                                @item.RevenueTypeName
-                            </td>
-                            <td>
-                                @item.Value
-                            </td>
-                            <td>
-                                @item.EmployeeName
-                            </td>
-                            <td>
-                                @item.Date.Date.ToString("yyyy-MM-dd")
-                            </td>
-                            <td>
-                                @item.Notes
-                            </td>
-                            <td>
-                                @Url.Edit(routeValues: new { id = item.Id })
-                                @Url.Delete(routeValues: new { id = item.Id })
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @item.RevenueTypeParentName
+                        </td>
+                        <td>
+                            @item.RevenueTypeName
+                        </td>
+                        <td>
+                            @item.Value
+                        </td>
+                        <td>
+                            @item.EmployeeName
+                        </td>
+                        <td>
+                            @item.Date.Date.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @item.Notes
+                        </td>
+                        <td>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

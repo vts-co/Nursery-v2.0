@@ -20,6 +20,8 @@ namespace NurseryProject.Services.Expenses
                     StudyPlaceName = x.StudyPlace.Name,
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
+                    ExpenseTypePatentId=x.ExpensesType.ParentId.Value,
+                    ExpenseTypePatentName=x.ExpensesType.ExpensesType1.Name,
                     ExpenseTypeId = x.ExpenseTypeId.Value,
                     ExpenseTypeName = x.ExpensesType.Name,
                     EmployeeId = x.EmployeeId.Value,

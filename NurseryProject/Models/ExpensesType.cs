@@ -18,9 +18,11 @@ namespace NurseryProject.Models
         public ExpensesType()
         {
             this.Expenses = new HashSet<Expens>();
+            this.ExpensesTypes1 = new HashSet<ExpensesType>();
         }
     
         public System.Guid Id { get; set; }
+        public Nullable<System.Guid> ParentId { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
@@ -33,5 +35,8 @@ namespace NurseryProject.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Expens> Expenses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ExpensesType> ExpensesTypes1 { get; set; }
+        public virtual ExpensesType ExpensesType1 { get; set; }
     }
 }

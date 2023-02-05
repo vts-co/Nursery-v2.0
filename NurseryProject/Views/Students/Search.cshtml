@@ -172,7 +172,7 @@
         $("#CityId").change(function () {
             $.get('/Students/getDestricts', { Id: $("#CityId").val() }, function (data) {
                 $("#DestrictId").empty();
-                $("#DestrictId").append("<option>--اختر--</option>")
+                $("#DestrictId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#DestrictId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });

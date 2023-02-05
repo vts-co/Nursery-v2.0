@@ -52,6 +52,9 @@
                 <thead>
                     <tr>
                         <th>
+                            @Html.DisplayName(" نوع المصروف الرئيسي")
+                        </th>
+                        <th>
                             @Html.DisplayName("نوع المصروف")
                         </th>
                         <th>
@@ -75,6 +78,9 @@
                     @foreach (var item in ViewBag.Expenses)
                     {
                     <tr>
+                        <td>
+                            @item.ExpenseTypePatentName
+                        </td>
                         <td>
                             @item.ExpenseTypeName
                         </td>

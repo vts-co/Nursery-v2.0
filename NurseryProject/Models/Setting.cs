@@ -12,13 +12,11 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Setting
     {
         public System.Guid Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public Nullable<int> RoleId { get; set; }
-        public string UserScreens { get; set; }
+        public string Title { get; set; }
+        public string Logo { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }

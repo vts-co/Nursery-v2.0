@@ -99,7 +99,7 @@
         $("#StudyTypeId").change(function () {
             $.get('/Subscriptions/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
-                $("#LevelId").append("<option>--اختر--</option>")
+                $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"]+"</option>")
                 });

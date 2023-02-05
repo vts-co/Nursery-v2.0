@@ -20,6 +20,8 @@ namespace NurseryProject.Services.Revenues
                     StudyPlaceName = x.StudyPlace.Name,
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
+                    RevenueTypeParentId=x.RevenuesType.ParentId.Value,
+                    RevenueTypeParentName=x.RevenuesType.RevenuesType1.Name,
                     RevenueTypeId =x.RevenueTypeId.Value,
                     RevenueTypeName=x.RevenuesType.Name,
                     EmployeeId = x.EmployeeId.Value,

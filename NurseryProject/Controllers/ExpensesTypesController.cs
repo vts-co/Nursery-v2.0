@@ -23,6 +23,9 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Create()
         {
+            var ExamsTypes = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+            ViewBag.ExamsTypes = ExamsTypes;
+
             return View("Upsert", new ExpensesType());
         }
         [HttpPost, ValidateInput(false)]
@@ -38,6 +41,8 @@ namespace NurseryProject.Controllers
             else
             {
                 expensesType.Id = Guid.Empty;
+                var ExamsTypes = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+                ViewBag.ExamsTypes = ExamsTypes;
 
                 TempData["warning"] = result.Message;
                 return View("Upsert", expensesType);
@@ -45,7 +50,10 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Edit(Guid Id)
         {
-            var expensesType = expensesTypesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+            var ExamsTypes = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+            ViewBag.ExamsTypes = ExamsTypes;
+
+            var expensesType = expensesTypesServices.Get(Id);
             return View("Upsert", expensesType);
         }
         [HttpPost, ValidateInput(false)]
@@ -60,6 +68,9 @@ namespace NurseryProject.Controllers
             }
             else
             {
+                var ExamsTypes = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty);
+                ViewBag.ExamsTypes = ExamsTypes;
+
                 TempData["warning"] = result.Message;
                 return View("Upsert", expensesType);
             }

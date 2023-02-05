@@ -15,7 +15,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="~/assets/images/logo1.jpeg">
+    <link rel="shortcut icon" href="@TempData["SettingLogo"]">
 
     <!-- preloader css -->
     <link rel="stylesheet" href="~/assets/css/preloader.min.css" type="text/css" />
@@ -73,7 +73,7 @@
                                 <div class="mb-4 mb-md-5 text-center">
                                     <a href="~/Home/Index" class="d-block auth-logo" style="margin-top:20px;">
                                         @*<img src="~/assets/images/Logos/easylifeLogo.jpeg" height="100" />*@
-                                        <img src="~/assets/images/logo1.jpeg" alt="" height="28"> <span class="logo-txt din-bold">حضانة المهندس</span>
+                                        <img src="@TempData["SettingLogo"]" alt="" height="28"> <span class="logo-txt din-bold">@TempData["SettingTitle"]</span>
                                     </a>
                                 </div>
                                 <div class="auth-content">

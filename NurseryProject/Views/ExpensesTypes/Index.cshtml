@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NurseryProject.Models.ExpensesType>
+﻿@model IEnumerable<NurseryProject.Dtos.ExpensesTypes.ExpensesTypesDto>
 @using NurseryProject.Utilities
 @{
     ViewBag.Title = "ادارة انواع المصروفات ";
@@ -18,7 +18,9 @@
         <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
             <thead>
                 <tr>
-
+                    <th>
+                        @Html.DisplayName("نوع المصروف الرئيسي")
+                    </th>
                     <th>
                         @Html.DisplayName("نوع المصروف")
                     </th>
@@ -33,19 +35,21 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Notes)
-                        </td>
-                        <td>
-                            @Url.Edit(routeValues: new { id = item.Id })
-                            @Url.Delete(routeValues: new { id = item.Id })
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ParentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @Url.Edit(routeValues: new { id = item.Id })
+                        @Url.Delete(routeValues: new { id = item.Id })
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -140,7 +140,7 @@
         $("#DepartmentId").change(function () {
             $.get('/Employees/getJops', { Id: $("#DepartmentId").val() }, function (data) {
                 $("#JopId").empty();
-                $("#JopId").append("<option>--اختر--</option>")
+                $("#JopId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#JopId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });

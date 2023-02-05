@@ -24,6 +24,9 @@
                         @Html.DisplayName("العام الدراسي")
                     </th>
                     <th>
+                        @Html.DisplayName("نوع المصروف الرئيسي")
+                    </th>
+                    <th>
                         @Html.DisplayName("نوع المصروف")
                     </th>
                     <th>
@@ -52,6 +55,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StudyYearName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExpenseTypePatentName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ExpenseTypeName)

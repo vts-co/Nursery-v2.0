@@ -34,9 +34,16 @@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الايراد الرئيسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("RevenueTypeParentId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("RevenueTypeParentId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("نوع الايراد", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownListFor(model => model.RevenueTypeId, new SelectList(ViewBag.RevenuesTypes, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.DropDownListFor(model => model.RevenueTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.RevenueTypeId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -86,12 +93,22 @@
 }
 
 @section scripts{
-<script>
-    var now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    
-    if (document.getElementById('RevenueDate').value == "") {
-        document.getElementById('RevenueDate').value = now.toISOString().slice(0, 10);
-    }
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        if (document.getElementById('RevenueDate').value == "") {
+            document.getElementById('RevenueDate').value = now.toISOString().slice(0, 10);
+        }
+        $("#RevenueTypeParentId").change(function () {
+            $.get('/Revenues/getRevenuesTypes', { Id: $("#RevenueTypeParentId").val() }, function (data) {
+                $("#RevenueTypeId").empty();
+                $("#RevenueTypeId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#RevenueTypeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
     </script>
-    }
+
+}

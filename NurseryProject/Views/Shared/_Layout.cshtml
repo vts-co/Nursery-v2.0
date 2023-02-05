@@ -15,7 +15,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="~/assets/images/logo1.jpeg">
+    <link rel="shortcut icon" href="@TempData["SettingLogo"]">
     <link href="~/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
     <style>
         @@font-face {
@@ -69,19 +69,19 @@
                     <div class="navbar-brand-box">
                         <a href="@Url.Action("Index","Home")" class="logo logo-dark">
                             <span class="logo-sm">
-                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" />
+                                <img src="@TempData["SettingLogo"]" alt="" height="24" />
                             </span>
                             <span class="logo-lg">
-                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" /> <span class="logo-txt">حضانة المهندس</span>
+                                <img src="@TempData["SettingLogo"]" alt="" height="24" /> <span class="logo-txt">@TempData["SettingTitle"]</span>
                             </span>
                         </a>
 
                         <a href="@Url.Action("Index","Home")" class="logo logo-light">
                             <span class="logo-sm">
-                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" />
+                                <img src="@TempData["SettingLogo"]" alt="" height="24" />
                             </span>
                             <span class="logo-lg">
-                                <img src="~/assets/images/logo1.jpeg" alt="" height="24" /> <span class="logo-txt">حضانة المهندس</span>
+                                <img src="@TempData["SettingLogo"]" alt="" height="24" /> <span class="logo-txt">@TempData["SettingTitle"]</span>
                             </span>
                         </a>
                     </div>
@@ -124,7 +124,7 @@
                     <div class="dropdown d-inline-block">
                         <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle header-profile-user" alt="User Picture" src="" onError="this.onerror=null;this.src='../../../assets/images/logo1.jpeg';">
+                            <img class="rounded-circle header-profile-user" alt="User Picture" src="@TempData["SettingLogo"]" onError="this.onerror=null;this.src='@TempData["SettingLogo"]">
                             <span class="d-none d-xl-inline-block ms-1 fw-medium">Admin</span>
                             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                         </button>
@@ -148,17 +148,30 @@
         <div class="vertical-menu">
 
             <div data-simplebar class="h-100">
-
+                <form class="app-search d-none d-lg-block">
+                    <div class="position-relative">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <button class="btn btn-primary" type="button"><i class="bx bx-search-alt align-middle"></i></button>
+                    </div>
+                </form>
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
                     <!-- Left Menu Start -->
                     <ul class="metismenu list-unstyled" id="side-menu">
-
                         <li>
                             <a href="/Home/Index">
                                 <i class="bx bxs-dashboard"></i>
                                 <span data-key="t-dashboard">Admin Dashboard</span>
                             </a>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="fa fa-list"></i>
+                                <span data-key="t-apps">الاعدادات العامة </span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Index","Settings")"><i class="fas fa-list p-1"></i> اعدادات البرنامج </a></li>
+                            </ul>
                         </li>
                         <li>
                             <a href="javascript: void(0);" class="has-arrow">

@@ -39,6 +39,11 @@ namespace NurseryProject.Controllers
             var studyYears = studyYearsServices.GetAll();
             ViewBag.StudyYears = studyYears;
 
+            var RevenueTypeParentIdModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+            ViewBag.RevenueTypeParentId = new SelectList(RevenueTypeParentIdModel, "Id", "Name");
+
+            ViewBag.RevenueTypeId = new SelectList("");
+
             var revenuesTypesModel = revenuesTypesServices.GetAll();
             ViewBag.RevenuesTypes = revenuesTypesModel;
 
@@ -59,39 +64,32 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                revenue.Id = Guid.Empty;
-
-                var studyPlaces = studyPlacesServices.GetAll();
-                ViewBag.StudyPlaces = studyPlaces;
-
-                var studyYears = studyYearsServices.GetAll();
-                ViewBag.StudyYears = studyYears;
-
-                var revenuesTypesModel = revenuesTypesServices.GetAll();
-                ViewBag.RevenuesTypes = revenuesTypesModel;
-
-                var employeesModel = employeesServices.GetAll();
-                ViewBag.Employees = employeesModel;
-
+               
                 TempData["warning"] = result.Message;
-                return View("Upsert", revenue);
+                return RedirectToAction("Index");
             }
         }
         public ActionResult Edit(Guid Id)
         {
+            var revenue = revenuesServices.Get(Id);
+            var revenuetype = revenuesTypesServices.GetAll().Where(x => x.Id == revenue.RevenueTypeId).FirstOrDefault();
+
             var studyPlaces = studyPlacesServices.GetAll();
             ViewBag.StudyPlaces = studyPlaces;
 
             var studyYears = studyYearsServices.GetAll();
             ViewBag.StudyYears = studyYears;
 
-            var revenuesTypesModel = revenuesTypesServices.GetAll();
-            ViewBag.RevenuesTypes = revenuesTypesModel;
+            var RevenueTypeParentIdModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+            ViewBag.RevenueTypeParentId = new SelectList(RevenueTypeParentIdModel, "Id", "Name", revenuetype.ParentId);
+
+            var RevenueTypesModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == revenuetype.ParentId).ToList();
+            ViewBag.RevenueTypeId = new SelectList(RevenueTypesModel, "Id", "Name", revenue.RevenueTypeId);
+
 
             var employeesModel = employeesServices.GetAll();
             ViewBag.Employees = employeesModel;
 
-            var revenue = revenuesServices.Get(Id);
             ViewBag.RevenueDate= revenue.RevenueDate.Value.ToString("yyyy-MM-dd");
             return View("Upsert", revenue);
         }
@@ -161,5 +159,12 @@ namespace NurseryProject.Controllers
                 return View();
             }
         }
+
+        public ActionResult getRevenuesTypes(Guid Id)
+        {
+            var model = revenuesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

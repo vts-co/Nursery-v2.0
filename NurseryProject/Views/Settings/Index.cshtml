@@ -1,0 +1,51 @@
+﻿@model NurseryProject.Models.Setting
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "الاعدادات  ";
+
+}
+<div class="card">
+    <div class="card-header">
+
+        <div class="row">
+            <h2 class="col">  </h2>
+            <p class="col-auto">
+              <a href='/Settings/Edit' class='btn btn-soft-success  waves-effect waves-light px-4'><i class="fas fa-edit me-3"></i> تعديل</a>
+            </p>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+            <thead>
+                <tr>
+
+                    <th>
+                        @Html.DisplayName("العنوان")
+                    </th>
+                    <th>
+                        @Html.DisplayName("اللوجو")
+                    </th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    <tr>
+
+                        <td>
+                            @Model.Title
+                        </td>
+                        <td>
+                            <img src="@Model.Logo" width="100" />
+                        </td>
+                        
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
