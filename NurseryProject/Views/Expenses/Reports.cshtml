@@ -16,11 +16,22 @@
         </div>
         <div class="card-body">
             <div class="row">
-
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع المصروف ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ExpenseTypeParentId", null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("البيان ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ExpenseTypeId", null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month"} })
+                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month" } })
                         @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -74,40 +85,62 @@
                         </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var item in ViewBag.Expenses)
                     {
-                    <tr>
-                        <td>
-                            @item.ExpenseTypePatentName
-                        </td>
-                        <td>
-                            @item.ExpenseTypeName
-                        </td>
-                        <td>
-                            @item.Value
-                        </td>
-                        <td>
-                            @item.EmployeeName
-                        </td>
-                        <td>
-                            @item.Date.Date.ToString("yyyy-MM-dd")
-                        </td>
-                        <td>
-                            @item.Notes
-                        </td>
-                        <td>
-                            @Url.Edit(routeValues: new { id = item.Id })
-                            @Url.Delete(routeValues: new { id = item.Id })
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @item.ExpenseTypePatentName
+                            </td>
+                            <td>
+                                @item.ExpenseTypeName
+                            </td>
+                            <td>
+                                @item.Value
+                            </td>
+                            <td>
+                                @item.EmployeeName
+                            </td>
+                            <td>
+                                @item.Date.Date.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @item.Notes
+                            </td>
+                            <td>
+                                @Url.Edit(routeValues: new { id = item.Id })
+                                @Url.Delete(routeValues: new { id = item.Id })
+                            </td>
+                        </tr>
                     }
                 </tbody>
+
+                <tfoot class="text-center">
+                    <tr>
+                        <td>
+                            الاجمالي : @ViewBag.Total جنيه
+
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
 
         </div>
     </div>
+
 }
 @section scripts{
-
+    <script>
+       
+        $("#ExpenseTypeParentId").change(function () {
+            $.get('/Expenses/getExpensesTypes', { Id: $("#ExpenseTypeParentId").val() }, function (data) {
+                $("#ExpenseTypeId").empty();
+                $("#ExpenseTypeId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ExpenseTypeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+    </script>
 }

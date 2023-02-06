@@ -139,25 +139,61 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Reports()
         {
+            var revenuesTypesParentModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+            ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name");
+
+            ViewBag.RevenueTypeId = new SelectList("");
             return View();
         }
         [HttpPost]
-        public ActionResult Reports(string Month, bool AllYear)
+        public ActionResult Reports(string Month, bool AllYear, Guid? RevenueTypeParentId = null, Guid? RevenueTypeId = null)
         {
+            var total = 0.0;
+            var model = revenuesServices.GetAll();
             if (AllYear)
             {
                 var year = DateTime.Now.Date.Year;
-                var model = revenuesServices.GetAll().Where(x => x.Date.Year == year);
-                ViewBag.Revenues = model;
-                return View();
+                model = model.Where(x => x.Date.Year == year).ToList();
+            }
+            if (Month != "")
+            {
+                var mon = DateTime.Parse(Month).ToString("MM-yyyy");
+                model = model.Where(x => x.Date.ToString("MM-yyyy") == mon).ToList();
+            }
+            if (RevenueTypeParentId != null)
+            {
+                model = model.Where(x => x.RevenueTypeParentId == RevenueTypeParentId).ToList();
+                var revenuesTypesParentModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name", RevenueTypeParentId);
             }
             else
             {
-                var mon = DateTime.Parse(Month).ToString("MM-yyyy");
-                var model = revenuesServices.GetAll().Where(x => x.Date.ToString("MM-yyyy") == mon);
-                ViewBag.Revenues = model;
-                return View();
+                var revenuesTypesParentModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name");
             }
+            if (RevenueTypeId != null)
+            {
+                model = model.Where(x => x.RevenueTypeId == RevenueTypeId).ToList();
+                var revenuesTypesModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == RevenueTypeParentId).ToList();
+                ViewBag.RevenueTypeId = new SelectList(revenuesTypesModel, "Id", "Name", RevenueTypeId);
+            }
+            else if (RevenueTypeParentId != null)
+            {
+                var revenuesTypesModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == RevenueTypeParentId).ToList();
+                ViewBag.RevenueTypeId = new SelectList(revenuesTypesModel, "Id", "Name");
+            }
+            else
+            {
+                ViewBag.RevenueTypeId = new SelectList("");
+            }
+            foreach (var item in model)
+            {
+                total += float.Parse(item.Value);
+            }
+            ViewBag.Total = total;
+            ViewBag.Revenues = model;
+            return View();
+           
         }
 
         public ActionResult getRevenuesTypes(Guid Id)

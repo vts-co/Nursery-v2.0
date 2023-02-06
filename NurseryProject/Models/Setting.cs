@@ -17,6 +17,8 @@ namespace NurseryProject.Models
         public System.Guid Id { get; set; }
         public string Title { get; set; }
         public string Logo { get; set; }
+        public string ReportHeader { get; set; }
+        public string ReportFooter { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }

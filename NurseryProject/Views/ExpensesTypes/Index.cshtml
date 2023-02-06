@@ -18,11 +18,12 @@
         <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
             <thead>
                 <tr>
-                    <th>
-                        @Html.DisplayName("نوع المصروف الرئيسي")
-                    </th>
+
                     <th>
                         @Html.DisplayName("نوع المصروف")
+                    </th>
+                    <th>
+                        @Html.DisplayName("البيان")
                     </th>
                     <th>
                         @Html.DisplayName("ملاحظات")
@@ -42,6 +43,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>

@@ -483,6 +483,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Title" Type="nvarchar(max)" />
           <Property Name="Logo" Type="nvarchar(max)" />
+          <Property Name="ReportHeader" Type="nvarchar(max)" />
+          <Property Name="ReportFooter" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -2617,6 +2619,8 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReportHeader" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReportFooter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
@@ -4180,6 +4184,8 @@
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ReportFooter" ColumnName="ReportFooter" />
+                <ScalarProperty Name="ReportHeader" ColumnName="ReportHeader" />
                 <ScalarProperty Name="Logo" ColumnName="Logo" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

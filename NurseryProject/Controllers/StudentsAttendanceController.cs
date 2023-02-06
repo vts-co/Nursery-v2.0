@@ -151,7 +151,7 @@ namespace NurseryProject.Controllers
 
         public ActionResult Reports()
         {
-            var students = studentsServices.GetAll();
+            var students = studentsServices.GetAllDropDown();
             ViewBag.Students = students;
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
             ViewBag.StudyClassId = new SelectList("");
@@ -160,7 +160,7 @@ namespace NurseryProject.Controllers
         [HttpPost]
         public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId,string Month,string By)
         {
-            var students = studentsServices.GetAll();
+            var students = studentsServices.GetAllDropDown();
             ViewBag.Students = students;
 
             if (StudentId != null && StudyYearId != null && StudyClassId != null)

@@ -1,8 +1,8 @@
 ﻿@model NurseryProject.Models.Setting
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title =" تعديل الاعدادات  ";
-    string action ="Edit";
+    ViewBag.Title = " تعديل الاعدادات  ";
+    string action = "Edit";
     ViewBag.MainPage = "الاعدادات";
 
 }
@@ -18,28 +18,71 @@
         </div>
         <div class="card-body">
             @Html.HiddenFor(model => model.Id)
-            <div class="row">
-                <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("العنوان ", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", required = "required" } })
-                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+
+            <ul class="nav nav-tabs nav-tabs-custom nav-justified" role="tablist">
+
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#Setting" role="tab" title="اعدادات البرنامج" aria-selected="false" tabindex="-1">
+                        <span class="d-block d-sm-none"><i class="fas fa-cogs"></i></span>
+                        <span class="d-none d-sm-block"><i class="fas fa-cogs me-1"></i> اعدادات البرنامج</span>
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-bs-toggle="tab" href="#Reports" role="tab" title="اعدادات التقارير" aria-selected="false" tabindex="-1">
+                        <span class="d-block d-sm-none"><i class="fas fa-file-alt"></i></span>
+                        <span class="d-none d-sm-block"><i class="fas fa-file-alt me-1"></i>اعدادات التقارير</span>
+                    </a>
+                </li>
+               
+            </ul>
+
+            <div class="tab-content p-3 text-muted">
+                <div class="tab-pane active show" id="Setting" role="tabpanel">
+                    <div class="row">
+                        <div class="form-group mb-3 col-sm-6">
+                            @Html.Label("العنوان ", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-sm-6">
+                            @Html.Label("اللوجو ", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.Editor("Img", new { htmlAttributes = new { @class = "form-control", type = "file", accept = "image/*" } })
+                                @Html.ValidationMessage("Img", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("اللوجو ", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.Editor("Img", new { htmlAttributes = new { @class = "form-control",type="file", accept = "image/*" } })
-                        @Html.ValidationMessage("Img", "", new { @class = "text-danger" })
+
+
+                <div class="tab-pane" id="Reports" role="tabpanel">
+                    <div class="row">
+                        <div class="form-group mb-3 col-sm-12">
+                            @Html.Label("رأس التقرير ", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.TextAreaFor(model => model.ReportHeader, new { @class = "form-control editor", required = "required" })
+                                @Html.ValidationMessageFor(model => model.ReportHeader, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-sm-12">
+                            @Html.Label("ذيل التقرير ", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.TextAreaFor(model => model.ReportFooter, new { @class = "form-control editor", required = "required" })
+                                @Html.ValidationMessageFor(model => model.ReportFooter, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="card-footer">
             <div class="row justify-content-end">
-                
-                    @Url.SubmitSave()
-                
+
+                @Url.SubmitSave()
+
             </div>
         </div>
     </div>
@@ -47,4 +90,16 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/assets/js/tinymce/tinymce.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/9jhq5u0cewd3hbrnr0rnwnb70k19ilrs2hzyk0mf1hkp3bts/tinymce/6/plugins.min.js" referrerpolicy="origin"></script>
+
+
+    <script>
+        tinymce.init({
+            selector: '.editor',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount insertdatetime preview fullscreen',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough blockquote| link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap insertdatetime | preview fullscreen',
+            menubar: 'edit view insert format tools table '
+        });
+    </script>
 }

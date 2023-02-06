@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Authorization;
+using NurseryProject.Dtos.EmployeeClasses;
 using NurseryProject.Enums;
 using NurseryProject.Levels.Services;
 using NurseryProject.Models;
@@ -173,33 +174,77 @@ namespace NurseryProject.Controllers
             var Employees = employeesServices.GetAll();
             ViewBag.EmployeeId = new SelectList(Employees, "Id", "Name");
 
-            return View(new EmployeeClass());
+            return View(new EmployeeClassesDto());
         }
         [HttpPost]
-        public ActionResult Reports(EmployeeClass employeeClass)
+        public ActionResult Reports(EmployeeClassesDto employeeClass)
         {
-
-            var class2 = classesServices.GetAll().Where(x => x.Id == employeeClass.ClassId).FirstOrDefault();
-            var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
-            var studyType = studyTypesServices.GetAll().Where(x => x.Id == level.StudyTypeId).FirstOrDefault();
-            var studyTypes = studyTypesServices.GetAll();
-
-            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
-
-            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name", level.Id);
-            ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == level.Id).Select(x=>new { x.Id,Name= x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", class2.Id);
-            ViewBag.SubjectId = new SelectList(subjectsServices.GetAll().Where(x => x.LevelId == level.Id).ToList(), "Id", "Name", employeeClass.SubjectId);
-
-            var StudyYear = studyYearsServices.GetAll();
-            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", employeeClass.StudyYearId);
-
-            var Employees = employeesServices.GetAll();
-            ViewBag.EmployeeId = new SelectList(Employees, "Id", "Name", employeeClass.EmployeeId);
-
-
             var result = employeeClassesServices.GetAll();
-            var model = result.Where(x => x.SubjectId == employeeClass.SubjectId && x.ClassId == employeeClass.ClassId && x.StudyYearId == employeeClass.StudyYearId && x.LevelId == level.Id && x.StudyTypeId == studyType.Id).ToList();
+            var model = result;
+            if (employeeClass.StudyYearId != null)
+            {
+                model = model.Where(x => x.StudyYearId == employeeClass.StudyYearId).ToList();
+                var StudyYear = studyYearsServices.GetAll();
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", employeeClass.StudyYearId);
+            }
+            else
+            {
+                var StudyYear = studyYearsServices.GetAll();
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
+            }
+            if (employeeClass.StudyTypeId != null)
+            {
+                model = model.Where(x => x.StudyTypeId == employeeClass.StudyTypeId).ToList();
+                var studyTypes = studyTypesServices.GetAll();
+                ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", employeeClass.StudyTypeId);
+            }
+            else
+            {
+                var studyTypes = studyTypesServices.GetAll();
+                ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
+            }
+            if (employeeClass.LevelId != null&& employeeClass.StudyTypeId != null)
+            {
+                model = model.Where(x => x.LevelId == employeeClass.LevelId).ToList();
+                ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == employeeClass.StudyTypeId).ToList(), "Id", "Name", employeeClass.LevelId);
+            }
+            else if (employeeClass.StudyTypeId != null)
+            {
+                ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == employeeClass.StudyTypeId).ToList(), "Id", "Name");
+            }
+            else
+            {
+                ViewBag.LevelId = new SelectList("");
+            }
+            if (employeeClass.ClassId != null&& employeeClass.LevelId!=null)
+            {
+                model = model.Where(x => x.ClassId == employeeClass.ClassId).ToList();
+                ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == employeeClass.LevelId).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", employeeClass.ClassId);
+            }
+            else if (employeeClass.LevelId != null)
+            {
+                ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == employeeClass.LevelId).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name");
+            }
+            else
+            {
+                ViewBag.ClassId = new SelectList("");
+            }
+            if (employeeClass.SubjectId != null&& employeeClass.LevelId != null)
+            {
+                model = model.Where(x => x.SubjectId == employeeClass.SubjectId).ToList();
+                ViewBag.SubjectId = new SelectList(subjectsServices.GetAll().Where(x => x.LevelId == employeeClass.LevelId).ToList(), "Id", "Name", employeeClass.SubjectId);
+            }
+            else if (employeeClass.LevelId != null)
+            {
+                ViewBag.SubjectId = new SelectList(subjectsServices.GetAll().Where(x => x.LevelId == employeeClass.LevelId).ToList(), "Id", "Name");
+            }
+            else
+            {
+                ViewBag.SubjectId = new SelectList("");
+            }
+           
             ViewBag.Reports = model;
+
             return View(employeeClass);
         }
         public ActionResult getLevels(Guid Id)
@@ -209,7 +254,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getClasses(Guid Id)
         {
-            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name=x.Name+" ("+x.StudyPlaceName+")" }).ToList();
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getSubjects(Guid Id)

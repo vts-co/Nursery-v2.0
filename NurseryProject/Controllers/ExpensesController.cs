@@ -40,7 +40,7 @@ namespace NurseryProject.Controllers
             var studyYears = studyYearsServices.GetAll();
             ViewBag.StudyYears = studyYears;
 
-            var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x=>x.ParentId== Guid.Empty).ToList();
+            var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
             ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name");
 
             ViewBag.ExpenseTypeId = new SelectList("");
@@ -82,7 +82,7 @@ namespace NurseryProject.Controllers
             ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name", expensetype.ParentId);
 
             var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == expensetype.ParentId).ToList();
-            ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel,"Id","Name", expenses.ExpenseTypeId);
+            ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel, "Id", "Name", expenses.ExpenseTypeId);
 
             var employeesModel = employeesServices.GetAll();
             ViewBag.Employees = employeesModel;
@@ -123,31 +123,67 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Reports()
         {
+            var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+            ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name");
+
+            ViewBag.ExpenseTypeId = new SelectList("");
             return View();
         }
         [HttpPost]
-        public ActionResult Reports(string Month, bool AllYear)
+        public ActionResult Reports(string Month, bool AllYear, Guid? ExpenseTypeParentId=null, Guid? ExpenseTypeId=null)
         {
+            var total = 0.0;
+            var model = expensesServices.GetAll();
             if (AllYear)
             {
                 var year = DateTime.Now.Date.Year;
-                var model = expensesServices.GetAll().Where(x => x.Date.Year == year);
-                ViewBag.Expenses = model;
-                return View();
+                model=model.Where(x => x.Date.Year == year).ToList();
+            }
+            if (Month != "")
+            {
+                var mon = DateTime.Parse(Month).ToString("MM-yyyy");
+                model=model.Where(x => x.Date.ToString("MM-yyyy") == mon).ToList();
+            }
+            if (ExpenseTypeParentId != null)
+            {
+                model=model.Where(x => x.ExpenseTypePatentId== ExpenseTypeParentId).ToList();
+                var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name", ExpenseTypeParentId);
             }
             else
             {
-                var mon = DateTime.Parse(Month).ToString("MM-yyyy");
-                var model = expensesServices.GetAll().Where(x => x.Date.ToString("MM-yyyy") == mon);
-                ViewBag.Expenses = model;
-                return View();
+                var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name");
             }
+            if (ExpenseTypeId != null)
+            {
+                model=model.Where(x => x.ExpenseTypeId == ExpenseTypeId).ToList();
+                var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == ExpenseTypeParentId).ToList();
+                ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel, "Id", "Name", ExpenseTypeId);
+            }
+            else if (ExpenseTypeParentId != null)
+            {
+                var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == ExpenseTypeParentId).ToList();
+                ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel, "Id", "Name");
+            }
+            else
+            {
+                ViewBag.ExpenseTypeId = new SelectList("");
+            }
+            foreach (var item in model)
+            {
+                total += float.Parse(item.Value);
+            }
+            ViewBag.Total = total;
+            ViewBag.Expenses = model;
+            return View();
         }
+
         public ActionResult getExpensesTypes(Guid Id)
         {
             var model = expensesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-        
+
     }
 }

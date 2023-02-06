@@ -37,6 +37,34 @@ namespace NurseryProject.Services.Students
                 return model;
             }
         }
+        public List<StudentsDto> GetAllDropDown()
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Destrict.IsDeleted == false && x.RegistrationType.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    Name = x.Code+"|"+x.Name+"|"+x.Phone,
+                    Phone = x.Phone,
+                    Address = x.Address,
+                    Image = x.Image,
+                    BirthDate = x.BirthDate.ToString(),
+                    GenderId = x.GenderId.Value,
+                    GenderName = x.GenderId == 1 ? "ذكر" : "انثي",
+                    MotherName = x.MotherName,
+                    RegistrationTypeId = x.RegistrationTypeId.Value,
+                    RegistrationTypeName = x.RegistrationType.Name,
+                    JoiningDate = x.JoiningDate.Value.ToString(),
+                    CityId = x.Destrict.CityId.Value,
+                    CityName = x.Destrict.City.Name,
+                    DestrictId = x.DestrictId.Value,
+                    DestrictName = x.Destrict.Name,
+                    Notes = x.Notes
+                }).ToList();
+                return model;
+            }
+        }
         public Student Get(Guid Id)
         {
             using (var dbContext = new almohandes_DbEntities())

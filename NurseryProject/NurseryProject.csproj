@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -25,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>4.3</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -510,6 +512,121 @@
     <Content Include="assets\js\pages\two-step-verification.init.js" />
     <Content Include="assets\js\pages\validation.init.js" />
     <Content Include="assets\js\pages\vector-maps.init.js" />
+    <Content Include="assets\js\tinymce\icons\default\icons.js" />
+    <Content Include="assets\js\tinymce\icons\default\icons.min.js" />
+    <Content Include="assets\js\tinymce\license.txt" />
+    <Content Include="assets\js\tinymce\models\dom\model.js" />
+    <Content Include="assets\js\tinymce\models\dom\model.min.js" />
+    <Content Include="assets\js\tinymce\plugins\advlist\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\advlist\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\anchor\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\anchor\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\autolink\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\autolink\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\autoresize\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\autoresize\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\autosave\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\autosave\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\charmap\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\charmap\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\codesample\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\codesample\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\code\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\code\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\directionality\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\directionality\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\emoticons\js\emojiimages.js" />
+    <Content Include="assets\js\tinymce\plugins\emoticons\js\emojiimages.min.js" />
+    <Content Include="assets\js\tinymce\plugins\emoticons\js\emojis.js" />
+    <Content Include="assets\js\tinymce\plugins\emoticons\js\emojis.min.js" />
+    <Content Include="assets\js\tinymce\plugins\emoticons\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\emoticons\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\fullscreen\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\fullscreen\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\help\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\help\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\image\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\image\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\importcss\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\importcss\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\insertdatetime\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\insertdatetime\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\link\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\link\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\lists\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\lists\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\media\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\media\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\nonbreaking\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\nonbreaking\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\pagebreak\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\pagebreak\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\preview\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\preview\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\quickbars\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\quickbars\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\save\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\save\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\searchreplace\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\searchreplace\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\table\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\table\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\template\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\template\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\visualblocks\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\visualblocks\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\visualchars\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\visualchars\plugin.min.js" />
+    <Content Include="assets\js\tinymce\plugins\wordcount\plugin.js" />
+    <Content Include="assets\js\tinymce\plugins\wordcount\plugin.min.js" />
+    <Content Include="assets\js\tinymce\skins\content\dark\content.css" />
+    <Content Include="assets\js\tinymce\skins\content\dark\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\content\default\content.css" />
+    <Content Include="assets\js\tinymce\skins\content\default\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\content\document\content.css" />
+    <Content Include="assets\js\tinymce\skins\content\document\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\content\tinymce-5-dark\content.css" />
+    <Content Include="assets\js\tinymce\skins\content\tinymce-5-dark\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\content\tinymce-5\content.css" />
+    <Content Include="assets\js\tinymce\skins\content\tinymce-5\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\content\writer\content.css" />
+    <Content Include="assets\js\tinymce\skins\content\writer\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\content.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\content.inline.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\content.inline.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\skin.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\skin.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\skin.shadowdom.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide-dark\skin.shadowdom.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\content.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\content.inline.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\content.inline.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\skin.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\skin.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\skin.shadowdom.css" />
+    <Content Include="assets\js\tinymce\skins\ui\oxide\skin.shadowdom.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\content.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\content.inline.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\content.inline.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\skin.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\skin.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\skin.shadowdom.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5-dark\skin.shadowdom.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\content.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\content.inline.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\content.inline.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\content.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\skin.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\skin.min.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\skin.shadowdom.css" />
+    <Content Include="assets\js\tinymce\skins\ui\tinymce-5\skin.shadowdom.min.css" />
+    <Content Include="assets\js\tinymce\themes\silver\theme.js" />
+    <Content Include="assets\js\tinymce\themes\silver\theme.min.js" />
+    <Content Include="assets\js\tinymce\tinymce.js" />
+    <Content Include="assets\js\tinymce\tinymce.min.js" />
     <Content Include="assets\libs\%40ckeditor\ckeditor5-build-classic\build\ckeditor.js" />
     <Content Include="assets\libs\%40ckeditor\ckeditor5-build-classic\build\translations\af.js" />
     <Content Include="assets\libs\%40ckeditor\ckeditor5-build-classic\build\translations\ar.js" />
@@ -1838,6 +1955,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="assets\js\tinymce\langs\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2000,13 +2118,18 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="assets\js\tinymce\tinymce.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

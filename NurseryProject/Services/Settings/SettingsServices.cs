@@ -37,6 +37,8 @@ namespace NurseryProject.Services.Settings
                     Oldmodel.ModifiedBy = UserId;
                     Oldmodel.Title = model.Title;
                     Oldmodel.Logo = model.Logo;
+                    Oldmodel.ReportHeader = model.ReportHeader;
+                    Oldmodel.ReportFooter = model.ReportFooter;
                     dbContext.SaveChanges();
 
                 }
@@ -50,11 +52,11 @@ namespace NurseryProject.Services.Settings
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Setting>();
-                
+
                 var Oldmodel = dbContext.Settings.FirstOrDefault();
                 if (Oldmodel == null)
                 {
-                    if (model.Logo == null || model.Title == null)
+                    if (model.ReportFooter == null || model.Title == null || model.ReportHeader == null || model.ReportHeader == null)
                     {
                         result.IsSuccess = false;
                         result.Message = "الرجاء ادخال البيانات بشكل صحيح";
@@ -77,6 +79,14 @@ namespace NurseryProject.Services.Settings
                     if (model.Title != null)
                     {
                         Oldmodel.Title = model.Title;
+                    }
+                    if (model.ReportHeader != null)
+                    {
+                        Oldmodel.ReportHeader = model.ReportHeader;
+                    }
+                    if (model.ReportFooter != null)
+                    {
+                        Oldmodel.ReportFooter = model.ReportFooter;
                     }
                     dbContext.SaveChanges();
 

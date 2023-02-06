@@ -16,7 +16,18 @@
         </div>
         <div class="card-body">
             <div class="row">
-
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الايراد ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("RevenueTypeParentId", null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("البيان ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("RevenueTypeId", null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
@@ -77,32 +88,40 @@
                 <tbody>
                     @foreach (var item in ViewBag.Revenues)
                     {
-                    <tr>
-                        <td>
-                            @item.RevenueTypeParentName
-                        </td>
-                        <td>
-                            @item.RevenueTypeName
-                        </td>
-                        <td>
-                            @item.Value
-                        </td>
-                        <td>
-                            @item.EmployeeName
-                        </td>
-                        <td>
-                            @item.Date.Date.ToString("yyyy-MM-dd")
-                        </td>
-                        <td>
-                            @item.Notes
-                        </td>
-                        <td>
-                            @Url.Edit(routeValues: new { id = item.Id })
-                            @Url.Delete(routeValues: new { id = item.Id })
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @item.RevenueTypeParentName
+                            </td>
+                            <td>
+                                @item.RevenueTypeName
+                            </td>
+                            <td>
+                                @item.Value
+                            </td>
+                            <td>
+                                @item.EmployeeName
+                            </td>
+                            <td>
+                                @item.Date.Date.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @item.Notes
+                            </td>
+                            <td>
+                                @Url.Edit(routeValues: new { id = item.Id })
+                                @Url.Delete(routeValues: new { id = item.Id })
+                            </td>
+                        </tr>
                     }
                 </tbody>
+                <tfoot class="text-center">
+                    <tr>
+                        <td>
+                            الاجمالي : @ViewBag.Total جنيه
+
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
 
         </div>

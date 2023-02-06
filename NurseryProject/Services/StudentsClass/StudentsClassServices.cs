@@ -30,6 +30,7 @@ namespace NurseryProject.Services.StudentsClass
                     StudyYearName = x.StudyYear.Name,
                     StudentId = x.Student.Id,
                     StudentName = x.Student.Name ,
+                    StudentPhone=x.Student.Phone,
                     IsAnother = x.IsAnother.Value,
                     SubscriptionId = x.SubscriptionId.Value,
                     SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
@@ -83,6 +84,8 @@ namespace NurseryProject.Services.StudentsClass
                     StudyYearName = x.StudyYear.Name,
                     StudentId = x.Student.Id,
                     StudentName = x.Student.Name,
+                    StudentPhone = x.Student.Phone,
+
                     IsAnother = x.IsAnother.Value,
 
                     SubscriptionId = x.SubscriptionId.Value,

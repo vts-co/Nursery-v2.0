@@ -25,22 +25,32 @@
                     <th>
                         @Html.DisplayName("اللوجو")
                     </th>
-                    
+                    <th>
+                        @Html.DisplayName("رأس التقرير")
+                    </th>
+                    <th>
+                        @Html.DisplayName("ذيل التقرير")
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model != null)
                 {
-                    <tr>
+                <tr>
 
-                        <td>
-                            @Model.Title
-                        </td>
-                        <td>
-                            <img src="@Model.Logo" width="100" />
-                        </td>
-                        
-                    </tr>
+                    <td>
+                        @Model.Title
+                    </td>
+                    <td>
+                        <img src="@Model.Logo" width="100" />
+                    </td>
+                    <td>
+                        @Html.Raw(Model.ReportHeader)
+                    </td>
+                    <td>
+                        @Html.Raw(Model.ReportFooter)
+                    </td>
+                </tr>
                 }
 
 

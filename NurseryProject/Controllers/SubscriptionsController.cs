@@ -145,7 +145,7 @@ namespace NurseryProject.Controllers
             var StudyYear = studyYearsServices.GetAll();
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
 
-            var Students = studentsServices.GetAll();
+            var Students = studentsServices.GetAllDropDown();
             ViewBag.StudentId = new SelectList(Students, "Id", "Name");
 
             return View();
@@ -159,7 +159,7 @@ namespace NurseryProject.Controllers
 
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", Guid.Parse(StudyYearId));
 
-            var Students = studentsServices.GetAll();
+            var Students = studentsServices.GetAllDropDown();
             ViewBag.StudentId = new SelectList(Students, "Id", "Name", Guid.Parse(StudyYearId));
 
             var result = studentsClassServices.GetAll();
@@ -206,7 +206,7 @@ namespace NurseryProject.Controllers
             var StudyYear = studyYearsServices.GetAll();
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", class1.StudyYearId);
 
-            var Students = studentsServices.GetAll();
+            var Students = studentsServices.GetAllDropDown();
             ViewBag.StudentId = new SelectList(Students, "Id", "Name", class1.StudentId);
 
             var subscription = subscriptionsServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) });
@@ -250,7 +250,7 @@ namespace NurseryProject.Controllers
                 var StudyYear = studyYearsServices.GetAll();
                 ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", Class.StudyYearId);
 
-                var Students = studentsServices.GetAll();
+                var Students = studentsServices.GetAllDropDown();
                 ViewBag.StudentId = new SelectList(Students, "Id", "Name", Class.StudentId);
 
                 var subscription = subscriptionsServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) });
