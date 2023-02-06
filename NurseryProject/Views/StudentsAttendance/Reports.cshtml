@@ -20,8 +20,7 @@
                     @Html.Label("الطالب", htmlAttributes: new { @class = "control-label text-center mb-2" })
 
                     <div class="col-12">
-                        @Html.DropDownList("StudentId", new SelectList(ViewBag.Students, "Id", "Name"), "--اختر--", new { @class = "form-control searchable", required = "required" })
-                        @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
+                        @Html.DropDownList("StudentId", new SelectList(ViewBag.Students, "Id", "Name"), "--اختر--", new { @class = "form-control searchable" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-12 text-center">
@@ -43,22 +42,19 @@
                 <div class="form-group mb-3 col-sm-4">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required", @disabled = "disabled" })
-                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الفصل الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyClassId", null, "--اختر--", new { @class = "form-control", required = "required", @disabled = "disabled" })
-                        @Html.ValidationMessage("StudyClassId", "", new { @class = "text-danger" })
+                        @Html.DropDownList("StudyClassId", null, "--اختر--", new { @class = "form-control",  @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", required = "required", type = "month", @disabled = "disabled" } })
-                        @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
+                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month", @disabled = "disabled" } })
                     </div>
                 </div>
             </div>
@@ -82,7 +78,7 @@
         </div>
         <div class="card-body">
             <table id="datatable" class="table">
-                <thead>
+                <thead class="bg-warning">
                     <tr>
                         <th>
                             @Html.DisplayName("م")
