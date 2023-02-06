@@ -185,7 +185,7 @@ namespace NurseryProject.Controllers
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", id);
 
             var result = studentsClassServices.GetAll();
-            var model = result.Where(x => x.StudyYearId == id && x.SubscriptionMethod.Where(y => y.IsPaid ==false && DateTime.Parse(y.Date).Date < DateTime.Now.Date).Count()>0).ToList();
+            var model = result.Where(x => x.StudyYearId == id && x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0).ToList();
 
             ViewBag.Reports = model;
             return View();
@@ -193,6 +193,8 @@ namespace NurseryProject.Controllers
         public ActionResult Collect(Guid Id)
         {
             var class1 = studentsClassServices.Get(Id);
+            class1.SubscriptionName = class1.SubscriptionName + "/" + class1.Amount + "جنيه/" + class1.Number;
+          
             var studyTypes = studyTypesServices.GetAll();
 
             var class2 = classesServices.GetAll().Where(x => x.Id == class1.ClassId).FirstOrDefault();

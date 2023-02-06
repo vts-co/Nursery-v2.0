@@ -245,15 +245,23 @@ namespace NurseryProject.Controllers
         [HttpPost]
         public ActionResult NoInstallmentsReports(string StudyYearId)
         {
+            var result = studentsClassServices.GetAll().Where(x=>x.SubscriptionMethod.Count()==0);
             var StudyYear = studyYearsServices.GetAll();
-            var id = Guid.Parse(StudyYearId);
 
-            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", id);
+            if (StudyYearId!="")
+            {
+                var id = Guid.Parse(StudyYearId);
 
-            var result = studentsClassServices.GetAll();
-            var model = result.Where(x => x.StudyYearId == id&&x.SubscriptionMethod.Count==0).ToList();
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", id);
+                result.Where(x => x.StudyYearId == id && x.SubscriptionMethod.Count == 0).ToList();
+                ViewBag.Reports = result;
 
-            ViewBag.Reports = model;
+                return View();
+
+            }
+
+            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
+            ViewBag.Reports = result;
             return View();
         }
 

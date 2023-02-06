@@ -13,7 +13,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false &&x.Student.IsDeleted==false&&x.Subscription.IsDeleted==false&&x.StudyYear.IsDeleted==false&&x.Class.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false &&x.Student.IsDeleted==false&&(x.Subscription.IsDeleted==false|| x.SubscriptionId==null) &&x.StudyYear.IsDeleted==false&&x.Class.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -51,11 +51,20 @@ namespace NurseryProject.Services.StudentsClass
                     Notes = x.Notes
 
                 }).ToList();
+                var total = 0.0;
                 foreach (var item in model)
                 {
                     if (item.IsAnother)
                     {
-                        item.Amount = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Sum(y => float.Parse(y.Amount)).ToString();
+                        if (item.SubscriptionMethod.Where(y=>y.IsPaid == true).Count()>0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
+                        }
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y =>y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                        }
+                        item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
                 }
@@ -66,7 +75,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Student.IsDeleted == false && x.Subscription.IsDeleted == false && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false&&x.Id==Id && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -108,9 +117,18 @@ namespace NurseryProject.Services.StudentsClass
                     Notes = x.Notes
 
                 }).FirstOrDefault();
+                var total = 0.0;
                 if (model.IsAnother)
                 {
-                    model.Amount = model.SubscriptionMethod.Where(y => y.StudentClassId == model.Id).ToList().Sum(y => float.Parse(y.Amount)).ToString();
+                    if (model.SubscriptionMethod.Where(y => y.IsPaid == true).Count() > 0)
+                    {
+                        total += float.Parse(model.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
+                    }
+                    if (model.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
+                    {
+                        total += float.Parse(model.SubscriptionMethod.Where(y =>y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                    }
+                    model.Amount = total.ToString();
                     model.Number = model.SubscriptionMethod.Where(y => y.StudentClassId == model.Id).ToList().Count().ToString();
                 }
 
@@ -122,7 +140,7 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel = dbContext.StudentsClasses.Where(x=>x.StudentId==model.StudentId &&x.StudyYearId==model.StudyYearId && x.IsDeleted == false && x.Student.IsDeleted == false && x.Subscription.IsDeleted == false && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false && x.Class.Level.StudyTypeId==model.StudyTypeId).FirstOrDefault();
+                var Oldmodel = dbContext.StudentsClasses.Where(x=>x.StudentId==model.StudentId &&x.StudyYearId==model.StudyYearId && x.IsDeleted == false ).FirstOrDefault();
                 if(Oldmodel!=null)
                 {
                     result.IsSuccess = false;

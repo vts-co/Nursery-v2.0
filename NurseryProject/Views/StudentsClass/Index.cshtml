@@ -16,53 +16,53 @@
     <div class="card-body">
         <div class="row mt-3">
             @*<div class="form-group mb-3 col-sm-6">
-                @Html.Label("مكان الدراسة", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.DropDownList("StudyPlaceId", new SelectList(""), "--اختر--", new { @class = "form-control", required = "required" })
-                    @Html.ValidationMessage("StudyPlaceId", "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+                    @Html.Label("مكان الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyPlaceId", new SelectList(""), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyPlaceId", "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
             @*<div class="form-group mb-3 col-sm-6">
-                @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                    @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group mb-3 col-sm-6">
-                @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                    @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group mb-3 col-sm-6">
-                @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                    @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group mb-3 col-sm-6">
-                @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                    @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group mb-3 col-sm-6">
-                @Html.Label("طريقة الاشتراك", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.DropDownList("SubscriptionId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                    @Html.ValidationMessage("SubscriptionId", "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("طريقة الاشتراك", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("SubscriptionId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("SubscriptionId", "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
 
         </div>
         @*<div class="row justify-content-end">
-            <a href="/StudentsClass/Search" class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</a>
-        </div>
-        <hr />*@
+                <a href="/StudentsClass/Search" class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</a>
+            </div>
+            <hr />*@
         <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
             <thead>
                 <tr>
@@ -90,6 +90,12 @@
                         @Html.DisplayName("طريقة الاشتراك ")
                     </th>
                     <th>
+                        @Html.DisplayName("مبلغ الاشتراك ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عدد الاقساط ")
+                    </th>
+                    <th>
                         @Html.DisplayName("تاريخ الالتحاق ")
                     </th>
                     <th>
@@ -103,45 +109,56 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StudyPlaceName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StudyYearName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StudyTypeName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LevelName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassName)
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudyPlaceName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudyYearName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudyTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LevelName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassName)
 
-                        </td>
-
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StudentName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SubscriptionName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.JoiningDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Notes)
-                        </td>
-                        <td>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubscriptionName)
+                    </td>
+                    <td>
+                        @item.Amount جنيه
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JoiningDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @if (item.SubscriptionMethod.Count() > 0)
+                        {
                             <a class='btn btn-soft-warning waves-effect waves-light p-2' href="/Subscriptions/Collect/@item.Id" title="تحصيل قسط الاشتراك"><i class='fas fa-coins me-1'></i></a>
+                        }
+                        else
+                        {
+                            <button class='btn btn-soft-warning p-2' disabled><i class='fas fa-coins me-1'></i></button>
 
-                            @Url.Edit(routeValues: new { id = item.Id })
-                            @Url.Delete(routeValues: new { id = item.Id })
+                        }
+                        @Url.Edit(routeValues: new { id = item.Id })
+                        @Url.Delete(routeValues: new { id = item.Id })
 
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -151,7 +168,7 @@
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        
+
         $("#StudyTypeId").change(function () {
             $.get('/StudentsClass/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
@@ -177,6 +194,6 @@
                 });
             });
         });
-       
+
     </script>
 }

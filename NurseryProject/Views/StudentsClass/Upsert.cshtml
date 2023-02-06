@@ -27,9 +27,9 @@
                         @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-2">
+                <div class="form-group m-auto pb-3 col-sm-2">
                     <div class="col-12">
-                        <a href="/Students/Create" class='btn btn-primary mt-4 btn-sm p-4 py-3  fas fa-plus' ></a>
+                        <a href="/Students/Create" class='btn btn-primary btn-sm fas fa-plus' ></a>
                     </div>
                 </div>
                 <hr />
@@ -217,48 +217,8 @@
 
         });
 
-        $.get('/StudentsClass/getSubscriptionsById', { Id: $("#SubscriptionId").val() }, function (data) {
-            $("#SubscriptionDiv").empty();
-            $("#SubscriptionDiv2").empty();
 
-            var now1 = new Date();
-            now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
-            $.each(data, function (key, value) {
-                var amount = parseInt(value["InstallmentsNumber"]);
-                $("#SubscriptionDiv").append('<hr>');
-                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
-                $("#SubscriptionDiv").append('<hr>');
-
-                var j = 1;
-                for (var i = 0; i < amount; i++) {
-                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] / value["InstallmentsNumber"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>')
-                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>')
-                    now1.setMonth(now1.getMonth() + 1);
-                    j++;
-                }
-
-            });
-        });
-        if (document.getElementById("IsAnother").checked) {
-            $("#SubscriptionId").val("");
-            $("#SubscriptionId").prop("disabled", true);
-
-            $("#SubscriptionDiv").empty();
-
-            $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">المبلغ : </label><div class="col-12"><input class="form-control" id="Amount1" name="Amount1" type="number" onchange="Numbers()" required /></div></div>')
-            $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-5"><label class="control-label">عدد الاقساط : </label><div class="col-12"><input class="form-control" id="InstallmentsNumber1" name="InstallmentsNumber1" type="number" required /></div></div>')
-            $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success" id="" name="" type="button" onclick="Numbers()"><i class"fa fa-calculator"></i>احسب</button></div></div>')
-
-            $("#SubscriptionDiv").append('<hr>');
-            $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
-            $("#SubscriptionDiv").append('<hr>');
-        }
-        else {
-            $("#SubscriptionDiv").empty();
-            $("#SubscriptionDiv2").empty();
-
-            $("#SubscriptionId").prop("disabled", false);
-        }
+       
         $("#SubscriptionId").change(function () {
             $.get('/StudentsClass/getSubscriptionsById', { Id: $("#SubscriptionId").val() }, function (data) {
                 $("#SubscriptionDiv").empty();
