@@ -17,6 +17,7 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public StudentsClass()
         {
+            this.StudentsClassesTransfers = new HashSet<StudentsClassesTransfer>();
             this.SubscriptionMethods = new HashSet<SubscriptionMethod>();
         }
     
@@ -40,6 +41,8 @@ namespace NurseryProject.Models
         public virtual Student Student { get; set; }
         public virtual StudyYear StudyYear { get; set; }
         public virtual Subscription Subscription { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentsClassesTransfer> StudentsClassesTransfers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SubscriptionMethod> SubscriptionMethods { get; set; }
     }

@@ -57,8 +57,8 @@ namespace NurseryProject.Models
         public virtual DbSet<ShiftsTime> ShiftsTimes { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentsAttendance> StudentsAttendances { get; set; }
-        public virtual DbSet<StudentsAttendanceDetail> StudentsAttendanceDetails { get; set; }
         public virtual DbSet<StudentsClass> StudentsClasses { get; set; }
+        public virtual DbSet<StudentsClassesTransfer> StudentsClassesTransfers { get; set; }
         public virtual DbSet<StudentsExamDegree> StudentsExamDegrees { get; set; }
         public virtual DbSet<StudyClass> StudyClasses { get; set; }
         public virtual DbSet<StudyPlace> StudyPlaces { get; set; }

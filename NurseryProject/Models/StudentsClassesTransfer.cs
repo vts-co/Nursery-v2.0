@@ -12,12 +12,14 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class StudentsAttendanceDetail
+    public partial class StudentsClassesTransfer
     {
         public System.Guid Id { get; set; }
-        public Nullable<System.Guid> StudentsAttendanceId { get; set; }
-        public Nullable<System.Guid> StudentId { get; set; }
-        public Nullable<bool> IsAttend { get; set; }
+        public Nullable<System.Guid> StudentClassId { get; set; }
+        public Nullable<System.Guid> ClassFromId { get; set; }
+        public Nullable<System.Guid> ClassToId { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
@@ -25,5 +27,9 @@ namespace NurseryProject.Models
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
+    
+        public virtual Class Class { get; set; }
+        public virtual Class Class1 { get; set; }
+        public virtual StudentsClass StudentsClass { get; set; }
     }
 }

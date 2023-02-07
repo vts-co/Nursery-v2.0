@@ -154,6 +154,8 @@
                             <button class='btn btn-soft-warning p-2' disabled><i class='fas fa-coins me-1'></i></button>
 
                         }
+                        <a class='btn btn-soft-primary waves-effect waves-light p-2' href="/StudentsClassesTransfer/Index?StudentClassId=@item.Id" title="نقل الطالب من فصل لفصل"><i class='bx bx-transfer'></i></a>
+
                         @Url.Edit(routeValues: new { id = item.Id })
                         @Url.Delete(routeValues: new { id = item.Id })
 

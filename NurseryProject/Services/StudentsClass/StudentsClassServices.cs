@@ -13,7 +13,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false &&x.Student.IsDeleted==false&&(x.Subscription.IsDeleted==false|| x.SubscriptionId==null) &&x.StudyYear.IsDeleted==false&&x.Class.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -29,8 +29,8 @@ namespace NurseryProject.Services.StudentsClass
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
                     StudentId = x.Student.Id,
-                    StudentName = x.Student.Name ,
-                    StudentPhone=x.Student.Phone,
+                    StudentName = x.Student.Name,
+                    StudentPhone = x.Student.Phone,
                     IsAnother = x.IsAnother.Value,
                     SubscriptionId = x.SubscriptionId.Value,
                     SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
@@ -42,7 +42,7 @@ namespace NurseryProject.Services.StudentsClass
                         StudentClassId = x.Id,
                         Amount = y.Amount,
                         Date = y.Date.Value.ToString(),
-                        PaidAmount=y.PaidAmount,
+                        PaidAmount = y.PaidAmount,
                         IsPaid = y.IsPaid.Value,
                         Paided = y.IsPaid.Value == true ? "تم الدفع" : "لم يتم الدفع بعد",
                         PaidDate = y.PaidDate.Value.ToString()
@@ -56,13 +56,13 @@ namespace NurseryProject.Services.StudentsClass
                 {
                     if (item.IsAnother)
                     {
-                        if (item.SubscriptionMethod.Where(y=>y.IsPaid == true).Count()>0)
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == true).Count() > 0)
                         {
                             total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
                         }
                         if (item.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
                         {
-                            total += float.Parse(item.SubscriptionMethod.Where(y =>y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
                         }
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
@@ -75,7 +75,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false&&x.Id==Id && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Id == Id && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -110,7 +110,7 @@ namespace NurseryProject.Services.StudentsClass
                         Date = y.Date.Value.ToString(),
                         PaidAmount = y.PaidAmount,
                         IsPaid = y.IsPaid.Value,
-                        Paided= y.IsPaid.Value == true ? "تم الدفع" : "لم يتم الدفع بعد",
+                        Paided = y.IsPaid.Value == true ? "تم الدفع" : "لم يتم الدفع بعد",
                         PaidDate = y.PaidDate.Value.ToString()
                     }).ToList(),
                     JoiningDate = x.JoiningDate.Value.ToString(),
@@ -126,7 +126,7 @@ namespace NurseryProject.Services.StudentsClass
                     }
                     if (model.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
                     {
-                        total += float.Parse(model.SubscriptionMethod.Where(y =>y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                        total += float.Parse(model.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
                     }
                     model.Amount = total.ToString();
                     model.Number = model.SubscriptionMethod.Where(y => y.StudentClassId == model.Id).ToList().Count().ToString();
@@ -135,13 +135,31 @@ namespace NurseryProject.Services.StudentsClass
                 return model;
             }
         }
+        public ResultDto<StudentsClassDto> UpateClassId(Guid Id, Guid ClassId, Guid UserId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var result = new ResultDto<StudentsClassDto>();
+                var Oldmodel = dbContext.StudentsClasses.Find(Id);
+
+                Oldmodel.ModifiedOn = DateTime.UtcNow;
+                Oldmodel.ModifiedBy = UserId;
+                Oldmodel.ClassId = ClassId;
+                dbContext.SaveChanges();
+                result.IsSuccess = true;
+                result.Message = "تم تعديل البيانات بنجاح";
+                return result;
+            }
+           
+        }
+
         public ResultDto<StudentsClassDto> Create(StudentsClassDto model, Guid RegistrationTypeId, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel = dbContext.StudentsClasses.Where(x=>x.StudentId==model.StudentId &&x.StudyYearId==model.StudyYearId && x.IsDeleted == false ).FirstOrDefault();
-                if(Oldmodel!=null)
+                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel != null)
                 {
                     result.IsSuccess = false;
                     result.Message = "هذا الطالب تم التحاقه بالفعل";
@@ -158,7 +176,7 @@ namespace NurseryProject.Services.StudentsClass
                     StudentId = model.StudentId,
                     StudyYearId = model.StudyYearId,
                     SubscriptionId = model.SubscriptionId,
-                    IsAnother=model.IsAnother,
+                    IsAnother = model.IsAnother,
                     JoiningDate = DateTime.Parse(model.JoiningDate),
                     Notes = model.Notes,
                     CreatedOn = DateTime.UtcNow,
@@ -167,7 +185,7 @@ namespace NurseryProject.Services.StudentsClass
                 };
                 dbContext.StudentsClasses.Add(studentsClass);
                 dbContext.SaveChanges();
-                if(model.SubscriptionMethod!=null)
+                if (model.SubscriptionMethod != null)
                 {
                     var i = 1;
                     foreach (var item in model.SubscriptionMethod)
@@ -190,13 +208,13 @@ namespace NurseryProject.Services.StudentsClass
                         i++;
                     }
                 }
-                
+
                 result.IsSuccess = true;
                 result.Message = "تم حفظ البيانات بنجاح";
                 return result;
             }
         }
-        public ResultDto<StudentsClassDto> Edit(StudentsClassDto model,Guid RegistrationTypeId, Guid UserId)
+        public ResultDto<StudentsClassDto> Edit(StudentsClassDto model, Guid RegistrationTypeId, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -303,23 +321,23 @@ namespace NurseryProject.Services.StudentsClass
 
 
                 var i = 0;
-                var dd =DateTime.Now;
-                foreach (var item in Oldmodel.SubscriptionMethods.Where(x => x.IsDeleted == false).OrderBy(x=>x.CreatedOn).ToList())
+                var dd = DateTime.Now;
+                foreach (var item in Oldmodel.SubscriptionMethods.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).ToList())
                 {
 
                     item.Amount = model.SubscriptionMethod[i].Amount;
                     item.Date = DateTime.Parse(model.SubscriptionMethod[i].Date);
-                    if(item.IsPaid==false)
+                    if (item.IsPaid == false)
                     {
                         item.IsPaid = model.SubscriptionMethod[i].IsPaid;
-                        if(model.SubscriptionMethod[i].PaidDate!=null && item.IsPaid==true)
+                        if (model.SubscriptionMethod[i].PaidDate != null && item.IsPaid == true)
                         {
                             DateTime.TryParse(model.SubscriptionMethod[i].PaidDate, out dd);
                             item.PaidDate = dd;
                         }
-                        
+
                     }
-                   
+
                     item.ModifiedOn = DateTime.UtcNow;
                     item.ModifiedBy = UserId;
 

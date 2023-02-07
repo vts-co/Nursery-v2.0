@@ -1,0 +1,119 @@
+﻿@model NurseryProject.Dtos.StudentsClassesTransfer.StudentsClassesTransferDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = " إضافة انتقال طالب من فصل لفصل";
+    string action = "Create";
+    ViewBag.MainPage = "انتقال طالب من فصل لفصل ";
+
+}
+@using (Html.BeginForm(action, "StudentsClassesTransfer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.StudentClassId)
+            @Html.HiddenFor(model => model.StudyPlaceId)
+            @Html.HiddenFor(model => model.StudyTypeId)
+            @Html.HiddenFor(model => model.StudyYearId)
+            @Html.HiddenFor(model => model.StudentId)
+            @Html.HiddenFor(model => model.ClassFromId)
+            @Html.HiddenFor(model => model.LevelId)
+
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الكود", htmlAttributes: new { @class = "control-label text-center mb-2" })
+
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Code, new {htmlAttributes=new { @class = "form-control searchable text-center", disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الطالب", htmlAttributes: new { @class = "control-label text-center mb-2" })
+
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.StudentName, new { htmlAttributes = new { @class = "form-control searchable text-center", disabled = "disabled" } })
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.StudyYearName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" }})
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفرع", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.StudyPlaceName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" }})
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.StudyTypeName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.LevelName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("من فصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.ClassFromName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+
+            </div>
+            <hr />
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("إلي الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.ClassToId, new SelectList(ViewBag.ClassesTo,"Id","Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ClassToId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("بتاريخ  ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.TextBoxFor(model => model.Date, new { @class = "form-control", type = "date", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("ملاحظات ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+
+                @Url.SubmitAdd()
+
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('Date').value = now.toISOString().slice(0, 10);
+    </script>
+}
