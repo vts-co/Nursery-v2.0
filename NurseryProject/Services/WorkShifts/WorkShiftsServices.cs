@@ -31,8 +31,8 @@ namespace NurseryProject.Services.WorkShifts
                 {
                     foreach (var item2 in item.ShiftTimes)
                     {
-                        item2.TimeFrom = DateTime.Parse(item2.TimeFrom).ToString("hh:mm:ss tt");
-                        item2.TimeTo = DateTime.Parse(item2.TimeTo).ToString("hh:mm:ss tt");
+                        item2.TimeFrom = DateTime.Parse(item2.TimeFrom).ToString("hh:mm tt");
+                        item2.TimeTo = DateTime.Parse(item2.TimeTo).ToString("hh:mm tt");
                     }
                 }
                 return model;
@@ -48,7 +48,7 @@ namespace NurseryProject.Services.WorkShifts
                     Id = x.Id,
                     Name = x.Name,
                     Notes = x.Notes,
-                    ShiftTimes = x.ShiftsTimes.Where(y => y.WorkShiftId == x.Id && x.IsDeleted==false).OrderBy(y => y.CreatedOn).Select(y => new ShiftsTimesDto
+                    ShiftTimes = x.ShiftsTimes.Where(y => y.WorkShiftId == x.Id && y.IsDeleted==false).OrderBy(y => y.CreatedOn).Select(y => new ShiftsTimesDto
                     {
                         Id = y.Id,
                         IsFound=true,

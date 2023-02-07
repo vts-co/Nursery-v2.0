@@ -63,7 +63,7 @@
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
                     <td>
-                        @*@Url.Edit(routeValues: new { id = item.Id })*@
+                        @Url.Edit(routeValues: new { id = item.Id })
                         @Url.Delete(routeValues: new { id = item.Id })
                     </td>
                 </tr>

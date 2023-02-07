@@ -21,6 +21,8 @@ namespace NurseryProject.Dtos.StudentsAttendance
         public Guid ClassId { get; set; }
         public string ClassName { get; set; }
         public Guid StudentId { get; set; }
+        public string Code { get; set; }
+
         public string StudentName { get; set; }
         public bool IsAttend { get; set; }
         public string NumAttend{ get; set; }

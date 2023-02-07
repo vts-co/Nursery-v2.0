@@ -47,12 +47,14 @@ namespace NurseryProject.Services.StudentExamDegrees
                     if (item.Students.Count() > 1)
                     {
                         var student = item.Students[0].StudentId;
-
-                        for (int i = 1; i < item.Students.Count(); i++)
+                        var count = item.Students.Count();
+                        for (int i = 1; i < count; i++)
                         {
                             if (item.Students[i].StudentId == student)
                             {
                                 item.Students.Remove(item.Students[i]);
+                                i--;
+                                count -= 1;
                             }
                             else
                             {
@@ -75,11 +77,10 @@ namespace NurseryProject.Services.StudentExamDegrees
                 {
                     Id = y.Id,
                     Code = y.Student.Code,
-                    
                     StudentId = y.StudentId.Value,
                     StudentName = y.Student.Name,
-                    ExamDegreeId = y.ExamDegreeId.Value,
-                    TotalDegree = y.Degree.Value.ToString(),
+                    ExamDegreeId = y.ExamDegreeId!=null? y.ExamDegreeId.Value:Guid.Empty,
+                    TotalDegree = y.ExamDegreeId != null ? y.Degree.Value.ToString():"",
                     Date = y.Date.Value.ToString()
 
                 }).ToList();
@@ -93,8 +94,7 @@ namespace NurseryProject.Services.StudentExamDegrees
             {
                 var result = new ResultDto<StudentExamDegreesDto>();
 
-                if (model.Students != null)
-                {
+                
                     ClassExam classExams = new ClassExam();
                     classExams.Id = Guid.NewGuid();
                     classExams.ExamId = model.ExamId;
@@ -104,28 +104,34 @@ namespace NurseryProject.Services.StudentExamDegrees
                     classExams.CreatedBy = UserId;
                     classExams.IsDeleted = false;
                     dbContext.ClassExams.Add(classExams);
-
+                if (model.Students != null)
+                {
                     foreach (var item in model.Students)
                     {
-                        StudentsExamDegree studentExamDegree = new StudentsExamDegree();
-                        studentExamDegree.Id = Guid.NewGuid();
-                        studentExamDegree.ClassExamId = classExams.Id;
-                        if (item.ExamDegreeId != Guid.Empty)
-                            studentExamDegree.ExamDegreeId = item.ExamDegreeId;
+                        if(item.TotalDegree !=null)
+                        {
+                            StudentsExamDegree studentExamDegree = new StudentsExamDegree();
+                            studentExamDegree.Id = Guid.NewGuid();
+                            studentExamDegree.ClassExamId = classExams.Id;
+                            if (item.ExamDegreeId != Guid.Empty)
+                                studentExamDegree.ExamDegreeId = item.ExamDegreeId;
 
-                        studentExamDegree.StudentId = item.StudentId;
-                        studentExamDegree.Degree = float.Parse(item.TotalDegree);
-                        studentExamDegree.Date = DateTime.Parse(model.Students[0].Date).Date;
-                        studentExamDegree.CreatedOn = DateTime.UtcNow;
-                        studentExamDegree.CreatedBy = UserId;
-                        studentExamDegree.IsDeleted = false;
+                            studentExamDegree.StudentId = item.StudentId;
+                            studentExamDegree.Degree = float.Parse(item.TotalDegree);
+                            if (model.Students[0].Date != null)
+                                studentExamDegree.Date = DateTime.Parse(model.Students[0].Date).Date;
+                            studentExamDegree.CreatedOn = DateTime.UtcNow;
+                            studentExamDegree.CreatedBy = UserId;
+                            studentExamDegree.IsDeleted = false;
 
-                        dbContext.StudentsExamDegrees.Add(studentExamDegree);
-                        dbContext.SaveChanges();
+                            dbContext.StudentsExamDegrees.Add(studentExamDegree);
+                            dbContext.SaveChanges();
+                        }
+                       
                     }
-                    dbContext.SaveChanges();
 
                 }
+                dbContext.SaveChanges();
 
                 result.IsSuccess = true;
                 result.Message = "تم حفظ البيانات بنجاح";
@@ -162,23 +168,28 @@ namespace NurseryProject.Services.StudentExamDegrees
                 Oldmodel.ClassId = model.ClassId;
                 //Oldmodel.Date = DateTime.Parse(model.Date);
 
-
-                foreach (var item in model.Students)
+                if (model.Students != null)
                 {
-                    StudentsExamDegree studentExamDegree = new StudentsExamDegree();
-                    studentExamDegree.Id = Guid.NewGuid();
-                    studentExamDegree.ClassExamId = model.Id;
-                    if (item.ExamDegreeId != Guid.Empty)
-                        studentExamDegree.ExamDegreeId = item.ExamDegreeId;
+                    foreach (var item in model.Students)
+                    {
+                        if (item.TotalDegree != null)
+                        {
+                            StudentsExamDegree studentExamDegree = new StudentsExamDegree();
+                            studentExamDegree.Id = Guid.NewGuid();
+                            studentExamDegree.ClassExamId = model.Id;
+                            if (item.ExamDegreeId != Guid.Empty)
+                                studentExamDegree.ExamDegreeId = item.ExamDegreeId;
 
-                    studentExamDegree.StudentId = item.StudentId;
-                    studentExamDegree.Degree = float.Parse(item.TotalDegree);
-                    studentExamDegree.Date = DateTime.Parse(model.Students[0].Date).Date;
-                    studentExamDegree.CreatedOn = DateTime.UtcNow;
-                    studentExamDegree.CreatedBy = UserId;
-                    studentExamDegree.IsDeleted = false;
-                    dbContext.StudentsExamDegrees.Add(studentExamDegree);
-                    dbContext.SaveChanges();
+                            studentExamDegree.StudentId = item.StudentId;
+                            studentExamDegree.Degree = float.Parse(item.TotalDegree);
+                            studentExamDegree.Date = DateTime.Parse(model.Students[0].Date).Date;
+                            studentExamDegree.CreatedOn = DateTime.UtcNow;
+                            studentExamDegree.CreatedBy = UserId;
+                            studentExamDegree.IsDeleted = false;
+                            dbContext.StudentsExamDegrees.Add(studentExamDegree);
+                            dbContext.SaveChanges();
+                        }
+                    }
                 }
 
                 dbContext.SaveChanges();

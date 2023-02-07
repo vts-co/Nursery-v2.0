@@ -66,13 +66,14 @@ namespace NurseryProject.Controllers
                 Class.Id = Guid.Empty;
 
                 var studyTypes = studyTypesServices.GetAll();
+                var studyClass = studyClassesServices.Get(Class.StudyClassId.Value);
 
                 var class2 = classesServices.GetAll().Where(x => x.Id == Class.ClassId).FirstOrDefault();
                 var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
 
                 ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
 
-                ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", Class.StudyClass.StudyYearId);
+                ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", studyClass.StudyYearId);
                 ViewBag.StudyClassId = new SelectList(studyClassesServices.GetAll(), "Id", "Name", Class.StudyClassId);
 
                 ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name", level.Id);
@@ -90,11 +91,13 @@ namespace NurseryProject.Controllers
         {
             var class1 = studentsAttendanceServices.Get(Id);
             var studyTypes = studyTypesServices.GetAll();
-
+            var studyClass = studyClassesServices.Get(class1.StudyClassId.Value);
             var class2 = classesServices.GetAll().Where(x => x.Id == class1.ClassId).FirstOrDefault();
             var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
 
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
+            ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", studyClass.StudyYearId);
+            ViewBag.StudyClassId = new SelectList(studyClassesServices.GetAll(), "Id", "Name", class1.StudyClassId);
 
             ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name", level.Id);
             ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", class2.Id);
@@ -105,10 +108,10 @@ namespace NurseryProject.Controllers
             return View("Upsert", class1);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(StudentsAttendance Class)
+        public ActionResult Edit(StudentsAttendance Class, List<Guid> IsAttend)
         {
 
-            var result = studentsAttendanceServices.Edit(Class, (Guid)TempData["UserId"]);
+            var result = studentsAttendanceServices.Edit(Class, IsAttend, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
                 TempData["success"] = result.Message;
@@ -117,19 +120,19 @@ namespace NurseryProject.Controllers
             else
             {
                 var studyTypes = studyTypesServices.GetAll();
-
+                var studyClass = studyClassesServices.Get(Class.StudyClassId.Value);
                 var class2 = classesServices.GetAll().Where(x => x.Id == Class.ClassId).FirstOrDefault();
                 var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
 
                 ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
+                ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", studyClass.StudyYearId);
+                ViewBag.StudyClassId = new SelectList(studyClassesServices.GetAll(), "Id", "Name", Class.StudyClassId);
 
                 ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name", level.Id);
                 ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", class2.Id);
 
                 var Students = studentsServices.GetAll();
                 ViewBag.StudentId = new SelectList(Students, "Id", "Name", Class.StudentId);
-
-
                 TempData["warning"] = result.Message;
                 return View("Upsert", Class);
             }
@@ -224,6 +227,12 @@ namespace NurseryProject.Controllers
         public ActionResult getStudents(Guid ClassId)
         {
             var model = studentsClassServices.GetAll().Where(x => x.ClassId == ClassId).Select(x => new { x.Id, x.StudentId, x.Code, x.StudentName }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getStudentAttendans(string Date, Guid ClassId, Guid StudyYearId, Guid StudyClassId, Guid StudentId)
+        {
+            var date1 = DateTime.Parse(Date);
+            var model = studentsAttendanceServices.Get(date1, ClassId, StudyYearId, StudyClassId, StudentId);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getStudyClass(Guid StudyYearId)

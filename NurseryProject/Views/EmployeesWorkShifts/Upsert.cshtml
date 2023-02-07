@@ -35,12 +35,12 @@
                     </div>
                 </div>
                 @*<div class="form-group mb-3 col-sm-6" id="empId" style="height:200px;overflow-y:scroll">
-            @Html.Label("الموظف", htmlAttributes: new { @class = "control-label" })
-            <div class="col-12">
-                @Html.DropDownListFor(model => model.EmployeeId, null, "--اختر--", new { @class = "form-control ", required = "required" })
-                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                        @Html.Label("الموظف", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.DropDownListFor(model => model.EmployeeId, null, "--اختر--", new { @class = "form-control ", required = "required" })
+                            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الفترة", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
@@ -48,8 +48,29 @@
                         @Html.ValidationMessageFor(model => model.WorkShiftId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6" id="empId" style="height:110px;overflow-y:scroll">
-                    <label>الموظفين</label>
+                <div class="form-group mb-3 col-sm-6" style="height:200px;overflow-y:scroll">
+                    <label class="control-label">الموظفين</label>
+                    <div class="col-12">
+                        <table id="datatable2" class="table table-striped dt-responsive  nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("الكود")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("الاسم")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("الكل")
+                                        <input type='checkbox' class='form-check-input' id='All' name='All' value='' />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="empId">
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
                 <div class="form-group mb-3 col-sm-12">
                     @Html.Label("ملاحظات ", htmlAttributes: new { @class = "control-label" })
@@ -91,25 +112,42 @@
         //});
         $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
             $("#empId").empty();
-            $("#empId").append("<label>الموظفين</label><ul>");
-
             $.each(data, function (key, value) {
-                $("#empId").append("<li><input type='checkbox' class='form-check-input' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/>" + value["Name"] + " </li >")
+                $.get('/EmployeesWorkShifts/getEmployeesWorkShifts', { EmployeeId: value["Id"], DepartmentId: $("#DepartmentId").val(), WorkShiftId: $("#WorkShiftId").val(), StudyYearId: $("#StudyYearId").val() }, function (data1) {
+                    if (data1 == "0") {
+                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/></td></tr>")
+                    }
+                    else {
+                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' checked/></td></tr>")
+                    }
+                });
             });
-            $("#empId").append("</ul>")
-
+            
         });
+        
         $("#DepartmentId").change(function () {
             $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
                 $("#empId").empty();
-                $("#empId").append("<label>الموظفين</label><ul>");
 
                 $.each(data, function (key, value) {
-                    $("#empId").append("<li><input type='checkbox' class='form-check-input' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/>"  + value["Name"] + " </li >")
+                    $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/></td></tr>")
                 });
-                $("#empId").append("</ul>")
 
             });
+        });
+        $("#All").change(function () {
+            if (document.getElementById('All').checked) {
+                var rowCount = $('#datatable2 tr').length;
+                for (var i = 0; i < rowCount; i++) {
+                    document.getElementById('emp[' + i + ']').checked = true;
+                }
+            }
+            else {
+                var rowCount = $('#datatable2 tr').length;
+                for (var i = 0; i < rowCount; i++) {
+                    document.getElementById('emp[' + i + ']').checked = false;
+                }
+            }
         });
     </script>
 }

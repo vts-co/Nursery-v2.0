@@ -50,7 +50,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", new EmployeesWorkShift());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(EmployeesWorkShift employeesWorkShift,List<Guid> emp)
+        public ActionResult Create(EmployeesWorkShift employeesWorkShift, List<Guid> emp)
         {
             var result = employeesWorkShiftsServices.Create(employeesWorkShift, emp, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
@@ -100,10 +100,10 @@ namespace NurseryProject.Controllers
             return View("Upsert", employeesWorkShift);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(EmployeesWorkShift employeesWorkShift)
+        public ActionResult Edit(EmployeesWorkShift employeesWorkShift, List<Guid> emp)
         {
 
-            var result = employeesWorkShiftsServices.Edit(employeesWorkShift, (Guid)TempData["UserId"]);
+            var result = employeesWorkShiftsServices.Edit(employeesWorkShift, emp, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
                 TempData["success"] = result.Message;
@@ -111,8 +111,8 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                var emp = employeesServices.Get(employeesWorkShift.EmployeeId.Value).JopId;
-                var jop = jopsServices.Get(emp.Value).DepartmentId;
+                var emp1 = employeesServices.Get(employeesWorkShift.EmployeeId.Value).JopId;
+                var jop = jopsServices.Get(emp1.Value).DepartmentId;
                 var employeesModel = employeesServices.GetAll();
                 ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", employeesWorkShift.EmployeeId);
 
@@ -144,7 +144,12 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getEmployees(Guid DepartmentId)
         {
-            var model = employeesServices.GetAll().Where(x => x.DepartmentId == DepartmentId).Select(x => new { x.Id, x.Name }).ToList();
+            var model = employeesServices.GetAll().Where(x => x.DepartmentId == DepartmentId).Select(x => new { x.Id, x.Name, x.Code }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getEmployeesWorkShifts(Guid EmployeeId, Guid DepartmentId, Guid WorkShiftId, Guid StudyYearId)
+        {
+            var model = employeesWorkShiftsServices.GetAll().Where(x => x.EmployeeId == EmployeeId && x.DepartmentId == DepartmentId && x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).ToList().Count();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
     }

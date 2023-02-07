@@ -61,7 +61,7 @@
 
             <div class="row">
 
-                <div class="form-group mb-3 col-sm-12">
+                <div class="form-group mb-3 col-sm-12" style="height:350px;overflow-y:scroll">
                     <div class="card-body">
                         <table class="table table-striped dt-responsive  nowrap w-100" id="table1">
                             <thead>
@@ -79,7 +79,7 @@
 
                                 </tr>
                             </thead>
-                            <tbody id="Questions" class="mt-2">
+                            <tbody id="Questions" class="mt-2" >
                             </tbody>
                         </table>
                     </div>
@@ -126,10 +126,9 @@
         }
         else {
             $.get('/StudentsExamDegrees/getExamClass', { Id: $("#Id").val() }, function (data) {
-                $.each(data, function (key, value) {
                     $("#Questions").empty();
-                    if (value.IsOneQuestion == true) {
-                        $.each(value.Students, function (key1, value1) {
+                    if (data.IsOneQuestion == true) {
+                        $.each(data.Students, function (key1, value1) {
                             $("#Questions").append(
                                 "<tr>" +
                                 "<td>" + value1.Code + "</td>" +
@@ -139,16 +138,16 @@
                                 "<input id='Students[" + key1 + "].StudentId' name='Students[" + key1 + "].StudentId' value='" + value1.StudentId + "' hidden />" +
                                 "<input id='Students[" + key1 + "].StudentName' name='Students[" + key1 + "].StudentName' value='" + value1.StudentName + "' hidden />" +
 
-                                "<label>الدرجة : </label><input id='Students[" + key1 + "].TotalDegree' name='Students[" + key1 + "].TotalDegree' value='" + value1.TotalDegree + "' class = 'form-control' required />" +
+                                "<label>الدرجة : </label><input id='Students[" + key1 + "].TotalDegree' name='Students[" + key1 + "].TotalDegree' value='" + value1.TotalDegree + "' class = 'form-control'  />" +
                                 "</td>" +
-                                "<td><label>التاريخ : </label><input id='Students[" + key1 + "].Date' name='Students[" + key1 + "].Date' value='" + value1.Date + "' class = 'form-control' required type='date' /></td>" +
+                                "<td><label>التاريخ : </label><input id='Students[" + key1 + "].Date' name='Students[" + key1 + "].Date' value='" + value1.Date + "' class = 'form-control'  type='date' /></td>" +
                                 "</tr>");
                         });
 
 
                     }
                     else {
-                        $.each(value.Students, function (key1, value1) {
+                        $.each(data.Students, function (key1, value1) {
                             if (value1.Count == "0") {
                                 $("#Questions").append(
                                     "<tr>" +
@@ -182,8 +181,6 @@
                         });
 
                     }
-
-                });
 
             });
 
@@ -231,9 +228,9 @@
                                     "<input id='Students[" + key + "].StudentId' name='Students[" + key + "].StudentId' value='" + value["Id"] + "' hidden />" +
                                     "<input id='Students[" + key + "].StudentName' name='Students[" + key + "].StudentName' value='" + value["Name"] + "' hidden />" +
 
-                                    "<label>الدرجة : </label><input id='Students[" + key + "].TotalDegree' name='Students[" + key + "].TotalDegree' class = 'form-control' required />" +
+                                    "<label>الدرجة : </label><input id='Students[" + key + "].TotalDegree' name='Students[" + key + "].TotalDegree' class = 'form-control'  />" +
                                     "</td>" +
-                                    "<td><label>التاريخ : </label><input id='Students[" + key + "].Date' name='Students[" + key + "].Date' class = 'form-control' required type='date' /></td>" +
+                                    "<td><label>التاريخ : </label><input id='Students[" + key + "].Date' name='Students[" + key + "].Date' class = 'form-control'  type='date' /></td>" +
                                     "</tr>");
                             });
 
@@ -317,7 +314,7 @@
                     t +=
                         "<div class='col-6'>" +
                         "<input id='Students[" + key1 + "].StudentId' name='Students[" + key1 + "].StudentId' value='" + StudentId + "' hidden />" +
-                        "<input id='Students[" + key1 + "].ExamDegreeId' name='Students[" + key1 + "].ExamDegreeId' value='" + value1["ExamDegreeId"] + "' hidden />" +
+                    "<input id='Students[" + key1 + "].ExamDegreeId' name='Students[" + key1 + "].ExamDegreeId' value='" + value1["ExamDegreeId"] + "' hidden />" +
                         "<label>درجة السؤال رقم " + j + "</label><input id='Students[" + key1 + "].TotalDegree' name='Students[" + key1 + "].TotalDegree' value='" + value1["TotalDegree"] + "' value='fg' class = 'form-control' required />" +
                         "</div>";
                     j++;
