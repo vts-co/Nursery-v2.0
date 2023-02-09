@@ -67,16 +67,16 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
-                    item.StudentsClassPrevious = GetAllPrevious(item.StudentId);
+                    item.StudentsClassPrevious = GetAllPrevious(item.StudentId,item.StudyTypeId);
                 }
                 return model;
             }
         }
-        public List<StudentsClassDto> GetAllPrevious(Guid StudentId)
+        public List<StudentsClassDto> GetAllPrevious(Guid StudentId,Guid StudyTypeId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == false && x.StudentId == StudentId && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Class.Level.StudyTypeId == StudyTypeId && x.IsCurrent == false && x.StudentId == StudentId && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -217,6 +217,23 @@ namespace NurseryProject.Services.StudentsClass
             }
 
         }
+        public ResultDto<StudentsClassDto> UpateCurrentId(Guid Id, Guid UserId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var result = new ResultDto<StudentsClassDto>();
+                var Oldmodel = dbContext.StudentsClasses.Find(Id);
+
+                Oldmodel.ModifiedOn = DateTime.UtcNow;
+                Oldmodel.ModifiedBy = UserId;
+                Oldmodel.IsCurrent = false;
+                dbContext.SaveChanges();
+                result.IsSuccess = true;
+                result.Message = "تم تعديل البيانات بنجاح";
+                return result;
+            }
+
+        }
 
         public ResultDto<StudentsClassDto> Create(StudentsClassDto model, Guid RegistrationTypeId, Guid UserId)
         {
@@ -281,6 +298,68 @@ namespace NurseryProject.Services.StudentsClass
                 return result;
             }
         }
+
+        public ResultDto<StudentsClassDto> Create(StudentsClassDto model, Guid UserId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var result = new ResultDto<StudentsClassDto>();
+                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel != null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا الطالب تم التحاقه بالفعل";
+                    return result;
+                }
+               
+                var studentsClass = new Models.StudentsClass()
+                {
+                    Id = model.Id,
+                    ClassId = model.ClassId,
+                    StudentId = model.StudentId,
+                    StudyYearId = model.StudyYearId,
+                    SubscriptionId = model.SubscriptionId,
+                    IsAnother = model.IsAnother,
+                    IsCurrent = model.IsCurrent,
+
+                    JoiningDate = DateTime.Parse(model.JoiningDate),
+                    Notes = model.Notes,
+                    CreatedOn = DateTime.UtcNow,
+                    CreatedBy = UserId,
+                    IsDeleted = false,
+                };
+                dbContext.StudentsClasses.Add(studentsClass);
+                dbContext.SaveChanges();
+                if (model.SubscriptionMethod != null)
+                {
+                    var i = 1;
+                    foreach (var item in model.SubscriptionMethod)
+                    {
+                        var subscriptionMethod = new SubscriptionMethod()
+                        {
+                            Id = Guid.NewGuid(),
+                            StudentClassId = model.Id,
+                            Amount = item.Amount,
+                            Date = DateTime.Parse(item.Date),
+                            OrderDisplay = i,
+                            PaidAmount = item.PaidAmount,
+                            IsPaid = false,
+                            CreatedOn = DateTime.UtcNow,
+                            CreatedBy = UserId,
+                            IsDeleted = false,
+                        };
+                        dbContext.SubscriptionMethods.Add(subscriptionMethod);
+                        dbContext.SaveChanges();
+                        i++;
+                    }
+                }
+
+                result.IsSuccess = true;
+                result.Message = "تم حفظ البيانات بنجاح";
+                return result;
+            }
+        }
+
         public ResultDto<StudentsClassDto> Edit(StudentsClassDto model, Guid RegistrationTypeId, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())

@@ -196,31 +196,73 @@ namespace NurseryProject.Controllers
         public ActionResult StudentsLevelsTransfer(Guid Id)
         {
             var class1 = studentsClassServices.Get(Id);
-            var studyTypes = studyTypesServices.GetAll();
-
             var class2 = classesServices.GetAll().Where(x => x.Id == class1.ClassId).FirstOrDefault();
             var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
+            var studyTypes = studyTypesServices.GetAll();
+            var studyYear1 = studyYearsServices.GetAll().Where(x => x.Id == class1.StudyYearId).FirstOrDefault();
 
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
 
-            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name", level.Id);
-            ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", class2.Id);
+            var StudyYear = studyYearsServices.GetAll().Where(x=>x.DisplayOrder> studyYear1.DisplayOrder).ToList();
+            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
 
-            var StudyYear = studyYearsServices.GetAll();
-            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", class1.StudyYearId);
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.DisplayOrder > level.DisplayOrder&& x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name");
+            ViewBag.ClassId = new SelectList("");
 
             var Students = studentsServices.GetAllDropDown();
-            ViewBag.StudentId = new SelectList(Students, "Id", "Name", class1.StudentId);
+            ViewBag.StudentId = new SelectList(Students, "Id", "Name");
+            //ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name");
 
-            var subscription = subscriptionsServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) });
-            ViewBag.SubscriptionId = new SelectList(subscription, "Id", "Name", class1.SubscriptionId);
-            ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", Students.Where(x => x.Id == class1.StudentId).FirstOrDefault().RegistrationTypeId);
+            ViewBag.SubscriptionId = new SelectList("");
+           
+            return View(class1);
+        }
+        [HttpPost]
+        public ActionResult StudentsLevelsTransfer(StudentsClassDto Class)
+        {
+            var id = Class.Id;
+            Class.Id = Guid.NewGuid();
+            if (Class.IsAnother == true)
+            {
+                Class.SubscriptionId = null;
+            }
+            var result = studentsClassServices.Create(Class, (Guid)TempData["UserId"]);
+            if (result.IsSuccess)
+            {
+                var result2 = studentsClassServices.UpateCurrentId(id, (Guid)TempData["UserId"]);
+                
+                TempData["success"] = result.Message;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Class.Id = Guid.Empty;
+                var studyTypes = studyTypesServices.GetAll();
 
+                var class2 = classesServices.GetAll().Where(x => x.Id == Class.ClassId).FirstOrDefault();
+                var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
 
-            if (class1.JoiningDate != null)
-                ViewBag.JoiningDate = class1.JoiningDate;
+                ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
 
-            return View("Upsert", class1);
+                ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name", level.Id);
+                ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", class2.Id);
+
+                var StudyYear = studyYearsServices.GetAll();
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", Class.StudyYearId);
+
+                var Students = studentsServices.GetAllDropDown();
+                ViewBag.StudentId = new SelectList(Students, "Id", "Name", Class.StudentId);
+
+                var subscription = subscriptionsServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) });
+                ViewBag.SubscriptionId = new SelectList(subscription, "Id", "Name", Class.SubscriptionId);
+                //ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", RegistrationTypeId);
+
+                if (Class.JoiningDate != null)
+                    ViewBag.JoiningDate = Class.JoiningDate;
+
+                TempData["warning"] = result.Message;
+                return View(Class);
+            }
         }
         public ActionResult Delete(Guid Id)
         {
@@ -275,8 +317,6 @@ namespace NurseryProject.Controllers
 
             return View();
         }
-
-       
         [HttpPost]
         public ActionResult NoInstallmentsReports(string StudyYearId)
         {

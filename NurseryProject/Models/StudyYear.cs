@@ -28,6 +28,7 @@ namespace NurseryProject.Models
         public System.Guid Id { get; set; }
         public string Name { get; set; }
         public Nullable<bool> IsCurrentYear { get; set; }
+        public Nullable<int> DisplayOrder { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }

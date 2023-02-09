@@ -29,6 +29,8 @@ namespace NurseryProject.Controllers
         public ActionResult Create(StudyYear studyYear)
         {
             studyYear.Id = Guid.NewGuid();
+            if (studyYear.DisplayOrder == null)
+                studyYear.DisplayOrder = 0;
             var result = studyYearsServices.Create(studyYear, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
@@ -51,7 +53,8 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(StudyYear studyYear)
         {
-
+            if (studyYear.DisplayOrder == null)
+                studyYear.DisplayOrder = 0;
             var result = studyYearsServices.Edit(studyYear, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {

@@ -12,7 +12,7 @@ namespace NurseryProject.Services.StudyYears
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudyYears.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).ToList();
+                var model = dbContext.StudyYears.Where(x => x.IsDeleted == false).OrderBy(x => x.DisplayOrder).ToList();
                 return model;
             }
         }
@@ -79,7 +79,7 @@ namespace NurseryProject.Services.StudyYears
                 Oldmodel.ModifiedBy = UserId;
                 Oldmodel.Name = model.Name;
                 Oldmodel.IsCurrentYear = model.IsCurrentYear;
-
+                Oldmodel.DisplayOrder = model.DisplayOrder;
                 Oldmodel.Notes = model.Notes;
 
                 dbContext.SaveChanges();
