@@ -187,6 +187,17 @@ namespace NurseryProject.Controllers
                 return View("Upsert", Class);
             }
         }
+
+        public ActionResult StudentsClassPrevious(Guid StudentClassId)
+        {
+            var model = studentsClassServices.GetAll().Where(x=>x.Id== StudentClassId).FirstOrDefault();
+            return View(model);
+        }
+        public ActionResult StudentsLevelsTransfer(Guid StudentClassId)
+        {
+            var model = studentsClassServices.GetAll().Where(x => x.Id == StudentClassId).FirstOrDefault();
+            return View(model);
+        }
         public ActionResult Delete(Guid Id)
         {
             var result = studentsClassServices.Delete(Id, (Guid)TempData["UserId"]);

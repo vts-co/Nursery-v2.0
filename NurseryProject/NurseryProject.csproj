@@ -203,6 +203,7 @@
     <Compile Include="Dtos\StudentsClassesTransfer\StudentsClassesTransferDto.cs" />
     <Compile Include="Dtos\StudentsClass\StudentsClassDto.cs" />
     <Compile Include="Dtos\Students\StudentsDto.cs" />
+    <Compile Include="Dtos\Students\StudentsReportDto.cs" />
     <Compile Include="Dtos\StudyClasses\StudyClassesDto.cs" />
     <Compile Include="Dtos\Subjects\SubjectsDto.cs" />
     <Compile Include="Dtos\Subscriptions\SubscriptionsDto.cs" />
@@ -2075,6 +2076,9 @@
     <Content Include="Views\Settings\Upsert.cshtml" />
     <Content Include="Views\StudentsClassesTransfer\Index.cshtml" />
     <Content Include="Views\StudentsClassesTransfer\Upsert.cshtml" />
+    <Content Include="Views\Students\Reports.cshtml" />
+    <Content Include="Views\StudentsClass\StudentsClassPrevious.cshtml" />
+    <Content Include="Views\StudentsClass\StudentsLevelsTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

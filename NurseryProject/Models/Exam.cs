@@ -25,7 +25,7 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> ExamTypeId { get; set; }
         public Nullable<System.Guid> SubjectId { get; set; }
         public Nullable<bool> IsOneQuestion { get; set; }
-        public string TotalDegree { get; set; }
+        public Nullable<double> TotalDegree { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }

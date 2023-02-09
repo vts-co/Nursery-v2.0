@@ -77,7 +77,7 @@
             <hr />
             <div class="row">
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("إلي الفصل", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("إلي فصل", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownListFor(model => model.ClassToId, new SelectList(ViewBag.ClassesTo,"Id","Name"), "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.ClassToId, "", new { @class = "text-danger" })

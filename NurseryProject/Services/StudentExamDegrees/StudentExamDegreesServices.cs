@@ -27,7 +27,7 @@ namespace NurseryProject.Services.StudentExamDegrees
                     ClassName = x.Class.Name,
                     ExamId = x.ExamId.Value,
                     ExamName = x.Exam.IsOneQuestion == true ? x.Exam.Subject.Name + "/" + x.Exam.ExamsType.Name + "/" + "سؤال" + "/" + x.Exam.TotalDegree : x.Exam.Subject.Name + "/" + x.Exam.ExamsType.Name + "/" + "عدة اسئلة" + "/" + x.Exam.TotalDegree,
-                    ExamDegree=x.Exam.TotalDegree,
+                    ExamDegree=x.Exam.TotalDegree.ToString(),
                     IsOneQuestion = x.Exam.IsOneQuestion.Value,
                     Students = x.StudentsExamDegrees.Where(y => y.IsDeleted == false).OrderBy(y => y.CreatedOn).Select(y => new StudentExamDegreesDetailsDto
                     {

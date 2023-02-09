@@ -1,0 +1,202 @@
+﻿@model NurseryProject.Dtos.Students.StudentsReportDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير الطلاب";
+    ViewBag.MainPage = "الطلاب";
+    var count = " : لم يمتحن بعد  ";
+    var num = "%";
+}
+@using (Html.BeginForm("Reports", "Students", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+
+}
+@if (ViewBag.Students != null)
+{
+    <div class="card">
+        <div class="card-header">
+            تقارير الطلاب
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("رقم التليفون")
+                        </th>
+                        <th>
+                            @Html.DisplayName("العنوان")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد الاقساط المتاخرة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد الاقساط الطبيعية")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد الاقساط المدفوعة جزئيا")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد الاقساط المدفوعة متاخر")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عددايام الحضور  ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عددايام الغياب  ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد مرات التحويل بين الفصول")
+                        </th>
+                        <th>
+                            @Html.DisplayName("معدل درجات الامتحانات")
+                        </th>
+                        <th>
+                            @Html.DisplayName("معلمي فصله")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Students)
+                    {
+                    <tr>
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Phone
+                        </td>
+
+                        <td>
+                            @item.Address
+                        </td>
+
+                        <td>
+                            @item.CountOfLatecomers
+                        </td>
+                        <td>
+                            @item.CountOfNormal
+                        </td>
+                        <td>
+                            @item.CountOfPart
+                        </td>
+                        <td>
+                            @item.CountOfPaidNoTime
+                        </td>
+                        <td>
+                            @item.AttendanceNum
+                        </td>
+
+                        <td>
+                            @item.NoAttendanceNum
+                        </td>
+                        <td>
+                            @item.CountOfTransferClasses
+                        </td>
+                        <td>
+                            @if (@item.ExamsRate != "")
+                            {
+                                @item.ExamsRate @num
+                            }
+                            else
+                            {
+                                @count
+                            }
+                        </td>
+                        <td>
+                            @if (item.Employees.Count > 0)
+                            {
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم </th>
+                                            <th>رقم التليفون </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item2 in item.Employees)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    م.  @item2.EmployeeName
+                                                </td>
+                                                <td>
+                                                    |  @item2.EmployeePhone
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            }
+
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+@section scripts{
+    <script type="text/javascript">
+        $("#CityId").change(function () {
+            $.get('/Students/getDestricts', { Id: $("#CityId").val() }, function (data) {
+                $("#DestrictId").empty();
+                $("#DestrictId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#DestrictId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        if (document.getElementById('BirthDate').value == "") {
+            document.getElementById('BirthDate').value = now.toISOString().slice(0, 10);
+        }
+        if (document.getElementById('JoiningDate').value == "") {
+            now.setFullYear(now.getFullYear() + 1);
+            document.getElementById('JoiningDate').value = now.toISOString().slice(0, 10);
+        }
+
+    </script>
+}

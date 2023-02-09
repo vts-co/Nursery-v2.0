@@ -70,6 +70,14 @@ namespace NurseryProject.Services.Employees
                     result.Message = "هذا الموظف موجود بالفعل";
                     return result;
                 }
+                var Oldmodel2 = dbContext.Employees.Where(x => x.Code == model.Code && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel2 != null)
+                {
+                    result.Result = Oldmodel2;
+                    result.IsSuccess = false;
+                    result.Message = "هذا الكود موجود لم يمكن استخدامه";
+                    return result;
+                }
                 model.CreatedOn = DateTime.UtcNow;
                 model.CreatedBy = UserId;
                 model.IsDeleted = false;

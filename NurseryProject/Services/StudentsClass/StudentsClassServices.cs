@@ -13,14 +13,14 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == true && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
                     StudyPlaceId = x.Class.StudyPlaceId.Value,
                     StudyPlaceName = x.Class.StudyPlace.Name,
                     StudyTypeId = x.Class.Level.StudyTypeId.Value,
-
+                    IsCurrent=x.IsCurrent.Value,
                     StudyTypeName = x.Class.Level.StudyType.Name,
                     LevelId = x.Class.LevelId.Value,
                     LevelName = x.Class.Level.Name,
@@ -67,8 +67,73 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
+                    item.StudentsClassPrevious = GetAllPrevious(item);
                 }
                 return model;
+            }
+        }
+        public List<StudentsClassDto> GetAllPrevious(StudentsClassDto mod)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == false && x.StudentId == mod.StudentId && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                {
+                    Id = x.Id,
+                    Code = x.Student.Code,
+                    StudyPlaceId = x.Class.StudyPlaceId.Value,
+                    StudyPlaceName = x.Class.StudyPlace.Name,
+                    StudyTypeId = x.Class.Level.StudyTypeId.Value,
+                    StudyTypeName = x.Class.Level.StudyType.Name,
+                    LevelId = x.Class.LevelId.Value,
+                    LevelName = x.Class.Level.Name,
+                    ClassId = x.ClassId.Value,
+                    ClassName = x.Class.Name,
+                    StudyYearId = x.StudyYearId.Value,
+                    StudyYearName = x.StudyYear.Name,
+                    StudentId = x.Student.Id,
+                    StudentName = x.Student.Name,
+                    StudentPhone = x.Student.Phone,
+                    IsAnother = x.IsAnother.Value,
+                    IsCurrent = x.IsCurrent.Value,
+                    SubscriptionId = x.SubscriptionId.Value,
+                    SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
+                    Amount = x.IsAnother != true ? x.Subscription.Amount : "",
+                    Number = x.IsAnother != true ? x.Subscription.InstallmentsNumber : "",
+                    SubscriptionMethod = x.SubscriptionMethods.Where(y => y.IsDeleted == false && y.StudentClassId == x.Id).OrderBy(y => y.OrderDisplay).Select(y => new SubscriptionMethodDto
+                    {
+                        Id = y.Id,
+                        StudentClassId = x.Id,
+                        Amount = y.Amount,
+                        Date = y.Date.Value.ToString(),
+                        PaidAmount = y.PaidAmount,
+                        IsPaid = y.IsPaid.Value,
+                        Paided = y.IsPaid.Value == true ? "تم الدفع" : "لم يتم الدفع بعد",
+                        PaidDate = y.PaidDate.Value.ToString()
+                    }).ToList(),
+                    JoiningDate = x.JoiningDate.Value.ToString(),
+                    Notes = x.Notes
+
+                }).ToList();
+                var total = 0.0;
+                foreach (var item in model)
+                {
+                    if (item.IsAnother)
+                    {
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == true).Count() > 0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
+                        }
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                        }
+                        item.Amount = total.ToString();
+                        item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
+                    }
+                }
+
+                return model;
+
             }
         }
         public StudentsClassDto Get(Guid Id)
@@ -94,7 +159,7 @@ namespace NurseryProject.Services.StudentsClass
                     StudentId = x.Student.Id,
                     StudentName = x.Student.Name,
                     StudentPhone = x.Student.Phone,
-
+                    IsCurrent = x.IsCurrent.Value,
                     IsAnother = x.IsAnother.Value,
 
                     SubscriptionId = x.SubscriptionId.Value,
@@ -150,7 +215,7 @@ namespace NurseryProject.Services.StudentsClass
                 result.Message = "تم تعديل البيانات بنجاح";
                 return result;
             }
-           
+
         }
 
         public ResultDto<StudentsClassDto> Create(StudentsClassDto model, Guid RegistrationTypeId, Guid UserId)
@@ -177,6 +242,8 @@ namespace NurseryProject.Services.StudentsClass
                     StudyYearId = model.StudyYearId,
                     SubscriptionId = model.SubscriptionId,
                     IsAnother = model.IsAnother,
+                    IsCurrent = model.IsCurrent,
+
                     JoiningDate = DateTime.Parse(model.JoiningDate),
                     Notes = model.Notes,
                     CreatedOn = DateTime.UtcNow,
@@ -231,6 +298,7 @@ namespace NurseryProject.Services.StudentsClass
                 Oldmodel.JoiningDate = DateTime.Parse(model.JoiningDate);
                 Oldmodel.Notes = model.Notes;
                 Oldmodel.Student.RegistrationTypeId = RegistrationTypeId;
+                Oldmodel.IsCurrent = model.IsCurrent;
 
                 var subscriptionMethod1 = dbContext.SubscriptionMethods.Where(x => x.StudentClassId == model.Id && x.IsDeleted == false).ToList();
                 if (subscriptionMethod1.Count() > 0)

@@ -174,20 +174,63 @@ namespace NurseryProject.Controllers
             var StudyYear = studyYearsServices.GetAll();
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
 
+            var studyTypes = studyTypesServices.GetAll();
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
+
+            ViewBag.LevelId = new SelectList("");
+            ViewBag.ClassId = new SelectList("");
+
             return View();
         }
         [HttpPost]
-        public ActionResult LatecomersReports(string StudyYearId)
+        public ActionResult LatecomersReports(Guid? StudyYearId=null,Guid? StudyTypeId=null,Guid? LevelId=null,Guid? ClassId=null)
         {
+            var result = studentsClassServices.GetAll().Where(x=>x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0);
+
             var StudyYear = studyYearsServices.GetAll();
-            var id = Guid.Parse(StudyYearId);
+            var studyTypes = studyTypesServices.GetAll();
+            var levels = levelsServices.GetAll();
+            var classes = classesServices.GetAll();
 
-            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", id);
 
-            var result = studentsClassServices.GetAll();
-            var model = result.Where(x => x.StudyYearId == id && x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0).ToList();
+            if (StudyYearId!=null && StudyYearId!=Guid.Empty)
+            {
+                result = result.Where(x => x.StudyYearId == StudyYearId );
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", StudyYearId);
+            }
+            else
+            {
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", StudyYearId);
+            }
+            if (StudyTypeId != null && StudyTypeId != Guid.Empty)
+            {
+                result = result.Where(x => x.StudyTypeId == StudyTypeId);
+                ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", StudyTypeId);
+            }
+            else
+            {
+                ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
+            }
+            if (LevelId != null && LevelId != Guid.Empty)
+            {
+                result = result.Where(x => x.LevelId == LevelId);
+                ViewBag.LevelId = new SelectList(levels.Where(x=>x.StudyTypeId== StudyTypeId).ToList(), "Id", "Name", LevelId);
+            }
+            else
+            {
+                ViewBag.LevelId = new SelectList(levels.Where(x => x.StudyTypeId == StudyTypeId).ToList(), "Id", "Name");
+            }
+            if (ClassId != null && ClassId != Guid.Empty)
+            {
+                result = result.Where(x => x.ClassId == ClassId);
+                ViewBag.ClassId = new SelectList(classes.Where(x => x.LevelId == LevelId).ToList(), "Id", "Name", ClassId);
+            }
+            else
+            {
+                ViewBag.ClassId = new SelectList(classes.Where(x => x.LevelId == LevelId).ToList(), "Id", "Name");
+            }
 
-            ViewBag.Reports = model;
+            ViewBag.Reports = result;
             return View();
         }
         public ActionResult Collect(Guid Id)

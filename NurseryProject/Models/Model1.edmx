@@ -301,7 +301,7 @@
           <Property Name="ExamTypeId" Type="uniqueidentifier" />
           <Property Name="SubjectId" Type="uniqueidentifier" />
           <Property Name="IsOneQuestion" Type="bit" />
-          <Property Name="TotalDegree" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalDegree" Type="float" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -564,6 +564,7 @@
           <Property Name="SubscriptionId" Type="uniqueidentifier" />
           <Property Name="IsAnother" Type="bit" />
           <Property Name="JoiningDate" Type="date" />
+          <Property Name="IsCurrent" Type="bit" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -2472,7 +2473,7 @@
           <Property Name="ExamTypeId" Type="Guid" />
           <Property Name="SubjectId" Type="Guid" />
           <Property Name="IsOneQuestion" Type="Boolean" />
-          <Property Name="TotalDegree" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalDegree" Type="Double" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
@@ -2773,6 +2774,7 @@
           <Property Name="SubscriptionId" Type="Guid" />
           <Property Name="IsAnother" Type="Boolean" />
           <Property Name="JoiningDate" Type="DateTime" Precision="0" />
+          <Property Name="IsCurrent" Type="Boolean" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -4372,6 +4374,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
                 <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
                 <ScalarProperty Name="IsAnother" ColumnName="IsAnother" />
                 <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />

@@ -20,6 +20,8 @@ namespace NurseryProject.Dtos.EmployeeClasses
         public string StudyYearName { get; set; }
         public Guid? EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string EmployeePhone { get; set; }
+
         public Guid? SubjectId { get; set; }
         public string SubjecName { get; set; }
      

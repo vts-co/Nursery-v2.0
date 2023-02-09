@@ -25,13 +25,16 @@ namespace NurseryProject.Dtos.StudentsClass
 
         public Guid? SubscriptionId { get; set; }
         public string SubscriptionName { get; set; }
+        public List<SubscriptionMethodDto> SubscriptionMethod { get; set; }
+        public bool IsCurrent { get; set; }
+
         public string Amount { get; set; }
         public string Number { get; set; }
         public bool IsAnother { get; set; }
-
-        public List<SubscriptionMethodDto> SubscriptionMethod { get; set; }
         public string JoiningDate { get; set; }
         public string Notes { get; set; }
+
+        public List<StudentsClassDto> StudentsClassPrevious { get; set; }
 
     }
     public class SubscriptionMethodDto

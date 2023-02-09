@@ -13,15 +13,16 @@ namespace NurseryProject.Services.BuildingSupervisors
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false&&x.Employee.IsDeleted==false && x.StudyPlace.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x=>new BuildingSupervisorsDto {
-                    Id=x.Id,
-                    StudyPlaceId=x.StudyPlaceId.Value,
-                    StudyPlaceName=x.StudyPlace.Name,
-                    DepartmentId = x.Employee.Jop.DepartmentId.Value,
-                    DepartmentName = x.Employee.Jop.Department.Name,
-                    EmployeeId =x.EmployeeId.Value,
-                    EmployeeName=x.Employee.Name,
-                    Notes=x.Notes
+                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false && x.Employee.IsDeleted == false && x.StudyPlace.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new BuildingSupervisorsDto
+                {
+                    Id = x.Id,
+                    StudyPlaceId = x.StudyPlaceId != null ? x.StudyPlaceId.Value : Guid.Empty,
+                    StudyPlaceName = x.StudyPlaceId != null ? x.StudyPlace.Name : "",
+                    DepartmentId = x.Employee.Jop.DepartmentId != null ? x.Employee.Jop.DepartmentId.Value:Guid.Empty,
+                    DepartmentName = x.Employee.Jop.DepartmentId != null ? x.Employee.Jop.Department.Name:"",
+                    EmployeeId = x.EmployeeId!=null? x.EmployeeId.Value:Guid.Empty,
+                    EmployeeName = x.EmployeeId != null ? x.Employee.Name:"",
+                    Notes = x.Notes
                 }).ToList();
                 return model;
             }
@@ -40,7 +41,7 @@ namespace NurseryProject.Services.BuildingSupervisors
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<BuildingSupervisor>();
-                var Oldmodel = dbContext.BuildingSupervisors.Where(x => x.StudyPlaceId == model.StudyPlaceId && x.EmployeeId==model.EmployeeId && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.BuildingSupervisors.Where(x => x.StudyPlaceId == model.StudyPlaceId && x.EmployeeId == model.EmployeeId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.Result = Oldmodel;

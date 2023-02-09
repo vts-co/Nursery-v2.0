@@ -28,7 +28,7 @@ namespace NurseryProject.Controllers
         public ActionResult Create(Guid StudentClassId)
         {
             var strdentClass = studentsClassServices.Get(StudentClassId);
-            var classto = classesServices.GetAll().Where(x => x.LevelId == strdentClass.LevelId && x.Id != strdentClass.ClassId).ToList();
+            var classto = classesServices.GetAll().Where(x => x.LevelId == strdentClass.LevelId && x.Id != strdentClass.ClassId).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
             var treansfer = new StudentsClassesTransferDto() {
                 Id=Guid.NewGuid(),
                 StudentClassId= StudentClassId,
@@ -44,7 +44,7 @@ namespace NurseryProject.Controllers
                 LevelId= strdentClass.LevelId,
                 LevelName = strdentClass.LevelName,
                 ClassFromId = strdentClass.ClassId,
-                ClassFromName= strdentClass.ClassName,
+                ClassFromName= strdentClass.ClassName + " (" + strdentClass.StudyPlaceName + ")",
             };
             ViewBag.ClassesTo = classto;
             return View("Upsert", treansfer);

@@ -6,6 +6,7 @@ using NurseryProject.Services.Cities;
 using NurseryProject.Services.Destricts;
 using NurseryProject.Services.RegistrationTypes;
 using NurseryProject.Services.Students;
+using NurseryProject.Services.StudyYears;
 using NurseryProject.Utilities;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace NurseryProject.Controllers
 
     public class StudentsController : Controller
     {
+        StudyYearsServices studyYearsServices = new StudyYearsServices();
         StudentsServices studentsServices = new StudentsServices();
         GenerateRandomCode randomCode = new GenerateRandomCode();
         RegistrationTypesServices registrationTypes = new RegistrationTypesServices();
@@ -42,13 +44,13 @@ namespace NurseryProject.Controllers
             return View("Upsert", new Student());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(Student student,HttpPostedFileBase Image1)
+        public ActionResult Create(Student student, HttpPostedFileBase Image1)
         {
             student.Id = Guid.NewGuid();
             if (student.Code == null)
                 student.Code = randomCode.GenerateStudentCodeRandom();
 
-            if(Image1!=null)
+            if (Image1 != null)
             {
                 student.Image = "/Uploads/Studentes/";
 
@@ -184,7 +186,7 @@ namespace NurseryProject.Controllers
             return View(new Student());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Search(Student student,Guid? CityId)
+        public ActionResult Search(Student student, Guid? CityId)
         {
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text");
             ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name");
@@ -205,7 +207,7 @@ namespace NurseryProject.Controllers
             }
             if (student.Name != null)
             {
-                if(students.Count()==0)
+                if (students.Count() == 0)
                 {
                     students = studentsServices.GetAll().Where(x => x.Name.Contains(student.Name)).ToList();
                 }
@@ -283,6 +285,22 @@ namespace NurseryProject.Controllers
             ViewBag.Students = students;
 
             return View(student);
+        }
+
+        public ActionResult Reports()
+        {
+            ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
+          
+            return View();
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Reports(Guid? StudyYearId = null)
+        {
+            ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", StudyYearId);
+
+            var students = studentsServices.GetAllReport(StudyYearId.Value);
+            ViewBag.Students = students;
+            return View();
         }
         public ActionResult getDestricts(Guid Id)
         {

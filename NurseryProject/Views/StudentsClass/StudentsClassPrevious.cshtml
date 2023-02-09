@@ -1,0 +1,115 @@
+﻿@model NurseryProject.Dtos.StudentsClass.StudentsClassDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = " الالتحاقات السابقة للطالب   ";
+}
+<div class="card">
+    <div class="card-header">
+
+        <div class="row">
+            <h4 class="col">
+                كود الطالب/ة : @Model.Code
+
+            </h4>
+            <h4 class="col">
+                اسم الطالب/ة : @Model.StudentName
+
+            </h4>
+            <p class="col-auto">
+            </p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mt-3">
+            
+        </div>
+       
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("الفرع ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("العام الدراسي")
+                    </th>
+                    <th>
+                        @Html.DisplayName("نوع الدراسة")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الصف الدراسي")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("الفصل ")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("طريقة الاشتراك ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("مبلغ الاشتراك ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عدد الاقساط ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("تاريخ الالتحاق ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("ملاحظات ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عمليات")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StudentsClassPrevious)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudyPlaceName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudyYearName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudyTypeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LevelName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassName)
+
+                        </td>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubscriptionName)
+                        </td>
+                        <td>
+                            @item.Amount جنيه
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.JoiningDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td>
+                           
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

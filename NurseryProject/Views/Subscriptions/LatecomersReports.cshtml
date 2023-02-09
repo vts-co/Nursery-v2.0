@@ -18,16 +18,34 @@
         </div>
         <div class="card-body">
             <div class="row">
-
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control"})
                         @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control"})
+                        @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control"})
+                        @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label(" الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-footer">
@@ -274,13 +292,7 @@
                     $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });
             });
-            $.get('/EmployeeClasses/getSubjects', { Id: $("#LevelId").val() }, function (data) {
-                $("#SubjectId").empty();
-                $("#SubjectId").append("<option value=''>--اختر--</option>")
-                $.each(data, function (key, value) {
-                    $("#SubjectId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
-                });
-            });
+           
         });
     </script>
 }

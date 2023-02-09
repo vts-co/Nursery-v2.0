@@ -26,7 +26,7 @@ namespace NurseryProject.Services.Exams
                     ExamTypeId = x.ExamsType.Id,
                     ExamTypeName = x.ExamsType.Name,
                     IsOneQuestion = x.IsOneQuestion.Value,
-                    TotalDegree = x.TotalDegree,
+                    TotalDegree = x.TotalDegree.ToString(),
 
                     MoreQuestion = x.ExamDegrees.Where(y => y.IsDeleted == false && y.ExamId == x.Id).OrderBy(y => y.CreatedOn).Select(y => new MoreQuestionDto
                     {
@@ -59,7 +59,7 @@ namespace NurseryProject.Services.Exams
                     ExamTypeId = x.ExamsType.Id,
                     ExamTypeName = x.ExamsType.Name,
                     IsOneQuestion = x.IsOneQuestion.Value,
-                    TotalDegree = x.TotalDegree,
+                    TotalDegree = x.TotalDegree.ToString(),
 
                     MoreQuestion = x.ExamDegrees.Where(y => y.IsDeleted == false && y.ExamId == x.Id).OrderBy(y => y.CreatedOn).Select(y => new MoreQuestionDto
                     {
@@ -94,7 +94,7 @@ namespace NurseryProject.Services.Exams
                     Id = model.Id,
                     SubjectId = model.SubjectId,
                     ExamTypeId = model.ExamTypeId,
-                    TotalDegree = model.TotalDegree,
+                    TotalDegree = float.Parse(model.TotalDegree),
                     IsOneQuestion = model.IsOneQuestion,
 
                     CreatedOn = DateTime.UtcNow,
@@ -141,7 +141,7 @@ namespace NurseryProject.Services.Exams
                 Oldmodel.ModifiedBy = UserId;
                 Oldmodel.SubjectId = model.SubjectId;
                 Oldmodel.ExamTypeId = model.ExamTypeId;
-                Oldmodel.TotalDegree = model.TotalDegree;
+                Oldmodel.TotalDegree = float.Parse(model.TotalDegree);
                 Oldmodel.IsOneQuestion = model.IsOneQuestion;
 
                 var examDegrees = dbContext.ExamDegrees.Where(x => x.ExamId == model.Id && x.IsDeleted == false).ToList();

@@ -1,4 +1,5 @@
-﻿using NurseryProject.Dtos.Students;
+﻿using NurseryProject.Dtos.EmployeeClasses;
+using NurseryProject.Dtos.Students;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace NurseryProject.Services.Students
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false&&x.Destrict.IsDeleted==false&&x.RegistrationType.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
+                var model = dbContext.Students.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
                 {
                     Id = x.Id,
                     Code = x.Code,
@@ -28,12 +29,80 @@ namespace NurseryProject.Services.Students
                     RegistrationTypeId = x.RegistrationTypeId.Value,
                     RegistrationTypeName = x.RegistrationType.Name,
                     JoiningDate = x.JoiningDate.Value.ToString(),
-                    CityId = x.Destrict.CityId.Value,
-                    CityName = x.Destrict.City.Name,
-                    DestrictId = x.DestrictId.Value,
-                    DestrictName = x.Destrict.Name,
+                    CityId = x.DestrictId != null ? x.Destrict.CityId.Value:Guid.Empty,
+                    CityName = x.DestrictId != null ? x.Destrict.City.Name:"",
+                    DestrictId =x.DestrictId!=null? x.DestrictId.Value:Guid.Empty,
+                    DestrictName = x.DestrictId != null ? x.Destrict.Name:"",
                     Notes = x.Notes
                 }).ToList();
+                return model;
+            }
+        }
+        public List<StudentsReportDto> GetAllReport(Guid StudyYearId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.StudentsClasses.Any(y => y.StudyYearId == StudyYearId && y.IsDeleted == false)).OrderBy(x => x.CreatedOn).Select(x => new StudentsReportDto
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    Name = x.Name,
+                    Phone = x.Phone,
+                    Address = x.Address,
+                    CountOfLatecomers = "",
+                    CountOfNormal = "",
+                    CountOfPart = "",
+                    CountOfPaidNoTime="",
+                    AttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == true).ToList().Count().ToString(),
+                    NoAttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == false).ToList().Count().ToString(),
+                    CountOfTransferClasses = dbContext.StudentsClassesTransfers.Where(i => i.IsDeleted == false && i.StudentsClass.IsDeleted == false && i.StudentsClass.StudentId == x.Id).ToList().Count().ToString(),
+                    ExamsRate = ((x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.Degree)) / (x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.ClassExam.Exam.TotalDegree)) * 100).ToString(),
+                    Employees = x.StudentsClasses.Where(b => b.IsDeleted == false).FirstOrDefault().Class.EmployeeClasses.Where(e => e.IsDeleted == false).Select(e => new EmployeeClassesDto
+                    {
+                        EmployeeId = e.EmployeeId,
+                        EmployeeName = e.Employee.Name,
+                        EmployeePhone = e.Employee.Phone
+                    }).ToList()
+                }).ToList();
+                foreach (var item in model)
+                {
+                    var count1 = 0;
+                    var count2 = 0;
+                    var count3 = 0;
+                    var count4 = 0;
+
+                    var student = dbContext.Students.Where(x => x.IsDeleted == false && x.Id == item.Id && x.StudentsClasses.Any(y => y.StudyYearId == StudyYearId && y.IsDeleted == false)).FirstOrDefault();
+                    var StudentsClasses = student.StudentsClasses.Where(z => z.IsDeleted == false).ToList();
+                    var SubscriptionMethods = StudentsClasses[0].SubscriptionMethods.Where(u => u.IsPaid == false).ToList();
+                    var SubscriptionMethods2 = StudentsClasses[0].SubscriptionMethods.Where(u => u.IsPaid == true).ToList();
+
+                    foreach (var item2 in SubscriptionMethods)
+                    {
+                        if (item2.Date.Value.Date.AddDays(15) < DateTime.Now.Date)
+                        {
+                            count1 += 1;
+                        }
+                    }
+                    foreach (var item3 in SubscriptionMethods2)
+                    {
+                        if (item3.Date.Value.Date.AddDays(15) >= item3.PaidDate.Value.Date)
+                        {
+                            count2 += 1;
+                        }
+                        if (float.Parse(item3.Amount) > float.Parse(item3.PaidAmount))
+                        {
+                            count3 += 1;
+                        }
+                        if (item3.Date.Value.Date.AddDays(15) <= item3.PaidDate.Value.Date)
+                        {
+                            count4 += 1;
+                        }
+                    }
+                    item.CountOfLatecomers = count1.ToString();
+                    item.CountOfNormal = count2.ToString();
+                    item.CountOfPart = count3.ToString();
+                    item.CountOfPaidNoTime = count4.ToString();
+                }
                 return model;
             }
         }
@@ -41,11 +110,11 @@ namespace NurseryProject.Services.Students
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Destrict.IsDeleted == false && x.RegistrationType.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
+                var model = dbContext.Students.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
                 {
                     Id = x.Id,
                     Code = x.Code,
-                    Name = x.Code+"|"+x.Name+"|"+x.Phone,
+                    Name = x.Code + "|" + x.Name + "|" + x.Phone,
                     Phone = x.Phone,
                     Address = x.Address,
                     Image = x.Image,
@@ -56,10 +125,10 @@ namespace NurseryProject.Services.Students
                     RegistrationTypeId = x.RegistrationTypeId.Value,
                     RegistrationTypeName = x.RegistrationType.Name,
                     JoiningDate = x.JoiningDate.Value.ToString(),
-                    CityId = x.Destrict.CityId.Value,
-                    CityName = x.Destrict.City.Name,
-                    DestrictId = x.DestrictId.Value,
-                    DestrictName = x.Destrict.Name,
+                    CityId = x.DestrictId != null ? x.Destrict.CityId.Value : Guid.Empty,
+                    CityName = x.DestrictId != null ? x.Destrict.City.Name : "",
+                    DestrictId = x.DestrictId != null ? x.DestrictId.Value : Guid.Empty,
+                    DestrictName = x.DestrictId != null ? x.Destrict.Name : "",
                     Notes = x.Notes
                 }).ToList();
                 return model;
@@ -69,7 +138,7 @@ namespace NurseryProject.Services.Students
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Id==Id).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Id == Id).OrderBy(x => x.CreatedOn).FirstOrDefault();
                 return model;
             }
         }
@@ -84,6 +153,14 @@ namespace NurseryProject.Services.Students
                     result.Result = Oldmodel;
                     result.IsSuccess = false;
                     result.Message = "هذا الطالب موجود بالفعل";
+                    return result;
+                }
+                var Oldmodel2 = dbContext.Students.Where(x => x.Code == model.Code && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel2 != null)
+                {
+                    result.Result = Oldmodel2;
+                    result.IsSuccess = false;
+                    result.Message = "هذا الكود موجود لم يمكن استخدامه";
                     return result;
                 }
                 model.RegistrationTypeId = Guid.Parse("E31AC343-47DA-4DFE-8970-E1719DEEC869");
@@ -124,7 +201,7 @@ namespace NurseryProject.Services.Students
                 Oldmodel.JoiningDate = model.JoiningDate.Value;
                 Oldmodel.DestrictId = model.DestrictId.Value;
                 Oldmodel.Notes = model.Notes;
-                if(model.Image!=null)
+                if (model.Image != null)
                 {
                     Oldmodel.Image = model.Image;
                 }
@@ -146,8 +223,8 @@ namespace NurseryProject.Services.Students
                     result.Message = "هذا الطالب غير موجود ";
                     return result;
                 }
-                var Oldmodel2 = dbContext.SubscriptionMethods.Where(x=>x.IsDeleted==false&&x.StudentsClass.IsDeleted==false &&x.StudentsClass.Student.IsDeleted==false && x.StudentsClass.StudentId==Id &&x.IsPaid==false).ToList();
-               if(Oldmodel2.Count()>0)
+                var Oldmodel2 = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.StudentsClass.IsDeleted == false && x.StudentsClass.Student.IsDeleted == false && x.StudentsClass.StudentId == Id && x.IsPaid == false).ToList();
+                if (Oldmodel2.Count() > 0)
                 {
                     result.IsSuccess = false;
                     result.Message = "هذا الطالب لديه اشتراك لم يمكن حذفه ";

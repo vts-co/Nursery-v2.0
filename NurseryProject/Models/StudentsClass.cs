@@ -28,6 +28,7 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> SubscriptionId { get; set; }
         public Nullable<bool> IsAnother { get; set; }
         public Nullable<System.DateTime> JoiningDate { get; set; }
+        public Nullable<bool> IsCurrent { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
