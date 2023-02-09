@@ -39,6 +39,8 @@ namespace NurseryProject.Controllers
         public ActionResult Create(StudyClass studyClass)
         {
             studyClass.Id = Guid.NewGuid();
+            if (studyClass.DisplayOrder == null)
+                studyClass.DisplayOrder = 0;
             var result = studyClasses.Create(studyClass, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
@@ -67,7 +69,8 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(StudyClass studyClass)
         {
-
+            if (studyClass.DisplayOrder == null)
+                studyClass.DisplayOrder = 0;
             var result = studyClasses.Edit(studyClass, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {

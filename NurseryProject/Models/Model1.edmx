@@ -399,6 +399,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StudyTypeId" Type="uniqueidentifier" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="DisplayOrder" Type="int" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -617,6 +618,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StudyYearId" Type="uniqueidentifier" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="DisplayOrder" Type="int" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -2586,6 +2588,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="StudyTypeId" Type="Guid" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -2839,6 +2842,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="StudyYearId" Type="Guid" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -4204,6 +4208,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StudyTypeId" ColumnName="StudyTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -4434,6 +4439,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StudyYearId" ColumnName="StudyYearId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

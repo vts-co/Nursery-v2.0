@@ -37,6 +37,8 @@ namespace NurseryProject.Controllers
         public ActionResult Create(Level level)
         {
             level.Id = Guid.NewGuid();
+            if (level.DisplayOrder == null)
+                level.DisplayOrder = 0;
             var result = levelsServices.Create(level, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
@@ -65,7 +67,8 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(Level level)
         {
-
+            if (level.DisplayOrder == null)
+                level.DisplayOrder = 0;
             var result = levelsServices.Edit(level, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {

@@ -13,11 +13,12 @@ namespace NurseryProject.Services.StudyClasses
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudyClasses.Where(x => x.IsDeleted == false&&x.StudyYear.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new StudyClassesDto
+                var model = dbContext.StudyClasses.Where(x => x.IsDeleted == false).OrderBy(x => x.DisplayOrder).Select(x => new StudyClassesDto
                 {
                     Id = x.Id,
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
+                    DisplayOrder = x.DisplayOrder.Value,
                     Name = x.Name,
                     Notes = x.Notes
                 }).ToList();
@@ -72,6 +73,7 @@ namespace NurseryProject.Services.StudyClasses
                 Oldmodel.StudyYearId = model.StudyYearId;
                 Oldmodel.Name = model.Name;
                 Oldmodel.Notes = model.Notes;
+                Oldmodel.DisplayOrder = model.DisplayOrder;
 
                 dbContext.SaveChanges();
                 result.IsSuccess = true;

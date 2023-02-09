@@ -14,11 +14,12 @@ namespace NurseryProject.Levels.Services
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Levels.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new LevelsDto
+                var model = dbContext.Levels.Where(x => x.IsDeleted == false).OrderBy(x => x.DisplayOrder).Select(x => new LevelsDto
                 {
                     Id = x.Id,
                     StudyTypeId = x.StudyTypeId.Value,
                     StudyTypeName = x.StudyType.Name,
+                    DisplayOrder=x.DisplayOrder.Value,
                     Name = x.Name,
                     Notes = x.Notes
                 }).ToList();
@@ -73,7 +74,7 @@ namespace NurseryProject.Levels.Services
                 Oldmodel.StudyTypeId = model.StudyTypeId;
                 Oldmodel.Name = model.Name;
                 Oldmodel.Notes = model.Notes;
-
+                Oldmodel.DisplayOrder = model.DisplayOrder;
                 dbContext.SaveChanges();
                 result.IsSuccess = true;
                 result.Message = "تم تعديل البيانات بنجاح";

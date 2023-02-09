@@ -193,10 +193,34 @@ namespace NurseryProject.Controllers
             var model = studentsClassServices.GetAll().Where(x=>x.Id== StudentClassId).FirstOrDefault();
             return View(model);
         }
-        public ActionResult StudentsLevelsTransfer(Guid StudentClassId)
+        public ActionResult StudentsLevelsTransfer(Guid Id)
         {
-            var model = studentsClassServices.GetAll().Where(x => x.Id == StudentClassId).FirstOrDefault();
-            return View(model);
+            var class1 = studentsClassServices.Get(Id);
+            var studyTypes = studyTypesServices.GetAll();
+
+            var class2 = classesServices.GetAll().Where(x => x.Id == class1.ClassId).FirstOrDefault();
+            var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
+
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
+
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name", level.Id);
+            ViewBag.ClassId = new SelectList(classesServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", class2.Id);
+
+            var StudyYear = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", class1.StudyYearId);
+
+            var Students = studentsServices.GetAllDropDown();
+            ViewBag.StudentId = new SelectList(Students, "Id", "Name", class1.StudentId);
+
+            var subscription = subscriptionsServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) });
+            ViewBag.SubscriptionId = new SelectList(subscription, "Id", "Name", class1.SubscriptionId);
+            ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", Students.Where(x => x.Id == class1.StudentId).FirstOrDefault().RegistrationTypeId);
+
+
+            if (class1.JoiningDate != null)
+                ViewBag.JoiningDate = class1.JoiningDate;
+
+            return View("Upsert", class1);
         }
         public ActionResult Delete(Guid Id)
         {

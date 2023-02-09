@@ -22,7 +22,7 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownListFor(model => model.StudyYearId, new SelectList(ViewBag.StudyYears, "Id","Name"),"--اختر--",new { @class = "form-control", required = "required"  })
+                        @Html.DropDownListFor(model => model.StudyYearId, new SelectList(ViewBag.StudyYears, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.StudyYearId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -31,6 +31,13 @@
                     <div class="col-12">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الترتيب ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control", type="number" } })
+                        @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-12">

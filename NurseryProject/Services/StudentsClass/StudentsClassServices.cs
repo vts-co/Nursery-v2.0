@@ -67,16 +67,16 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
-                    item.StudentsClassPrevious = GetAllPrevious(item);
+                    item.StudentsClassPrevious = GetAllPrevious(item.StudentId);
                 }
                 return model;
             }
         }
-        public List<StudentsClassDto> GetAllPrevious(StudentsClassDto mod)
+        public List<StudentsClassDto> GetAllPrevious(Guid StudentId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == false && x.StudentId == mod.StudentId && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == false && x.StudentId == StudentId && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,

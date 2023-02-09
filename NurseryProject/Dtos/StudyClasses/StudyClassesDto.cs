@@ -10,6 +10,8 @@ namespace NurseryProject.Dtos.StudyClasses
         public Guid Id { get; set; }
         public Guid StudyYearId { get; set; }
         public string StudyYearName { get; set; }
+        public int DisplayOrder { get; set; }
+
         public string Name { get; set; }
         public string Notes { get; set; }
     }

@@ -10,6 +10,9 @@ namespace NurseryProject.Dtos.Levels
         public Guid Id { get; set; }
         public Guid StudyTypeId { get; set; }
         public string StudyTypeName { get; set; }
+        public int DisplayOrder { get; set; }
+
+        
         public string Name { get; set; }
         public string Notes { get; set; }
     }
