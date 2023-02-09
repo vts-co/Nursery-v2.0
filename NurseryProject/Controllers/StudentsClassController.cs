@@ -202,7 +202,7 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
             var class1 = studentsClassServices.Get(Id);
-
+            class1.IsAnother = false;
             var class2 = classesServices.GetAll().Where(x => x.Id == class1.ClassId).FirstOrDefault();
             var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
             var studyTypes = studyTypesServices.GetAll();
