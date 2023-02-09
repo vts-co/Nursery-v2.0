@@ -234,13 +234,12 @@ namespace NurseryProject.Services.StudentsClass
             }
 
         }
-
         public ResultDto<StudentsClassDto> Create(StudentsClassDto model, Guid RegistrationTypeId, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.StudyYearId == model.StudyYearId&&x.Class.Level.StudyTypeId==model.StudyTypeId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.IsSuccess = false;
@@ -298,13 +297,12 @@ namespace NurseryProject.Services.StudentsClass
                 return result;
             }
         }
-
         public ResultDto<StudentsClassDto> Create(StudentsClassDto model, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.Class.Level.StudyTypeId == model.StudyTypeId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.IsSuccess = false;
@@ -365,6 +363,14 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
+                var Oldmodel2 = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId&&x.Id!=model.Id && x.Class.Level.StudyTypeId == model.StudyTypeId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel2 != null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا الطالب تم التحاقه بالفعل";
+                    return result;
+                }
+
                 var Oldmodel = dbContext.StudentsClasses.Find(model.Id);
 
                 Oldmodel.ModifiedOn = DateTime.UtcNow;

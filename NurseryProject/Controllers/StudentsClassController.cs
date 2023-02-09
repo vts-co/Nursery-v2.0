@@ -73,7 +73,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", new StudentsClassDto());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(StudentsClassDto Class,Guid RegistrationTypeId)
+        public ActionResult Create(StudentsClassDto Class, Guid RegistrationTypeId)
         {
             Class.Id = Guid.NewGuid();
             if (Class.IsAnother == true)
@@ -107,7 +107,7 @@ namespace NurseryProject.Controllers
 
                 var subscription = subscriptionsServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) });
                 ViewBag.SubscriptionId = new SelectList(subscription, "Id", "Name", Class.SubscriptionId);
-                ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name",RegistrationTypeId);
+                ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", RegistrationTypeId);
 
                 if (Class.JoiningDate != null)
                     ViewBag.JoiningDate = Class.JoiningDate;
@@ -137,7 +137,7 @@ namespace NurseryProject.Controllers
 
             var subscription = subscriptionsServices.GetAll().Where(x => x.LevelId == level.Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) });
             ViewBag.SubscriptionId = new SelectList(subscription, "Id", "Name", class1.SubscriptionId);
-            ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", Students.Where(x=>x.Id== class1.StudentId).FirstOrDefault().RegistrationTypeId);
+            ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", Students.Where(x => x.Id == class1.StudentId).FirstOrDefault().RegistrationTypeId);
 
 
             if (class1.JoiningDate != null)
@@ -146,7 +146,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", class1);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(StudentsClassDto Class,Guid RegistrationTypeId)
+        public ActionResult Edit(StudentsClassDto Class, Guid RegistrationTypeId)
         {
             if (Class.IsAnother == true)
             {
@@ -190,12 +190,19 @@ namespace NurseryProject.Controllers
 
         public ActionResult StudentsClassPrevious(Guid StudentClassId)
         {
-            var model = studentsClassServices.GetAll().Where(x=>x.Id== StudentClassId).FirstOrDefault();
+            var model = studentsClassServices.GetAll().Where(x => x.Id == StudentClassId).FirstOrDefault();
             return View(model);
         }
         public ActionResult StudentsLevelsTransfer(Guid Id)
         {
+            var subs = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id && x.IsDeleted == false && x.IsPaid == false).ToList().Count();
+            if (subs > 0)
+            {
+                TempData["warning"] = "هذا الطالب لا يمكن نقله لعدم دفع جميع الاقساط";
+                return RedirectToAction("Index");
+            }
             var class1 = studentsClassServices.Get(Id);
+
             var class2 = classesServices.GetAll().Where(x => x.Id == class1.ClassId).FirstOrDefault();
             var level = levelsServices.GetAll().Where(x => x.Id == class2.LevelId).FirstOrDefault();
             var studyTypes = studyTypesServices.GetAll();
@@ -203,10 +210,10 @@ namespace NurseryProject.Controllers
 
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
 
-            var StudyYear = studyYearsServices.GetAll().Where(x=>x.DisplayOrder> studyYear1.DisplayOrder).ToList();
+            var StudyYear = studyYearsServices.GetAll().Where(x => x.DisplayOrder > studyYear1.DisplayOrder).ToList();
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
 
-            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.DisplayOrder > level.DisplayOrder&& x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name");
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.DisplayOrder > level.DisplayOrder && x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name");
             ViewBag.ClassId = new SelectList("");
 
             var Students = studentsServices.GetAllDropDown();
@@ -214,7 +221,7 @@ namespace NurseryProject.Controllers
             //ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name");
 
             ViewBag.SubscriptionId = new SelectList("");
-           
+
             return View(class1);
         }
         [HttpPost]
@@ -230,7 +237,7 @@ namespace NurseryProject.Controllers
             if (result.IsSuccess)
             {
                 var result2 = studentsClassServices.UpateCurrentId(id, (Guid)TempData["UserId"]);
-                
+
                 TempData["success"] = result.Message;
                 return RedirectToAction("Index");
             }
@@ -320,10 +327,10 @@ namespace NurseryProject.Controllers
         [HttpPost]
         public ActionResult NoInstallmentsReports(string StudyYearId)
         {
-            var result = studentsClassServices.GetAll().Where(x=>x.SubscriptionMethod.Count()==0);
+            var result = studentsClassServices.GetAll().Where(x => x.SubscriptionMethod.Count() == 0);
             var StudyYear = studyYearsServices.GetAll();
 
-            if (StudyYearId!="")
+            if (StudyYearId != "")
             {
                 var id = Guid.Parse(StudyYearId);
 
@@ -369,7 +376,7 @@ namespace NurseryProject.Controllers
         public ActionResult getSubscriptionsMethods(Guid Id)
         {
 
-            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x=>x.OrderDisplay).Select(x => new { x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd") : "",x.PaidAmount }).ToList();
+            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd") : "", x.PaidAmount }).ToList();
             var model2 = studentsClassServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
 
             var IsAnother = false;
