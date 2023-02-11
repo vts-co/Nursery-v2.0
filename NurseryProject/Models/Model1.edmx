@@ -5,24 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="almohandes_DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="EmployeesAttendance">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="EmployeeWorkShiftId" Type="uniqueidentifier" />
-          <Property Name="ClassId" Type="uniqueidentifier" />
-          <Property Name="EmployeeId" Type="uniqueidentifier" />
-          <Property Name="IsAttend" Type="bit" />
-          <Property Name="Date" Type="date" />
-          <Property Name="CreatedOn" Type="datetime" />
-          <Property Name="CreatedBy" Type="uniqueidentifier" />
-          <Property Name="ModifiedOn" Type="datetime" />
-          <Property Name="ModifiedBy" Type="uniqueidentifier" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
-          <Property Name="DeletedOn" Type="datetime" />
-          <Property Name="DeletedBy" Type="uniqueidentifier" />
-        </EntityType>
         <EntityType Name="BuildingSupervisors">
           <Key>
             <PropertyRef Name="Id" />
@@ -184,6 +166,24 @@
           <Property Name="JoiningDate" Type="date" />
           <Property Name="WorkDayCost" Type="float" />
           <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="EmployeesAttendance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeWorkShiftId" Type="uniqueidentifier" />
+          <Property Name="ClassId" Type="uniqueidentifier" />
+          <Property Name="EmployeeId" Type="uniqueidentifier" />
+          <Property Name="IsAttend" Type="bit" />
+          <Property Name="Date" Type="date" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -1602,7 +1602,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="almohandes_DbModelStoreContainer">
-          <EntitySet Name="EmployeesAttendance" EntityType="Self.EmployeesAttendance" Schema="almohandes_Db" store:Type="Tables" />
           <EntitySet Name="BuildingSupervisors" EntityType="Self.BuildingSupervisors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
@@ -1613,6 +1612,7 @@
           <EntitySet Name="DiscountsTypes" EntityType="Self.DiscountsTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeClasses" EntityType="Self.EmployeeClasses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeesAttendance" EntityType="Self.EmployeesAttendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesDelay" EntityType="Self.EmployeesDelay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesDiscounts" EntityType="Self.EmployeesDiscounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesIncreases" EntityType="Self.EmployeesIncreases" Schema="dbo" store:Type="Tables" />
@@ -1919,7 +1919,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="almohandes_DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="almohandes_DbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="EmployeesAttendances" EntityType="almohandes_DbModel.EmployeesAttendance" />
           <EntitySet Name="BuildingSupervisors" EntityType="almohandes_DbModel.BuildingSupervisor" />
           <EntitySet Name="Cities" EntityType="almohandes_DbModel.City" />
           <EntitySet Name="Classes" EntityType="almohandes_DbModel.Class" />
@@ -1930,6 +1929,7 @@
           <EntitySet Name="DiscountsTypes" EntityType="almohandes_DbModel.DiscountsType" />
           <EntitySet Name="EmployeeClasses" EntityType="almohandes_DbModel.EmployeeClass" />
           <EntitySet Name="Employees" EntityType="almohandes_DbModel.Employee" />
+          <EntitySet Name="EmployeesAttendances" EntityType="almohandes_DbModel.EmployeesAttendance" />
           <EntitySet Name="EmployeesDelays" EntityType="almohandes_DbModel.EmployeesDelay" />
           <EntitySet Name="EmployeesDiscounts" EntityType="almohandes_DbModel.EmployeesDiscount" />
           <EntitySet Name="EmployeesIncreases" EntityType="almohandes_DbModel.EmployeesIncreas" />
@@ -1966,18 +1966,6 @@
           <EntitySet Name="Users" EntityType="almohandes_DbModel.User" />
           <EntitySet Name="VacationsTypes" EntityType="almohandes_DbModel.VacationsType" />
           <EntitySet Name="WorkShifts" EntityType="almohandes_DbModel.WorkShift" />
-          <AssociationSet Name="FK_EmployeesAttendance_Classes" Association="almohandes_DbModel.FK_EmployeesAttendance_Classes">
-            <End Role="Class" EntitySet="Classes" />
-            <End Role="EmployeesAttendance" EntitySet="EmployeesAttendances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeesAttendance_Employees" Association="almohandes_DbModel.FK_EmployeesAttendance_Employees">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="EmployeesAttendance" EntitySet="EmployeesAttendances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeesAttendance_EmployeesWorkShifts" Association="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts">
-            <End Role="EmployeesWorkShift" EntitySet="EmployeesWorkShifts" />
-            <End Role="EmployeesAttendance" EntitySet="EmployeesAttendances" />
-          </AssociationSet>
           <AssociationSet Name="FK_BuildingSupervisors_Employees" Association="almohandes_DbModel.FK_BuildingSupervisors_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="BuildingSupervisor" EntitySet="BuildingSupervisors" />
@@ -2013,6 +2001,10 @@
           <AssociationSet Name="FK_EmployeeClasses_EmployeeClasses" Association="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses">
             <End Role="Class" EntitySet="Classes" />
             <End Role="EmployeeClass" EntitySet="EmployeeClasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeesAttendance_Classes" Association="almohandes_DbModel.FK_EmployeesAttendance_Classes">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="EmployeesAttendance" EntitySet="EmployeesAttendances" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentsClass_Classes" Association="almohandes_DbModel.FK_StudentsClass_Classes">
             <End Role="Class" EntitySet="Classes" />
@@ -2066,6 +2058,10 @@
             <End Role="Jop" EntitySet="Jops" />
             <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
+          <AssociationSet Name="FK_EmployeesAttendance_Employees" Association="almohandes_DbModel.FK_EmployeesAttendance_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeesAttendance" EntitySet="EmployeesAttendances" />
+          </AssociationSet>
           <AssociationSet Name="FK_EmployeesDelay_Employees" Association="almohandes_DbModel.FK_EmployeesDelay_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="EmployeesDelay" EntitySet="EmployeesDelays" />
@@ -2097,6 +2093,10 @@
           <AssociationSet Name="FK_Revenues_Employees" Association="almohandes_DbModel.FK_Revenues_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Revenue" EntitySet="Revenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeesAttendance_EmployeesWorkShifts" Association="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts">
+            <End Role="EmployeesWorkShift" EntitySet="EmployeesWorkShifts" />
+            <End Role="EmployeesAttendance" EntitySet="EmployeesAttendances" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeesIncreases_IncreasesTypes" Association="almohandes_DbModel.FK_EmployeesIncreases_IncreasesTypes">
             <End Role="IncreasesType" EntitySet="IncreasesTypes" />
@@ -2231,27 +2231,6 @@
             <End Role="Subscription" EntitySet="Subscriptions" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="EmployeesAttendance">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="EmployeeWorkShiftId" Type="Guid" />
-          <Property Name="ClassId" Type="Guid" />
-          <Property Name="EmployeeId" Type="Guid" />
-          <Property Name="IsAttend" Type="Boolean" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Guid" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="DeletedBy" Type="Guid" />
-          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Classes" FromRole="EmployeesAttendance" ToRole="Class" />
-          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Employees" FromRole="EmployeesAttendance" ToRole="Employee" />
-          <NavigationProperty Name="EmployeesWorkShift" Relationship="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts" FromRole="EmployeesAttendance" ToRole="EmployeesWorkShift" />
-        </EntityType>
         <EntityType Name="BuildingSupervisor">
           <Key>
             <PropertyRef Name="Id" />
@@ -2302,13 +2281,13 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
-          <NavigationProperty Name="EmployeesAttendances" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Classes" FromRole="Class" ToRole="EmployeesAttendance" />
           <NavigationProperty Name="StudentsAttendances" Relationship="almohandes_DbModel.FK_Attendance_Classes" FromRole="Class" ToRole="StudentsAttendance" />
           <NavigationProperty Name="Level" Relationship="almohandes_DbModel.FK_Classes_Levels" FromRole="Class" ToRole="Level" />
           <NavigationProperty Name="StudyPlace" Relationship="almohandes_DbModel.FK_Classes_StudyPlaces" FromRole="Class" ToRole="StudyPlace" />
           <NavigationProperty Name="ClassesLeaders" Relationship="almohandes_DbModel.FK_ClassesLeaders_Classes" FromRole="Class" ToRole="ClassesLeader" />
           <NavigationProperty Name="ClassExams" Relationship="almohandes_DbModel.FK_ClassExams_Classes" FromRole="Class" ToRole="ClassExam" />
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses" FromRole="Class" ToRole="EmployeeClass" />
+          <NavigationProperty Name="EmployeesAttendances" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Classes" FromRole="Class" ToRole="EmployeesAttendance" />
           <NavigationProperty Name="StudentsClasses" Relationship="almohandes_DbModel.FK_StudentsClass_Classes" FromRole="Class" ToRole="StudentsClass" />
           <NavigationProperty Name="StudentsClassesTransfers" Relationship="almohandes_DbModel.FK_StudentsClassesTransfer_Classes" FromRole="Class" ToRole="StudentsClassesTransfer" />
           <NavigationProperty Name="StudentsClassesTransfers1" Relationship="almohandes_DbModel.FK_StudentsClassesTransfer_Classes1" FromRole="Class" ToRole="StudentsClassesTransfer" />
@@ -2446,11 +2425,11 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
-          <NavigationProperty Name="EmployeesAttendances" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Employees" FromRole="Employee" ToRole="EmployeesAttendance" />
           <NavigationProperty Name="BuildingSupervisors" Relationship="almohandes_DbModel.FK_BuildingSupervisors_Employees" FromRole="Employee" ToRole="BuildingSupervisor" />
           <NavigationProperty Name="ClassesLeaders" Relationship="almohandes_DbModel.FK_ClassesLeaders_Employees" FromRole="Employee" ToRole="ClassesLeader" />
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_Employees" FromRole="Employee" ToRole="EmployeeClass" />
           <NavigationProperty Name="Jop" Relationship="almohandes_DbModel.FK_Employees_Jops" FromRole="Employee" ToRole="Jop" />
+          <NavigationProperty Name="EmployeesAttendances" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Employees" FromRole="Employee" ToRole="EmployeesAttendance" />
           <NavigationProperty Name="EmployeesDelays" Relationship="almohandes_DbModel.FK_EmployeesDelay_Employees" FromRole="Employee" ToRole="EmployeesDelay" />
           <NavigationProperty Name="EmployeesDiscounts" Relationship="almohandes_DbModel.FK_EmployeesDiscounts_Employees" FromRole="Employee" ToRole="EmployeesDiscount" />
           <NavigationProperty Name="EmployeesIncreases" Relationship="almohandes_DbModel.FK_EmployeesIncreases_Employees" FromRole="Employee" ToRole="EmployeesIncreas" />
@@ -2459,6 +2438,27 @@
           <NavigationProperty Name="EmployeesWorkShifts" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_Employees" FromRole="Employee" ToRole="EmployeesWorkShift" />
           <NavigationProperty Name="Expenses" Relationship="almohandes_DbModel.FK_Expenses_Employees" FromRole="Employee" ToRole="Expens" />
           <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_Employees" FromRole="Employee" ToRole="Revenue" />
+        </EntityType>
+        <EntityType Name="EmployeesAttendance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeWorkShiftId" Type="Guid" />
+          <Property Name="ClassId" Type="Guid" />
+          <Property Name="EmployeeId" Type="Guid" />
+          <Property Name="IsAttend" Type="Boolean" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Classes" FromRole="EmployeesAttendance" ToRole="Class" />
+          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeesAttendance_Employees" FromRole="EmployeesAttendance" ToRole="Employee" />
+          <NavigationProperty Name="EmployeesWorkShift" Relationship="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts" FromRole="EmployeesAttendance" ToRole="EmployeesWorkShift" />
         </EntityType>
         <EntityType Name="EmployeesDelay">
           <Key>
@@ -2571,8 +2571,8 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
-          <NavigationProperty Name="EmployeesAttendances" Relationship="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts" FromRole="EmployeesWorkShift" ToRole="EmployeesAttendance" />
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_Employees" FromRole="EmployeesWorkShift" ToRole="Employee" />
+          <NavigationProperty Name="EmployeesAttendances" Relationship="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts" FromRole="EmployeesWorkShift" ToRole="EmployeesAttendance" />
           <NavigationProperty Name="StudyYear" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_StudyYears" FromRole="EmployeesWorkShift" ToRole="StudyYear" />
           <NavigationProperty Name="WorkShift" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_WorkShifts" FromRole="EmployeesWorkShift" ToRole="WorkShift" />
         </EntityType>
@@ -3167,42 +3167,6 @@
           <NavigationProperty Name="EmployeesWorkShifts" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_WorkShifts" FromRole="WorkShift" ToRole="EmployeesWorkShift" />
           <NavigationProperty Name="ShiftsTimes" Relationship="almohandes_DbModel.FK_ShiftsTimes_WorkShifts" FromRole="WorkShift" ToRole="ShiftsTime" />
         </EntityType>
-        <Association Name="FK_EmployeesAttendance_Classes">
-          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.EmployeesAttendance" Role="EmployeesAttendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Class">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EmployeesAttendance">
-              <PropertyRef Name="ClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeesAttendance_Employees">
-          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.EmployeesAttendance" Role="EmployeesAttendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EmployeesAttendance">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeesAttendance_EmployeesWorkShifts">
-          <End Type="almohandes_DbModel.EmployeesWorkShift" Role="EmployeesWorkShift" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.EmployeesAttendance" Role="EmployeesAttendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EmployeesWorkShift">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EmployeesAttendance">
-              <PropertyRef Name="EmployeeWorkShiftId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BuildingSupervisors_Employees">
           <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.BuildingSupervisor" Role="BuildingSupervisor" Multiplicity="*" />
@@ -3307,6 +3271,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="EmployeeClass">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeesAttendance_Classes">
+          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeesAttendance" Role="EmployeesAttendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeesAttendance">
               <PropertyRef Name="ClassId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3467,6 +3443,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EmployeesAttendance_Employees">
+          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeesAttendance" Role="EmployeesAttendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeesAttendance">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EmployeesDelay_Employees">
           <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.EmployeesDelay" Role="EmployeesDelay" Multiplicity="*" />
@@ -3560,6 +3548,18 @@
             </Principal>
             <Dependent Role="Revenue">
               <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeesAttendance_EmployeesWorkShifts">
+          <End Type="almohandes_DbModel.EmployeesWorkShift" Role="EmployeesWorkShift" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeesAttendance" Role="EmployeesAttendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeesWorkShift">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeesAttendance">
+              <PropertyRef Name="EmployeeWorkShiftId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3965,25 +3965,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="almohandes_DbModelStoreContainer" CdmEntityContainer="almohandes_DbEntities">
-          <EntitySetMapping Name="EmployeesAttendances">
-            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeesAttendance">
-              <MappingFragment StoreEntitySet="EmployeesAttendance">
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
-                <ScalarProperty Name="EmployeeWorkShiftId" ColumnName="EmployeeWorkShiftId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BuildingSupervisors">
             <EntityTypeMapping TypeName="almohandes_DbModel.BuildingSupervisor">
               <MappingFragment StoreEntitySet="BuildingSupervisors">
@@ -4159,6 +4140,25 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="JopId" ColumnName="JopId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeesAttendances">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeesAttendance">
+              <MappingFragment StoreEntitySet="EmployeesAttendance">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="EmployeeWorkShiftId" ColumnName="EmployeeWorkShiftId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

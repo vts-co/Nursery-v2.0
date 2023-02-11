@@ -17,11 +17,11 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Class()
         {
-            this.EmployeesAttendances = new HashSet<EmployeesAttendance>();
             this.StudentsAttendances = new HashSet<StudentsAttendance>();
             this.ClassesLeaders = new HashSet<ClassesLeader>();
             this.ClassExams = new HashSet<ClassExam>();
             this.EmployeeClasses = new HashSet<EmployeeClass>();
+            this.EmployeesAttendances = new HashSet<EmployeesAttendance>();
             this.StudentsClasses = new HashSet<StudentsClass>();
             this.StudentsClassesTransfers = new HashSet<StudentsClassesTransfer>();
             this.StudentsClassesTransfers1 = new HashSet<StudentsClassesTransfer>();
@@ -41,8 +41,6 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> DeletedBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EmployeesAttendance> EmployeesAttendances { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsAttendance> StudentsAttendances { get; set; }
         public virtual Level Level { get; set; }
         public virtual StudyPlace StudyPlace { get; set; }
@@ -52,6 +50,8 @@ namespace NurseryProject.Models
         public virtual ICollection<ClassExam> ClassExams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeClass> EmployeeClasses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeesAttendance> EmployeesAttendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsClass> StudentsClasses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

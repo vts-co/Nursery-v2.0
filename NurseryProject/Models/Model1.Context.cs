@@ -25,7 +25,6 @@ namespace NurseryProject.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<EmployeesAttendance> EmployeesAttendances { get; set; }
         public virtual DbSet<BuildingSupervisor> BuildingSupervisors { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
@@ -36,6 +35,7 @@ namespace NurseryProject.Models
         public virtual DbSet<DiscountsType> DiscountsTypes { get; set; }
         public virtual DbSet<EmployeeClass> EmployeeClasses { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<EmployeesAttendance> EmployeesAttendances { get; set; }
         public virtual DbSet<EmployeesDelay> EmployeesDelays { get; set; }
         public virtual DbSet<EmployeesDiscount> EmployeesDiscounts { get; set; }
         public virtual DbSet<EmployeesIncreas> EmployeesIncreases { get; set; }
