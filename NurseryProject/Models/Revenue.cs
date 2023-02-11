@@ -21,6 +21,7 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> EmployeeId { get; set; }
         public string RevenueValue { get; set; }
         public Nullable<System.DateTime> RevenueDate { get; set; }
+        public Nullable<System.Guid> SubscriptionMethodId { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
@@ -34,5 +35,6 @@ namespace NurseryProject.Models
         public virtual RevenuesType RevenuesType { get; set; }
         public virtual StudyPlace StudyPlace { get; set; }
         public virtual StudyYear StudyYear { get; set; }
+        public virtual SubscriptionMethod SubscriptionMethod { get; set; }
     }
 }

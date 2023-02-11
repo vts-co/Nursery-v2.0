@@ -150,6 +150,39 @@ namespace NurseryProject.Controllers
                 return View("Upsert", employee);
             }
         }
+        public ActionResult Reports()
+        {
+            ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name");
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Reports(Guid? DepartmentId=null, bool All = false)
+        {
+            if (DepartmentId != null && DepartmentId != Guid.Empty)
+                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name",DepartmentId);
+            else
+                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name", DepartmentId);
+
+
+            var employees = employeesServices.GetAll();
+            if (All)
+            {
+                ViewBag.Reports = employees;
+                ViewBag.Count = employees.Count();
+                return View();
+            }
+            if (DepartmentId != null && DepartmentId != Guid.Empty)
+            {
+                employees = employees.Where(x=>x.DepartmentId==DepartmentId).ToList();
+                ViewBag.Reports = employees;
+                ViewBag.Count = employees.Count();
+                return View();
+            }
+            ViewBag.Reports = employees;
+            ViewBag.Count = employees.Count();
+            return View();
+        }
+
         public ActionResult Delete(Guid Id)
         {
             var result = employeesServices.Delete(Id, (Guid)TempData["UserId"]);

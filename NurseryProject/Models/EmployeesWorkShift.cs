@@ -14,6 +14,12 @@ namespace NurseryProject.Models
     
     public partial class EmployeesWorkShift
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public EmployeesWorkShift()
+        {
+            this.EmployeesAttendances = new HashSet<EmployeesAttendance>();
+        }
+    
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> StudyYearId { get; set; }
         public Nullable<System.Guid> EmployeeId { get; set; }
@@ -27,6 +33,8 @@ namespace NurseryProject.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeesAttendance> EmployeesAttendances { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual StudyYear StudyYear { get; set; }
         public virtual WorkShift WorkShift { get; set; }

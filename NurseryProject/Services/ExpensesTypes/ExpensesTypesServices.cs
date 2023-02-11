@@ -90,7 +90,12 @@ namespace NurseryProject.Services.ExpensesTypes
                     result.Message = "نوع المصروف غير موجود ";
                     return result;
                 }
-
+                if (Id == Guid.Parse("20A6A59E-088E-4E6A-AA27-8A15F051B1DE")|| Id == Guid.Parse("A41366FB-D326-4723-A630-F81E38D5ED23"))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع المصروف لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

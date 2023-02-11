@@ -18,6 +18,8 @@ namespace NurseryProject.Dtos.Revenues
         public string RevenueTypeName { get; set; }
         public Guid EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public Guid SubscriptionMethodId { get; set; }
+        
         public string Value { get; set; }
         public DateTime Date { get; set; }
 

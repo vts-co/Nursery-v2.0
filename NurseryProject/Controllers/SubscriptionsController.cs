@@ -4,6 +4,8 @@ using NurseryProject.Enums;
 using NurseryProject.Levels.Services;
 using NurseryProject.Models;
 using NurseryProject.Services.Classes;
+using NurseryProject.Services.Expenses;
+using NurseryProject.Services.Revenues;
 using NurseryProject.Services.Students;
 using NurseryProject.Services.StudentsClass;
 using NurseryProject.Services.StudyTypes;
@@ -151,21 +153,33 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Reports(string StudentId, string StudyYearId)
+        public ActionResult Reports(Guid? StudentId = null, Guid? StudyYearId = null)
         {
             var StudyYear = studyYearsServices.GetAll();
-            var id = Guid.Parse(StudyYearId);
-            var id2 = Guid.Parse(StudentId);
-
-            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", Guid.Parse(StudyYearId));
-
             var Students = studentsServices.GetAllDropDown();
-            ViewBag.StudentId = new SelectList(Students, "Id", "Name", Guid.Parse(StudyYearId));
-
             var result = studentsClassServices.GetAll();
-            var model = result.Where(x => x.StudyYearId == id && x.StudentId == id2).ToList();
 
-            ViewBag.Reports = model;
+            if (StudyYearId != null && StudyYearId != Guid.Empty)
+            {
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", StudyYearId);
+                result = result.Where(x => x.StudyYearId == StudyYearId).ToList();
+            }
+            else
+            {
+                ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
+            }
+            if (StudentId != null && StudentId != Guid.Empty)
+            {
+                ViewBag.StudentId = new SelectList(Students, "Id", "Name", StudentId);
+                result = result.Where(x => x.StudentId == StudentId).ToList();
+
+            }
+            else
+            {
+                ViewBag.StudentId = new SelectList(Students, "Id", "Name");
+            }
+
+            ViewBag.Reports = result;
             return View();
         }
         public ActionResult LatecomersReports()
@@ -183,9 +197,9 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult LatecomersReports(Guid? StudyYearId=null,Guid? StudyTypeId=null,Guid? LevelId=null,Guid? ClassId=null)
+        public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null)
         {
-            var result = studentsClassServices.GetAll().Where(x=>x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0);
+            var result = studentsClassServices.GetAll().Where(x => x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0);
 
             var StudyYear = studyYearsServices.GetAll();
             var studyTypes = studyTypesServices.GetAll();
@@ -193,9 +207,9 @@ namespace NurseryProject.Controllers
             var classes = classesServices.GetAll();
 
 
-            if (StudyYearId!=null && StudyYearId!=Guid.Empty)
+            if (StudyYearId != null && StudyYearId != Guid.Empty)
             {
-                result = result.Where(x => x.StudyYearId == StudyYearId );
+                result = result.Where(x => x.StudyYearId == StudyYearId);
                 ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", StudyYearId);
             }
             else
@@ -214,7 +228,7 @@ namespace NurseryProject.Controllers
             if (LevelId != null && LevelId != Guid.Empty)
             {
                 result = result.Where(x => x.LevelId == LevelId);
-                ViewBag.LevelId = new SelectList(levels.Where(x=>x.StudyTypeId== StudyTypeId).ToList(), "Id", "Name", LevelId);
+                ViewBag.LevelId = new SelectList(levels.Where(x => x.StudyTypeId == StudyTypeId).ToList(), "Id", "Name", LevelId);
             }
             else
             {
@@ -237,7 +251,7 @@ namespace NurseryProject.Controllers
         {
             var class1 = studentsClassServices.Get(Id);
             class1.SubscriptionName = class1.SubscriptionName + "/" + class1.Amount + "جنيه/" + class1.Number;
-          
+
             var studyTypes = studyTypesServices.GetAll();
 
             var class2 = classesServices.GetAll().Where(x => x.Id == class1.ClassId).FirstOrDefault();
@@ -277,6 +291,7 @@ namespace NurseryProject.Controllers
             var result = studentsClassServices.Collect(Class, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
+               
                 TempData["success"] = result.Message;
                 return RedirectToAction("Index", "StudentsClass");
             }
@@ -331,9 +346,21 @@ namespace NurseryProject.Controllers
             var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, string Id2 = null, float Sub = 0)
+        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date,Guid StudentId,Guid StudyYearId ,string Id2 = null, float Sub = 0)
         {
             var model = subscriptionsMethodsServices.Update(Id, Amount, Date, Id2, Sub, (Guid)TempData["UserId"]);
+            if (model)
+            {
+                
+                return Json("Done", JsonRequestBehavior.AllowGet);
+            }
+            else
+                return Json("Faild", JsonRequestBehavior.AllowGet);
+
+        }
+        public ActionResult CancelSubscriptionsMethodsPaid(Guid Id)
+        {
+            var model = subscriptionsMethodsServices.Cancel(Id, (Guid)TempData["UserId"]);
             if (model)
                 return Json("Done", JsonRequestBehavior.AllowGet);
             else

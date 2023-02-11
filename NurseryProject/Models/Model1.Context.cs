@@ -25,6 +25,7 @@ namespace NurseryProject.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<EmployeesAttendance> EmployeesAttendances { get; set; }
         public virtual DbSet<BuildingSupervisor> BuildingSupervisors { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Class> Classes { get; set; }

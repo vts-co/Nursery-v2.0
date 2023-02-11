@@ -136,6 +136,7 @@ namespace NurseryProject.Services.StudentsClass
 
             }
         }
+
         public StudentsClassDto Get(Guid Id)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -460,6 +461,7 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
+
                 var Oldmodel = dbContext.StudentsClasses.Find(model.Id);
 
                 Oldmodel.ModifiedOn = DateTime.UtcNow;
@@ -477,7 +479,6 @@ namespace NurseryProject.Services.StudentsClass
                 var dd = DateTime.Now;
                 foreach (var item in Oldmodel.SubscriptionMethods.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).ToList())
                 {
-
                     item.Amount = model.SubscriptionMethod[i].Amount;
                     item.Date = DateTime.Parse(model.SubscriptionMethod[i].Date);
                     if (item.IsPaid == false)
@@ -488,7 +489,6 @@ namespace NurseryProject.Services.StudentsClass
                             DateTime.TryParse(model.SubscriptionMethod[i].PaidDate, out dd);
                             item.PaidDate = dd;
                         }
-
                     }
 
                     item.ModifiedOn = DateTime.UtcNow;
@@ -497,7 +497,6 @@ namespace NurseryProject.Services.StudentsClass
                     dbContext.SaveChanges();
                     i++;
                 }
-
                 dbContext.SaveChanges();
                 result.IsSuccess = true;
                 result.Message = "تم تعديل البيانات بنجاح";

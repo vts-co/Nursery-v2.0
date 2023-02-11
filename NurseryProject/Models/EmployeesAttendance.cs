@@ -12,22 +12,14 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SubscriptionMethod
+    public partial class EmployeesAttendance
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SubscriptionMethod()
-        {
-            this.Revenues = new HashSet<Revenue>();
-        }
-    
         public System.Guid Id { get; set; }
-        public Nullable<System.Guid> StudentClassId { get; set; }
-        public Nullable<int> OrderDisplay { get; set; }
-        public string Amount { get; set; }
+        public Nullable<System.Guid> EmployeeWorkShiftId { get; set; }
+        public Nullable<System.Guid> ClassId { get; set; }
+        public Nullable<System.Guid> EmployeeId { get; set; }
+        public Nullable<bool> IsAttend { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
-        public Nullable<bool> IsPaid { get; set; }
-        public string PaidAmount { get; set; }
-        public Nullable<System.DateTime> PaidDate { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
@@ -36,8 +28,8 @@ namespace NurseryProject.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Revenue> Revenues { get; set; }
-        public virtual StudentsClass StudentsClass { get; set; }
+        public virtual Class Class { get; set; }
+        public virtual Employee Employee { get; set; }
+        public virtual EmployeesWorkShift EmployeesWorkShift { get; set; }
     }
 }

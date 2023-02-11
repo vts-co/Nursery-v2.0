@@ -91,7 +91,12 @@ namespace NurseryProject.Services.RevenuesTypes
                     result.Message = "نوع الايراد غير موجود ";
                     return result;
                 }
-
+                if (Id == Guid.Parse("73D54EA9-BA7D-4EC3-90EC-C7499C859FB8") || Id == Guid.Parse("0F54C94D-B010-4360-8EB1-B93E05615065"))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع الايراد لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

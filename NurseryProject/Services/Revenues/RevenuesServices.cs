@@ -13,7 +13,7 @@ namespace NurseryProject.Services.Revenues
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Revenues.Where(x => x.IsDeleted == false&&x.StudyPlace.IsDeleted==false&&x.StudyYear.IsDeleted==false&&x.RevenuesType.IsDeleted==false&&x.Employee.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new RevenuesDto
+                var model = dbContext.Revenues.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new RevenuesDto
                 {
                     Id = x.Id,
                     StudyPlaceId = x.StudyPlaceId.Value,
@@ -24,12 +24,12 @@ namespace NurseryProject.Services.Revenues
                     RevenueTypeParentName=x.RevenuesType.RevenuesType1.Name,
                     RevenueTypeId =x.RevenueTypeId.Value,
                     RevenueTypeName=x.RevenuesType.Name,
-                    EmployeeId = x.EmployeeId.Value,
-                    EmployeeName = x.Employee.Name,
+                    EmployeeId = x.EmployeeId == null ? Guid.Empty : x.EmployeeId.Value,
+                    EmployeeName = x.EmployeeId == null ? "" : x.Employee.Name,
                     Value = x.RevenueValue,
                     Date=x.RevenueDate.Value,
                     Notes = x.Notes,
-                    
+                    SubscriptionMethodId= x.SubscriptionMethodId==null?Guid.Empty:x.SubscriptionMethodId.Value
                 }).ToList();
                 return model;
             }
@@ -87,7 +87,7 @@ namespace NurseryProject.Services.Revenues
             {
                 var result = new ResultDto<Revenue>();
                 var Oldmodel = dbContext.Revenues.Find(Id);
-                
+               
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

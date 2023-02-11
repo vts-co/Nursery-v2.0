@@ -17,6 +17,7 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Class()
         {
+            this.EmployeesAttendances = new HashSet<EmployeesAttendance>();
             this.StudentsAttendances = new HashSet<StudentsAttendance>();
             this.ClassesLeaders = new HashSet<ClassesLeader>();
             this.ClassExams = new HashSet<ClassExam>();
@@ -39,6 +40,8 @@ namespace NurseryProject.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeesAttendance> EmployeesAttendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsAttendance> StudentsAttendances { get; set; }
         public virtual Level Level { get; set; }

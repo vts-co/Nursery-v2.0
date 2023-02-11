@@ -239,6 +239,9 @@
     <Compile Include="Models\EmployeeClass.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeesAttendance.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmployeesDelay.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -2079,6 +2082,7 @@
     <Content Include="Views\Students\Reports.cshtml" />
     <Content Include="Views\StudentsClass\StudentsClassPrevious.cshtml" />
     <Content Include="Views\StudentsClass\StudentsLevelsTransfer.cshtml" />
+    <Content Include="Views\Employees\Reports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

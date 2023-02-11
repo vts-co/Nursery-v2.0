@@ -1,0 +1,138 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير بعدد الموظفين والاقسام ";
+
+}
+@using (Html.BeginForm("Reports", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @ViewBag.Title
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control" })
+                        @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6 mt-2">
+                    @Html.Label("كل الموظفين ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.CheckBox("All", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+
+            </div>
+        </div>
+    </div>
+}
+@if (ViewBag.Reports != null)
+{
+
+    <div class="card">
+        <div class="card-header">
+
+            <div class="row">
+                <h4 class="col-4">
+                    تقرير بعدد الموظفين والاقسام
+                </h4>
+                <h4 class="col-4 text-center">
+                    عدد الموظفين : @ViewBag.Count
+                </h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الصورة الشخصية")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الإدارة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الوظيفة")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("تاريخ التعيين")
+                        </th>
+                        <th>
+                            @Html.DisplayName("العنوان")
+                        </th>
+                        <th>
+                            @Html.DisplayName("رقم التليفون")
+                        </th>
+                        <th>
+                            @Html.DisplayName("قيمة الاجر اليومي")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("عمليات")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Reports)
+                    {
+                    <tr>
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            <img src="@item.Image" width="50" />
+                        </td>
+                        <td>
+                            @item.DepartmentName
+                        </td>
+                        <td>
+                            @item.JopName
+                        </td>
+
+                        <td>
+                            @item.JoiningDate
+                        </td>
+                        <td>
+                            @item.Address
+                        </td>
+                        <td>
+                            @item.Phone
+                        </td>
+                        <th>
+                            @item.WorkDayCost
+                        </th>
+
+                        <td>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}

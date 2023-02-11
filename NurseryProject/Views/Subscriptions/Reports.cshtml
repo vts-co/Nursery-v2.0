@@ -21,15 +21,13 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الطالب", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable", required = "required" })
-                        @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
+                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control" })
                     </div>
                 </div>
 
@@ -78,7 +76,9 @@
                         <th>
                             @Html.DisplayName("تفاصيل الاشتراك ")
                         </th>
-
+                        <th>
+                            @Html.DisplayName("الاشتراكات السابقة")
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,7 +93,7 @@
                             }
                             else
                             {
-                                remain +=float.Parse( @item2.Amount);
+                                remain += float.Parse(@item2.Amount);
                             }
                         }
                         <td>
@@ -143,30 +143,32 @@
                                 <tbody>
                                     @foreach (var item2 in item.SubscriptionMethod)
                                     {
-                                    <tr>
-                                        <td>
-                                            @item2.Amount جنيه
-                                        </td>
-                                        <td>
-                                            @item2.Date
-                                        </td>
-                                        <td>
-                                            @item2.PaidAmount جنيه
-                                        </td>
-                                        <td>
-                                            @item2.Paided
-                                        </td>
+                                        <tr>
+                                            <td>
+                                                @item2.Amount جنيه
+                                            </td>
+                                            <td>
+                                                @item2.Date
+                                            </td>
+                                            <td>
+                                                @item2.PaidAmount جنيه
+                                            </td>
+                                            <td>
+                                                @item2.Paided
+                                            </td>
 
-                                        <td>
-                                            @item2.PaidDate
-                                        </td>
-                                    </tr>
+                                            <td>
+                                                @item2.PaidDate
+                                            </td>
+                                        </tr>
                                     }
 
                                 </tbody>
                             </table>
                         </td>
-
+                        <td>
+                            <a class='btn btn-soft-info waves-effect waves-light p-2' href="/StudentsClass/StudentsClassPrevious?StudentClassId=@item.Id" title="الالتحاقات السابقة للطالب"><i class='mdi mdi-cards'></i></a>
+                        </td>
 
                     </tr>
                     }

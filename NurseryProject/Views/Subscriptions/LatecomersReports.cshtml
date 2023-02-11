@@ -101,9 +101,11 @@
                             @Html.DisplayName("المبلغ المتبقي")
                         </th>
                         <th>
-                            @Html.Label("تفاصيل الاشتراك ",new { @class="text-center"})
+                            @Html.Label("تفاصيل الاشتراك ", new { @class = "text-center" })
                         </th>
-
+                        <th>
+                            @Html.DisplayName("الاشتراكات السابقة")
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -252,7 +254,10 @@
                                 </tbody>
                             </table>
                         </td>
+                        <td>
+                            <a class='btn btn-soft-info waves-effect waves-light p-2' href="/StudentsClass/StudentsClassPrevious?StudentClassId=@item.Id" title="الالتحاقات السابقة للطالب"><i class='mdi mdi-cards'></i></a>
 
+                        </td>
 
                     </tr>
                     }
