@@ -16,8 +16,6 @@ namespace NurseryProject.Models
     {
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> EmployeeWorkShiftId { get; set; }
-        public Nullable<System.Guid> ClassId { get; set; }
-        public Nullable<System.Guid> EmployeeId { get; set; }
         public Nullable<bool> IsAttend { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
@@ -28,8 +26,6 @@ namespace NurseryProject.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
     
-        public virtual Class Class { get; set; }
-        public virtual Employee Employee { get; set; }
         public virtual EmployeesWorkShift EmployeesWorkShift { get; set; }
     }
 }

@@ -20,7 +20,6 @@ namespace NurseryProject.Models
             this.BuildingSupervisors = new HashSet<BuildingSupervisor>();
             this.ClassesLeaders = new HashSet<ClassesLeader>();
             this.EmployeeClasses = new HashSet<EmployeeClass>();
-            this.EmployeesAttendances = new HashSet<EmployeesAttendance>();
             this.EmployeesDelays = new HashSet<EmployeesDelay>();
             this.EmployeesDiscounts = new HashSet<EmployeesDiscount>();
             this.EmployeesIncreases = new HashSet<EmployeesIncreas>();
@@ -60,8 +59,6 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeClass> EmployeeClasses { get; set; }
         public virtual Jop Jop { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EmployeesAttendance> EmployeesAttendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeesDelay> EmployeesDelays { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -141,6 +141,7 @@
     <Compile Include="Controllers\DestrictsController.cs" />
     <Compile Include="Controllers\DiscountsTypesController.cs" />
     <Compile Include="Controllers\EmployeeClassesController.cs" />
+    <Compile Include="Controllers\EmployeesAttendanceController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\EmployeesDelayController.cs" />
     <Compile Include="Controllers\EmployeesDiscountsController.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Dtos\Departments\DepartmentsDto.cs" />
     <Compile Include="Dtos\Destricts\DestrictsDto.cs" />
     <Compile Include="Dtos\EmployeeClasses\EmployeeClassesDto.cs" />
+    <Compile Include="Dtos\EmployeesAttendance\EmployeesAttendanceDto.cs" />
     <Compile Include="Dtos\EmployeesDelay\EmployeesDelayDto.cs" />
     <Compile Include="Dtos\EmployeesDiscounts\EmployeesDiscountsDto.cs" />
     <Compile Include="Dtos\EmployeesIncreases\EmployeesIncreasesDto.cs" />
@@ -369,6 +371,7 @@
     <Compile Include="Services\ClassesLeaders\ClassesLeadersServices.cs" />
     <Compile Include="Services\EmployeeClasses\EmployeeClassesServices.cs" />
     <Compile Include="Services\DiscountsTypes\DiscountsTypesServices.cs" />
+    <Compile Include="Services\EmployeesAttendance\EmployeesAttendanceServices.cs" />
     <Compile Include="Services\EmployeesWorkShifts\EmployeesWorkShiftsServices.cs" />
     <Compile Include="Services\Exams\ExamsServices.cs" />
     <Compile Include="Services\IncreasesTypes\IncreasesTypesServices.cs" />
@@ -2083,6 +2086,8 @@
     <Content Include="Views\StudentsClass\StudentsClassPrevious.cshtml" />
     <Content Include="Views\StudentsClass\StudentsLevelsTransfer.cshtml" />
     <Content Include="Views\Employees\Reports.cshtml" />
+    <Content Include="Views\EmployeesAttendance\Index.cshtml" />
+    <Content Include="Views\EmployeesAttendance\Upsert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

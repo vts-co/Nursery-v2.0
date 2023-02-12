@@ -1,0 +1,179 @@
+﻿@model NurseryProject.Models.EmployeesAttendance
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " غياب الطلاب   ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "الموظفين  ";
+
+}
+@using (Html.BeginForm(action, "EmployeesAttendance", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفترة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("WorkShiftId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("WorkShiftId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @*<div class="form-group mb-3 col-sm-6">
+                @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
+                <div class="col-12">
+                    @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessage("DepartmentId", "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("تاريخ اليوم", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date",Value=ViewBag.Date, required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12" style="height:200px;overflow-y:scroll">
+                    <div class="card-body">
+                        <table class="table table-primary w-100" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("الكود ")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("الاسم ")
+                                    </th>
+                                    <th>
+                                        @Html.CheckBox("All", new { @class = "form-check-input" })
+
+                                        @Html.DisplayName(" الكل حضور ")
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="employees" class="mt-2">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitCreate()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        if (document.getElementById('Date').value == "") {
+            document.getElementById('Date').value = now.toISOString().slice(0, 10);
+        }
+
+        $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
+            $("#employees").empty();
+            $.each(data, function (key, value) {
+                $.get('/EmployeesAttendance/getEmployeesAttendance', { Id: value["Id"], Date: document.getElementById('Date').value }, function (data1) {
+                    if (data1 == "0") {
+                        $("#employees").append("<tr>");
+                        $("#employees").append("<td>" + value["Code"] + "</td>");
+                        $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
+                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' /></td>");
+                        $("#employees").append("</tr><tr></tr>");
+                    }
+                    else {
+                        $("#employees").append("<tr>");
+                        $("#employees").append("<td>" + value["Code"] + "</td>");
+                        $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
+                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' checked /></td>");
+                        $("#employees").append("</tr><tr></tr>");
+                    }
+                   
+                });
+
+            });
+
+        });
+
+        $("#StudyYearId").change(function () {
+            $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
+                $("#employees").empty();
+                $.each(data, function (key, value) {
+                    $.get('/EmployeesAttendance/getEmployees', { Id: value["EmployeeId"] }, function (data1) {
+                        $("#employees").append("<tr>");
+                        $("#employees").append("<td>" + data1["Code"] + "</td>");
+                        $("#employees").append("<td>" + data1["Name"] + "</td>");
+                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' /></td>");
+                        $("#employees").append("</tr><tr></tr>");
+                    });
+
+                });
+
+            });
+        });
+        $("#WorkShiftId").change(function () {
+            $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
+                $("#employees").empty();
+                $.each(data, function (key, value) {
+                    $.get('/EmployeesAttendance/getEmployees', { Id: value["EmployeeId"] }, function (data1) {
+                        $("#employees").append("<tr>");
+                        $("#employees").append("<td>" + data1["Code"] + "</td>");
+                        $("#employees").append("<td>" + data1["Name"] + "</td>");
+                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' /></td>");
+                        $("#employees").append("</tr><tr></tr>");
+                    });
+
+                });
+
+            });
+        });
+       
+        $("#All").change(function () {
+            if (document.getElementById('All').checked) {
+                var rowCount = $('#table1 tr').length;
+                for (var i = 0; i < rowCount; i++) {
+                    document.getElementById('emp[' + i + ']').checked = true;
+                }
+            }
+            else {
+                var rowCount = $('#table1 tr').length;
+                for (var i = 0; i < rowCount; i++) {
+                    document.getElementById('emp[' + i + ']').checked = false;
+                }
+            }
+        });
+
+    </script>
+}

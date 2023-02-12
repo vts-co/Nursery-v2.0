@@ -13,19 +13,20 @@ namespace NurseryProject.Services.EmployeesWorkShifts
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesWorkShifts.Where(x => x.IsDeleted == false && x.WorkShift.IsDeleted == false && x.Employee.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesWorkShiftsDto
+                var model = dbContext.EmployeesWorkShifts.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesWorkShiftsDto
                 {
                     Id = x.Id,
-
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
                     DepartmentId = x.Employee.Jop.DepartmentId.Value,
                     DepartmentName = x.Employee.Jop.Department.Name,
                     EmployeeId = x.Employee.Id,
                     EmployeeName = x.Employee.Name,
+                    Code=x.Employee.Code,
                     WorkShiftId = x.WorkShift.Id,
                     WorkShiftName = x.WorkShift.Name,
-                    Notes = x.Notes
+                    Notes = x.Notes,
+                    
                 }).ToList();
                 return model;
             }

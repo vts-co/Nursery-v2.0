@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NurseryProject.Dtos.EmployeesWorkShifts
+namespace NurseryProject.Dtos.EmployeesAttendance
 {
-    public class EmployeesWorkShiftsDto
+    public class EmployeesAttendanceDto
     {
         public Guid Id { get; set; }
+        public Guid EmployeeWorkShiftId { get; set; }
         public Guid StudyPlaceId { get; set; }
         public string StudyPlaceName { get; set; }
         public Guid StudyYearId { get; set; }
@@ -20,6 +21,10 @@ namespace NurseryProject.Dtos.EmployeesWorkShifts
 
         public Guid WorkShiftId { get; set; }
         public string WorkShiftName { get; set; }
-        public string Notes { get; set; }
+        public bool IsAttend { get; set; }
+        public string Date { get; set; }
+        public string All { get; set; }
+        public string Attend { get; set; }
+
     }
 }
