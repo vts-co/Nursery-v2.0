@@ -30,7 +30,8 @@ namespace NurseryProject.Dtos.EmployeesReceipt
         public string Reciept { get; set; }
         public string Paid { get; set; }
         public string Date { get; set; }
-
+        public string StudyPlaceName { get; set; }
+        public string StudyYearName { get; set; }
     }
     public class EmployeesDiscounts
     {

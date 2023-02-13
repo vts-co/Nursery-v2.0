@@ -13,7 +13,7 @@ namespace NurseryProject.Services.EmployeesTransferAllowance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesTransferAllowances.Where(x => x.IsDeleted == false&&x.Employee.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesTransferAllowanceDto
+                var model = dbContext.EmployeesTransferAllowances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesTransferAllowanceDto
                 {
                     Id = x.Id,
                     EmployeeId = x.EmployeeId.Value,

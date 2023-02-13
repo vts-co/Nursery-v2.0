@@ -13,7 +13,7 @@ namespace NurseryProject.Services.Jops
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Jops.Where(x => x.IsDeleted == false&&x.Department.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new JopsDto
+                var model = dbContext.Jops.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new JopsDto
                 {
                     Id = x.Id,
                     DepartmentId = x.DepartmentId.Value,

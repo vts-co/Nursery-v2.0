@@ -13,7 +13,7 @@ namespace NurseryProject.Services.Subjects
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Subjects.Where(x => x.IsDeleted == false&&x.Level.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new SubjectsDto
+                var model = dbContext.Subjects.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new SubjectsDto
                 {
                     Id = x.Id,
                     StudyTypeId = x.Level.StudyType.Id,

@@ -13,7 +13,7 @@ namespace NurseryProject.Services.Exams
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Exams.Where(x => x.IsDeleted == false&&x.Subject.IsDeleted==false&&x.ExamsType.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new ExamsDto
+                var model = dbContext.Exams.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new ExamsDto
                 {
                     Id = x.Id,
                     Name = x.IsOneQuestion == true ? x.Subject.Name + "/" + x.ExamsType.Name + "/" + "سؤال" + "/" + x.TotalDegree : x.Subject.Name + "/" + x.ExamsType.Name + "/" + "عدة اسئلة" + "/" + x.TotalDegree,

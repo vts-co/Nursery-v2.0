@@ -13,7 +13,7 @@ namespace NurseryProject.Services.EmployeesVacation
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesVacations.Where(x => x.IsDeleted == false&&x.VacationsType.IsDeleted==false&&x.Employee.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesVacationDto
+                var model = dbContext.EmployeesVacations.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesVacationDto
                 {
                     Id = x.Id,
                     VacationTypeId=x.VacationTypeId.Value,

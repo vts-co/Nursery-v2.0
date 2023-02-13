@@ -17,10 +17,9 @@ namespace NurseryProject.Services.EmployeesReceipt
 {
     public class EmployeesReceiptServices
     {
-        EmployeesDiscountsServices employeesDiscountsServices = new EmployeesDiscountsServices();
-        EmployeesIncreasesServices employeesIncreasesServices = new EmployeesIncreasesServices();
         ExpensesServices expensesServices = new ExpensesServices();
         EmployeeClassesServices employeeClassesServices = new EmployeeClassesServices();
+        EmployeesServices employeesServices = new EmployeesServices();
         public EmployeesReceiptDto GetAll(string date, Guid Id)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -31,11 +30,24 @@ namespace NurseryProject.Services.EmployeesReceipt
                 var RecieptCount = 0;
                 var Date = "";
                 var Paid = "";
+                var StudyYear = "";
+                var StudyPlace = "";
 
                 var attend = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == true && y.EmployeesWorkShift.EmployeeId == Id).ToList();
                 var noattend = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == false && y.EmployeesWorkShift.EmployeeId == Id).ToList();
                 var totalCost = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == true && y.EmployeesWorkShift.EmployeeId == Id).ToList();
-                var Reciept = dbContext.EmployeesReceipts.Where(y => y.IsDeleted == false&&y.Month.ToString().Contains(date) && y.EmployeeId == Id).ToList();
+                var Reciept = dbContext.EmployeesReceipts.Where(y => y.IsDeleted == false && y.Month.ToString().Contains(date) && y.EmployeeId == Id).FirstOrDefault();
+                var Expense = new Expens();
+                if (Reciept != null)
+                {
+                    Expense = dbContext.Expenses.Where(y => y.IsDeleted == false && y.EmployeesReceiptId == Reciept.Id).FirstOrDefault();
+                    if(Expense!=null)
+                    {
+                        StudyPlace = Expense.StudyPlace.Name;
+                        StudyYear = Expense.StudyYear.Name;
+                    }
+                    
+                }
 
                 foreach (var item in attend)
                 {
@@ -58,15 +70,17 @@ namespace NurseryProject.Services.EmployeesReceipt
                         totalCostCount += 1;
                     }
                 }
-                foreach (var item in Reciept)
+                if (Reciept != null)
                 {
-                    if (item.Date.Value.ToString("yyyy-MM") == date)
+                    if (Reciept.Date.Value.ToString("yyyy-MM") == date)
                     {
                         RecieptCount += 1;
-                        Date = item.Date.Value.ToString("yyyy-MM-dd");
-                        Paid = item.FinalTotalAmount.Value.ToString();
+                        Date = Reciept.Date.Value.ToString("yyyy-MM-dd");
+                        Paid = Reciept.FinalTotalAmount.Value.ToString();
                     }
+
                 }
+
                 var discounts = dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == Id).ToList();
                 var increases = dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == Id).ToList();
                 var model = dbContext.Employees.Where(x => x.IsDeleted == false && x.Id == Id).OrderBy(x => x.CreatedOn).Select(x => new EmployeesReceiptDto
@@ -110,8 +124,10 @@ namespace NurseryProject.Services.EmployeesReceipt
                     dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == x.Id).Sum(c => c.IncreaseValue) -
                     dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == x.Id).Sum(d => d.DiscountValue)).ToString(),
                     Reciept = RecieptCount.ToString(),
-                    Date= Date,
-                    Paid=Paid
+                    Date = Date,
+                    Paid = Paid,
+                    StudyPlaceName = StudyPlace,
+                    StudyYearName = StudyYear,
                 }).FirstOrDefault();
                 if (model.TotalDiscountCost == "")
                 {
@@ -129,7 +145,7 @@ namespace NurseryProject.Services.EmployeesReceipt
             }
         }
 
-        public ResultDto<Models.EmployeesReceipt> Create(string date,string month, Guid EmployeeId, float Total, float TotalDiscountCost, float TotalIncreasesCost, float Final, Guid UserId)
+        public ResultDto<Models.EmployeesReceipt> Create(string date, string month, Guid EmployeeId, Guid StudyYearId, Guid StudyPlaceId, float Total, float TotalDiscountCost, float TotalIncreasesCost, float Final, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -144,23 +160,23 @@ namespace NurseryProject.Services.EmployeesReceipt
                 model.Date = DateTime.Parse(date).Date;
                 model.Month = DateTime.Parse(month).Date;
                 model.FinalTotalAmount = Final;
-                
+
                 model.CreatedOn = DateTime.UtcNow;
                 model.CreatedBy = UserId;
                 model.IsDeleted = false;
                 dbContext.EmployeesReceipts.Add(model);
                 dbContext.SaveChanges();
 
-                var employeeClasses= employeeClassesServices.GetAll().Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
+                var employeeClasses = employeesServices.Get(EmployeeId);
                 var Expense = new Models.Expens
                 {
                     Id = Guid.NewGuid(),
-                    StudyYearId = employeeClasses.StudyYearId,
-                    StudyPlaceId = employeeClasses.StudyPlaceId,
+                    StudyYearId = StudyYearId,
+                    StudyPlaceId = StudyPlaceId,
                     ExpenseTypeId = Guid.Parse("20A6A59E-088E-4E6A-AA27-8A15F051B1DE"),
                     ExpenseValue = Final.ToString(),
                     ExpenseDate = DateTime.Parse(date).Date,
-                    Notes = "راتب الموظف " + employeeClasses.EmployeeName,
+                    Notes = "راتب الموظف " + employeeClasses.Name,
                     EmployeeId = null,
                     EmployeesReceiptId = model.Id
                 };

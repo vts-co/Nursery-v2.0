@@ -13,7 +13,7 @@ namespace NurseryProject.Services.EmployeesDelay
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesDelays.Where(x => x.IsDeleted == false&&x.Employee.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesDelayDto
+                var model = dbContext.EmployeesDelays.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesDelayDto
                 {
                     Id = x.Id,
                     EmployeeId = x.EmployeeId.Value,

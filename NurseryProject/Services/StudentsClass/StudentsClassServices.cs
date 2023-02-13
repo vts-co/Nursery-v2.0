@@ -13,7 +13,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == true && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == true ).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -76,7 +76,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Class.Level.StudyTypeId == StudyTypeId && x.IsCurrent == false && x.StudentId == StudentId && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Class.Level.StudyTypeId == StudyTypeId && x.IsCurrent == false && x.StudentId == StudentId ).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -141,7 +141,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Id == Id && x.Student.IsDeleted == false && (x.Subscription.IsDeleted == false || x.SubscriptionId == null) && x.StudyYear.IsDeleted == false && x.Class.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.Id == Id ).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,

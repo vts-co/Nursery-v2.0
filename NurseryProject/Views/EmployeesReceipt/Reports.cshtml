@@ -315,6 +315,20 @@
                             @Html.ValidationMessage("Date", "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="form-group mb-3 col-sm-6">
+                        @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.Editor("StudyYearId", new { htmlAttributes = new { @class = "form-control", disabled = "disabled", Value = ViewBag.StudyYears, required = "required" } })
+                            @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 col-sm-6">
+                        @Html.Label("الفرع ", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.Editor("StudyPlaceId", new { htmlAttributes = new { @class = "form-control", disabled = "disabled", Value = ViewBag.StudyPlaces, required = "required" } })
+                            @Html.ValidationMessage("StudyPlaceId", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                 }
             </div>
         </div>

@@ -13,7 +13,7 @@ namespace NurseryProject.Services.Subscriptions
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Subscriptions.Where(x => x.IsDeleted == false&&x.SubscriptionsType.IsDeleted==false&&x.Level.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new SubscriptionsDto
+                var model = dbContext.Subscriptions.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new SubscriptionsDto
                 {
                     Id = x.Id,
                     StudyTypeId = x.Level.StudyTypeId.Value,

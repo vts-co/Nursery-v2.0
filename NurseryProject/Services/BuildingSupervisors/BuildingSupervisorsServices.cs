@@ -13,7 +13,7 @@ namespace NurseryProject.Services.BuildingSupervisors
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false && x.Employee.IsDeleted == false && x.StudyPlace.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new BuildingSupervisorsDto
+                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new BuildingSupervisorsDto
                 {
                     Id = x.Id,
                     StudyPlaceId = x.StudyPlaceId != null ? x.StudyPlaceId.Value : Guid.Empty,

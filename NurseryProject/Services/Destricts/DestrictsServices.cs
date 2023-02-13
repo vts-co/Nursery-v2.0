@@ -14,7 +14,7 @@ namespace NurseryProject.Services.Destricts
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Destricts.Where(x => x.IsDeleted == false&&x.City.IsDeleted==false).OrderBy(x => x.CreatedOn).Select(x => new DestrictsDto
+                var model = dbContext.Destricts.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new DestrictsDto
                 {
                     Id = x.Id,
                     CityId = x.CityId.Value,
