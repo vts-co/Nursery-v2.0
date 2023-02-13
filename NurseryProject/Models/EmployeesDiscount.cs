@@ -18,7 +18,7 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> DiscountTypeId { get; set; }
         public Nullable<System.Guid> EmployeeId { get; set; }
         public Nullable<System.DateTime> DiscountDate { get; set; }
-        public string DiscountValue { get; set; }
+        public Nullable<double> DiscountValue { get; set; }
         public string DiscountReason { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }

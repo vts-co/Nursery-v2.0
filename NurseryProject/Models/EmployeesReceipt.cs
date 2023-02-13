@@ -12,17 +12,16 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Expens
+    public partial class EmployeesReceipt
     {
         public System.Guid Id { get; set; }
-        public Nullable<System.Guid> StudyYearId { get; set; }
-        public Nullable<System.Guid> StudyPlaceId { get; set; }
-        public Nullable<System.Guid> ExpenseTypeId { get; set; }
         public Nullable<System.Guid> EmployeeId { get; set; }
-        public string ExpenseValue { get; set; }
-        public Nullable<System.DateTime> ExpenseDate { get; set; }
-        public Nullable<System.Guid> EmployeesReceiptId { get; set; }
-        public string Notes { get; set; }
+        public Nullable<System.DateTime> Month { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<double> TotalAmount { get; set; }
+        public Nullable<double> TotalDiscount { get; set; }
+        public Nullable<double> TotalAdds { get; set; }
+        public Nullable<double> FinalTotalAmount { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
@@ -32,8 +31,5 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> DeletedBy { get; set; }
     
         public virtual Employee Employee { get; set; }
-        public virtual ExpensesType ExpensesType { get; set; }
-        public virtual StudyPlace StudyPlace { get; set; }
-        public virtual StudyYear StudyYear { get; set; }
     }
 }

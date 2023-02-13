@@ -13,7 +13,7 @@ namespace NurseryProject.Services.Expenses
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Expenses.Where(x => x.IsDeleted == false && x.StudyPlace.IsDeleted == false && x.StudyYear.IsDeleted == false && x.Employee.IsDeleted == false && x.ExpensesType.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new ExpensesDto
+                var model = dbContext.Expenses.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new ExpensesDto
                 {
                     Id = x.Id,
                     StudyPlaceId = x.StudyPlaceId.Value,
@@ -29,6 +29,7 @@ namespace NurseryProject.Services.Expenses
                     Value = x.ExpenseValue,
                     Date = x.ExpenseDate.Value,
                     Notes = x.Notes,
+                    EmployeesReceiptId = x.EmployeesReceiptId == null ? Guid.Empty : x.EmployeesReceiptId.Value
 
                 }).ToList();
                 return model;

@@ -13,7 +13,7 @@ namespace NurseryProject.Services.EmployeesIncreases
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesIncreases.Where(x => x.IsDeleted == false && x.IncreasesType.IsDeleted == false && x.Employee.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesIncreasesDto
+                var model = dbContext.EmployeesIncreases.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesIncreasesDto
                 {
                     Id = x.Id,
                     IncreaseTypeId = x.IncreaseTypeId.Value,
@@ -21,7 +21,7 @@ namespace NurseryProject.Services.EmployeesIncreases
                     EmployeeId = x.EmployeeId.Value,
                     EmployeeName = x.Employee.Name,
                     Date = x.IncreaseDate.Value,
-                    Value = x.IncreaseValue,
+                    Value = x.IncreaseValue.Value.ToString(),
                     Reason = x.IncreaseReason
                 }).ToList();
                 return model;

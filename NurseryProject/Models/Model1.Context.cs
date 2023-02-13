@@ -39,6 +39,7 @@ namespace NurseryProject.Models
         public virtual DbSet<EmployeesDelay> EmployeesDelays { get; set; }
         public virtual DbSet<EmployeesDiscount> EmployeesDiscounts { get; set; }
         public virtual DbSet<EmployeesIncreas> EmployeesIncreases { get; set; }
+        public virtual DbSet<EmployeesReceipt> EmployeesReceipts { get; set; }
         public virtual DbSet<EmployeesTransferAllowance> EmployeesTransferAllowances { get; set; }
         public virtual DbSet<EmployeesVacation> EmployeesVacations { get; set; }
         public virtual DbSet<EmployeesWorkShift> EmployeesWorkShifts { get; set; }

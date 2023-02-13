@@ -13,7 +13,7 @@ namespace NurseryProject.Services.EmployeesDiscounts
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesDiscounts.Where(x => x.IsDeleted == false && x.Employee.IsDeleted == false && x.DiscountsType.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesDiscountsDto
+                var model = dbContext.EmployeesDiscounts.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesDiscountsDto
                 {
                     Id = x.Id,
                     DiscountTypeId = x.DiscountTypeId.Value,
@@ -21,7 +21,7 @@ namespace NurseryProject.Services.EmployeesDiscounts
                     EmployeeId = x.EmployeeId.Value,
                     EmployeeName = x.Employee.Name,
                     Date = x.DiscountDate.Value,
-                    Value = x.DiscountValue,
+                    Value = x.DiscountValue.Value.ToString(),
                     Reason = x.DiscountReason
                 }).ToList();
                 return model;

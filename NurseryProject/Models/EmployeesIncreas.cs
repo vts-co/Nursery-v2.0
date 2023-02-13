@@ -18,7 +18,7 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> IncreaseTypeId { get; set; }
         public Nullable<System.Guid> EmployeeId { get; set; }
         public Nullable<System.DateTime> IncreaseDate { get; set; }
-        public string IncreaseValue { get; set; }
+        public Nullable<double> IncreaseValue { get; set; }
         public string IncreaseReason { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }

@@ -21,5 +21,8 @@ namespace NurseryProject.Dtos.Expenses
         public string Value { get; set; }
         public DateTime Date { get; set; }
         public string Notes { get; set; }
+        public Guid EmployeesReceiptId { get; set; }
+
+        
     }
 }

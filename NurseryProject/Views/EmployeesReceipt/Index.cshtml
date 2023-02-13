@@ -1,0 +1,360 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "سند قبض موظف";
+    ViewBag.MainPage = "الموظفين";
+
+}
+@using (Html.BeginForm("Index", "EmployeesReceipt", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("الموظف", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("EmployeeId", null, "--اختر--", new { @class = "form-control searchable", required = "required" })
+                        @Html.ValidationMessage("EmployeeId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("date", new { htmlAttributes = new { @class = "form-control", type = "month", required = "required" } })
+                        @Html.ValidationMessage("date", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (ViewBag.EmployeesReceipt != null)
+{
+    <div class="card">
+        <div class="card-header text-center">
+            سند قبض موظف
+            <input id="Id" name="Id" value="@ViewBag.EmployeesReceipt.Id" hidden />
+        </div>
+        <div class="card-body">
+            <table class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("رقم التليفون")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الإدارة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الوظيفة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("قيمة الاجر اليومي")
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @ViewBag.EmployeesReceipt.Code
+                        </td>
+                        <td>
+                            @ViewBag.EmployeesReceipt.Name
+                        </td>
+                        <td>
+                            @ViewBag.EmployeesReceipt.Phone
+                        </td>
+                        <td>
+                            @ViewBag.EmployeesReceipt.Department
+                        </td>
+                        <td>
+                            @ViewBag.EmployeesReceipt.Jop
+                        </td>
+                        <td>
+                            @ViewBag.EmployeesReceipt.WorkDayCost جنيه
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+            @if (ViewBag.EmployeesReceipt.EmployeesIncreases.Count > 0)
+            {
+                <hr />
+                <div class="text-center bg-success">الاضافات  </div>
+                <hr />
+                <table class="table table-striped dt-responsive  nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("نوع الاضافة")
+                            </th>
+                            <th>
+                            </th>
+                            <th>
+                                @Html.DisplayName("قيمة الاضافة")
+                            </th>
+                            <th>
+                            </th>
+                            <th>
+                                @Html.DisplayName("تاريخ الاضافة")
+                            </th>
+                            <th>
+                                @Html.DisplayName("سبب الاضافة")
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.EmployeesReceipt.EmployeesIncreases)
+                        {
+                            <tr>
+                                <td>
+                                    @item.IncreaseTypeName
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    @item.Value
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    @item.Date.ToString("dd-MM-yyyy")
+                                </td>
+                                <td>
+                                    @item.Reason
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            }
+
+            @if (ViewBag.EmployeesReceipt.EmployeesDiscount.Count > 0)
+            {
+                <hr />
+                <div class="text-center bg-danger">الخصومات  </div>
+                <hr />
+                <table class="table table-striped dt-responsive  nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("نوع الخصم")
+                            </th>
+                            <td>
+                            </td>
+                            <th>
+                                @Html.DisplayName("قيمة الخصم")
+                            </th>
+                            <td>
+                            </td>
+                            <th>
+                                @Html.DisplayName("تاريخ الخصم")
+                            </th>
+                            <th>
+                                @Html.DisplayName("سبب الخصم")
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.EmployeesReceipt.EmployeesDiscount)
+                        {
+                            <tr>
+                                <td>
+                                    @item.DiscountTypeName
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    @item.Value
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    @item.Date.ToString("dd-MM-yyyy")
+                                </td>
+                                <td>
+                                    @item.Reason
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            }
+
+            <hr />
+            <div class="text-center bg-warning">الاجماليات  </div>
+            <hr />
+            <div class="row justify-content-center">
+                <div class="col-3 mt-1">
+                    التاريخ :
+                    <input id="Month" class="form-control text-center" name="Month" value="@ViewBag.EmployeesReceipt.Month" disabled />
+                </div>
+                <div class="col-3 mt-1">
+                    عدد ايام الغياب :
+
+                    <input id="EmployeesNoAttended" class="form-control" name="EmployeesNoAttended" value="@ViewBag.EmployeesReceipt.EmployeesNoAttended" disabled />
+                </div>
+                <div class="col-3 mt-1">
+                    عدد ايام العمل :
+
+                    <input id="EmployeesAttended" class="form-control" name="EmployeesAttended" value="@ViewBag.EmployeesReceipt.EmployeesAttended" disabled />
+                </div>
+                <div class="col-3 mt-1">
+                    حساب ايام العمل  :
+                    <div class="row">
+                        <div class="col-10">
+                            <input id="TotalCost" class="form-control" name="TotalCost" value="@ViewBag.EmployeesReceipt.TotalCost" disabled />
+                        </div>
+                        <div class="col-2 mt-1">
+                            جنيه
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <hr />
+
+            <div class="row">
+                <div class="col-6 mt-1">
+                    اجمالي الاضافات  :
+                    <div class="row">
+                        <div class="col-10">
+
+                            <input id="TotalIncreasesCost" class="form-control text-success text-center" name="TotalIncreasesCost" disabled value="@ViewBag.EmployeesReceipt.TotalIncreasesCost" />
+                        </div>
+                        <div class="col-2 mt-1">
+                            جنيه
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-6 mt-1">
+                    اجمالي الخصومات  :
+                    <div class="row">
+                        <div class="col-10">
+                            <input id="TotalDiscountCost" class="form-control text-danger text-center" name="TotalDiscountCost" disabled value="@ViewBag.EmployeesReceipt.TotalDiscountCost" />
+                        </div>
+                        <div class="col-2 mt-1">
+                            جنيه
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                @if (@ViewBag.EmployeesReceipt.Reciept == "0")
+                {
+                    <div class="form-group mb-3 col-sm-6">
+                        @Html.Label("صافي المرتب", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            <input id="FinalTotal" class="form-control text-center" name="FinalTotal" type="number" value="@ViewBag.EmployeesReceipt.FinalTotalCost" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 col-sm-6">
+                        @Html.Label("يوم القبض", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
+                            @Html.ValidationMessage("Date", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group mb-3 col-sm-6">
+                        @Html.Label("صافي المرتب", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            <input id="FinalTotal" class="form-control text-center" name="FinalTotal" type="number" value="@ViewBag.EmployeesReceipt.Paid" disabled required />
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 col-sm-6">
+                        @Html.Label("يوم القبض", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", @Value = @ViewBag.EmployeesReceipt.Date, required = "required", disabled = "disabled" } })
+                            @Html.ValidationMessage("Date", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card-footer">
+            @if (@ViewBag.EmployeesReceipt.Reciept == "0")
+            {
+                <div class="text-center text-warning row">
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-2">
+                        <button onclick="Collect()" class='btn btn-success  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-coins me-1'></i>قبض</button>
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="text-center text-success">
+                    تم صرف المرتب <i class="fa fa-check-square"></i>
+                    <a href="/EmployeesReceipt/DeleteCollect?EmployeeId=@ViewBag.EmployeesReceipt.Id&Month=@ViewBag.EmployeesReceipt.Month" class='btn btn-danger waves-effect waves-light px-3 m-1 col-12 col-md-auto' onclick="return deleteCheck(this)"><i class='fas fa-trash me-1'></i>حذف</a>
+
+                </div>
+            }
+        </div>
+    </div>
+
+}
+
+@section scripts{
+
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        if (document.getElementById('Date').value == "") {
+            document.getElementById('Date').value = now.toISOString().slice(0, 10);
+        }
+
+        function Collect() {
+            var EmployeeId = document.getElementById("EmployeeId").value;
+            var Date = document.getElementById("Date").value;
+            var Month = document.getElementById("Month").value;
+            var Total = document.getElementById("TotalCost").value;
+            var TotalIncreasesCost = document.getElementById("TotalIncreasesCost").value;
+            var TotalDiscountCost = document.getElementById("TotalDiscountCost").value;
+            var Final = document.getElementById("FinalTotal").value;
+            $.get('/EmployeesReceipt/Collect', { EmployeeId: EmployeeId, Date: Date, Month: Month, Total: Total, TotalIncreasesCost: TotalIncreasesCost, TotalDiscountCost: TotalDiscountCost, Final: Final }, function (data) {
+                window.location.href = '/EmployeesReceipt/Index';
+            });
+        }
+    </script>
+}

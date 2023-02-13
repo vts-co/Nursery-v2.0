@@ -146,6 +146,7 @@
     <Compile Include="Controllers\EmployeesDelayController.cs" />
     <Compile Include="Controllers\EmployeesDiscountsController.cs" />
     <Compile Include="Controllers\EmployeesIncreasesController.cs" />
+    <Compile Include="Controllers\EmployeesReceiptController.cs" />
     <Compile Include="Controllers\EmployeesTransferAllowanceController.cs" />
     <Compile Include="Controllers\EmployeesVacationController.cs" />
     <Compile Include="Controllers\EmployeesWorkShiftsController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Dtos\EmployeesDelay\EmployeesDelayDto.cs" />
     <Compile Include="Dtos\EmployeesDiscounts\EmployeesDiscountsDto.cs" />
     <Compile Include="Dtos\EmployeesIncreases\EmployeesIncreasesDto.cs" />
+    <Compile Include="Dtos\EmployeesReceipt\EmployeesReceiptDto.cs" />
     <Compile Include="Dtos\EmployeesTransferAllowance\EmployeesTransferAllowanceDto.cs" />
     <Compile Include="Dtos\EmployeesVacation\EmployeesVacationDto.cs" />
     <Compile Include="Dtos\EmployeesWorkShifts\EmployeesWorkShiftsDto.cs" />
@@ -251,6 +253,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmployeesIncreas.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeesReceipt.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmployeesTransferAllowance.cs">
@@ -372,6 +377,7 @@
     <Compile Include="Services\EmployeeClasses\EmployeeClassesServices.cs" />
     <Compile Include="Services\DiscountsTypes\DiscountsTypesServices.cs" />
     <Compile Include="Services\EmployeesAttendance\EmployeesAttendanceServices.cs" />
+    <Compile Include="Services\EmployeesReceipt\EmployeesReceiptServices.cs" />
     <Compile Include="Services\EmployeesWorkShifts\EmployeesWorkShiftsServices.cs" />
     <Compile Include="Services\Exams\ExamsServices.cs" />
     <Compile Include="Services\IncreasesTypes\IncreasesTypesServices.cs" />
@@ -2088,6 +2094,8 @@
     <Content Include="Views\Employees\Reports.cshtml" />
     <Content Include="Views\EmployeesAttendance\Index.cshtml" />
     <Content Include="Views\EmployeesAttendance\Upsert.cshtml" />
+    <Content Include="Views\EmployeesReceipt\Index.cshtml" />
+    <Content Include="Views\EmployeesReceipt\Reports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

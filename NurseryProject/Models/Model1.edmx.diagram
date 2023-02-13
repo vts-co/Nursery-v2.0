@@ -5,53 +5,54 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="2195ff7961bc4c3297ca30b1e7fdbd5f" Name="Diagram1">
-        <EntityTypeShape EntityType="almohandes_DbModel.BuildingSupervisor" Width="1.5" PointX="13.5" PointY="32.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.City" Width="1.5" PointX="1.5" PointY="55.5" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Class" Width="1.5" PointX="8.25" PointY="13.5" />
-        <EntityTypeShape EntityType="almohandes_DbModel.ClassesLeader" Width="1.5" PointX="10.5" PointY="32.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.ClassExam" Width="1.5" PointX="10.5" PointY="11.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Department" Width="1.5" PointX="0.75" PointY="27.375" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Destrict" Width="1.5" PointX="1.5" PointY="50.25" />
-        <EntityTypeShape EntityType="almohandes_DbModel.DiscountsType" Width="1.5" PointX="11.25" PointY="37.375" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeeClass" Width="1.5" PointX="10.5" PointY="20.875" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Employee" Width="1.5" PointX="5.25" PointY="25.25" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesAttendance" Width="1.5" PointX="15.75" PointY="22.25" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesDelay" Width="1.5" PointX="7.5" PointY="72.625" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesDiscount" Width="1.5" PointX="13.5" PointY="26.875" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesIncreas" Width="1.5" PointX="7.5" PointY="21.875" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesTransferAllowance" Width="1.5" PointX="7.5" PointY="55.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesVacation" Width="1.5" PointX="7.5" PointY="26.875" />
-        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesWorkShift" Width="1.5" PointX="13.5" PointY="21.875" />
-        <EntityTypeShape EntityType="almohandes_DbModel.ExamDegree" Width="1.5" PointX="15.75" PointY="40.5" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Exam" Width="1.5" PointX="13.5" PointY="38.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.ExamsType" Width="1.5" PointX="11.25" PointY="41.625" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Expens" Width="1.5" PointX="10.5" PointY="26.5" />
-        <EntityTypeShape EntityType="almohandes_DbModel.ExpensesType" Width="1.5" PointX="8.25" PointY="43" />
-        <EntityTypeShape EntityType="almohandes_DbModel.IncreasesType" Width="1.5" PointX="5.25" PointY="21.375" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Jop" Width="1.5" PointX="3" PointY="27.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Level" Width="1.5" PointX="6" PointY="11.75" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Page" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="almohandes_DbModel.RegistrationType" Width="1.5" PointX="1.5" PointY="59.5" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Revenue" Width="1.5" PointX="7.5" PointY="32.375" />
-        <EntityTypeShape EntityType="almohandes_DbModel.RevenuesType" Width="1.5" PointX="5.25" PointY="47.375" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Setting" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="almohandes_DbModel.ShiftsTime" Width="1.5" PointX="13.5" PointY="12.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Student" Width="1.5" PointX="0.75" PointY="43.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudentsAttendance" Width="1.5" PointX="16.5" PointY="29.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudentsClass" Width="1.5" PointX="3" PointY="41" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudentsClassesTransfer" Width="1.5" PointX="16.5" PointY="34.875" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudentsExamDegree" Width="1.5" PointX="19" PointY="29" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudyClass" Width="1.5" PointX="14.25" PointY="17.375" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudyPlace" Width="1.5" PointX="6" PointY="16.625" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudyType" Width="1.5" PointX="3.75" PointY="12.25" />
-        <EntityTypeShape EntityType="almohandes_DbModel.StudyYear" Width="1.5" PointX="8.25" PointY="8.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Subject" Width="1.5" PointX="8.25" PointY="38.25" />
-        <EntityTypeShape EntityType="almohandes_DbModel.SubscriptionMethod" Width="1.5" PointX="5.25" PointY="41.5" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Subscription" Width="1.5" PointX="0.75" PointY="37.625" />
-        <EntityTypeShape EntityType="almohandes_DbModel.SubscriptionsType" Width="1.5" PointX="1.5" PointY="33" />
-        <EntityTypeShape EntityType="almohandes_DbModel.User" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="almohandes_DbModel.VacationsType" Width="1.5" PointX="5.25" PointY="33.375" />
-        <EntityTypeShape EntityType="almohandes_DbModel.WorkShift" Width="1.5" PointX="11.25" PointY="16.25" />
+        <EntityTypeShape EntityType="almohandes_DbModel.BuildingSupervisor" Width="1.5" PointX="13.5" PointY="23.875" />
+        <EntityTypeShape EntityType="almohandes_DbModel.City" Width="1.5" PointX="2.25" PointY="5" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Class" Width="1.5" PointX="5.25" PointY="21.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.ClassesLeader" Width="1.5" PointX="7.5" PointY="24.875" />
+        <EntityTypeShape EntityType="almohandes_DbModel.ClassExam" Width="1.5" PointX="13.5" PointY="18.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Department" Width="1.5" PointX="0.75" PointY="30.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Destrict" Width="1.5" PointX="4.5" PointY="4.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.DiscountsType" Width="1.5" PointX="8.25" PointY="48.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeeClass" Width="1.5" PointX="7.5" PointY="29.625" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Employee" Width="1.5" PointX="5.25" PointY="27.875" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesAttendance" Width="1.5" PointX="9.75" PointY="40" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesDelay" Width="1.5" PointX="7.5" PointY="78" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesDiscount" Width="1.5" PointX="10.5" PointY="34.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesIncreas" Width="1.5" PointX="13.5" PointY="35.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesReceipt" Width="1.5" PointX="7.5" PointY="64.25" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesTransferAllowance" Width="1.5" PointX="7.5" PointY="60.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesVacation" Width="1.5" PointX="10.5" PointY="29.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.EmployeesWorkShift" Width="1.5" PointX="7.5" PointY="34.625" />
+        <EntityTypeShape EntityType="almohandes_DbModel.ExamDegree" Width="1.5" PointX="15.75" PointY="41" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Exam" Width="1.5" PointX="13.5" PointY="40.625" />
+        <EntityTypeShape EntityType="almohandes_DbModel.ExamsType" Width="1.5" PointX="11.25" PointY="53.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Expens" Width="1.5" PointX="10.5" PointY="23.25" />
+        <EntityTypeShape EntityType="almohandes_DbModel.ExpensesType" Width="1.5" PointX="8.25" PointY="14.375" />
+        <EntityTypeShape EntityType="almohandes_DbModel.IncreasesType" Width="1.5" PointX="11.25" PointY="44.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Jop" Width="1.5" PointX="3" PointY="29.875" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Level" Width="1.5" PointX="3" PointY="21.625" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Page" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.RegistrationType" Width="1.5" PointX="4.5" PointY="0.875" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Revenue" Width="1.5" PointX="13.5" PointY="29.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.RevenuesType" Width="1.5" PointX="11.25" PointY="12.375" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Setting" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.ShiftsTime" Width="1.5" PointX="7.5" PointY="52.875" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Student" Width="1.5" PointX="6.75" PointY="1.625" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudentsAttendance" Width="1.5" PointX="14" PointY="7.875" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudentsClass" Width="1.5" PointX="9" PointY="4.25" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudentsClassesTransfer" Width="1.5" PointX="14.25" PointY="13.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudentsExamDegree" Width="1.5" PointX="18" PointY="21" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudyClass" Width="1.5" PointX="11.75" PointY="48.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudyPlace" Width="1.5" PointX="11.25" PointY="17.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudyType" Width="1.5" PointX="0.75" PointY="22.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.StudyYear" Width="1.5" PointX="8.25" PointY="19.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Subject" Width="1.5" PointX="5.25" PointY="36.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.SubscriptionMethod" Width="1.5" PointX="11.25" PointY="2.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Subscription" Width="1.5" PointX="6.75" PointY="9" />
+        <EntityTypeShape EntityType="almohandes_DbModel.SubscriptionsType" Width="1.5" PointX="4.5" PointY="9.375" />
+        <EntityTypeShape EntityType="almohandes_DbModel.User" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="almohandes_DbModel.VacationsType" Width="1.5" PointX="8.25" PointY="44.125" />
+        <EntityTypeShape EntityType="almohandes_DbModel.WorkShift" Width="1.5" PointX="5.25" PointY="42" />
         <AssociationConnector Association="almohandes_DbModel.FK_BuildingSupervisors_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_BuildingSupervisors_StudyPlaces" />
         <AssociationConnector Association="almohandes_DbModel.FK_Destricts_Cities" />
@@ -77,6 +78,7 @@
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesDelay_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesDiscounts_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesIncreases_Employees" />
+        <AssociationConnector Association="almohandes_DbModel.FK_EmployeesReceipt_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesTransferAllowance_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesVacation_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesWorkShifts_Employees" />

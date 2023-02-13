@@ -215,7 +215,7 @@
           <Property Name="DiscountTypeId" Type="uniqueidentifier" />
           <Property Name="EmployeeId" Type="uniqueidentifier" />
           <Property Name="DiscountDate" Type="date" />
-          <Property Name="DiscountValue" Type="nvarchar(max)" />
+          <Property Name="DiscountValue" Type="float" />
           <Property Name="DiscountReason" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -233,8 +233,28 @@
           <Property Name="IncreaseTypeId" Type="uniqueidentifier" />
           <Property Name="EmployeeId" Type="uniqueidentifier" />
           <Property Name="IncreaseDate" Type="date" />
-          <Property Name="IncreaseValue" Type="nvarchar(max)" />
+          <Property Name="IncreaseValue" Type="float" />
           <Property Name="IncreaseReason" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="EmployeesReceipt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeId" Type="uniqueidentifier" />
+          <Property Name="Month" Type="date" />
+          <Property Name="Date" Type="date" />
+          <Property Name="TotalAmount" Type="float" />
+          <Property Name="TotalDiscount" Type="float" />
+          <Property Name="TotalAdds" Type="float" />
+          <Property Name="FinalTotalAmount" Type="float" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -352,6 +372,7 @@
           <Property Name="EmployeeId" Type="uniqueidentifier" />
           <Property Name="ExpenseValue" Type="nvarchar(max)" />
           <Property Name="ExpenseDate" Type="date" />
+          <Property Name="EmployeesReceiptId" Type="uniqueidentifier" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -1059,6 +1080,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EmployeesReceipt_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="EmployeesReceipt" Type="Self.EmployeesReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeesReceipt">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EmployeesTransferAllowance_Employees">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="EmployeesTransferAllowance" Type="Self.EmployeesTransferAllowance" Multiplicity="*" />
@@ -1590,6 +1623,7 @@
           <EntitySet Name="EmployeesDelay" EntityType="Self.EmployeesDelay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesDiscounts" EntityType="Self.EmployeesDiscounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesIncreases" EntityType="Self.EmployeesIncreases" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeesReceipt" EntityType="Self.EmployeesReceipt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesTransferAllowance" EntityType="Self.EmployeesTransferAllowance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesVacation" EntityType="Self.EmployeesVacation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesWorkShifts" EntityType="Self.EmployeesWorkShifts" Schema="dbo" store:Type="Tables" />
@@ -1706,6 +1740,10 @@
           <AssociationSet Name="FK_EmployeesIncreases_IncreasesTypes" Association="Self.FK_EmployeesIncreases_IncreasesTypes">
             <End Role="IncreasesTypes" EntitySet="IncreasesTypes" />
             <End Role="EmployeesIncreases" EntitySet="EmployeesIncreases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeesReceipt_Employees" Association="Self.FK_EmployeesReceipt_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="EmployeesReceipt" EntitySet="EmployeesReceipt" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeesTransferAllowance_Employees" Association="Self.FK_EmployeesTransferAllowance_Employees">
             <End Role="Employees" EntitySet="Employees" />
@@ -1899,6 +1937,7 @@
           <EntitySet Name="EmployeesDelays" EntityType="almohandes_DbModel.EmployeesDelay" />
           <EntitySet Name="EmployeesDiscounts" EntityType="almohandes_DbModel.EmployeesDiscount" />
           <EntitySet Name="EmployeesIncreases" EntityType="almohandes_DbModel.EmployeesIncreas" />
+          <EntitySet Name="EmployeesReceipts" EntityType="almohandes_DbModel.EmployeesReceipt" />
           <EntitySet Name="EmployeesTransferAllowances" EntityType="almohandes_DbModel.EmployeesTransferAllowance" />
           <EntitySet Name="EmployeesVacations" EntityType="almohandes_DbModel.EmployeesVacation" />
           <EntitySet Name="EmployeesWorkShifts" EntityType="almohandes_DbModel.EmployeesWorkShift" />
@@ -2031,6 +2070,10 @@
           <AssociationSet Name="FK_EmployeesIncreases_Employees" Association="almohandes_DbModel.FK_EmployeesIncreases_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="EmployeesIncreas" EntitySet="EmployeesIncreases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeesReceipt_Employees" Association="almohandes_DbModel.FK_EmployeesReceipt_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeesReceipt" EntitySet="EmployeesReceipts" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeesTransferAllowance_Employees" Association="almohandes_DbModel.FK_EmployeesTransferAllowance_Employees">
             <End Role="Employee" EntitySet="Employees" />
@@ -2389,6 +2432,7 @@
           <NavigationProperty Name="EmployeesDelays" Relationship="almohandes_DbModel.FK_EmployeesDelay_Employees" FromRole="Employee" ToRole="EmployeesDelay" />
           <NavigationProperty Name="EmployeesDiscounts" Relationship="almohandes_DbModel.FK_EmployeesDiscounts_Employees" FromRole="Employee" ToRole="EmployeesDiscount" />
           <NavigationProperty Name="EmployeesIncreases" Relationship="almohandes_DbModel.FK_EmployeesIncreases_Employees" FromRole="Employee" ToRole="EmployeesIncreas" />
+          <NavigationProperty Name="EmployeesReceipts" Relationship="almohandes_DbModel.FK_EmployeesReceipt_Employees" FromRole="Employee" ToRole="EmployeesReceipt" />
           <NavigationProperty Name="EmployeesTransferAllowances" Relationship="almohandes_DbModel.FK_EmployeesTransferAllowance_Employees" FromRole="Employee" ToRole="EmployeesTransferAllowance" />
           <NavigationProperty Name="EmployeesVacations" Relationship="almohandes_DbModel.FK_EmployeesVacation_Employees" FromRole="Employee" ToRole="EmployeesVacation" />
           <NavigationProperty Name="EmployeesWorkShifts" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_Employees" FromRole="Employee" ToRole="EmployeesWorkShift" />
@@ -2438,7 +2482,7 @@
           <Property Name="DiscountTypeId" Type="Guid" />
           <Property Name="EmployeeId" Type="Guid" />
           <Property Name="DiscountDate" Type="DateTime" Precision="0" />
-          <Property Name="DiscountValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountValue" Type="Double" />
           <Property Name="DiscountReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -2458,7 +2502,7 @@
           <Property Name="IncreaseTypeId" Type="Guid" />
           <Property Name="EmployeeId" Type="Guid" />
           <Property Name="IncreaseDate" Type="DateTime" Precision="0" />
-          <Property Name="IncreaseValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IncreaseValue" Type="Double" />
           <Property Name="IncreaseReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -2469,6 +2513,27 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeesIncreases_Employees" FromRole="EmployeesIncreas" ToRole="Employee" />
           <NavigationProperty Name="IncreasesType" Relationship="almohandes_DbModel.FK_EmployeesIncreases_IncreasesTypes" FromRole="EmployeesIncreas" ToRole="IncreasesType" />
+        </EntityType>
+        <EntityType Name="EmployeesReceipt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeId" Type="Guid" />
+          <Property Name="Month" Type="DateTime" Precision="0" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="TotalAmount" Type="Double" />
+          <Property Name="TotalDiscount" Type="Double" />
+          <Property Name="TotalAdds" Type="Double" />
+          <Property Name="FinalTotalAmount" Type="Double" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeesReceipt_Employees" FromRole="EmployeesReceipt" ToRole="Employee" />
         </EntityType>
         <EntityType Name="EmployeesTransferAllowance">
           <Key>
@@ -2593,6 +2658,7 @@
           <Property Name="EmployeeId" Type="Guid" />
           <Property Name="ExpenseValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ExpenseDate" Type="DateTime" Precision="0" />
+          <Property Name="EmployeesReceiptId" Type="Guid" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -3419,6 +3485,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EmployeesReceipt_Employees">
+          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeesReceipt" Role="EmployeesReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeesReceipt">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EmployeesTransferAllowance_Employees">
           <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.EmployeesTransferAllowance" Role="EmployeesTransferAllowance" Multiplicity="*" />
@@ -4145,6 +4223,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EmployeesReceipts">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeesReceipt">
+              <MappingFragment StoreEntitySet="EmployeesReceipt">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="FinalTotalAmount" ColumnName="FinalTotalAmount" />
+                <ScalarProperty Name="TotalAdds" ColumnName="TotalAdds" />
+                <ScalarProperty Name="TotalDiscount" ColumnName="TotalDiscount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="EmployeesTransferAllowances">
             <EntityTypeMapping TypeName="almohandes_DbModel.EmployeesTransferAllowance">
               <MappingFragment StoreEntitySet="EmployeesTransferAllowance">
@@ -4260,6 +4359,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="EmployeesReceiptId" ColumnName="EmployeesReceiptId" />
                 <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
                 <ScalarProperty Name="ExpenseValue" ColumnName="ExpenseValue" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />

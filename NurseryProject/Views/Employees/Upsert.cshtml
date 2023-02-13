@@ -71,14 +71,14 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
                         @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الوظيفة", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownListFor(model => model.JopId, null, "--اختر--", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.JopId, null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.JopId, "", new { @class = "text-danger" })
                     </div>
                 </div>
