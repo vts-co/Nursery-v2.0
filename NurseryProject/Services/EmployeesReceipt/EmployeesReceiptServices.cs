@@ -175,9 +175,10 @@ namespace NurseryProject.Services.EmployeesReceipt
                     StudyPlaceId = StudyPlaceId,
                     ExpenseTypeId = Guid.Parse("20A6A59E-088E-4E6A-AA27-8A15F051B1DE"),
                     ExpenseValue = Final.ToString(),
+                    
                     ExpenseDate = DateTime.Parse(date).Date,
                     Notes = "راتب الموظف " + employeeClasses.Name,
-                    EmployeeId = null,
+                    EmployeeId = EmployeeId,
                     EmployeesReceiptId = model.Id
                 };
                 expensesServices.Create(Expense, UserId);
