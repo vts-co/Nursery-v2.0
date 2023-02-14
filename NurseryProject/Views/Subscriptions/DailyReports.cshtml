@@ -1,0 +1,187 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = " تقرير التحصيل اليومي للطلاب ";
+    ViewBag.MainPage = "إشتراكات الطلاب ";
+    var paid = 0;
+    var remain = 0;
+
+}
+@using (Html.BeginForm("DailyReports", "Subscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الطالب", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("التاريخ ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
+                        @Html.ValidationMessage("Date", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+
+            </div>
+        </div>
+    </div>
+}
+@if (ViewBag.Reports != null)
+{
+    <div class="card">
+        <div class="card-header">
+            تقرير التحصيل اليومي للطلاب
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("كود الطالب ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الطالب ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("التليفون ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("العام الدراسي ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفرع ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("نوع الدراسة ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الصف ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفصل")
+                        </th>
+                        <th>
+                            @Html.DisplayName("طريقة الاشتراك ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد الاقساط")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ المدفوع ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("التاريخ")
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Reports)
+                    {
+                    <tr>
+
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.StudentName
+                        </td>
+                        <td>
+                            @item.StudentPhone
+                        </td>
+                        <td>
+                            @item.StudyYearName
+                        </td>
+                        <td>
+                            @item.StudyPlaceName
+                        </td>
+                        <td>
+                            @item.StudyTypeName
+                        </td>
+                        <td>
+                            @item.LevelName
+                        </td>
+                        <td>
+                            @item.ClassName
+                        </td>
+                        <td>
+                            @item.SubscriptionName
+                        </td>
+
+                        <td>
+                            @item.Amount جنيه
+                        </td>
+                        <td>
+                            @item.Number
+                        </td>
+                        <td>
+                           : @item.Paid جنيه
+                        </td>
+                        <td>
+                           : @item.Date 
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        if (document.getElementById('Date').value == "") {
+            document.getElementById('Date').value = now.toISOString().slice(0, 10);
+        }
+        $("#StudyTypeId").change(function () {
+            $.get('/EmployeeClasses/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/EmployeeClasses/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+            $.get('/EmployeeClasses/getSubjects', { Id: $("#LevelId").val() }, function (data) {
+                $("#SubjectId").empty();
+                $("#SubjectId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#SubjectId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+    </script>
+}

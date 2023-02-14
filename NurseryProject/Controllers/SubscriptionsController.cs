@@ -311,7 +311,36 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        public ActionResult DailyReports()
+        {
+            var Students = studentsServices.GetAllDropDown();
+            ViewBag.StudentId = new SelectList(Students, "Id", "Name");
 
+            return View();
+        }
+        [HttpPost]
+        public ActionResult DailyReports(string Date,Guid? StudentId = null)
+        {
+            var StudyYear = studyYearsServices.GetAll();
+            var Students = studentsServices.GetAllDropDown();
+            var date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+            var result = studentsClassServices.GetDayMoney(date);
+
+           
+            if (StudentId != null && StudentId != Guid.Empty)
+            {
+                ViewBag.StudentId = new SelectList(Students, "Id", "Name", StudentId);
+                result = result.Where(x => x.StudentId == StudentId).ToList();
+
+            }
+            else
+            {
+                ViewBag.StudentId = new SelectList(Students, "Id", "Name");
+            }
+
+            ViewBag.Reports = result;
+            return View();
+        }
 
         public ActionResult Collect(Guid Id)
         {
