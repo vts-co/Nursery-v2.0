@@ -186,6 +186,14 @@ namespace NurseryProject.Services.Students
                     result.Message = "هذا الطالب غير موجود ";
                     return result;
                 }
+                var Oldmodel2 = dbContext.Students.Where(x => x.Code == model.Code && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel2 != null)
+                {
+                    result.Result = model;
+                    result.IsSuccess = false;
+                    result.Message = "هذا الكود موجود لم يمكن استخدامه";
+                    return result;
+                }
                 Oldmodel.ModifiedOn = DateTime.UtcNow;
                 Oldmodel.ModifiedBy = UserId;
                 if (model.Code != null)
