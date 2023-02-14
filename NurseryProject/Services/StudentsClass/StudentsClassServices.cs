@@ -36,6 +36,7 @@ namespace NurseryProject.Services.StudentsClass
                     SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
                     Amount = x.IsAnother != true ? x.Subscription.Amount : "",
                     Number = x.IsAnother != true ? x.Subscription.InstallmentsNumber : "",
+                    Regular="منتظم",
                     SubscriptionMethod = x.SubscriptionMethods.Where(y => y.IsDeleted == false && y.StudentClassId == x.Id).OrderBy(y => y.OrderDisplay).Select(y => new SubscriptionMethodDto
                     {
                         Id = y.Id,
@@ -68,6 +69,15 @@ namespace NurseryProject.Services.StudentsClass
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
                     item.StudentsClassPrevious = GetAllPrevious(item.StudentId,item.StudyTypeId);
+                    foreach (var item2 in item.SubscriptionMethod)
+                    {
+                        if (DateTime.Parse(item2.Date).Date.AddDays(15) < DateTime.Now.Date)
+                        {
+                            item.Regular = "غير منتظم";
+                            break;
+                        }
+                    }
+                    
                 }
                 return model;
             }

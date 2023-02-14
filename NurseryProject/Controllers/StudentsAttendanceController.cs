@@ -53,7 +53,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", new StudentsAttendance());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(StudentsAttendance Class, List<Guid> IsAttend)
+        public ActionResult Create(StudentsAttendance Class, List<Attend> IsAttend)
         {
             var result = studentsAttendanceServices.Create(Class, IsAttend, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
@@ -108,7 +108,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", class1);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(StudentsAttendance Class, List<Guid> IsAttend)
+        public ActionResult Edit(StudentsAttendance Class, List<Attend> IsAttend)
         {
 
             var result = studentsAttendanceServices.Edit(Class, IsAttend, (Guid)TempData["UserId"]);
@@ -240,6 +240,12 @@ namespace NurseryProject.Controllers
             var model = studyClassesServices.GetAll().Where(x => x.StudyYearId == StudyYearId).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+    }
+    public class Attend
+    {
+        public Guid Id { get; set; }
+        public bool Att { get; set; }
 
     }
 }

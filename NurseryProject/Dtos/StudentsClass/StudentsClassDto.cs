@@ -25,6 +25,8 @@ namespace NurseryProject.Dtos.StudentsClass
 
         public Guid? SubscriptionId { get; set; }
         public string SubscriptionName { get; set; }
+        public string Regular { get; set; }
+
         public List<SubscriptionMethodDto> SubscriptionMethod { get; set; }
         public bool IsCurrent { get; set; }
 

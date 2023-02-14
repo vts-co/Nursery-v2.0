@@ -1,4 +1,5 @@
-﻿using NurseryProject.Dtos.StudentsAttendance;
+﻿using NurseryProject.Controllers;
+using NurseryProject.Dtos.StudentsAttendance;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace NurseryProject.Services.StudentsAttendance
                 return model;
             }
         }
-        public ResultDto<Models.StudentsAttendance> Create(Models.StudentsAttendance model, List<Guid> IsAttend, Guid UserId)
+        public ResultDto<Models.StudentsAttendance> Create(Models.StudentsAttendance model, List<Attend> IsAttend, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -98,7 +99,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item)
+                        if (item2.StudentId == item.Id)
                         {
                             model2.IsAttend = true;
                             break;
@@ -118,7 +119,7 @@ namespace NurseryProject.Services.StudentsAttendance
                 return result;
             }
         }
-        public ResultDto<Models.StudentsAttendance> Edit(Models.StudentsAttendance model, List<Guid> IsAttend, Guid UserId)
+        public ResultDto<Models.StudentsAttendance> Edit(Models.StudentsAttendance model, List<Attend> IsAttend, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -157,7 +158,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item)
+                        if (item2.StudentId == item.Id)
                         {
                             model2.IsAttend = true;
                             break;

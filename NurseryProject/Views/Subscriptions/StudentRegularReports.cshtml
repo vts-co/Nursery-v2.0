@@ -1,0 +1,309 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = " تقرير الطلاب المنتظمة والغير منتظمة ";
+    ViewBag.MainPage = "إشتراكات الطلاب ";
+    var paid = 0;
+    var remain = 0;
+
+}
+@using (Html.BeginForm("StudentRegularReports", "Subscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label(" الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+
+            </div>
+        </div>
+    </div>
+}
+@if (ViewBag.Reports != null)
+{
+    <div class="card">
+        <div class="card-header">
+            تقرير الطلاب المنتظمة والغير منتظمة
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("كود الطالب ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الطالب ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفرع  ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("نوع الدراسة ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الصف الدراسي ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفصل ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("منتظم ام غير منتظم ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("طريقة الاشتراك ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد الاقساط")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ المدفوع ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ المتبقي")
+                        </th>
+                        <th>
+                            @Html.Label("تفاصيل الاشتراك ", new { @class = "text-center" })
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاشتراكات السابقة")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Reports)
+                    {
+                    <tr>
+                        @foreach (var item2 in item.SubscriptionMethod)
+                        {
+                            if (@item2.Paided == "تم الدفع")
+                            {
+                                paid += float.Parse(@item2.PaidAmount);
+                            }
+                            else
+                            {
+                                remain += float.Parse(@item2.Amount);
+                            }
+                        }
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.StudentName
+                        </td>
+                        <td>
+                            @item.StudyPlaceName
+                        </td>
+                        <td>
+                            @item.StudyTypeName
+                        </td>
+                        <td>
+                            @item.LevelName
+                        </td>
+                        <td>
+                            @item.ClassName
+                        </td>
+                        <td>
+
+                            @item.Regular
+                        </td>
+                        <td>
+                            @item.SubscriptionName
+                        </td>
+
+                        <td>
+                            @item.Amount جنيه
+                        </td>
+                        <td>
+                            @item.Number
+                        </td>
+                        <td>
+                            @paid جنيه
+                        </td>
+                        <td>
+                            @remain جنيه
+                        </td>
+                        <td>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            قيمة القسط
+                                        </th>
+                                        <th>
+                                            تاريخ الاستحقاق
+                                        </th>
+                                        <th>
+                                            المدفوع
+                                        </th>
+                                        <th>
+                                            تم الدفع
+                                        </th>
+
+                                        <th>
+                                            تاريخ الدفع
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item2 in item.SubscriptionMethod)
+                                    {
+                                        if (DateTime.Parse(item2.Date).Date.AddDays(15) < DateTime.Now.Date && @item2.Paided != "تم الدفع")
+                                        {
+                                            <tr class="text-danger">
+                                                <td>
+                                                    @item2.Amount جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Date
+                                                </td>
+                                                <td>
+                                                    0
+                                                    جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Paided
+                                                </td>
+
+                                                <td>
+                                                    @item2.PaidDate
+                                                </td>
+                                            </tr>
+                                        }
+                                        else if (@item2.Paided == "تم الدفع")
+                                        {
+                                            <tr class="text-success">
+                                                <td>
+                                                    @item2.Amount جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Date
+                                                </td>
+                                                <td>
+                                                    @item2.PaidAmount
+                                                    جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Paided
+                                                </td>
+
+                                                <td>
+                                                    @item2.PaidDate
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item2.Amount جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Date
+                                                </td>
+                                                <td>
+                                                    0
+                                                    جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Paided
+                                                </td>
+
+                                                <td>
+                                                    @item2.PaidDate
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <a class='btn btn-soft-info waves-effect waves-light p-2' href="/StudentsClass/StudentsClassPrevious?StudentClassId=@item.Id" title="الالتحاقات السابقة للطالب"><i class='mdi mdi-cards'></i></a>
+
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-4"><i class="fa fa-circle text-success"></i> تم الدفع</div>
+                <div class="col-4"><i class="fa fa-circle text-danger"></i> قسط متأخر الدفع</div>
+                <div class="col-4"><i class="fa fa-circle text-black"></i> لم يتم الدفع بعد</div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#StudyTypeId").change(function () {
+            $.get('/EmployeeClasses/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/EmployeeClasses/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+
+        });
+    </script>
+}
