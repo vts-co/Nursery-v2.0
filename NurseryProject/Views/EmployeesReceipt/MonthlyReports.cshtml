@@ -1,0 +1,179 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقارير الاجور الشهري ";
+    ViewBag.MainPage = "تقارير";
+
+}
+@using (Html.BeginForm("MonthlyReports", "EmployeesReceipt", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("date", new { htmlAttributes = new { @class = "form-control", type = "month", required = "required" } })
+                        @Html.ValidationMessage("date", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (ViewBag.EmployeesReceipt != null)
+{
+    <div class="card">
+        <div class="card-header">
+
+            <div class="row">
+                <h2 class="col">  </h2>
+                <p class="col-auto">
+                    @Url.Create()
+                </p>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayName("الكود ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("التليفون")
+                        </th>
+                        <th>
+                            @Html.DisplayName("القسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الوظيفة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الشهر")
+                        </th>
+                        <th>
+                            @Html.DisplayName("قيمة الاجر اليومي")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد ايام الحضور")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد ايام الغياب")
+                        </th>
+                        <th>
+                            @Html.DisplayName("حساب ايام العمل")
+                        </th>
+                        <th>
+                            @Html.DisplayName("تاريخ القبض ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("اجمالي الخصومات ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("اجمالي الاضافات ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("صافي المرتب ")
+                        </th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.EmployeesReceipt)
+                    {
+                        <tr>
+                            <td>
+                                @item.Code
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Phone
+                            </td>
+                            <td>
+                                @item.Department
+                            </td>
+                            <td>
+                                @item.Jop
+                            </td>
+                            <td>
+                                @item.Month
+                            </td>
+                            <td>
+                                @item.WorkDayCost
+                            </td>
+                            <td>
+                                @item.EmployeesAttended
+                            </td>
+                            <td>
+                                @item.EmployeesNoAttended
+                            </td>
+                            <td>
+                                @item.TotalCost
+                            </td>
+                            <td>
+                                @item.Date
+                            </td>
+                            <td>
+                                @item.TotalDiscountCost
+                            </td>
+                            <td>
+                                @item.TotalIncreasesCost
+                            </td>
+                            <td>
+                                @item.FinalTotalCost
+                            </td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+}
+
+@section scripts{
+
+    <script>
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        if (document.getElementById('Date').value == "") {
+            document.getElementById('Date').value = now.toISOString().slice(0, 10);
+        }
+
+        function Collect() {
+            var EmployeeId = document.getElementById("EmployeeId").value;
+            var Date = document.getElementById("Date").value;
+            var Month = document.getElementById("Month").value;
+            var Total = document.getElementById("TotalCost").value;
+            var TotalIncreasesCost = document.getElementById("TotalIncreasesCost").value;
+            var TotalDiscountCost = document.getElementById("TotalDiscountCost").value;
+            var Final = document.getElementById("FinalTotal").value;
+            $.get('/EmployeesReceipt/Collect', { EmployeeId: EmployeeId, Date: Date, Month: Month, Total: Total, TotalIncreasesCost: TotalIncreasesCost, TotalDiscountCost: TotalDiscountCost, Final: Final }, function (data) {
+                window.location.href = '/EmployeesReceipt/Index';
+            });
+        }
+    </script>
+}

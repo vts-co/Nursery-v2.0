@@ -2098,6 +2098,8 @@
     <Content Include="Views\EmployeesReceipt\Reports.cshtml" />
     <Content Include="Views\Subscriptions\StudentRegularReports.cshtml" />
     <Content Include="Views\Subscriptions\DailyReports.cshtml" />
+    <Content Include="Views\EmployeesReceipt\Upsert.cshtml" />
+    <Content Include="Views\EmployeesReceipt\MonthlyReports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

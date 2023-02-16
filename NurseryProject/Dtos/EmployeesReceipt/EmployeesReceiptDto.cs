@@ -10,6 +10,8 @@ namespace NurseryProject.Dtos.EmployeesReceipt
     public class EmployeesReceiptDto
     {
         public Guid Id { get; set; }
+        public Guid EmployeeId { get; set; }
+
         public string Code { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
@@ -55,4 +57,6 @@ namespace NurseryProject.Dtos.EmployeesReceipt
         public string Value { get; set; }
         public string Reason { get; set; }
     }
+
+    
 }

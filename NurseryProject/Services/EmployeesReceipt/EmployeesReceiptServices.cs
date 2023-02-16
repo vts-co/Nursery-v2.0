@@ -20,6 +20,64 @@ namespace NurseryProject.Services.EmployeesReceipt
         ExpensesServices expensesServices = new ExpensesServices();
         EmployeeClassesServices employeeClassesServices = new EmployeeClassesServices();
         EmployeesServices employeesServices = new EmployeesServices();
+        public List<EmployeesReceiptDto> GetAllEmployeesReceipts()
+        {
+            var attendCount = 0;
+            var noattendCount = 0;
+           
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                
+                var model = dbContext.EmployeesReceipts.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesReceiptDto
+                {
+                    Id = x.Id,
+                    EmployeeId=x.Employee.Id,
+                    Code = x.Employee.Code,
+                    Name = x.Employee.Name,
+                    Phone = x.Employee.Phone,
+                    Department = x.Employee.Jop.Department.Name,
+                    Jop = x.Employee.Jop.Name,
+                    Month = x.Month.Value.ToString(),
+                    Date=x.Date.Value.ToString(),
+                    WorkDayCost = x.Employee.WorkDayCost.ToString(),
+                    EmployeesAttended = 0,
+                    EmployeesNoAttended = 0,
+                    TotalCost = x.TotalAmount.Value.ToString(),
+                    TotalDiscountCost=x.TotalDiscount.Value.ToString(),
+                    TotalIncreasesCost=x.TotalAdds.Value.ToString(),
+                    FinalTotalCost=x.FinalTotalAmount.ToString()
+                }).ToList();
+
+                foreach (var item in model)
+                {
+                    item.Month = DateTime.Parse(item.Month).ToString("yyyy-MM");
+                    var attend = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == true && y.EmployeesWorkShift.EmployeeId == item.EmployeeId).ToList();
+
+                    foreach (var item2 in attend)
+                    {
+                        if (item2.Date.Value.ToString("yyyy-MM") == DateTime.Parse(item.Month).ToString("yyyy-MM"))
+                        {
+                            attendCount += 1;
+                        }
+                    }
+                    item.EmployeesAttended = attendCount;
+
+                    var noattend = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == false && y.EmployeesWorkShift.EmployeeId == item.EmployeeId).ToList();
+
+                    foreach (var item3 in noattend)
+                    {
+
+                        if (item3.Date.Value.ToString("yyyy-MM") == DateTime.Parse(item.Month).ToString("yyyy-MM"))
+                        {
+                            noattendCount += 1;
+                        }
+                    }
+                    item.EmployeesNoAttended = noattendCount;
+                }
+                return model;
+            }
+        }
+
         public EmployeesReceiptDto GetAll(string date, Guid Id)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -34,9 +92,9 @@ namespace NurseryProject.Services.EmployeesReceipt
                 var StudyPlace = "";
 
                 var attend = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == true && y.EmployeesWorkShift.EmployeeId == Id).ToList();
-                var noattend = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == false && y.EmployeesWorkShift.EmployeeId == Id).ToList();
+                var noattend = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == false  && y.EmployeesWorkShift.EmployeeId == Id).ToList();
                 var totalCost = dbContext.EmployeesAttendances.Where(y => y.IsDeleted == false && y.IsAttend == true && y.EmployeesWorkShift.EmployeeId == Id).ToList();
-                var Reciept = dbContext.EmployeesReceipts.Where(y => y.IsDeleted == false && y.Month.ToString().Contains(date) && y.EmployeeId == Id).FirstOrDefault();
+                var Reciept = dbContext.EmployeesReceipts.Where(y => y.IsDeleted == false && y.EmployeeId == Id).FirstOrDefault();
                 var Expense = new Expens();
                 if (Reciept != null)
                 {
@@ -121,8 +179,8 @@ namespace NurseryProject.Services.EmployeesReceipt
                     TotalDiscountCost = dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == x.Id).Sum(a => a.DiscountValue.Value).ToString(),
                     TotalIncreasesCost = dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == x.Id).Sum(b => b.IncreaseValue.Value).ToString(),
                     FinalTotalCost = ((totalCostCount * x.WorkDayCost) +
-                    dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == x.Id).Sum(c => c.IncreaseValue) -
-                    dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == x.Id).Sum(d => d.DiscountValue)).ToString(),
+                    dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date)&&z.IsDeleted==false && z.EmployeeId == x.Id).Sum(c => c.IncreaseValue) -
+                    dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.IsDeleted == false && y.EmployeeId == x.Id).Sum(d => d.DiscountValue)).ToString(),
                     Reciept = RecieptCount.ToString(),
                     Date = Date,
                     Paid = Paid,
@@ -137,9 +195,17 @@ namespace NurseryProject.Services.EmployeesReceipt
                 {
                     model.TotalIncreasesCost = "0";
                 }
-                model.FinalTotalCost = ((totalCostCount * float.Parse(model.WorkDayCost)) -
-                    float.Parse(model.TotalDiscountCost) +
-                    float.Parse(model.TotalIncreasesCost)).ToString();
+                if(model.Reciept != "0")
+                {
+                    model.FinalTotalCost = model.Paid;
+                }
+                else
+                {
+                    model.FinalTotalCost = ((totalCostCount * float.Parse(model.WorkDayCost)) -
+                   float.Parse(model.TotalDiscountCost) +
+                   float.Parse(model.TotalIncreasesCost)).ToString();
+                }
+               
 
                 return model;
             }
@@ -189,7 +255,34 @@ namespace NurseryProject.Services.EmployeesReceipt
                 return result;
             }
         }
-        public ResultDto<Models.EmployeesReceipt> Delete(string Date, Guid Id, Guid UserId)
+        public ResultDto<Models.EmployeesReceipt> Delete(Guid Id, Guid UserId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var result = new ResultDto<Models.EmployeesReceipt>();
+                var Oldmodel = dbContext.EmployeesReceipts.Where(x => x.Id==Id&& x.IsDeleted == false ).FirstOrDefault();
+                if (Oldmodel == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا القبض غير موجود ";
+                    return result;
+                }
+
+                Oldmodel.IsDeleted = true;
+                Oldmodel.DeletedOn = DateTime.UtcNow;
+                Oldmodel.DeletedBy = UserId;
+                dbContext.SaveChanges();
+
+                var exp = expensesServices.GetAll().Where(x => x.EmployeesReceiptId == Oldmodel.Id).FirstOrDefault();
+                expensesServices.Delete(exp.Id, UserId);
+
+                result.Result = Oldmodel;
+                result.IsSuccess = true;
+                result.Message = "تم حذف البيانات بنجاح";
+                return result;
+            }
+        }
+        public ResultDto<Models.EmployeesReceipt> DeleteCollect(string Date, Guid Id, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -216,5 +309,6 @@ namespace NurseryProject.Services.EmployeesReceipt
                 return result;
             }
         }
+
     }
 }

@@ -24,16 +24,23 @@ namespace NurseryProject.Controllers
         StudyYearsServices studyYearsServices = new StudyYearsServices();
         StudyPlacesServices studyPlacesServices = new StudyPlacesServices();
         // GET: Cities
+       
         public ActionResult Index()
         {
            
+            var employeesModel = employeesReceiptServices.GetAllEmployeesReceipts();
+
+            return View(employeesModel);
+        }
+        public ActionResult Create()
+        {
             var employeesModel = employeesServices.GetAll();
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name");
 
-            return View();
+            return View("Upsert");
         }
         [HttpPost]
-        public ActionResult Index(string date, Guid EmployeeId)
+        public ActionResult Create(string date, Guid EmployeeId)
         {
             var mon = DateTime.Now.ToString("yyyy-MM");
             if (date != null)
@@ -55,8 +62,24 @@ namespace NurseryProject.Controllers
                 ViewBag.StudyYears = model.StudyYearName;
                 ViewBag.StudyPlaces = model.StudyPlaceName;
             }
-            return View();
+            return View("Upsert");
         }
+
+        public ActionResult Delete(Guid Id)
+        {
+            var result = employeesReceiptServices.Delete(Id, (Guid)TempData["UserId"]);
+            if (result.IsSuccess)
+            {
+                TempData["success"] = result.Message;
+            }
+            else
+            {
+                TempData["warning"] = result.Message;
+            }
+            return RedirectToAction("Index");
+
+        }
+
         public ActionResult Collect(string Date,string Month, Guid EmployeeId, Guid StudyYearId, Guid StudyPlaceId, float Total, float TotalDiscountCost, float TotalIncreasesCost, float Final)
         {
             var mon = DateTime.Now.ToString("yyyy-MM");
@@ -100,7 +123,7 @@ namespace NurseryProject.Controllers
 
             ViewBag.date = mon;
 
-            var result = employeesReceiptServices.Delete(mon, EmployeeId,(Guid)TempData["UserId"]);
+            var result = employeesReceiptServices.DeleteCollect(mon, EmployeeId,(Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
                 TempData["success"] = result.Message;
@@ -138,6 +161,21 @@ namespace NurseryProject.Controllers
                 ViewBag.StudyYears = model.StudyYearName;
                 ViewBag.StudyPlaces = model.StudyPlaceName;
             }
+
+            return View();
+        }
+
+        public ActionResult MonthlyReports()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult MonthlyReports(string date)
+        {
+            var date1 = DateTime.Parse(date).ToString("yyyy-MM");
+            var employeesModel = employeesReceiptServices.GetAllEmployeesReceipts().Where(x => x.Month == date1).ToList();
+
+            ViewBag.EmployeesReceipt = employeesModel;
 
             return View();
         }
