@@ -319,14 +319,14 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult DailyReports(string Date,Guid? StudentId = null)
+        public ActionResult DailyReports(string Date, Guid? StudentId = null)
         {
             var StudyYear = studyYearsServices.GetAll();
             var Students = studentsServices.GetAllDropDown();
             var date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
             var result = studentsClassServices.GetDayMoney(date);
 
-           
+
             if (StudentId != null && StudentId != Guid.Empty)
             {
                 ViewBag.StudentId = new SelectList(Students, "Id", "Name", StudentId);
@@ -342,6 +342,33 @@ namespace NurseryProject.Controllers
             return View();
         }
 
+        public ActionResult PreviousReports()
+        {
+            var Students = studentsServices.GetAllDropDown();
+            ViewBag.StudentId = new SelectList(Students, "Id", "Name");
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult PreviousReports(Guid? StudentId = null, Guid? StudyYearId = null)
+        {
+            var StudyYear = studyYearsServices.GetAll();
+            var Students = studentsServices.GetAllDropDown();
+            var result = studentsClassServices.GetAllPrevious(StudentId.Value);
+
+
+            if (StudentId != null && StudentId != Guid.Empty)
+            {
+                ViewBag.StudentId = new SelectList(Students, "Id", "Name", StudentId);
+            }
+            else
+            {
+                ViewBag.StudentId = new SelectList(Students, "Id", "Name");
+            }
+
+            ViewBag.Reports = result;
+            return View();
+        }
         public ActionResult Collect(Guid Id)
         {
             var class1 = studentsClassServices.Get(Id);
@@ -386,7 +413,7 @@ namespace NurseryProject.Controllers
             var result = studentsClassServices.Collect(Class, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
-               
+
                 TempData["success"] = result.Message;
                 return RedirectToAction("Index", "StudentsClass");
             }
@@ -441,12 +468,12 @@ namespace NurseryProject.Controllers
             var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date,Guid StudentId,Guid StudyYearId ,string Id2 = null, float Sub = 0)
+        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0)
         {
             var model = subscriptionsMethodsServices.Update(Id, Amount, Date, Id2, Sub, (Guid)TempData["UserId"]);
             if (model)
             {
-                
+
                 return Json("Done", JsonRequestBehavior.AllowGet);
             }
             else

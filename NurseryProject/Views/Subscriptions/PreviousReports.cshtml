@@ -1,0 +1,202 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = " التحاقات الطالب السابقة ";
+    ViewBag.MainPage = "إشتراكات الطلاب ";
+    var paid = 0;
+    var remain = 0;
+
+}
+@using (Html.BeginForm("PreviousReports", "Subscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الطالب", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable", required = "required" })
+                        @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+
+            </div>
+        </div>
+    </div>
+}
+@if (ViewBag.Reports != null)
+{
+    <div class="card">
+        <div class="card-header">
+            التحاقات الطالب السابقة
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("كود الطالب ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الطالب ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("طريقة الاشتراك ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد الاقساط")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ المدفوع ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("المبلغ المتبقي")
+                        </th>
+                        <th>
+                            @Html.DisplayName("تفاصيل الاشتراك ")
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Reports)
+                    {
+                        <tr>
+                            @foreach (var item2 in item.SubscriptionMethod)
+                            {
+                                if (@item2.Paided == "تم الدفع")
+                                {
+                                    paid += float.Parse(@item2.PaidAmount);
+                                }
+                                else
+                                {
+                                    remain += float.Parse(@item2.Amount);
+                                }
+                            }
+                            <td>
+                                @item.Code
+                            </td>
+                            <td>
+                                @item.StudentName
+                            </td>
+                            <td>
+                                @item.SubscriptionName
+                            </td>
+
+                            <td>
+                                @item.Amount جنيه
+                            </td>
+                            <td>
+                                @item.Number
+                            </td>
+                            <td>
+                                @paid جنيه
+                            </td>
+                            <td>
+                                @remain جنيه
+                            </td>
+                            <td>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                قيمة القسط
+                                            </th>
+                                            <th>
+                                                تاريخ الاستحقاق
+                                            </th>
+                                            <th>
+                                                المدفوع
+                                            </th>
+                                            <th>
+                                                تم الدفع
+                                            </th>
+
+                                            <th>
+                                                تاريخ الدفع
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item2 in item.SubscriptionMethod)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item2.Amount جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Date
+                                                </td>
+                                                <td>
+                                                    @item2.PaidAmount جنيه
+                                                </td>
+                                                <td>
+                                                    @item2.Paided
+                                                </td>
+
+                                                <td>
+                                                    @item2.PaidDate
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#StudyTypeId").change(function () {
+            $.get('/EmployeeClasses/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/EmployeeClasses/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+            $.get('/EmployeeClasses/getSubjects', { Id: $("#LevelId").val() }, function (data) {
+                $("#SubjectId").empty();
+                $("#SubjectId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#SubjectId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+    </script>
+}

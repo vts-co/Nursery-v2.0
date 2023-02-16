@@ -2100,6 +2100,7 @@
     <Content Include="Views\Subscriptions\DailyReports.cshtml" />
     <Content Include="Views\EmployeesReceipt\Upsert.cshtml" />
     <Content Include="Views\EmployeesReceipt\MonthlyReports.cshtml" />
+    <Content Include="Views\Subscriptions\PreviousReports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

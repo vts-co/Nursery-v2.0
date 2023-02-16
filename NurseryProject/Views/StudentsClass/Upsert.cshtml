@@ -157,7 +157,7 @@
         $("#LevelId").change(function () {
             $.get('/StudentsClass/getClasses', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
-                $("#ClassId").append("<option>--اختر--</option>")
+                $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });

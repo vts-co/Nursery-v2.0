@@ -238,7 +238,7 @@ namespace NurseryProject.Services.Students
                     result.Message = "هذا الطالب لديه اشتراك لم يمكن حذفه ";
                     return result;
                 }
-                if (Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false) || Oldmodel.StudentsExamDegrees.Any(y => y.IsDeleted == false))
+                if (Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false&&y.IsCurrent==true) || Oldmodel.StudentsExamDegrees.Any(y => y.IsDeleted == false))
                 {
                     result.IsSuccess = false;
                     result.Message = "هذا الطالب لا يمكن حذفه ";

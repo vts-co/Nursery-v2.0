@@ -212,6 +212,71 @@ namespace NurseryProject.Services.StudentsClass
             }
         }
 
+        public List<StudentsClassDto> GetAllPrevious(Guid StudentId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == false && x.StudentId == StudentId).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                {
+                    Id = x.Id,
+                    Code = x.Student.Code,
+                    StudyPlaceId = x.Class.StudyPlaceId.Value,
+                    StudyPlaceName = x.Class.StudyPlace.Name,
+                    StudyTypeId = x.Class.Level.StudyTypeId.Value,
+                    StudyTypeName = x.Class.Level.StudyType.Name,
+                    LevelId = x.Class.LevelId.Value,
+                    LevelName = x.Class.Level.Name,
+                    ClassId = x.ClassId.Value,
+                    ClassName = x.Class.Name,
+                    StudyYearId = x.StudyYearId.Value,
+                    StudyYearName = x.StudyYear.Name,
+                    StudentId = x.Student.Id,
+                    StudentName = x.Student.Name,
+                    StudentPhone = x.Student.Phone,
+                    IsAnother = x.IsAnother.Value,
+                    IsCurrent = x.IsCurrent.Value,
+                    SubscriptionId = x.SubscriptionId.Value,
+                    SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
+                    Amount = x.IsAnother != true ? x.Subscription.Amount : "",
+                    Number = x.IsAnother != true ? x.Subscription.InstallmentsNumber : "",
+                    SubscriptionMethod = x.SubscriptionMethods.Where(y => y.IsDeleted == false && y.StudentClassId == x.Id).OrderBy(y => y.OrderDisplay).Select(y => new SubscriptionMethodDto
+                    {
+                        Id = y.Id,
+                        StudentClassId = x.Id,
+                        Amount = y.Amount,
+                        Date = y.Date.Value.ToString(),
+                        PaidAmount = y.PaidAmount,
+                        IsPaid = y.IsPaid.Value,
+                        Paided = y.IsPaid.Value == true ? "تم الدفع" : "لم يتم الدفع بعد",
+                        PaidDate = y.PaidDate.Value.ToString()
+                    }).ToList(),
+                    JoiningDate = x.JoiningDate.Value.ToString(),
+                    Notes = x.Notes
+
+                }).ToList();
+                var total = 0.0;
+                foreach (var item in model)
+                {
+                    if (item.IsAnother)
+                    {
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == true).Count() > 0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
+                        }
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                        }
+                        item.Amount = total.ToString();
+                        item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
+                    }
+                }
+
+                return model;
+
+            }
+        }
+
         public List<StudentsClassDto> GetDayMoney(string Date)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -307,7 +372,7 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.StudyYearId == model.StudyYearId && x.Class.Level.StudyTypeId == model.StudyTypeId && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.IsCurrent == true && x.StudyYearId == model.StudyYearId && x.Class.Level.StudyTypeId == model.StudyTypeId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.IsSuccess = false;
@@ -370,7 +435,7 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.Class.Level.StudyTypeId == model.StudyTypeId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.IsCurrent == true && x.Class.Level.StudyTypeId == model.StudyTypeId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.IsSuccess = false;
@@ -431,7 +496,7 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<StudentsClassDto>();
-                var Oldmodel2 = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.Id != model.Id && x.Class.Level.StudyTypeId == model.StudyTypeId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel2 = dbContext.StudentsClasses.Where(x => x.StudentId == model.StudentId && x.Id != model.Id && x.Class.Level.StudyTypeId == model.StudyTypeId && x.IsCurrent == true && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel2 != null)
                 {
                     result.IsSuccess = false;
