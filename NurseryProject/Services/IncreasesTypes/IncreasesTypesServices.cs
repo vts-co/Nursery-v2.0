@@ -75,7 +75,12 @@ namespace NurseryProject.Services.IncreasesTypes
                     result.Message = "نوع الاضافة غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.EmployeesIncreases.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع المصروف لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

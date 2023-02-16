@@ -86,7 +86,7 @@ namespace NurseryProject.Services.EmployeeClasses
             {
                 var result = new ResultDto<EmployeeClass>();
                 var Oldmodel = dbContext.EmployeeClasses.Find(Id);
-
+               
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

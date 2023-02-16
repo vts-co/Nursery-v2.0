@@ -204,7 +204,16 @@ namespace NurseryProject.Services.StudentExamDegrees
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<ClassExam>();
+                var Oldmodel = dbContext.ClassExams.Find(Id);
+                if (Oldmodel == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا الاختبار غير موجود ";
+                    return result;
+                }
+
                 var Oldmodel2 = dbContext.StudentsExamDegrees.Where(x => x.IsDeleted == false && x.ClassExamId == Id).ToList();
+                
                 if (Oldmodel2 != null)
                 {
                     foreach (var item in Oldmodel2)
@@ -215,14 +224,8 @@ namespace NurseryProject.Services.StudentExamDegrees
                         dbContext.SaveChanges();
                     }
                 }
-                var Oldmodel = dbContext.ClassExams.Find(Id);
-                if (Oldmodel == null)
-                {
-                    result.IsSuccess = false;
-                    result.Message = "هذا الاختبار غير موجود ";
-                    return result;
-                }
-
+                
+               
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

@@ -113,7 +113,12 @@ namespace NurseryProject.Services.Subscriptions
                     result.Message = "هذا الاشتراك غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا الاشتراك لا يمكن حذفه ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

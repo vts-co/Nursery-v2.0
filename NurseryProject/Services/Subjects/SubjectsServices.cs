@@ -93,7 +93,12 @@ namespace NurseryProject.Services.Subjects
                     result.Message = "هذه المادة غير موجودة ";
                     return result;
                 }
-
+                if (Oldmodel.EmployeeClasses.Any(y => y.IsDeleted == false) || Oldmodel.Exams.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذه المادة لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

@@ -76,7 +76,12 @@ namespace NurseryProject.Services.VacationsTypes
                     result.Message = "نوع الاجازة غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.EmployeesVacations.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع الاجازة لا يمكن حذفه ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

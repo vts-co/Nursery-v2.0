@@ -75,7 +75,12 @@ namespace NurseryProject.Services.ExamsTypes
                     result.Message = "نوع الاختبار غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.Exams.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع الاختبار لا يمكن حذفه  ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

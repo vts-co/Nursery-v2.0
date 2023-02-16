@@ -122,7 +122,12 @@ namespace NurseryProject.Services.EmployeesWorkShifts
             {
                 var result = new ResultDto<EmployeesWorkShift>();
                 var Oldmodel = dbContext.EmployeesWorkShifts.Find(Id);
-
+                if (Oldmodel.EmployeesAttendances.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذه الفترة لا يمكن حذفها  ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

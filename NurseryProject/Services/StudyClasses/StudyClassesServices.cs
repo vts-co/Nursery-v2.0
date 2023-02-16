@@ -90,10 +90,15 @@ namespace NurseryProject.Services.StudyClasses
                 if (Oldmodel == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "هذه الفصل غير موجود ";
+                    result.Message = "هذا الفصل غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا الفصل لا يمكن حذفه ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

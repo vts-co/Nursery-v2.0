@@ -75,7 +75,12 @@ namespace NurseryProject.Services.StudyPlaces
                     result.Message = "هذا المكان غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.BuildingSupervisors.Any(y => y.IsDeleted == false) || Oldmodel.Classes.Any(y => y.IsDeleted == false) || Oldmodel.Revenues.Any(y => y.IsDeleted == false) || Oldmodel.Expenses.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا المكان لا يمكن حذفه ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

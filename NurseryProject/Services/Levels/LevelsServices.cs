@@ -93,7 +93,12 @@ namespace NurseryProject.Levels.Services
                     result.Message = "هذه الصف غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.Classes.Any(y => y.IsDeleted == false) || Oldmodel.Subscriptions.Any(y => y.IsDeleted == false) || Oldmodel.Subjects.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذه الحالة بها طلاب لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

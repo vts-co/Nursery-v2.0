@@ -96,7 +96,12 @@ namespace NurseryProject.Services.Classes
                     result.Message = "هذا الفصل غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false)|| Oldmodel.EmployeeClasses.Any(y => y.IsDeleted == false) || Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false) || Oldmodel.ClassesLeaders.Any(y => y.IsDeleted == false) || Oldmodel.ClassExams.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClassesTransfers.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClassesTransfers1.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا الفصل مرتبط ببعض العمليات لا يمكن حذفه";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

@@ -97,6 +97,12 @@ namespace NurseryProject.Services.RevenuesTypes
                     result.Message = "نوع الايراد لا يمكن حذفها ";
                     return result;
                 }
+                if (Oldmodel.Revenues.Any(y => y.IsDeleted == false) || Oldmodel.RevenuesTypes1.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع الايراد لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

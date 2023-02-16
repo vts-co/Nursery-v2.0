@@ -92,7 +92,12 @@ namespace NurseryProject.Services.Destricts
                     result.Message = "هذه المنطقة غير موجودة ";
                     return result;
                 }
-
+                if (Oldmodel.Students.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذه المنطقة بها طلاب لا يمكن حذفها  ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

@@ -18,10 +18,10 @@ namespace NurseryProject.Services.BuildingSupervisors
                     Id = x.Id,
                     StudyPlaceId = x.StudyPlaceId != null ? x.StudyPlaceId.Value : Guid.Empty,
                     StudyPlaceName = x.StudyPlaceId != null ? x.StudyPlace.Name : "",
-                    DepartmentId = x.Employee.Jop.DepartmentId != null ? x.Employee.Jop.DepartmentId.Value:Guid.Empty,
-                    DepartmentName = x.Employee.Jop.DepartmentId != null ? x.Employee.Jop.Department.Name:"",
-                    EmployeeId = x.EmployeeId!=null? x.EmployeeId.Value:Guid.Empty,
-                    EmployeeName = x.EmployeeId != null ? x.Employee.Name:"",
+                    DepartmentId = x.Employee.Jop.DepartmentId != null ? x.Employee.Jop.DepartmentId.Value : Guid.Empty,
+                    DepartmentName = x.Employee.Jop.DepartmentId != null ? x.Employee.Jop.Department.Name : "",
+                    EmployeeId = x.EmployeeId != null ? x.EmployeeId.Value : Guid.Empty,
+                    EmployeeName = x.EmployeeId != null ? x.Employee.Name : "",
                     Notes = x.Notes
                 }).ToList();
                 return model;
@@ -95,7 +95,7 @@ namespace NurseryProject.Services.BuildingSupervisors
                     result.Message = "هذا المشرف غير موجود بالمبني ";
                     return result;
                 }
-
+               
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

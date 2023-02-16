@@ -81,7 +81,12 @@ namespace NurseryProject.Services.RegistrationTypes
                     result.Message = "هذه الحالة غير موجودة ";
                     return result;
                 }
-
+                if (Oldmodel.Students.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذه الحالة بها طلاب لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

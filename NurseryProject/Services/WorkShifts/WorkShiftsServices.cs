@@ -219,7 +219,12 @@ namespace NurseryProject.Services.WorkShifts
                     result.Message = "هذه الفترة غير موجودة ";
                     return result;
                 }
-
+                if (Oldmodel.EmployeesWorkShifts.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع الاجازة لا يمكن حذفه ";
+                    return result;
+                }
                 var Oldmodel2 = dbContext.ShiftsTimes.Where(x => x.WorkShiftId == Id && x.IsDeleted == false).OrderBy(x => x.CreatedOn).ToList();
                 if (Oldmodel2 != null)
                 {

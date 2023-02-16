@@ -185,6 +185,7 @@ namespace NurseryProject.Services.StudentsAttendance
             {
                 var result = new ResultDto<Models.StudentsAttendance>();
                 var Oldmodel = dbContext.StudentsAttendances.Find(Id);
+
                 var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.ClassId == Oldmodel.ClassId && x.Date == Oldmodel.Date).ToList();
                 foreach (var item in model)
                 {

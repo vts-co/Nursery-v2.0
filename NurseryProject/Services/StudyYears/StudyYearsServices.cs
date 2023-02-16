@@ -30,6 +30,7 @@ namespace NurseryProject.Services.StudyYears
                     result.Message = "هذا العام موجود بالفعل";
                     return result;
                 }
+               
                 if (model.IsCurrentYear == true)
                 {
                     var Oldmodel2 = dbContext.StudyYears.Where(x => x.IsCurrentYear == true && x.IsDeleted == false).FirstOrDefault();
@@ -100,7 +101,12 @@ namespace NurseryProject.Services.StudyYears
                     result.Message = "هذا العام غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.EmployeeClasses.Any(y => y.IsDeleted == false) || Oldmodel.EmployeesWorkShifts.Any(y => y.IsDeleted == false) || Oldmodel.Expenses.Any(y => y.IsDeleted == false) || Oldmodel.Revenues.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false) || Oldmodel.StudyClasses.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا العام لا يمكن حذفه ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

@@ -96,6 +96,12 @@ namespace NurseryProject.Services.ExpensesTypes
                     result.Message = "نوع المصروف لا يمكن حذفها ";
                     return result;
                 }
+                if (Oldmodel.Expenses.Any(y => y.IsDeleted == false)|| Oldmodel.ExpensesTypes1.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع المصروف لا يمكن حذفها ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

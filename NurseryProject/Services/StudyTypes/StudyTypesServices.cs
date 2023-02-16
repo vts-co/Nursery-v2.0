@@ -75,7 +75,12 @@ namespace NurseryProject.Services.StudyTypes
                     result.Message = "هذا النوع غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.Levels.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا النوع لا يمكن حذفه ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

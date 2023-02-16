@@ -75,7 +75,12 @@ namespace NurseryProject.Services.Cities
                     result.Message = "هذا المركز غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.Destricts.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا المركز لديه مناطق لا يمكن حذفه";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

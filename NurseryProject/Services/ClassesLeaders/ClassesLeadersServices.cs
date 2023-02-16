@@ -81,7 +81,7 @@ namespace NurseryProject.Services.ClassesLeaders
             {
                 var result = new ResultDto<ClassesLeader>();
                 var Oldmodel = dbContext.ClassesLeaders.Find(Id);
-
+                
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

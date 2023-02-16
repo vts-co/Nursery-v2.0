@@ -75,7 +75,12 @@ namespace NurseryProject.Services.DiscountsTypes
                     result.Message = "نوع الخصم غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.EmployeesDiscounts.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع الخصم بها موظفين لا يمكن حذفه  ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

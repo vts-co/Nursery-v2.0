@@ -91,8 +91,8 @@ namespace NurseryProject.Services.Jops
                     result.Message = "هذه الوظيفة غير موجودة ";
                     return result;
                 }
-                var model = dbContext.Employees.FirstOrDefault(x => x.JopId == Id);
-                if (model != null)
+               
+                if (Oldmodel.Employees.Any(y => y.IsDeleted == false))
                 {
                     result.IsSuccess = false;
                     result.Message = "هذه الوظيفة بيها موظفين لا يمكن حذفها ";

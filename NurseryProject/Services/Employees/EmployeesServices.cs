@@ -138,7 +138,12 @@ namespace NurseryProject.Services.Employees
                     result.Message = "هذا الموظف غير موجود ";
                     return result;
                 }
-
+                if (Oldmodel.Revenues.Any(y => y.IsDeleted == false) || Oldmodel.Expenses.Any(y => y.IsDeleted == false) || Oldmodel.EmployeeClasses.Any(y => y.IsDeleted == false) || Oldmodel.EmployeesDiscounts.Any(y => y.IsDeleted == false) || Oldmodel.EmployeesIncreases.Any(y => y.IsDeleted == false) || Oldmodel.EmployeesReceipts.Any(y => y.IsDeleted == false) || Oldmodel.EmployeesVacations.Any(y => y.IsDeleted == false) || Oldmodel.EmployeesWorkShifts.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "هذا الموظف لا يمكن حذفه  ";
+                    return result;
+                }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

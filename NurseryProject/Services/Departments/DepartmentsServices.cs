@@ -72,16 +72,16 @@ namespace NurseryProject.Services.Departments
                 if (Oldmodel == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "هذ القسم غير موجود ";
+                    result.Message = "هذا القسم غير موجود ";
                     return result;
                 }
-                var model = dbContext.Employees.FirstOrDefault(x=>x.Jop.DepartmentId== Id);
-                if (model != null)
+                if (Oldmodel.Jops.Any(y => y.IsDeleted == false) || Oldmodel.Jops.Any(y => y.IsDeleted == false && y.Employees.Any(z => z.IsDeleted == false)))
                 {
                     result.IsSuccess = false;
-                    result.Message = "هذا القسم بيه موظفين لا يمكن حذفه ";
+                    result.Message = "هذا القسم بيه وظائف او موظفين لا يمكن حذفه ";
                     return result;
                 }
+                
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

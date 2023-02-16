@@ -75,19 +75,25 @@ namespace NurseryProject.Services.SubscriptionsTypes
                     result.Message = "نوع الاشتراك غير موجود ";
                     return result;
                 }
-                var Oldmodel2 = dbContext.SubscriptionsTypes.Where(x=>x.IsDeleted==false).OrderBy(x=>x.CreatedOn).Take(3).ToList();
+                if (Oldmodel.Subscriptions.Any(y => y.IsDeleted == false))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نوع الاشتراك لا يمكن حذفه ";
+                    return result;
+                }
+                var Oldmodel2 = dbContext.SubscriptionsTypes.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Take(3).ToList();
                 if (Oldmodel2 != null)
                 {
                     foreach (var item in Oldmodel2)
                     {
-                        if(item.Id== Id)
+                        if (item.Id == Id)
                         {
                             result.IsSuccess = false;
                             result.Message = "نوع الاشتراك لا يمكن حذفه ";
                             return result;
                         }
                     }
-                   
+
                 }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
