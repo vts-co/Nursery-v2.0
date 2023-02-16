@@ -1,9 +1,9 @@
 ﻿@model NurseryProject.Models.BuildingSupervisor
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " مشرف مبني  ";
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " مشرف فرع  ";
     string action = Model.Id == Guid.Empty ? "Create" : "Edit";
-    ViewBag.MainPage = "مشرفي المبني";
+    ViewBag.MainPage = "مشرفي الفروع";
 
 }
 
