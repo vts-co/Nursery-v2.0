@@ -17,8 +17,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
-
+    [Authorized(ScreenId = "33")]
     public class EmployeeClassesController : Controller
     {
         StudyYearsServices studyYearsServices = new StudyYearsServices();
@@ -31,7 +30,6 @@ namespace NurseryProject.Controllers
         // GET: Destricts
         public ActionResult Index()
         {
-
             var model = employeeClassesServices.GetAll();
             return View(model);
         }
@@ -89,6 +87,7 @@ namespace NurseryProject.Controllers
                 return View("Upsert", Class);
             }
         }
+
         public ActionResult Edit(Guid Id)
         {
             var class1 = employeeClassesServices.Get(Id);
@@ -144,6 +143,7 @@ namespace NurseryProject.Controllers
                 return View("Upsert", Class);
             }
         }
+
         public ActionResult Delete(Guid Id)
         {
             var result = employeeClassesServices.Delete(Id, (Guid)TempData["UserId"]);
@@ -159,6 +159,7 @@ namespace NurseryProject.Controllers
             }
         }
 
+        [Authorized(ScreenId = "60")]
         public ActionResult Reports()
         {
             var studyTypes = studyTypesServices.GetAll();
@@ -177,6 +178,8 @@ namespace NurseryProject.Controllers
             return View(new EmployeeClassesDto());
         }
         [HttpPost]
+        [Authorized(ScreenId = "60")]
+
         public ActionResult Reports(EmployeeClassesDto employeeClass)
         {
             var result = employeeClassesServices.GetAll();

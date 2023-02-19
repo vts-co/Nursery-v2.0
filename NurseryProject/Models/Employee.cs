@@ -29,6 +29,7 @@ namespace NurseryProject.Models
             this.EmployeesWorkShifts = new HashSet<EmployeesWorkShift>();
             this.Expenses = new HashSet<Expens>();
             this.Revenues = new HashSet<Revenue>();
+            this.Users = new HashSet<User>();
         }
     
         public System.Guid Id { get; set; }
@@ -78,5 +79,7 @@ namespace NurseryProject.Models
         public virtual ICollection<Expens> Expenses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Revenue> Revenues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }

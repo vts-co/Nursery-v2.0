@@ -38,17 +38,10 @@ namespace NurseryProject.Controllers
                 string returnUrl = Request.QueryString["returnUrl"];
                 if (!string.IsNullOrWhiteSpace(returnUrl))
                     return Redirect(returnUrl);
-                else if (result.Result.RoleId == Role.SystemAdmin)
-                {
-                    TempData["success"] = result.Message;
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    TempData["warning"] = result.Message;
-                    userInfo.Password = "";
-                    return View(userInfo);
-                }
+
+                TempData["success"] = result.Message;
+                return RedirectToAction("Index", "Home");
+
             }
             else
             {

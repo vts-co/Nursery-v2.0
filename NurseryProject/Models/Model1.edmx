@@ -450,11 +450,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="PageNumber" Type="int" />
+          <Property Name="Icone" Type="nvarchar(max)" />
           <Property Name="Link" Type="nvarchar(max)" />
-          <Property Name="ParentId" Type="uniqueidentifier" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="DisplayOrder" Type="int" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -789,6 +790,7 @@
           <Property Name="Username" Type="nvarchar(max)" />
           <Property Name="Password" Type="nvarchar(max)" />
           <Property Name="RoleId" Type="int" />
+          <Property Name="EmployeeId" Type="uniqueidentifier" />
           <Property Name="UserScreens" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -1608,6 +1610,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="almohandes_DbModelStoreContainer">
           <EntitySet Name="BuildingSupervisors" EntityType="Self.BuildingSupervisors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
@@ -1917,6 +1931,10 @@
             <End Role="SubscriptionsTypes" EntitySet="SubscriptionsTypes" />
             <End Role="Subscriptions" EntitySet="Subscriptions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Users_Employees" Association="Self.FK_Users_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2094,6 +2112,10 @@
           <AssociationSet Name="FK_Revenues_Employees" Association="almohandes_DbModel.FK_Revenues_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Revenue" EntitySet="Revenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Employees" Association="almohandes_DbModel.FK_Users_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeesAttendance_EmployeesWorkShifts" Association="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts">
             <End Role="EmployeesWorkShift" EntitySet="EmployeesWorkShifts" />
@@ -2438,6 +2460,7 @@
           <NavigationProperty Name="EmployeesWorkShifts" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_Employees" FromRole="Employee" ToRole="EmployeesWorkShift" />
           <NavigationProperty Name="Expenses" Relationship="almohandes_DbModel.FK_Expenses_Employees" FromRole="Employee" ToRole="Expens" />
           <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_Employees" FromRole="Employee" ToRole="Revenue" />
+          <NavigationProperty Name="Users" Relationship="almohandes_DbModel.FK_Users_Employees" FromRole="Employee" ToRole="User" />
         </EntityType>
         <EntityType Name="EmployeesAttendance">
           <Key>
@@ -2750,11 +2773,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PageNumber" Type="Int32" />
+          <Property Name="Icone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParentId" Type="Guid" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="DisplayOrder" Type="Int32" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
@@ -3143,6 +3167,7 @@
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RoleId" Type="Int32" />
+          <Property Name="EmployeeId" Type="Guid" />
           <Property Name="UserScreens" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -3151,6 +3176,7 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_Users_Employees" FromRole="User" ToRole="Employee" />
         </EntityType>
         <EntityType Name="VacationsType">
           <Key>
@@ -3553,6 +3579,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Revenue">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Employees">
+          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
               <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -4448,9 +4486,10 @@
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Link" ColumnName="Link" />
-                <ScalarProperty Name="PageNumber" ColumnName="PageNumber" />
+                <ScalarProperty Name="Icone" ColumnName="Icone" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -4803,6 +4842,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="UserScreens" ColumnName="UserScreens" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Username" ColumnName="Username" />

@@ -7,6 +7,7 @@ namespace NurseryProject.Enums
 {
     public enum Role
     {
-        SystemAdmin=1
+        SystemAdmin=1,
+        Employee=2
     }
 }

@@ -1,0 +1,14 @@
+
+
+#jstree1, #jstree2, .demo { max-width:100%; overflow:auto; font:10px Verdana, sans-serif; box-shadow:0 0 5px #ccc; padding:10px; border-radius:5px; }
+
+#plugins .demo, #plugins pre { min-height:200px; }
+
+#no_res { text-align:center; border:0 !important; }
+@media (max-width: 740px) {
+	.param, .return, .trigger { float:none; }
+	.params p { margin-left:10px; margin-top:10px; line-height:26px; }
+	.features { max-width:100%; }
+	.features > li { width:auto; margin:0px 30px 0 0; }
+	.features > li > .glyphicon { margin-right:2px; }
+}

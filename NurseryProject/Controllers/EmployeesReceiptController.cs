@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "37")]
 
     public class EmployeesReceiptController : Controller
     {
@@ -27,7 +27,6 @@ namespace NurseryProject.Controllers
        
         public ActionResult Index()
         {
-           
             var employeesModel = employeesReceiptServices.GetAllEmployeesReceipts();
 
             return View(employeesModel);
@@ -135,6 +134,8 @@ namespace NurseryProject.Controllers
             return RedirectToAction("Index");
 
         }
+
+        [Authorized(ScreenId = "64")]
         public ActionResult Reports()
         {
             var employeesModel = employeesServices.GetAll();
@@ -142,6 +143,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "64")]
         public ActionResult Reports(string date, Guid EmployeeId)
         {
             var mon = DateTime.Now.ToString("yyyy-MM");
@@ -165,11 +167,13 @@ namespace NurseryProject.Controllers
             return View();
         }
 
+        [Authorized(ScreenId = "65")]
         public ActionResult MonthlyReports()
         {
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "65")]
         public ActionResult MonthlyReports(string date)
         {
             var date1 = DateTime.Parse(date).ToString("yyyy-MM");

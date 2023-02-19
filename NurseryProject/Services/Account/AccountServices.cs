@@ -23,7 +23,7 @@ namespace NurseryProject.Services
                     return result;
                 }
                 var pass = Security.Encrypt(password);
-                var user = dbContext.Users.Where(x => x.Username == userName && x.Password == pass).FirstOrDefault();
+                var user = dbContext.Users.Where(x => x.Username == userName && x.Password == pass&&x.IsDeleted==false).FirstOrDefault();
                 if (user == null)
                 {
                     result.IsSuccess = false;
@@ -37,7 +37,8 @@ namespace NurseryProject.Services
                 {
                     RoleId = (Role)user.RoleId,
                     UserId = user.Id,
-                    UserName = user.Username
+                    UserName = user.Username,
+                    UserScreens=user.UserScreens
                 };
             }
             return result;

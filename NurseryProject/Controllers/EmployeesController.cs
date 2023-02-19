@@ -16,7 +16,7 @@ using System.Web.UI.WebControls;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "32")]
 
     public class EmployeesController : Controller
     {
@@ -43,7 +43,7 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Create(Employee employee, HttpPostedFileBase Image1)
         {
-            if (employee != null)
+            if (employee != null&& Image1!=null)
             {
                 employee.Image = "/Uploads/Employees/";
 
@@ -118,6 +118,15 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(Employee employee, HttpPostedFileBase Image1)
         {
+            if (employee != null && Image1 != null)
+            {
+                employee.Image = "/Uploads/Employees/";
+
+                if (!Directory.Exists(Server.MapPath("~" + employee.Image + employee.Id)))
+                    Directory.CreateDirectory(Server.MapPath("~" + employee.Image + employee.Id));
+                employee.Image = employee.Image + employee.Id + "/" + employee.Id + ".jpg";
+                Image1.SaveAs(Server.MapPath("~" + employee.Image));
+            }
 
             var result = employeesServices.Edit(employee, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
@@ -150,12 +159,16 @@ namespace NurseryProject.Controllers
                 return View("Upsert", employee);
             }
         }
+
+        [Authorized(ScreenId = "63")]
         public ActionResult Reports()
         {
             ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name");
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "63")]
+
         public ActionResult Reports(Guid? DepartmentId=null, bool All = false)
         {
             if (DepartmentId != null && DepartmentId != Guid.Empty)

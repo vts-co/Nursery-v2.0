@@ -20,11 +20,12 @@ namespace NurseryProject.Models
             this.Pages1 = new HashSet<Page>();
         }
     
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<int> PageNumber { get; set; }
+        public string Icone { get; set; }
         public string Link { get; set; }
-        public Nullable<System.Guid> ParentId { get; set; }
+        public Nullable<int> ParentId { get; set; }
+        public Nullable<int> DisplayOrder { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }

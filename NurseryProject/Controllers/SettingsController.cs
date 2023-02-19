@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(Role = Role.SystemAdmin, ScreenId = "2")]
 
     public class SettingsController : Controller
     {

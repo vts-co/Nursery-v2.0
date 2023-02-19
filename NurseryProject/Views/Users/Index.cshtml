@@ -1,0 +1,57 @@
+﻿@model IEnumerable<NurseryProject.Models.User>
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "ادارة صلاحيات المستخدمين ";
+
+}
+<div class="card">
+    <div class="card-header">
+
+        <div class="row">
+            <h2 class="col">  </h2>
+            <p class="col-auto">
+                @Url.Create()
+            </p>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+            <thead>
+                <tr>
+
+                    <th>
+                        @Html.DisplayName("اسم المستخدم")
+                    </th>
+                    <th>
+                        @Html.DisplayName("كلمة المرور")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عمليات")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Password)
+                        </td>
+                        <td>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+@section Scripts{
+
+}

@@ -17,6 +17,9 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="@TempData["SettingLogo"]">
     <link href="~/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="http://static.jstree.com/3.0.0-beta5/assets/bootstrap/css/bootstrap.css" />
+    <link href="~/assets/css/docs.css" rel="stylesheet" />
+    <link href="~/assets/css/default/style.css" rel="stylesheet" />
     <style>
         @@font-face {
             font-family: 'thesansbold';
@@ -147,11 +150,11 @@
         <!-- ========== Left Sidebar Start ========== -->
         <div class="vertical-menu">
 
-            <div data-simplebar class="h-100" >
-                <form class="app-search d-none d-lg-block" >
+            <div data-simplebar class="h-100">
+                <form class="app-search d-none d-lg-block">
                     <div class="position-relative">
 
-                        <input type="text" class="form-control" id="mySearch" onkeyup="myFunction()" placeholder="بحث...."> 
+                        <input type="text" class="form-control" id="mySearch" onkeyup="myFunction()" placeholder="بحث....">
                         <button class="btn btn-primary" onclick="myFunction()" type="button"><i class="bx bx-search-alt align-middle"></i></button>
 
                     </div>
@@ -166,173 +169,379 @@
                                 <span data-key="t-dashboard">Admin Dashboard</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fa fa-list"></i>
-                                <span data-key="t-apps">الاعدادات العامة </span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","Settings")"><i class="fas fa-list p-1"></i> اعدادات البرنامج </a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fa fa-list"></i>
-                                <span data-key="t-apps">التعريفات الاساسية </span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","Cities")"><i class="fas fa-city p-1"></i> المراكز </a></li>
-                                <li><a href="@Url.Action("Index","Destricts")"><i class="fas fa-building p-1"></i>المناطق  </a></li>
-                                <li><a href="@Url.Action("Index","RegistrationTypes")"><i class="fas fa-search-minus p-1"></i> حالات قيد الطلاب </a></li>
-                                <li><a href="@Url.Action("Index","Departments")"><i class="fas fa-list p-1"></i>الادارات (للعاملين)  </a></li>
-                                <li><a href="@Url.Action("Index","Jops")"><i class="fas fa-list-alt p-1"></i>الوظائف (للعاملين)  </a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fa fa-list-alt"></i>
-                                <span data-key="t-apps">التعريفات الدراسية</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","StudyYears")"><i class="fas fa-hourglass-start p-1"></i> العام الدراسي </a></li>
-                                <li><a href="@Url.Action("Index","StudyClasses")"><i class="fas fa-list p-1"></i> الفصول الدراسية</a></li>
+                        @if (ViewBag.userscreens.ToString().Contains(",2,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fa fa-list"></i>
+                                    <span data-key="t-apps">الاعدادات العامة </span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="@Url.Action("Index","Settings")"><i class="fas fa-list p-1"></i> اعدادات البرنامج </a></li>
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",4,") || ViewBag.userscreens.ToString().Contains(",5,") || ViewBag.userscreens.ToString().Contains(",6,") || ViewBag.userscreens.ToString().Contains(",7,") || ViewBag.userscreens.ToString().Contains(",8,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fa fa-list"></i>
+                                    <span data-key="t-apps">التعريفات الاساسية </span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li><a href="@Url.Action("Index","Cities")"><i class="fas fa-city p-1"></i> المراكز </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",5,"))
+                                    {
+                                        <li><a href="@Url.Action("Index","Destricts")"><i class="fas fa-building p-1"></i>المناطق  </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",6,"))
+                                    {
+                                        <li><a href="@Url.Action("Index","RegistrationTypes")"><i class="fas fa-search-minus p-1"></i> حالات قيد الطلاب </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",7,"))
+                                    {
+                                        <li><a href="@Url.Action("Index","Departments")"><i class="fas fa-list p-1"></i>الادارات (للعاملين)  </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",8,"))
+                                    {
+                                        <li><a href="@Url.Action("Index","Jops")"><i class="fas fa-list-alt p-1"></i>الوظائف (للعاملين)  </a></li>
+                                    }
 
-                                <li><a href="@Url.Action("Index","StudyTypes")"><i class="fas fa-list-alt p-1"></i>أنواع الدراسة </a></li>
-                                <li><a href="@Url.Action("Index","StudyPlaces")"><i class="fas fa-building p-1"></i> الفروع </a></li>
-                                <li><a href="@Url.Action("Index","Levels")"><i class="fas fa-bars p-1"></i> الصفوف/المستويات الدراسية </a></li>
+                                </ul>
+                            </li>
+                        }
 
-                                <li><a href="@Url.Action("Index","Classes")"><i class="fas fa-list-alt p-1"></i>الفصول  </a></li>
-                                <li><a href="@Url.Action("Index","Subjects")"><i class="fas fa-list-ol p-1"></i>المواد الدراسية </a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-clock p-1"></i>
-                                <span data-key="t-apps">فترات العمل</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","WorkShifts")"><i class="fas fa-clock p-1"></i>ادارة فترات العمل </a></li>
-                                <li><a href="@Url.Action("Index","EmployeesWorkShifts")"><i class="fas fa-clock p-1"></i>ادارة فترات الموظفين </a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-id-card p-1"></i>
-                                <span data-key="t-apps">الاشتراكات</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","SubscriptionsTypes")"><i class="fas fa-id-card p-1"></i>انواع الاشتراكات </a></li>
-                                <li><a href="@Url.Action("Index","Subscriptions")"><i class="fas fa-credit-card p-1"></i> طرق الاشتراكات </a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-list-ul p-1"></i>
-                                <span data-key="t-apps">الاختبارات</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","ExamsTypes")"><i class="fas fa-list-ul p-1"></i>انواع الاختبارات </a></li>
-                                <li><a href="@Url.Action("Index","Exams")"><i class="fas fa-list-ul p-1"></i>  تسجيل الاختبارات </a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-users p-1"></i>
-                                <span data-key="t-apps">الطلاب</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","Students")"><i class="fas fa-users p-1"></i> ادارة الطلاب</a></li>
-                                <li><a href="@Url.Action("Index","StudentsClass")"><i class="fas fa-user-edit p-1"></i> التحاق الطلاب</a></li>
-                                <li><a href="@Url.Action("Index","StudentsAttendance")"><i class="fas fa-check-square p-1"></i>  تسجيل غياب الطلاب</a></li> 
-                                <li><a href="@Url.Action("Index","StudentsExamDegrees")"><i class="fas fa-list-ul p-1"></i>  تسجيل درجات اختبار طالب </a></li>
 
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-users-cog p-1"></i>
-                                <span data-key="t-apps">الموظفين</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","Employees")"><i class="fas fa-users p-1"></i> ادارة الموظفين</a></li>
-                                <li><a href="@Url.Action("Index","EmployeeClasses")"><i class="fas fa-users p-1"></i> ادارة المعلمين بالفصول</a></li>
-                                <li><a href="@Url.Action("Index","BuildingSupervisors")"><i class="fas fa-users p-1"></i> ادارة مشرفي الفروع</a></li>
-                                <li><a href="@Url.Action("Index","ClassesLeaders")"><i class="fas fa-users p-1"></i> ادارة رواد الفصول</a></li>
-                                <li><a href="@Url.Action("Index","EmployeesAttendance")"><i class="fas fa-users p-1"></i> تسجيل غياب الموظفين</a></li>
-                                <li><a href="@Url.Action("Index","EmployeesReceipt")"><i class="fas fa-users p-1"></i> سند قبض موظف</a></li>
+                        @if (ViewBag.userscreens.ToString().Contains(",10,") || ViewBag.userscreens.ToString().Contains(",11,") || ViewBag.userscreens.ToString().Contains(",12,") || ViewBag.userscreens.ToString().Contains(",13,") || ViewBag.userscreens.ToString().Contains(",14,") || ViewBag.userscreens.ToString().Contains(",15,") || ViewBag.userscreens.ToString().Contains(",16,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fa fa-list-alt"></i>
+                                    <span data-key="t-apps">التعريفات الدراسية</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",10,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudyYears")"><i class="fas fa-hourglass-start p-1"></i> العام الدراسي </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",11,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudyClasses")"><i class="fas fa-list p-1"></i> الفصول الدراسية</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",12,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudyTypes")"><i class="fas fa-list-alt p-1"></i>أنواع الدراسة </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",13,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudyPlaces")"><i class="fas fa-building p-1"></i> الفروع </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",14,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Levels")"><i class="fas fa-bars p-1"></i> الصفوف/المستويات الدراسية </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",15,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Classes")"><i class="fas fa-list-alt p-1"></i>الفصول  </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",16,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Subjects")"><i class="fas fa-list-ol p-1"></i>المواد الدراسية </a></li>
+                                    }
 
-                            </ul>
-                        </li>
-                        
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-credit-card p-1"></i> 
-                                <span data-key="t-apps">المصروفات</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","ExpensesTypes")"><i class="fas fa-credit-card p-1"></i> انواع المصروفات</a></li>
-                                <li><a href="@Url.Action("Index","Expenses")"><i class="fas fa-coins p-1"></i> تسجيل المصروفات</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-credit-card p-1"></i>
-                                <span data-key="t-apps">الايرادات</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","RevenuesTypes")"><i class="fas fa-credit-card p-1"></i> انواع الايرادات</a></li>
-                                <li><a href="@Url.Action("Index","Revenues")"><i class="fas fa-coins p-1"></i> تسجيل الايرادات</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-coins p-1"></i>
-                                <span data-key="t-apps">الامور المالية للموظفين</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Index","VacationsTypes")"><i class="fas fa-list p-1"></i>انواع الاجازات  </a></li>
-                                <li><a href="@Url.Action("Index","EmployeesVacation")"><i class="fas fa-coins p-1"></i> ادارة الاجازات</a></li>
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",18,") || ViewBag.userscreens.ToString().Contains(",19,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-clock p-1"></i>
+                                    <span data-key="t-apps">فترات العمل</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",18,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "WorkShifts")"><i class="fas fa-clock p-1"></i>ادارة فترات العمل </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",19,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "EmployeesWorkShifts")"><i class="fas fa-clock p-1"></i>ادارة فترات الموظفين </a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",18,") || ViewBag.userscreens.ToString().Contains(",19,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-id-card p-1"></i>
+                                    <span data-key="t-apps">الاشتراكات</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",21,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "SubscriptionsTypes")"><i class="fas fa-id-card p-1"></i>انواع الاشتراكات </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",22,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> طرق الاشتراكات </a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",24,") || ViewBag.userscreens.ToString().Contains(",25,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-list-ul p-1"></i>
+                                    <span data-key="t-apps">الاختبارات</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",21,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "ExamsTypes")"><i class="fas fa-list-ul p-1"></i>انواع الاختبارات </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",21,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Exams")"><i class="fas fa-list-ul p-1"></i>  تسجيل الاختبارات </a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",27,") || ViewBag.userscreens.ToString().Contains(",28,") || ViewBag.userscreens.ToString().Contains(",29,") || ViewBag.userscreens.ToString().Contains(",30,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-users p-1"></i>
+                                    <span data-key="t-apps">الطلاب</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",27,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Students")"><i class="fas fa-users p-1"></i> ادارة الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",28,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudentsClass")"><i class="fas fa-user-edit p-1"></i> التحاق الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",29,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudentsAttendance")"><i class="fas fa-check-square p-1"></i>  تسجيل غياب الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",30,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudentsExamDegrees")"><i class="fas fa-list-ul p-1"></i>  تسجيل درجات اختبار طالب </a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",32,") || ViewBag.userscreens.ToString().Contains(",33,") || ViewBag.userscreens.ToString().Contains(",34,") || ViewBag.userscreens.ToString().Contains(",35,") || ViewBag.userscreens.ToString().Contains(",36,") || ViewBag.userscreens.ToString().Contains(",37,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-users-cog p-1"></i>
+                                    <span data-key="t-apps">الموظفين</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",32,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Employees")"><i class="fas fa-users p-1"></i> ادارة الموظفين</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",33,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "EmployeeClasses")"><i class="fas fa-users p-1"></i> ادارة المعلمين بالفصول</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",34,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "BuildingSupervisors")"><i class="fas fa-users p-1"></i> ادارة مشرفي الفروع</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",35,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "ClassesLeaders")"><i class="fas fa-users p-1"></i> ادارة رواد الفصول</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",36,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "EmployeesAttendance")"><i class="fas fa-users p-1"></i> تسجيل غياب الموظفين</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",37,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "EmployeesReceipt")"><i class="fas fa-users p-1"></i> سند قبض موظف</a></li>
+                                    }
 
-                                @*<li><a href="@Url.Action("Index","EmployeesDelay")"><i class="fas fa-coins p-1"></i> ادارة التأخيرات</a></li>*@
-                                <li><a href="@Url.Action("Index","IncreasesTypes")"><i class="fas fa-list p-1"></i> ادارة انواع الاضافات</a></li>
-                                <li><a href="@Url.Action("Index","EmployeesIncreases")"><i class="fas fa-coins p-1"></i> ادارة الاضافات</a></li>
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",39,") || ViewBag.userscreens.ToString().Contains(",40,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-credit-card p-1"></i>
+                                    <span data-key="t-apps">المصروفات</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",39,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "ExpensesTypes")"><i class="fas fa-credit-card p-1"></i> انواع المصروفات</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",40,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Expenses")"><i class="fas fa-coins p-1"></i> تسجيل المصروفات</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",42,") || ViewBag.userscreens.ToString().Contains(",43,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-credit-card p-1"></i>
+                                    <span data-key="t-apps">الايرادات</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",42,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "RevenuesTypes")"><i class="fas fa-credit-card p-1"></i> انواع الايرادات</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",43,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Revenues")"><i class="fas fa-coins p-1"></i> تسجيل الايرادات</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",45,") || ViewBag.userscreens.ToString().Contains(",46,") || ViewBag.userscreens.ToString().Contains(",47,") || ViewBag.userscreens.ToString().Contains(",48,") || ViewBag.userscreens.ToString().Contains(",49,") || ViewBag.userscreens.ToString().Contains(",50,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-coins p-1"></i>
+                                    <span data-key="t-apps">الامور المالية للموظفين</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",45,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "VacationsTypes")"><i class="fas fa-list p-1"></i>انواع الاجازات  </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",46,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "EmployeesVacation")"><i class="fas fa-coins p-1"></i> ادارة الاجازات</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",47,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "IncreasesTypes")"><i class="fas fa-list p-1"></i> ادارة انواع الاضافات</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",48,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "EmployeesIncreases")"><i class="fas fa-coins p-1"></i> ادارة الاضافات</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",49,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "DiscountsTypes")"><i class="fas fa-list p-1"></i> ادارة انواع الخصومات</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",50,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "EmployeesDiscounts")"><i class="fas fa-coins p-1"></i> ادارة الخصومات</a></li>
+                                    }
 
-                                <li><a href="@Url.Action("Index","DiscountsTypes")"><i class="fas fa-list p-1"></i> ادارة انواع الخصومات</a></li>
-                                <li><a href="@Url.Action("Index","EmployeesDiscounts")"><i class="fas fa-coins p-1"></i> ادارة الخصومات</a></li>
-                                @*<li><a href="@Url.Action("Index","EmployeesTransferAllowance")"><i class="fas fa-coins p-1"></i> ادارة بدل الانتقالات</a></li>*@
-                            </ul>
-                        </li>
+                                    @*<li><a href="@Url.Action("Index","EmployeesDelay")"><i class="fas fa-coins p-1"></i> ادارة التأخيرات</a></li>*@
+                                    @*<li><a href="@Url.Action("Index","EmployeesTransferAllowance")"><i class="fas fa-coins p-1"></i> ادارة بدل الانتقالات</a></li>*@
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",52,") || ViewBag.userscreens.ToString().Contains(",53,") || ViewBag.userscreens.ToString().Contains(",54,") || ViewBag.userscreens.ToString().Contains(",55,") || ViewBag.userscreens.ToString().Contains(",56,") || ViewBag.userscreens.ToString().Contains(",57,")|| ViewBag.userscreens.ToString().Contains(",58,") || ViewBag.userscreens.ToString().Contains(",59,") || ViewBag.userscreens.ToString().Contains(",60,") || ViewBag.userscreens.ToString().Contains(",61,") || ViewBag.userscreens.ToString().Contains(",62,") || ViewBag.userscreens.ToString().Contains(",63,") || ViewBag.userscreens.ToString().Contains(",64,") || ViewBag.userscreens.ToString().Contains(",65,") || ViewBag.userscreens.ToString().Contains(",66,") || ViewBag.userscreens.ToString().Contains(",67,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-file p-1"></i>
+                                    <span data-key="t-apps">التقارير</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    @if (ViewBag.userscreens.ToString().Contains(",52,"))
+                                    {
+                                        <li><a href="@Url.Action("Search", "Students")"><i class="fas fa-user p-1"></i> استعلام عن الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",53,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "Students")"><i class="fas fa-users p-1"></i> تقرير شامل للطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",54,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> استعلام عن إشترك طالب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",55,"))
+                                    {
+                                        <li><a href="@Url.Action("PreviousReports", "Subscriptions")"><i class="fas fa-id-card p-1"></i> التحاقات الطالب السابقة</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",56,"))
+                                    {
+                                        <li><a href="@Url.Action("LatecomersReports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i>   الاقساط المتأخرة</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",57,"))
+                                    {
+                                        <li><a href="@Url.Action("StudentRegularReports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير الطلاب المنتظمة والغير منتظمة </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",58,"))
+                                    {
+                                        <li><a href="@Url.Action("NoInstallmentsReports", "StudentsClass")"><i class="fas fa-credit-card p-1"></i> تقارير الطلاب المعفيين </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",59,"))
+                                    {
+                                        <li><a href="@Url.Action("DailyReports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير التحصيل اليومي للطلاب </a></li>
+                                    }
 
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="fas fa-file p-1"></i>
-                                <span data-key="t-apps">التقارير</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="@Url.Action("Search","Students")"><i class="fas fa-user p-1"></i> استعلام عن الطلاب</a></li>
-                                <li><a href="@Url.Action("Reports","Students")"><i class="fas fa-users p-1"></i> تقرير شامل للطلاب</a></li>
+                                    @if (ViewBag.userscreens.ToString().Contains(",60,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "EmployeeClasses")"><i class="fas fa-list p-1"></i> تقارير بمعلمي الفصول</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",61,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "StudentsClass")"><i class="fas fa-user-alt p-1"></i> تقارير بمعلمي الطالب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",62,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "StudentsAttendance")"><i class="fas fa-calendar-check p-1"></i> تقرير حضور وغياب الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",63,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "Employees")"><i class="fas fa-list p-1"></i> تقرير بعدد الموظفين والاقسام</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",64,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "EmployeesReceipt")"><i class="fas fa-coins p-1"></i> تقارير الاجور</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",65,"))
+                                    {
+                                        <li><a href="@Url.Action("MonthlyReports", "EmployeesReceipt")"><i class="fas fa-list p-1"></i> تقارير الاجور الشهري</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",66,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "Expenses")"><i class="fas fa-coins p-1"></i> تقارير المصروفات</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",67,"))
+                                    {
+                                        <li><a href="@Url.Action("Reports", "Revenues")"><i class="fas fa-coins p-1"></i> تقارير الايرادات</a></li>
+                                    }
 
-                                <li><a href="@Url.Action("Reports","Subscriptions")"><i class="fas fa-credit-card p-1"></i> استعلام عن إشترك طالب</a></li>
-                                <li><a href="@Url.Action("PreviousReports","Subscriptions")"><i class="fas fa-id-card p-1"></i> التحاقات الطالب السابقة</a></li>
 
-                                <li><a href="@Url.Action("LatecomersReports","Subscriptions")"><i class="fas fa-credit-card p-1"></i>   الاقساط المتأخرة</a></li>
-                                <li><a href="@Url.Action("StudentRegularReports","Subscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير الطلاب المنتظمة والغير منتظمة </a></li>
-                                <li><a href="@Url.Action("NoInstallmentsReports","StudentsClass")"><i class="fas fa-credit-card p-1"></i> تقارير الطلاب المعفيين </a></li>
-                                <li><a href="@Url.Action("DailyReports","Subscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير التحصيل اليومي للطلاب </a></li>
 
-                                <li><a href="@Url.Action("Reports","EmployeeClasses")"><i class="fas fa-list p-1"></i> تقارير بمعلمي الفصول</a></li>
-                                <li><a href="@Url.Action("Reports","StudentsClass")"><i class="fas fa-user-alt p-1"></i> تقارير بمعلمي الطالب</a></li>
-                                <li><a href="@Url.Action("Reports","StudentsAttendance")"><i class="fas fa-calendar-check p-1"></i> تقرير حضور وغياب الطلاب</a></li>
-
-                                <li><a href="@Url.Action("Reports","Employees")"><i class="fas fa-list p-1"></i> تقرير بعدد الموظفين والاقسام</a></li>
-                                <li><a href="@Url.Action("Reports","EmployeesReceipt")"><i class="fas fa-c p-1"></i> تقارير الاجور</a></li>
-                                <li><a href="@Url.Action("MonthlyReports","EmployeesReceipt")"><i class="fas fa-list p-1"></i> تقارير الاجور الشهري</a></li>
-
-                                <li><a href="@Url.Action("Reports","Expenses")"><i class="fas fa-coins p-1"></i> تقارير المصروفات</a></li>
-                                <li><a href="@Url.Action("Reports","Revenues")"><i class="fas fa-coins p-1"></i> تقارير الايرادات</a></li>
-
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (ViewBag.userscreens.ToString().Contains(",69,"))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-clipboard-list p-1"></i>
+                                    <span data-key="t-apps">صلاحيات المستخدمين</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="@Url.Action("Index", "Users")"><i class="fas fa-check-double p-1"></i> ادارة صلاحيات المستخدمين</a></li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <!-- Sidebar -->
@@ -439,6 +648,10 @@
             }
         }
     </script>
+    <script src="~/assets/js/jstree.js"></script>
+
+    <script src="~/assets/js/jstree.min.js"></script>
+
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>

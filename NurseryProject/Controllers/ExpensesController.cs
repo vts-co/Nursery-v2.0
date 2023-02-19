@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "40")]
 
     public class ExpensesController : Controller
     {
@@ -121,6 +121,8 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        [Authorized(ScreenId = "66")]
         public ActionResult Reports()
         {
             var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
@@ -130,6 +132,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "66")]
         public ActionResult Reports(string Month, bool AllYear, Guid? ExpenseTypeParentId=null, Guid? ExpenseTypeId=null)
         {
             var total = 0.0;
@@ -178,7 +181,6 @@ namespace NurseryProject.Controllers
             ViewBag.Expenses = model;
             return View();
         }
-
         public ActionResult getExpensesTypes(Guid Id)
         {
             var model = expensesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();

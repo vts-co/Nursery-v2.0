@@ -10,7 +10,8 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    //Role = Role.SystemAdmin,
+    [Authorized(ScreenId = "4")]
     public class CitiesController : Controller
     {
 
