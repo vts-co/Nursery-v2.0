@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "43")]
     public class RevenuesController : Controller
     {
         StudyPlacesServices studyPlacesServices = new StudyPlacesServices();
@@ -137,6 +137,8 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [Authorized(ScreenId = "67")]
+
         public ActionResult Reports()
         {
             var revenuesTypesParentModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
@@ -146,6 +148,8 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "67")]
+
         public ActionResult Reports(string Month, bool AllYear, Guid? RevenueTypeParentId = null, Guid? RevenueTypeId = null)
         {
             var total = 0.0;
