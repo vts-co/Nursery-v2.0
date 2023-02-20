@@ -129,7 +129,7 @@
 @section scripts{
 
     <script>
-        $.get('/StudentsAttendance/getStudyClass', { StudyYearId: $("#StudyYearId").val() }, function (data) {
+        $.get('/StudentsAttendance/getStudyClassReport', { StudyYearId: $("#StudyYearId").val() }, function (data) {
             $("#StudyClassId").empty();
             $("#StudyClassId").append("<option value=''>--اختر--</option>")
             $.each(data, function (key, value) {
@@ -137,7 +137,7 @@
             });
         });
         $("#StudyYearId").change(function () {
-            $.get('/StudentsAttendance/getStudyClass', { StudyYearId: $("#StudyYearId").val() }, function (data) {
+            $.get('/StudentsAttendance/getStudyClassReport', { StudyYearId: $("#StudyYearId").val() }, function (data) {
                 $("#StudyClassId").empty();
                 $("#StudyClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

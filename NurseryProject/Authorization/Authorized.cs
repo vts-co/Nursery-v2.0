@@ -25,9 +25,12 @@ namespace NurseryProject.Authorization
             if (controller != null)
             {
                 VTSAuth auth = new VTSAuth() { CookieValues = new UserInfo { } };
-                if (!auth.LoadDataFromCookies() || usersServices.Get(auth.CookieValues.UserId)==null)
+                var load = auth.LoadDataFromCookies();
+                var user = usersServices.Get(auth.CookieValues.UserId);
+
+                if (!load || user == null)
                 {
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new {  controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
                     return;
                 }
                 //else if ((auth.CookieValues.RoleId & Role) == 0)
@@ -40,18 +43,18 @@ namespace NurseryProject.Authorization
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
 
                 }
-                else if (auth.CookieValues.UserScreens == null)
+                else if (user.UserScreens == null)
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
 
                 }
-                else if (!auth.CookieValues.UserScreens.Contains(search))
+                else if (!user.UserScreens.Contains(search))
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
                 }
                 filterContext.Controller.TempData["UserInfo"] = auth.CookieValues;
                 filterContext.Controller.TempData["UserId"] = auth.CookieValues.UserId;
-                filterContext.Controller.ViewBag.UserScreens = auth.CookieValues.UserScreens;
+                filterContext.Controller.ViewBag.UserScreens = user.UserScreens;
 
                 var setting = settingsServices.GetAll();
 
@@ -63,6 +66,11 @@ namespace NurseryProject.Authorization
                     UserScreens = strArray;
 
                 }
+            }
+            else
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
+                return;
             }
         }
 

@@ -11,6 +11,7 @@ using NurseryProject.Services.Students;
 using NurseryProject.Services.StudentsClass;
 using NurseryProject.Services.StudyTypes;
 using NurseryProject.Services.StudyYears;
+using NurseryProject.Services.Subjects;
 using NurseryProject.Services.Subscriptions;
 using NurseryProject.Services.SubscriptionsMethods;
 using System;
@@ -27,6 +28,7 @@ namespace NurseryProject.Controllers
     {
         StudyYearsServices studyYearsServices = new StudyYearsServices();
         StudyTypesServices studyTypesServices = new StudyTypesServices();
+        SubjectsServices subjectsServices = new SubjectsServices();
         LevelsServices levelsServices = new LevelsServices();
         ClassesServices classesServices = new ClassesServices();
         StudentsServices studentsServices = new StudentsServices();
@@ -286,6 +288,13 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult Search(Guid StudyYearId, Guid StudyTypeId, Guid LevelId, Guid ClassId, Guid SubscriptionId)
+        {
+            var result = studentsClassServices.GetAll();
+            var model = result.Where(x => x.StudyYearId == StudyYearId).FirstOrDefault();
+            return View("Upsert", new StudentsClassDto());
+        }
+
         [Authorized(ScreenId = "61")]
         public ActionResult Reports()
         {
@@ -350,22 +359,23 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
-        [Authorized(ScreenId = "28")]
 
-        public ActionResult Search(Guid StudyYearId, Guid StudyTypeId, Guid LevelId, Guid ClassId, Guid SubscriptionId)
-        {
-            var result = studentsClassServices.GetAll();
-            var model = result.Where(x => x.StudyYearId == StudyYearId).FirstOrDefault();
-            return View("Upsert", new StudentsClassDto());
-        }
+        [Authorized(ScreenId = "61")]
         public ActionResult getLevels(Guid Id)
         {
             var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        [Authorized(ScreenId = "61")]
         public ActionResult getClasses(Guid Id)
         {
             var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "61")]
+        public ActionResult getSubjects(Guid Id)
+        {
+            var model = subjectsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getSubscriptions(Guid Id)

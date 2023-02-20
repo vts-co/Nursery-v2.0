@@ -132,5 +132,11 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public ActionResult getEmployees(Guid DepartmentId)
+        {
+            var model = employeesServices.GetAll().Where(x => x.DepartmentId == DepartmentId).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

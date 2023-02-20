@@ -128,5 +128,15 @@
     </div>
 }
 @section scripts{
-
+    <script>
+        $("#RevenueTypeParentId").change(function () {
+            $.get('/Revenues/getRevenuesTypesReport', { Id: $("#RevenueTypeParentId").val() }, function (data) {
+                $("#RevenueTypeId").empty();
+                $("#RevenueTypeId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#RevenueTypeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+    </script>
 }

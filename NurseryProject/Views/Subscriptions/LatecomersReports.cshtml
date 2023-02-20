@@ -281,7 +281,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("#StudyTypeId").change(function () {
-            $.get('/EmployeeClasses/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+            $.get('/Subscriptions/getLevelsLatecomersReport', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
                 $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -290,7 +290,7 @@
             });
         });
         $("#LevelId").change(function () {
-            $.get('/EmployeeClasses/getClasses', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/Subscriptions/getClassesLatecomersReport', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

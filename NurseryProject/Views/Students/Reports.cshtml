@@ -179,7 +179,7 @@
 @section scripts{
     <script type="text/javascript">
         $("#CityId").change(function () {
-            $.get('/Students/getDestricts', { Id: $("#CityId").val() }, function (data) {
+            $.get('/Students/getDestrictsReport', { Id: $("#CityId").val() }, function (data) {
                 $("#DestrictId").empty();
                 $("#DestrictId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

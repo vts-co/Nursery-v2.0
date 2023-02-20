@@ -69,7 +69,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("#DepartmentId").change(function () {
-            $.get('/ClassesLeaders/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
+            $.get('/BuildingSupervisors/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
                 $("#EmployeeId").empty();
                 $("#EmployeeId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

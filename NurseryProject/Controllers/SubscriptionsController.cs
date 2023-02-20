@@ -10,6 +10,7 @@ using NurseryProject.Services.Students;
 using NurseryProject.Services.StudentsClass;
 using NurseryProject.Services.StudyTypes;
 using NurseryProject.Services.StudyYears;
+using NurseryProject.Services.Subjects;
 using NurseryProject.Services.Subscriptions;
 using NurseryProject.Services.SubscriptionsMethods;
 using NurseryProject.Services.SubscriptionsTypes;
@@ -27,6 +28,7 @@ namespace NurseryProject.Controllers
     {
         StudyTypesServices studyTypesServices = new StudyTypesServices();
         LevelsServices levelsServices = new LevelsServices();
+        SubjectsServices subjectsServices = new SubjectsServices();
         SubscriptionsTypesServices subscriptionsTypesServices = new SubscriptionsTypesServices();
         SubscriptionsServices subscriptionsServices = new SubscriptionsServices();
         StudyYearsServices studyYearsServices = new StudyYearsServices();
@@ -142,6 +144,34 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public ActionResult getLevels(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getSubscriptionsMethods(Guid Id)
+        {
+            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount }).ToList();
+            var model2 = studentsClassServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+
+            var IsAnother = false;
+            if (model2 != null)
+            {
+                if (model2.IsAnother == true)
+                {
+                    IsAnother = true;
+                }
+            }
+
+            var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        //تقرير إشتراك طالب
+
         [Authorized(ScreenId = "54")]
         public ActionResult Reports()
         {
@@ -184,10 +214,32 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "54")]
+        public ActionResult getLevelsReport(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "54")]
+        public ActionResult getClassesReport(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "54")]
+        public ActionResult getSubjectsReport(Guid Id)
+        {
+            var model = subjectsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        //تقرير الاقساط المتأخرة
+
         [Authorized(ScreenId = "56")]
         public ActionResult LatecomersReports()
         {
-
             var StudyYear = studyYearsServices.GetAll();
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
 
@@ -201,7 +253,6 @@ namespace NurseryProject.Controllers
         }
         [HttpPost]
         [Authorized(ScreenId = "56")]
-
         public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null)
         {
             var result = studentsClassServices.GetAll().Where(x => x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0);
@@ -252,6 +303,22 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "56")]
+        public ActionResult getLevelsLatecomersReport(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "56")]
+        public ActionResult getClassesLatecomersReport(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //تقرير الطلاب المنتظمة والغير منتظمة
+
         [Authorized(ScreenId = "57")]
         public ActionResult StudentRegularReports()
         {
@@ -318,6 +385,24 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "57")]
+        public ActionResult getLevelsStudentRegularReport(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "57")]
+        public ActionResult getClassesStudentRegularReport(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+        //تقرير التحصيل اليومي للطلاب
+
         [Authorized(ScreenId = "59")]
         public ActionResult DailyReports()
         {
@@ -350,6 +435,28 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "59")]
+        public ActionResult getLevelsDailyReport(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "59")]
+        public ActionResult getClassesDailyReport(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "59")]
+        public ActionResult getSubjectsDailyReport(Guid Id)
+        {
+            var model = subjectsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //التحاقات الطالب السابقة
+
         [Authorized(ScreenId = "55")]
         public ActionResult PreviousReports()
         {
@@ -379,6 +486,26 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "55")]
+        public ActionResult getLevelsPreviousReport(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "55")]
+        public ActionResult getClassesPreviousReport(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "55")]
+        public ActionResult getSubjectsPreviousReport(Guid Id)
+        {
+            var model = subjectsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         [Authorized(ScreenId = "28")]
         public ActionResult Collect(Guid Id)
@@ -415,6 +542,8 @@ namespace NurseryProject.Controllers
             }
             return View(class1);
         }
+       
+
         [HttpPost]
         public ActionResult Collect(StudentsClassDto Class)
         {
@@ -457,29 +586,9 @@ namespace NurseryProject.Controllers
                 return View(Class);
             }
         }
-        public ActionResult getLevels(Guid Id)
-        {
-            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult getSubscriptionsMethods(Guid Id)
-        {
+       
+        
 
-            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount }).ToList();
-            var model2 = studentsClassServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
-
-            var IsAnother = false;
-            if (model2 != null)
-            {
-                if (model2.IsAnother == true)
-                {
-                    IsAnother = true;
-                }
-            }
-
-            var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
         [Authorized(ScreenId = "28")]
         public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0)
         {

@@ -126,7 +126,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("#StudyTypeId").change(function () {
-            $.get('/EmployeeClasses/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+            $.get('/StudentsClass/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
                 $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -135,14 +135,14 @@
             });
         });
         $("#LevelId").change(function () {
-            $.get('/EmployeeClasses/getClasses', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsClass/getClasses', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });
             });
-            $.get('/EmployeeClasses/getSubjects', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsClass/getSubjects', { Id: $("#LevelId").val() }, function (data) {
                 $("#SubjectId").empty();
                 $("#SubjectId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

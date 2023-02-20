@@ -108,6 +108,7 @@ namespace NurseryProject.Controllers
             return RedirectToAction("Index");
 
         }
+        
         public ActionResult DeleteCollect(string Month, Guid EmployeeId)
         {
             var mon = DateTime.Now.ToString("yyyy-MM");
@@ -167,6 +168,37 @@ namespace NurseryProject.Controllers
             return View();
         }
 
+        [Authorized(ScreenId = "64")]
+        public ActionResult CollectReport(string Date, string Month, Guid EmployeeId, Guid StudyYearId, Guid StudyPlaceId, float Total, float TotalDiscountCost, float TotalIncreasesCost, float Final)
+        {
+            var mon = DateTime.Now.ToString("yyyy-MM");
+            if (Month != null)
+                mon = DateTime.Parse(Month).ToString("yyyy-MM");
+
+            var year = DateTime.Now.ToString("yyyy-MM-ddy");
+            if (Date != null)
+                year = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+
+            var employeesModel = employeesServices.GetAll().ToList();
+            ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
+
+            var model = employeesReceiptServices.GetAll(mon, EmployeeId);
+            ViewBag.EmployeesReceipt = model;
+            ViewBag.date = mon;
+
+            var result = employeesReceiptServices.Create(year, mon, EmployeeId, StudyYearId, StudyPlaceId, Total, TotalDiscountCost, TotalIncreasesCost, Final, (Guid)TempData["UserId"]);
+            if (result.IsSuccess)
+            {
+                TempData["success"] = result.Message;
+            }
+            else
+            {
+                TempData["warning"] = result.Message;
+            }
+            return RedirectToAction("Reports");
+
+        }
+
         [Authorized(ScreenId = "65")]
         public ActionResult MonthlyReports()
         {
@@ -183,6 +215,38 @@ namespace NurseryProject.Controllers
 
             return View();
         }
+
+        [Authorized(ScreenId = "65")]
+        public ActionResult CollectMonthlyReport(string Date, string Month, Guid EmployeeId, Guid StudyYearId, Guid StudyPlaceId, float Total, float TotalDiscountCost, float TotalIncreasesCost, float Final)
+        {
+            var mon = DateTime.Now.ToString("yyyy-MM");
+            if (Month != null)
+                mon = DateTime.Parse(Month).ToString("yyyy-MM");
+
+            var year = DateTime.Now.ToString("yyyy-MM-ddy");
+            if (Date != null)
+                year = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+
+            var employeesModel = employeesServices.GetAll().ToList();
+            ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
+
+            var model = employeesReceiptServices.GetAll(mon, EmployeeId);
+            ViewBag.EmployeesReceipt = model;
+            ViewBag.date = mon;
+
+            var result = employeesReceiptServices.Create(year, mon, EmployeeId, StudyYearId, StudyPlaceId, Total, TotalDiscountCost, TotalIncreasesCost, Final, (Guid)TempData["UserId"]);
+            if (result.IsSuccess)
+            {
+                TempData["success"] = result.Message;
+            }
+            else
+            {
+                TempData["warning"] = result.Message;
+            }
+            return RedirectToAction("Reports");
+
+        }
+
         public ActionResult getEmployees(Guid Id)
         {
             if (Id == null)

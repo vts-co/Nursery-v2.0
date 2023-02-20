@@ -199,7 +199,12 @@ namespace NurseryProject.Controllers
             return View();
            
         }
-
+        [Authorized(ScreenId = "67")]
+        public ActionResult getRevenuesTypesReport(Guid Id)
+        {
+            var model = revenuesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult getRevenuesTypes(Guid Id)
         {
             var model = revenuesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();

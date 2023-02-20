@@ -265,5 +265,24 @@ namespace NurseryProject.Controllers
             var model = subjectsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorized(ScreenId = "60")]
+        public ActionResult getLevelsReport(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "60")]
+        public ActionResult getClassesReport(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "60")]
+        public ActionResult getSubjectsReport(Guid Id)
+        {
+            var model = subjectsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

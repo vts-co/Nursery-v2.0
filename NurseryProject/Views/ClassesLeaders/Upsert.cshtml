@@ -82,7 +82,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("#StudyTypeId").change(function () {
-            $.get('/EmployeeClasses/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+            $.get('/ClassesLeaders/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
                 $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -91,7 +91,7 @@
             });
         });
         $("#LevelId").change(function () {
-            $.get('/EmployeeClasses/getClasses', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/ClassesLeaders/getClasses', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

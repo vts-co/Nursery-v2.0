@@ -288,9 +288,31 @@ namespace NurseryProject.Controllers
 
             return View(student);
         }
+        
+        [Authorized(ScreenId = "52")]
+        public ActionResult getDestrictsSearch(Guid Id)
+        {
+            if (Id == null)
+            {
+                return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
+            }
+            var model = destrictsServices.GetAll().Where(x => x.CityId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
         [Authorized(ScreenId = "53")]
+        public ActionResult getDestrictsReport(Guid Id)
+        {
+            if (Id == null)
+            {
+                return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
+            }
+            var model = destrictsServices.GetAll().Where(x => x.CityId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
+
+        [Authorized(ScreenId = "53")]
         public ActionResult Reports()
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
@@ -299,7 +321,6 @@ namespace NurseryProject.Controllers
         }
         [HttpPost, ValidateInput(false)]
         [Authorized(ScreenId = "53")]
-
         public ActionResult Reports(Guid? StudyYearId = null)
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", StudyYearId);
@@ -308,6 +329,7 @@ namespace NurseryProject.Controllers
             ViewBag.Students = students;
             return View();
         }
+        
         public ActionResult getDestricts(Guid Id)
         {
             if (Id == null)

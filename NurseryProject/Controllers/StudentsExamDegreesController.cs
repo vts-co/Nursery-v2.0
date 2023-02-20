@@ -146,6 +146,11 @@ namespace NurseryProject.Controllers
             var model = examsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult getLevels(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult getExamClass(Guid Id)
         {
             var model = studentExamDegreesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();

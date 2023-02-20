@@ -181,6 +181,12 @@ namespace NurseryProject.Controllers
             ViewBag.Expenses = model;
             return View();
         }
+        [Authorized(ScreenId = "66")]
+        public ActionResult getExpensesTypesReport(Guid Id)
+        {
+            var model = expensesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult getExpensesTypes(Guid Id)
         {
             var model = expensesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();

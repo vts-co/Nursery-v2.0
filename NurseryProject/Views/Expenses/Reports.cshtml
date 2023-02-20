@@ -134,7 +134,7 @@
     <script>
        
         $("#ExpenseTypeParentId").change(function () {
-            $.get('/Expenses/getExpensesTypes', { Id: $("#ExpenseTypeParentId").val() }, function (data) {
+            $.get('/Expenses/getExpensesTypesReport', { Id: $("#ExpenseTypeParentId").val() }, function (data) {
                 $("#ExpenseTypeId").empty();
                 $("#ExpenseTypeId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

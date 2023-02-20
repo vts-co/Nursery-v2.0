@@ -151,8 +151,35 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
-        [Authorized(ScreenId = "62")]
+       
+        public ActionResult getLevels(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getClasses(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getStudents(Guid ClassId)
+        {
+            var model = studentsClassServices.GetAll().Where(x => x.ClassId == ClassId).Select(x => new { x.Id, x.StudentId, x.Code, x.StudentName }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getStudentAttendans(string Date, Guid ClassId, Guid StudyYearId, Guid StudyClassId, Guid StudentId)
+        {
+            var date1 = DateTime.Parse(Date);
+            var model = studentsAttendanceServices.Get(date1, ClassId, StudyYearId, StudyClassId, StudentId);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getStudyClass(Guid StudyYearId)
+        {
+            var model = studyClassesServices.GetAll().Where(x => x.StudyYearId == StudyYearId).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
+        [Authorized(ScreenId = "62")]
         public ActionResult Reports()
         {
             var students = studentsServices.GetAllDropDown();
@@ -163,7 +190,6 @@ namespace NurseryProject.Controllers
         }
         [HttpPost]
         [Authorized(ScreenId = "62")]
-
         public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId, string Month, string By)
         {
             var students = studentsServices.GetAllDropDown();
@@ -217,28 +243,8 @@ namespace NurseryProject.Controllers
             return View();
 
         }
-        public ActionResult getLevels(Guid Id)
-        {
-            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult getClasses(Guid Id)
-        {
-            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult getStudents(Guid ClassId)
-        {
-            var model = studentsClassServices.GetAll().Where(x => x.ClassId == ClassId).Select(x => new { x.Id, x.StudentId, x.Code, x.StudentName }).ToList();
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult getStudentAttendans(string Date, Guid ClassId, Guid StudyYearId, Guid StudyClassId, Guid StudentId)
-        {
-            var date1 = DateTime.Parse(Date);
-            var model = studentsAttendanceServices.Get(date1, ClassId, StudyYearId, StudyClassId, StudentId);
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult getStudyClass(Guid StudyYearId)
+        [Authorized(ScreenId = "62")]
+        public ActionResult getStudyClassReport(Guid StudyYearId)
         {
             var model = studyClassesServices.GetAll().Where(x => x.StudyYearId == StudyYearId).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);

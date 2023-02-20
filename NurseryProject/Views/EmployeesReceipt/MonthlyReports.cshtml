@@ -171,8 +171,8 @@
             var TotalIncreasesCost = document.getElementById("TotalIncreasesCost").value;
             var TotalDiscountCost = document.getElementById("TotalDiscountCost").value;
             var Final = document.getElementById("FinalTotal").value;
-            $.get('/EmployeesReceipt/Collect', { EmployeeId: EmployeeId, Date: Date, Month: Month, Total: Total, TotalIncreasesCost: TotalIncreasesCost, TotalDiscountCost: TotalDiscountCost, Final: Final }, function (data) {
-                window.location.href = '/EmployeesReceipt/Index';
+            $.get('/EmployeesReceipt/CollectMonthlyReport', { EmployeeId: EmployeeId, Date: Date, Month: Month, Total: Total, TotalIncreasesCost: TotalIncreasesCost, TotalDiscountCost: TotalDiscountCost, Final: Final }, function (data) {
+                window.location.href = '/EmployeesReceipt/MonthlyReports';
             });
         }
     </script>
