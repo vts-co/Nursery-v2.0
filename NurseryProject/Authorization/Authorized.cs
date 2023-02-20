@@ -20,12 +20,12 @@ namespace NurseryProject.Authorization
         {
             SettingsServices settingsServices = new SettingsServices();
             string search = "," + ScreenId + ",";
-            //UsersServices usersServices = new UsersServices();
+            UsersServices usersServices = new UsersServices();
             var controller = filterContext.Controller as Controller;
             if (controller != null)
             {
                 VTSAuth auth = new VTSAuth() { CookieValues = new UserInfo { } };
-                if (!auth.LoadDataFromCookies())
+                if (!auth.LoadDataFromCookies() || usersServices.Get(auth.CookieValues.UserId)==null)
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new {  controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
                     return;
@@ -48,7 +48,6 @@ namespace NurseryProject.Authorization
                 else if (!auth.CookieValues.UserScreens.Contains(search))
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
-
                 }
                 filterContext.Controller.TempData["UserInfo"] = auth.CookieValues;
                 filterContext.Controller.TempData["UserId"] = auth.CookieValues.UserId;

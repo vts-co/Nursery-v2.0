@@ -34,7 +34,14 @@ namespace NurseryProject.Services.Users
                 return model;
             }
         }
-
+        public User Get(Guid Id)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Users.Where(x => x.IsDeleted == false && x.Id == Id).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                return model;
+            }
+        }
         public ResultDto<User> Create(User model, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())

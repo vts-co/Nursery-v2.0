@@ -21,7 +21,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "28")]
 
     public class StudentsClassController : Controller
     {
@@ -193,6 +193,7 @@ namespace NurseryProject.Controllers
             var model = studentsClassServices.GetAll().Where(x => x.Id == StudentClassId).FirstOrDefault();
             return View(model);
         }
+
         public ActionResult StudentsLevelsTransfer(Guid Id)
         {
             var subs = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id && x.IsDeleted == false && x.IsPaid == false).ToList().Count();
@@ -285,7 +286,7 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
-
+        [Authorized(ScreenId = "61")]
         public ActionResult Reports()
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -297,6 +298,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "61")]
         public ActionResult Reports(string StudentId, string StudyYearId)
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -316,7 +318,8 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result2;
             return View();
         }
-
+        
+        [Authorized(ScreenId = "58")]
         public ActionResult NoInstallmentsReports()
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -325,6 +328,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "58")]
         public ActionResult NoInstallmentsReports(string StudyYearId)
         {
             var result = studentsClassServices.GetAll().Where(x => x.SubscriptionMethod.Count() == 0);
@@ -346,6 +350,7 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "28")]
 
         public ActionResult Search(Guid StudyYearId, Guid StudyTypeId, Guid LevelId, Guid ClassId, Guid SubscriptionId)
         {

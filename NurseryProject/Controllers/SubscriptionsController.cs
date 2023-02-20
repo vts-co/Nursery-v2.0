@@ -21,7 +21,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "22")]
 
     public class SubscriptionsController : Controller
     {
@@ -142,6 +142,7 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [Authorized(ScreenId = "54")]
         public ActionResult Reports()
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -153,6 +154,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "54")]
         public ActionResult Reports(Guid? StudentId = null, Guid? StudyYearId = null)
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -182,6 +184,7 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "56")]
         public ActionResult LatecomersReports()
         {
 
@@ -197,6 +200,8 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "56")]
+
         public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null)
         {
             var result = studentsClassServices.GetAll().Where(x => x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0);
@@ -247,6 +252,7 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "57")]
         public ActionResult StudentRegularReports()
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -261,6 +267,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "57")]
         public ActionResult StudentRegularReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null)
         {
             var result = studentsClassServices.GetAll();
@@ -311,6 +318,7 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+        [Authorized(ScreenId = "59")]
         public ActionResult DailyReports()
         {
             var Students = studentsServices.GetAllDropDown();
@@ -319,6 +327,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "59")]
         public ActionResult DailyReports(string Date, Guid? StudentId = null)
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -341,7 +350,7 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
-
+        [Authorized(ScreenId = "55")]
         public ActionResult PreviousReports()
         {
             var Students = studentsServices.GetAllDropDown();
@@ -350,6 +359,7 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "55")]
         public ActionResult PreviousReports(Guid? StudentId = null, Guid? StudyYearId = null)
         {
             var StudyYear = studyYearsServices.GetAll();
@@ -369,6 +379,8 @@ namespace NurseryProject.Controllers
             ViewBag.Reports = result;
             return View();
         }
+
+        [Authorized(ScreenId = "28")]
         public ActionResult Collect(Guid Id)
         {
             var class1 = studentsClassServices.Get(Id);
@@ -468,6 +480,7 @@ namespace NurseryProject.Controllers
             var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        [Authorized(ScreenId = "28")]
         public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0)
         {
             var model = subscriptionsMethodsServices.Update(Id, Amount, Date, Id2, Sub, (Guid)TempData["UserId"]);
@@ -480,6 +493,7 @@ namespace NurseryProject.Controllers
                 return Json("Faild", JsonRequestBehavior.AllowGet);
 
         }
+        [Authorized(ScreenId = "28")]
         public ActionResult CancelSubscriptionsMethodsPaid(Guid Id)
         {
             var model = subscriptionsMethodsServices.Cancel(Id, (Guid)TempData["UserId"]);

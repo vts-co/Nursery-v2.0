@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "11")]
 
     public class StudyClassesController : Controller
     {

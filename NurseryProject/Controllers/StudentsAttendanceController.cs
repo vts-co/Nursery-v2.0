@@ -17,7 +17,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "29")]
 
     public class StudentsAttendanceController : Controller
     {
@@ -151,6 +151,7 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [Authorized(ScreenId = "62")]
 
         public ActionResult Reports()
         {
@@ -161,6 +162,8 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost]
+        [Authorized(ScreenId = "62")]
+
         public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId, string Month, string By)
         {
             var students = studentsServices.GetAllDropDown();

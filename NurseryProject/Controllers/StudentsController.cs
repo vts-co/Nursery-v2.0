@@ -18,7 +18,7 @@ using System.Web.UI.WebControls;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(Role = Role.SystemAdmin)]
+    [Authorized(ScreenId = "27")]
 
     public class StudentsController : Controller
     {
@@ -177,6 +177,7 @@ namespace NurseryProject.Controllers
             }
         }
 
+        [Authorized(ScreenId = "52")]
         public ActionResult Search()
         {
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text");
@@ -186,6 +187,7 @@ namespace NurseryProject.Controllers
             return View(new Student());
         }
         [HttpPost, ValidateInput(false)]
+        [Authorized(ScreenId = "52")]
         public ActionResult Search(Student student, Guid? CityId)
         {
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text");
@@ -287,6 +289,8 @@ namespace NurseryProject.Controllers
             return View(student);
         }
 
+        [Authorized(ScreenId = "53")]
+
         public ActionResult Reports()
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
@@ -294,6 +298,8 @@ namespace NurseryProject.Controllers
             return View();
         }
         [HttpPost, ValidateInput(false)]
+        [Authorized(ScreenId = "53")]
+
         public ActionResult Reports(Guid? StudyYearId = null)
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", StudyYearId);
