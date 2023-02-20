@@ -150,23 +150,6 @@ namespace NurseryProject.Controllers
             var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult getSubscriptionsMethods(Guid Id)
-        {
-            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount }).ToList();
-            var model2 = studentsClassServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
-
-            var IsAnother = false;
-            if (model2 != null)
-            {
-                if (model2.IsAnother == true)
-                {
-                    IsAnother = true;
-                }
-            }
-
-            var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
 
 
 
@@ -542,7 +525,25 @@ namespace NurseryProject.Controllers
             }
             return View(class1);
         }
-       
+        [Authorized(ScreenId = "28")]
+        public ActionResult getSubscriptionsMethods(Guid Id)
+        {
+            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd HH:mm:ss.fff") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount }).ToList();
+            var model2 = studentsClassServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+
+            var IsAnother = false;
+            if (model2 != null)
+            {
+                if (model2.IsAnother == true)
+                {
+                    IsAnother = true;
+                }
+            }
+
+            var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpPost]
         public ActionResult Collect(StudentsClassDto Class)

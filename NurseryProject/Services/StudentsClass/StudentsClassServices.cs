@@ -76,6 +76,10 @@ namespace NurseryProject.Services.StudentsClass
                             item.Regular = "غير منتظم";
                             break;
                         }
+                        if (item2.PaidDate != null)
+                        {
+                            item2.PaidDate = DateTime.Parse(item2.PaidDate).ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        }
                     }
 
                 }
@@ -270,6 +274,13 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
+                    foreach (var item2 in item.SubscriptionMethod)
+                    {
+                        if (item2.PaidDate != null)
+                        {
+                            item2.PaidDate = DateTime.Parse(item2.PaidDate).ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        }
+                    }
                 }
 
                 return model;
@@ -327,6 +338,12 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
+
+                    if (item.Date != null)
+                    {
+                        item.Date = DateTime.Parse(item.Date).ToString("yyyy-MM-dd HH:mm:ss.fff");
+                    }
+
                 }
 
                 return model;

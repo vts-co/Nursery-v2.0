@@ -398,6 +398,14 @@
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="HomePages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PageId" Type="int" />
+          <Property Name="DisplayOrder" Type="int" />
+        </EntityType>
         <EntityType Name="IncreasesTypes">
           <Key>
             <PropertyRef Name="Id" />
@@ -1646,6 +1654,7 @@
           <EntitySet Name="ExamsTypes" EntityType="Self.ExamsTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExpensesTypes" EntityType="Self.ExpensesTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HomePages" EntityType="Self.HomePages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IncreasesTypes" EntityType="Self.IncreasesTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Jops" EntityType="Self.Jops" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Levels" EntityType="Self.Levels" Schema="dbo" store:Type="Tables" />
@@ -1964,6 +1973,7 @@
           <EntitySet Name="ExamsTypes" EntityType="almohandes_DbModel.ExamsType" />
           <EntitySet Name="Expenses" EntityType="almohandes_DbModel.Expens" />
           <EntitySet Name="ExpensesTypes" EntityType="almohandes_DbModel.ExpensesType" />
+          <EntitySet Name="HomePages" EntityType="almohandes_DbModel.HomePage" />
           <EntitySet Name="IncreasesTypes" EntityType="almohandes_DbModel.IncreasesType" />
           <EntitySet Name="Jops" EntityType="almohandes_DbModel.Jop" />
           <EntitySet Name="Levels" EntityType="almohandes_DbModel.Level" />
@@ -2713,6 +2723,14 @@
           <NavigationProperty Name="Expenses" Relationship="almohandes_DbModel.FK_Expenses_ExpensesTypes" FromRole="ExpensesType" ToRole="Expens" />
           <NavigationProperty Name="ExpensesTypes1" Relationship="almohandes_DbModel.FK_ExpensesTypes_ExpensesTypes" FromRole="ExpensesType" ToRole="ExpensesType1" />
           <NavigationProperty Name="ExpensesType1" Relationship="almohandes_DbModel.FK_ExpensesTypes_ExpensesTypes" FromRole="ExpensesType1" ToRole="ExpensesType" />
+        </EntityType>
+        <EntityType Name="HomePage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PageId" Type="Int32" />
+          <Property Name="DisplayOrder" Type="Int32" />
         </EntityType>
         <EntityType Name="IncreasesType">
           <Key>
@@ -4421,6 +4439,15 @@
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HomePages">
+            <EntityTypeMapping TypeName="almohandes_DbModel.HomePage">
+              <MappingFragment StoreEntitySet="HomePages">
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

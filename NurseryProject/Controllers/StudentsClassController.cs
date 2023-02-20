@@ -82,6 +82,7 @@ namespace NurseryProject.Controllers
             {
                 Class.SubscriptionId = null;
             }
+            Class.IsCurrent = true;
             var result = studentsClassServices.Create(Class, RegistrationTypeId, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {

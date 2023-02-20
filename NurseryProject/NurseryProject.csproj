@@ -197,6 +197,7 @@
     <Compile Include="Dtos\ExpensesTypes\ExpensesTypesDto.cs" />
     <Compile Include="Dtos\Exams\ExamsDto.cs" />
     <Compile Include="Dtos\Expenses\ExpensesDto.cs" />
+    <Compile Include="Dtos\HomePage\HomePagesDro.cs" />
     <Compile Include="Dtos\Jops\JopsDto.cs" />
     <Compile Include="Dtos\Levels\LevelsDto.cs" />
     <Compile Include="Dtos\RegistrationTypes\RegistrationTypesDto.cs" />
@@ -282,6 +283,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ExpensesType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HomePage.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IncreasesType.cs">

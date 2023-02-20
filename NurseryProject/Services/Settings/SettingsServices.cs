@@ -112,5 +112,30 @@ namespace NurseryProject.Services.Settings
                 return result;
             }
         }
+
+        public List<HomePage> GetAllHomePages()
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.HomePages.OrderBy(x => x.DisplayOrder).ToList();
+                return model;
+            }
+        }
+        public List<Page> GetAllPages()
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Pages.Where(x => x.IsDeleted == false).OrderBy(x => x.DisplayOrder).ToList();
+                return model;
+            }
+        }
+        public Page GetPage(int Id)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Pages.Where(x => x.IsDeleted == false && x.Id == Id).FirstOrDefault();
+                return model;
+            }
+        }
     }
 }
