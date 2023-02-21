@@ -195,8 +195,8 @@ namespace NurseryProject.Controllers
             var students = studentsServices.GetAllDropDown();
             ViewBag.Students = students;
 
-            var model = studentsAttendanceServices.GetAll();
-            var model2 = studentsAttendanceServices.GetAll();
+            var model = studentsAttendanceServices.GetAllAttendance();
+            var model2 = studentsAttendanceServices.GetAllNoAttendance();
 
             if (StudentId != "" && StudyYearId != "" && StudyClassId != null)
             {
@@ -254,7 +254,7 @@ namespace NurseryProject.Controllers
     public class Attend
     {
         public Guid Id { get; set; }
-        public bool Att { get; set; }
+        public bool Att { get; set; } = false;
 
     }
 }

@@ -58,6 +58,38 @@ namespace NurseryProject.Services.StudentsAttendance
                 return model;
             }
         }
+        public List<StudentsAttendanceDto> GetAllAttendance()
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
+                {
+                    Id = x.Id,
+                    StudentId = x.Student.Id,
+                    StudyYearId = x.StudyClass.StudyYear.Id,
+                    Date = x.Date.Value.ToString(),
+                    IsAttend = x.IsAttend.Value
+                }
+                ).ToList();
+                return model;
+            }
+        }
+        public List<StudentsAttendanceDto> GetAllNoAttendance()
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.IsAttend == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
+                {
+                    Id = x.Id,
+                    StudentId = x.Student.Id,
+                    StudyYearId = x.StudyClass.StudyYear.Id,
+                    Date = x.Date.Value.ToString(),
+                    IsAttend = x.IsAttend.Value
+                }
+                ).ToList();
+                return model;
+            }
+        }
         public int Get(DateTime Date, Guid ClassId, Guid StudyYearId, Guid StudyClassId, Guid StudentId)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -83,7 +115,7 @@ namespace NurseryProject.Services.StudentsAttendance
                 var stId = dbContext.Levels.Where(x => x.IsDeleted == false && x.Id == class1.LevelId).FirstOrDefault();
                 var model1 = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyYearId == studyYear).ToList();
                 var test = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyClassId == model.StudyClassId && x.Date == model.Date).ToList();
-                if (test.Count() >0)
+                if (test.Count() > 0)
                 {
                     result.IsSuccess = false;
                     result.Message = "هذا اليوم تم اخذ الغياب له";
@@ -105,7 +137,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item.Id && item.Att)
+                        if (item2.StudentId == item.Id)
                         {
                             model2.IsAttend = true;
                             break;
@@ -170,7 +202,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item.Id && item.Att)
+                        if (item2.StudentId == item.Id)
                         {
                             model2.IsAttend = true;
                             break;
