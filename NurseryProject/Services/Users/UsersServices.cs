@@ -82,22 +82,48 @@ namespace NurseryProject.Services.Users
                 return result;
             }
         }
-        public ResultDto<City> Edit(City model, Guid UserId)
+        public ResultDto<User> Edit(User model, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var result = new ResultDto<City>();
-                var Oldmodel = dbContext.Cities.Find(model.Id);
+                var result = new ResultDto<User>();
+                var pass = Security.Encrypt(model.Password);
+
+                var Oldmodel = dbContext.Users.Where(x => x.Id == model.Id && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "هذا المركز غير موجود ";
+                    result.Message = "هذا المستخدم غير موجود ";
+                    return result;
+                }
+                var Oldmodel2 = dbContext.Users.Where(x => x.Username == model.Username && x.Password == pass&&x.Id!=model.Id && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel2 != null)
+                {
+                    result.Result = model;
+                    result.IsSuccess = false;
+                    result.Message = "هذا المستخدم موجود بالفعل";
+                    return result;
+                }
+                if (model.EmployeeId == Guid.Empty || model.EmployeeId == null)
+                {
+                    result.Result = model;
+                    result.IsSuccess = false;
+                    result.Message = "اختر المستخدم";
+                    return result;
+                }
+                if (model.UserScreens == "" || model.UserScreens == null)
+                {
+                    result.Result = model;
+                    result.IsSuccess = false;
+                    result.Message = "اختر صلاحيات للمستخدم";
                     return result;
                 }
                 Oldmodel.ModifiedOn = DateTime.UtcNow;
                 Oldmodel.ModifiedBy = UserId;
-                Oldmodel.Name = model.Name;
-                Oldmodel.Notes = model.Notes;
+                Oldmodel.Username = model.Username;
+                Oldmodel.Password = pass;
+                Oldmodel.UserScreens = model.UserScreens;
+                Oldmodel.EmployeeId = model.EmployeeId;
 
                 dbContext.SaveChanges();
                 result.IsSuccess = true;

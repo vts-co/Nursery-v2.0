@@ -173,11 +173,11 @@
                         {
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow">
-                                    <i class="fa fa-list"></i>
+                                    <i class="fa fa-cogs"></i>
                                     <span data-key="t-apps">الاعدادات العامة </span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false" id="side-menu1">
-                                    <li><a href="@Url.Action("Index","Settings")"><i class="fas fa-list p-1"></i> اعدادات البرنامج </a></li>
+                                    <li><a href="@Url.Action("Index","Settings")"><i class="fas fa-cog p-1"></i> اعدادات البرنامج </a></li>
                                 </ul>
                             </li>
                         }
@@ -269,7 +269,7 @@
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",19,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "EmployeesWorkShifts")"><i class="fas fa-clock p-1"></i>ادارة فترات الموظفين </a></li>
+                                        <li><a href="@Url.Action("Index", "EmployeesWorkShifts")"><i class="fas fa-user-clock p-1"></i>ادارة فترات الموظفين </a></li>
                                     }
                                 </ul>
                             </li>
@@ -284,11 +284,11 @@
                                 <ul class="sub-menu" aria-expanded="false" id="side-menu5">
                                     @if (ViewBag.userscreens.ToString().Contains(",21,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "SubscriptionsTypes")"><i class="fas fa-id-card p-1"></i>انواع الاشتراكات </a></li>
+                                        <li><a href="@Url.Action("Index", "SubscriptionsTypes")"><i class="fas fa-credit-card p-1"></i>انواع الاشتراكات </a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",22,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> طرق الاشتراكات </a></li>
+                                        <li><a href="@Url.Action("Index", "Subscriptions")"><i class="fas fa-id-card p-1"></i> طرق الاشتراكات </a></li>
                                     }
                                 </ul>
                             </li>
@@ -303,11 +303,11 @@
                                 <ul class="sub-menu" aria-expanded="false" id="side-menu6">
                                     @if (ViewBag.userscreens.ToString().Contains(",21,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "ExamsTypes")"><i class="fas fa-list-ul p-1"></i>انواع الاختبارات </a></li>
+                                        <li><a href="@Url.Action("Index", "ExamsTypes")"><i class="fas fa-file-alt p-1"></i>انواع الاختبارات </a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",21,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "Exams")"><i class="fas fa-list-ul p-1"></i>  تسجيل الاختبارات </a></li>
+                                        <li><a href="@Url.Action("Index", "Exams")"><i class="fas fa-edit p-1"></i>  تسجيل الاختبارات </a></li>
                                     }
                                 </ul>
                             </li>
@@ -334,7 +334,7 @@
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",30,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "StudentsExamDegrees")"><i class="fas fa-list-ul p-1"></i>  تسجيل درجات اختبار طالب </a></li>
+                                        <li><a href="@Url.Action("Index", "StudentsExamDegrees")"><i class="fas fa-user-edit p-1"></i>  تسجيل درجات اختبار طالب </a></li>
                                     }
                                 </ul>
                             </li>
@@ -365,11 +365,11 @@
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",36,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "EmployeesAttendance")"><i class="fas fa-users p-1"></i> تسجيل غياب الموظفين</a></li>
+                                        <li><a href="@Url.Action("Index", "EmployeesAttendance")"><i class="fas fa-check-square p-1"></i> تسجيل غياب الموظفين</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",37,"))
                                     {
-                                        <li><a href="@Url.Action("Index", "EmployeesReceipt")"><i class="fas fa-users p-1"></i> سند قبض موظف</a></li>
+                                        <li><a href="@Url.Action("Index", "EmployeesReceipt")"><i class="fas fa-credit-card p-1"></i> سند قبض موظف</a></li>
                                     }
 
                                 </ul>

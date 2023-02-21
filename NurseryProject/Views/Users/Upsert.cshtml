@@ -35,7 +35,7 @@
                 <div class="form-group mb-3 col-sm-12">
                     @Html.Label("كلمة المرور ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control",type="password", required = "required" } })
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", required = "required" } })
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -69,6 +69,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script type="text/javascript">
+        $('#selectedItems').val(JSON.stringify(@Html.Raw(ViewBag.Json)));
+
         $(function () {
                     $('#jstree').on('changed.jstree', function (e, data) {
                     var i, j;
@@ -93,8 +95,10 @@
                 }
 
                 //Serialize the JSON Array and save in HiddenField.
-                $('#selectedItems').val(JSON.stringify(selectedItems));
-            }).jstree({
+                        $('#selectedItems').val(JSON.stringify(selectedItems));
+
+
+                    }).jstree({
                 "core": {
                     "multiple": true,
                     "check_callback": true,

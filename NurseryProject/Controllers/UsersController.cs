@@ -3,6 +3,7 @@ using NurseryProject.Enums;
 using NurseryProject.Models;
 using NurseryProject.Services.Employees;
 using NurseryProject.Services.Users;
+using NurseryProject.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,6 @@ namespace NurseryProject.Controllers
                 user.Id = Guid.Empty;
                 ViewBag.Employees = employeesServices.GetAll();
                 TreeFunction();
-
                 TempData["warning"] = result.Message;
                 return View("Upsert", user);
             }
@@ -71,36 +71,16 @@ namespace NurseryProject.Controllers
 
         public ActionResult Edit(Guid Id)
         {
+            var user = usersServices.Get(Id);
+            user.Password = Security.Decrypt(user.Password);
             ViewBag.Employees = employeesServices.GetAll();
-
-            List<TreeViewNode> nodes = new List<TreeViewNode>();
-            var pagesPerants = usersServices.GetAllPerants();
-            var pagesChilds = usersServices.GetAllChilds();
-
-            //Loop and add the Parent Nodes.
-            foreach (var item in pagesPerants)
-            {
-                nodes.Add(new TreeViewNode { id = item.Id.ToString(), parent = "#", text = item.Name, state = new { opened = false, selected = false } });
-            }
-
-            //Loop and add the Child Nodes.
-            foreach (var item in pagesChilds)
-            {
-                nodes.Add(new TreeViewNode { id = item.ParentId.ToString() + "-" + item.Id.ToString(), parent = item.ParentId.ToString(), text = item.Name, state = new { opened = false, selected = false } });
-            }
-
-
-            //Serialize to JSON string.
-            ViewBag.Json = (new JavaScriptSerializer()).Serialize(nodes);
-            return View("Upsert", new User());
+            SelectedTreeFunction(user.UserScreens);
+            return View("Upsert", user);
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(User user, string selectedItems)
         {
-            ViewBag.Employees = employeesServices.GetAll();
-
             string pages = ",0,";
-            user.Id = Guid.NewGuid();
 
             List<TreeViewNode> items = (new JavaScriptSerializer()).Deserialize<List<TreeViewNode>>(selectedItems);
             if (items != null)
@@ -119,7 +99,7 @@ namespace NurseryProject.Controllers
 
             user.UserScreens = pages;
             user.RoleId = (int)Role.Employee;
-            var result = usersServices.Create(user, (Guid)TempData["UserId"]);
+            var result = usersServices.Edit(user, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
                 TempData["success"] = result.Message;
@@ -128,7 +108,9 @@ namespace NurseryProject.Controllers
             else
             {
                 user.Id = Guid.Empty;
-
+                //user.Password = Security.Decrypt(user.Password);
+                ViewBag.Employees = employeesServices.GetAll();
+                SelectedTreeFunction(user.UserScreens);
                 TempData["warning"] = result.Message;
                 return View("Upsert", user);
             }
@@ -164,6 +146,35 @@ namespace NurseryProject.Controllers
             foreach (var item in pagesChilds)
             {
                 nodes.Add(new TreeViewNode { id = item.ParentId.ToString() + "-" + item.Id.ToString(), parent = item.ParentId.ToString(), text = item.Name, state = new { opened = false, selected = false } });
+            }
+
+
+            //Serialize to JSON string.
+            ViewBag.Json = (new JavaScriptSerializer()).Serialize(nodes);
+        }
+        public void SelectedTreeFunction(string user)
+        {
+            List<TreeViewNode> nodes = new List<TreeViewNode>();
+            var pagesPerants = usersServices.GetAllPerants();
+            var pagesChilds = usersServices.GetAllChilds();
+
+            //Loop and add the Parent Nodes.
+            foreach (var item in pagesPerants)
+            {
+                nodes.Add(new TreeViewNode { id = item.Id.ToString(), parent = "#", text = item.Name, state = new { opened = false, selected = false } });
+            }
+
+            //Loop and add the Child Nodes.
+            foreach (var item in pagesChilds)
+            {
+                if (user.Contains("," + item.Id + ","))
+                {
+                    nodes.Add(new TreeViewNode { id = item.ParentId.ToString() + "-" + item.Id.ToString(), parent = item.ParentId.ToString(), text = item.Name, state = new { opened = true, selected = true } });
+                }
+                else
+                {
+                    nodes.Add(new TreeViewNode { id = item.ParentId.ToString() + "-" + item.Id.ToString(), parent = item.ParentId.ToString(), text = item.Name, state = new { opened = false, selected = false } });
+                }
             }
 
 
