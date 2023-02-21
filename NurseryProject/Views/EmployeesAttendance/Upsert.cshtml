@@ -110,14 +110,14 @@
                         $("#employees").append("<tr>");
                         $("#employees").append("<td>" + value["Code"] + "</td>");
                         $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
-                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' /></td>");
+                        $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
                         $("#employees").append("</tr><tr></tr>");
                     }
                     else {
                         $("#employees").append("<tr>");
                         $("#employees").append("<td>" + value["Code"] + "</td>");
                         $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
-                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' checked /></td>");
+                        $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' checked /></td>");
                         $("#employees").append("</tr><tr></tr>");
                     }
                    
@@ -135,7 +135,7 @@
                         $("#employees").append("<tr>");
                         $("#employees").append("<td>" + data1["Code"] + "</td>");
                         $("#employees").append("<td>" + data1["Name"] + "</td>");
-                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' /></td>");
+                        $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
                         $("#employees").append("</tr><tr></tr>");
                     });
 
@@ -151,7 +151,7 @@
                         $("#employees").append("<tr>");
                         $("#employees").append("<td>" + data1["Code"] + "</td>");
                         $("#employees").append("<td>" + data1["Name"] + "</td>");
-                        $("#employees").append("<td><input type='checkbox' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' class='form-check-input' /></td>");
+                        $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
                         $("#employees").append("</tr><tr></tr>");
                     });
 
@@ -164,13 +164,13 @@
             if (document.getElementById('All').checked) {
                 var rowCount = $('#table1 tr').length;
                 for (var i = 0; i < rowCount; i++) {
-                    document.getElementById('emp[' + i + ']').checked = true;
+                    document.getElementById('emp[' + i + '].Att').checked = true;
                 }
             }
             else {
                 var rowCount = $('#table1 tr').length;
                 for (var i = 0; i < rowCount; i++) {
-                    document.getElementById('emp[' + i + ']').checked = false;
+                    document.getElementById('emp[' + i + '].Att').checked = false;
                 }
             }
         });

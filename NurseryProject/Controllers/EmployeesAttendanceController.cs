@@ -50,7 +50,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", new EmployeesAttendance());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(EmployeesAttendance employeesAttendance, List<Guid> emp)
+        public ActionResult Create(EmployeesAttendance employeesAttendance, List<Attend1> emp)
         {
             var result = employeesAttendanceServices.Create(employeesAttendance, emp, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
@@ -89,10 +89,11 @@ namespace NurseryProject.Controllers
             var workshift = workShiftsServices.GetAll();
             ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name", employeesWorkShift.WorkShiftId);
             ViewBag.Date = employeesWorkShift.Date;
+            ViewBag.readon = "readonly";
             return View("Upsert", new EmployeesAttendance());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(EmployeesAttendance employeesAttendance, List<Guid> emp)
+        public ActionResult Edit(EmployeesAttendance employeesAttendance, List<Attend1> emp)
         {
 
             var result = employeesAttendanceServices.Edit(employeesAttendance, emp, (Guid)TempData["UserId"]);
@@ -112,6 +113,7 @@ namespace NurseryProject.Controllers
 
                 //var Departments = departmentsServices.GetAll();
                 //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name", jop.DepartmentId);
+                ViewBag.readon = "readonly";
 
                 var workshift = workShiftsServices.GetAll();
                 ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name", employeesWorkShift.WorkShiftId.Value);
@@ -147,5 +149,11 @@ namespace NurseryProject.Controllers
             var model = employeesAttendanceServices.GetByEmployeeWorkShift().Where(x => x.EmployeeWorkShiftId == Id && x.Date == Date&&x.IsAttend==true).Select(x => new { x.Id,x.Code, x.EmployeeId, x.EmployeeName,x.EmployeeWorkShiftId }).ToList().Count();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+    }
+    public class Attend1
+    {
+        public Guid Id { get; set; }
+        public string Att { get; set; }
+
     }
 }

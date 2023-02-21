@@ -59,7 +59,7 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("تاريخ اليوم", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
+                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date",@Value= ViewBag.Date, required = "required" } })
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                         $("#students").append("<tr>");
                         $("#students").append("<td>" + value["Code"] + "</td>");
                         $("#students").append("<td>" + value["StudentName"] + "</td>");
-                        $("#students").append("<td><input type='checkbox' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "'  class='form-check-input' /></td>");
+                        $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' /><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' class='form-check-input' /></td>");
                         $("#students").append("</tr><tr></tr>");
 
                     }
@@ -133,11 +133,10 @@
                         $("#students").append("<tr>");
                         $("#students").append("<td>" + value["Code"] + "</td>");
                         $("#students").append("<td>" + value["StudentName"] + "</td>");
-                        $("#students").append("<td><input type='checkbox' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "'  class='form-check-input' checked /></td>");
+                        $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' /><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' class='form-check-input' checked /></td>");
                         $("#students").append("</tr><tr></tr>");
                     }
                 });
-
             });
           
         });
@@ -166,17 +165,15 @@
         $("#ClassId").change(function () {
             $.get('/StudentsAttendance/getStudents', { ClassId: $("#ClassId").val() }, function (data) {
                 $("#students").empty();
-
                 $.each(data, function (key, value) {
 
                     $("#students").append("<tr>");
                     $("#students").append("<td>" + value["Code"] + "</td>");
                     $("#students").append("<td>" + value["StudentName"] + "</td>");
-                    $("#students").append("<td><input type='checkbox' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' class='form-check-input' /></td>");
+                    $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' /><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' class='form-check-input' /></td>");
                     $("#students").append("</tr><tr></tr>");
-
-                });
-
+                    
+                });                
             });
         });
 
@@ -193,13 +190,13 @@
             if (document.getElementById('All').checked) {
                 var rowCount = $('#table1 tr').length;
                 for (var i = 0; i < rowCount; i++) {
-                    document.getElementById('IsAttend[' + i + ']').checked = true;
+                    document.getElementById('IsAttend[' + i + '].Att').checked = true;
                 }
             }
             else {
                 var rowCount = $('#table1 tr').length;
                 for (var i = 0; i < rowCount; i++) {
-                    document.getElementById('IsAttend[' + i + ']').checked = false;
+                    document.getElementById('IsAttend[' + i + '].Att').checked = false;
                 }
             }
         });

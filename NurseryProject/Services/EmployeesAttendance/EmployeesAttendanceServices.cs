@@ -1,4 +1,5 @@
-﻿using NurseryProject.Dtos.EmployeesAttendance;
+﻿using NurseryProject.Controllers;
+using NurseryProject.Dtos.EmployeesAttendance;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace NurseryProject.Services.EmployeesAttendance
                     DepartmentName = x.EmployeesWorkShift.Employee.Jop.Department.Name,
                     EmployeeId = x.EmployeesWorkShift.Employee.Id,
                     EmployeeName = x.EmployeesWorkShift.Employee.Name,
-                    Code=x.EmployeesWorkShift.Employee.Code,
+                    Code = x.EmployeesWorkShift.Employee.Code,
                     WorkShiftId = x.EmployeesWorkShift.WorkShift.Id,
                     WorkShiftName = x.EmployeesWorkShift.WorkShift.Name,
                     IsAttend = x.IsAttend.Value,
@@ -117,13 +118,13 @@ namespace NurseryProject.Services.EmployeesAttendance
                 return model;
             }
         }
-        public ResultDto<Models.EmployeesAttendance> Create(Models.EmployeesAttendance model, List<Guid> emp, Guid UserId)
+        public ResultDto<Models.EmployeesAttendance> Create(Models.EmployeesAttendance model, List<Attend1> emp, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Models.EmployeesAttendance>();
 
-                if (emp==null)
+                if (emp == null)
                 {
                     result.IsSuccess = false;
                     result.Message = "اختر موظفين للحضور";
@@ -131,16 +132,16 @@ namespace NurseryProject.Services.EmployeesAttendance
                 }
                 var bol = false;
 
-                var id = emp[0];
+                var id = emp[0].Id;
                 var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.Id == id && x.IsDeleted == false).FirstOrDefault();
                 var Oldmodel2 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == Oldmodel1.WorkShiftId && x.StudyYearId == Oldmodel1.StudyYearId && x.IsDeleted == false).ToList();
                 foreach (var item2 in Oldmodel2)
                 {
                     foreach (var item in emp)
                     {
-                        if (item2.Id == item)
+                        if (item2.Id == item.Id && item.Att == "on")
                         {
-                            var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.EmployeeWorkShiftId == item&& x.Date == model.Date.Value && x.IsDeleted == false).FirstOrDefault();
+                            var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.EmployeeWorkShiftId == item.Id && x.Date == model.Date.Value && x.IsDeleted == false).FirstOrDefault();
 
                             if (Oldmodel != null)
                             {
@@ -154,7 +155,7 @@ namespace NurseryProject.Services.EmployeesAttendance
                             employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
                             employeesWorkShiftAttendance.CreatedBy = UserId;
                             employeesWorkShiftAttendance.IsDeleted = false;
-                            employeesWorkShiftAttendance.EmployeeWorkShiftId = item;
+                            employeesWorkShiftAttendance.EmployeeWorkShiftId = item.Id;
                             employeesWorkShiftAttendance.Date = model.Date;
                             employeesWorkShiftAttendance.IsAttend = true;
 
@@ -184,7 +185,7 @@ namespace NurseryProject.Services.EmployeesAttendance
                 return result;
             }
         }
-        public ResultDto<Models.EmployeesAttendance> Edit(Models.EmployeesAttendance model, List<Guid> emp, Guid UserId)
+        public ResultDto<Models.EmployeesAttendance> Edit(Models.EmployeesAttendance model, List<Attend1> emp, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -198,37 +199,39 @@ namespace NurseryProject.Services.EmployeesAttendance
                 }
                 var bol = false;
 
-                var id = emp[0];
+                var id = emp[0].Id;
                 var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.Id == id && x.IsDeleted == false).FirstOrDefault();
                 var Oldmodel2 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == Oldmodel1.WorkShiftId && x.StudyYearId == Oldmodel1.StudyYearId && x.IsDeleted == false).ToList();
                 foreach (var item2 in Oldmodel2)
                 {
                     foreach (var item in emp)
                     {
-                        if (item2.Id == item)
+                        if (item2.Id == item.Id && item.Att == "on")
                         {
-                            var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.EmployeeWorkShiftId == item&&x.IsAttend==false && x.Date == model.Date.Value && x.IsDeleted == false).FirstOrDefault();
+
+                            var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.EmployeeWorkShiftId == item.Id && x.Date == model.Date.Value && x.IsDeleted == false).FirstOrDefault();
 
                             if (Oldmodel != null)
                             {
-                                Oldmodel.IsAttend = true;
+                                Oldmodel.IsDeleted = true;
+                                Oldmodel.DeletedOn = DateTime.UtcNow;
+                                Oldmodel.DeletedBy = UserId;
                                 dbContext.SaveChanges();
                             }
-                            else
-                            {
-                                Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
-                                employeesWorkShiftAttendance.Id = Guid.NewGuid();
-                                employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
-                                employeesWorkShiftAttendance.CreatedBy = UserId;
-                                employeesWorkShiftAttendance.IsDeleted = false;
-                                employeesWorkShiftAttendance.EmployeeWorkShiftId = item;
-                                employeesWorkShiftAttendance.Date = model.Date;
-                                employeesWorkShiftAttendance.IsAttend = true;
 
-                                dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
-                                dbContext.SaveChanges();
-                            }
-                           
+                            Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
+                            employeesWorkShiftAttendance.Id = Guid.NewGuid();
+                            employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
+                            employeesWorkShiftAttendance.CreatedBy = UserId;
+                            employeesWorkShiftAttendance.IsDeleted = false;
+                            employeesWorkShiftAttendance.EmployeeWorkShiftId = item.Id;
+                            employeesWorkShiftAttendance.Date = model.Date;
+                            employeesWorkShiftAttendance.IsAttend = true;
+
+                            dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
+                            dbContext.SaveChanges();
+
+
                             bol = true;
                             break;
                         }
@@ -259,7 +262,7 @@ namespace NurseryProject.Services.EmployeesAttendance
             {
                 var result = new ResultDto<Models.EmployeesAttendance>();
                 var Oldmodel = dbContext.EmployeesAttendances.Find(Id);
-                var Oldmodel1 = dbContext.EmployeesAttendances.Where(x => x.EmployeesWorkShift.StudyYearId == Oldmodel.EmployeesWorkShift.StudyYearId&& x.EmployeesWorkShift.WorkShiftId == Oldmodel.EmployeesWorkShift.WorkShiftId && x.Date == Oldmodel.Date && x.IsDeleted == false).ToList();
+                var Oldmodel1 = dbContext.EmployeesAttendances.Where(x => x.EmployeesWorkShift.StudyYearId == Oldmodel.EmployeesWorkShift.StudyYearId && x.EmployeesWorkShift.WorkShiftId == Oldmodel.EmployeesWorkShift.WorkShiftId && x.Date == Oldmodel.Date && x.IsDeleted == false).ToList();
                 foreach (var item in Oldmodel1)
                 {
                     item.IsDeleted = true;
@@ -267,7 +270,7 @@ namespace NurseryProject.Services.EmployeesAttendance
                     item.DeletedBy = UserId;
                     dbContext.SaveChanges();
                 }
-                
+
                 result.IsSuccess = true;
                 result.Message = "تم حذف البيانات بنجاح";
                 return result;

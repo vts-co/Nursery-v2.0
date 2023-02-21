@@ -137,7 +137,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item.Id)
+                        if (item2.StudentId == item.Id&&item.Att=="on")
                         {
                             model2.IsAttend = true;
                             break;
@@ -202,7 +202,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item.Id)
+                        if (item2.StudentId == item.Id && item.Att == "on")
                         {
                             model2.IsAttend = true;
                             break;

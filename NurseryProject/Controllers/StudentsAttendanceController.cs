@@ -104,7 +104,7 @@ namespace NurseryProject.Controllers
 
             var Students = studentsServices.GetAll();
             ViewBag.StudentId = new SelectList(Students, "Id", "Name", class1.StudentId);
-
+            ViewBag.Date = class1.Date.Value.ToString("yyyy-MM-dd");
             return View("Upsert", class1);
         }
         [HttpPost, ValidateInput(false)]
@@ -133,6 +133,8 @@ namespace NurseryProject.Controllers
 
                 var Students = studentsServices.GetAll();
                 ViewBag.StudentId = new SelectList(Students, "Id", "Name", Class.StudentId);
+                ViewBag.Date = Class.Date.Value.ToString("yyyy-MM-dd");
+
                 TempData["warning"] = result.Message;
                 return View("Upsert", Class);
             }
@@ -254,7 +256,7 @@ namespace NurseryProject.Controllers
     public class Attend
     {
         public Guid Id { get; set; }
-        public bool Att { get; set; } = false;
+        public string Att { get; set; }
 
     }
 }
