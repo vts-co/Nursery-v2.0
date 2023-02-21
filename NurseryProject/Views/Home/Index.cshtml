@@ -5,9 +5,7 @@
 }
 
 <hr />
-@*<div class="text-center">
-    <img src="@TempData["SettingLogo"]" height="300" />
-</div>*@
+
 <div class="row">
     @foreach (var item in Model)
     {
@@ -24,7 +22,7 @@
             </div>
         </div>
     }
-
-
-
 </div>
+<div class="text-center">
+        <img src="@TempData["SettingLogo"]" height="500" />
+    </div>
