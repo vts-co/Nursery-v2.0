@@ -62,7 +62,7 @@ namespace NurseryProject.Services.StudentsAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false&&x.StudentId == StudentId && x.ClassId == ClassId && x.StudyClassId == StudyClassId && x.StudyClass.StudyYearId == StudyYearId && x.Date == Date && x.IsAttend == true).OrderBy(x => x.CreatedOn).ToList().Count();
+                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == StudentId && x.ClassId == ClassId && x.StudyClassId == StudyClassId && x.StudyClass.StudyYearId == StudyYearId && x.Date == Date && x.IsAttend == true).OrderBy(x => x.CreatedOn).ToList().Count();
                 return model;
             }
         }
@@ -83,7 +83,7 @@ namespace NurseryProject.Services.StudentsAttendance
                 var stId = dbContext.Levels.Where(x => x.IsDeleted == false && x.Id == class1.LevelId).FirstOrDefault();
                 var model1 = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyYearId == studyYear).ToList();
                 var test = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyClassId == model.StudyClassId && x.Date == model.Date).ToList();
-                if (test != null)
+                if (test.Count() >0)
                 {
                     result.IsSuccess = false;
                     result.Message = "هذا اليوم تم اخذ الغياب له";
@@ -105,7 +105,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item.Id)
+                        if (item2.StudentId == item.Id && item.Att)
                         {
                             model2.IsAttend = true;
                             break;
@@ -147,13 +147,13 @@ namespace NurseryProject.Services.StudentsAttendance
                     foreach (var item in test)
                     {
                         item.IsDeleted = true;
-                        item.DeletedOn= DateTime.UtcNow;
+                        item.DeletedOn = DateTime.UtcNow;
                         item.DeletedBy = UserId;
                         dbContext.SaveChanges();
 
                     }
                 }
-                
+
                 foreach (var item2 in model1)
                 {
                     Models.StudentsAttendance model2 = new Models.StudentsAttendance();
@@ -170,7 +170,7 @@ namespace NurseryProject.Services.StudentsAttendance
 
                     foreach (var item in IsAttend)
                     {
-                        if (item2.StudentId == item.Id)
+                        if (item2.StudentId == item.Id && item.Att)
                         {
                             model2.IsAttend = true;
                             break;

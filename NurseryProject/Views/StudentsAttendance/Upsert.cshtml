@@ -125,7 +125,7 @@
                         $("#students").append("<tr>");
                         $("#students").append("<td>" + value["Code"] + "</td>");
                         $("#students").append("<td>" + value["StudentName"] + "</td>");
-                        $("#students").append("<td><input type='checkbox' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' class='form-check-input' /></td>");
+                        $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "'/><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' value='false'  class='form-check-input' /></td>");
                         $("#students").append("</tr><tr></tr>");
 
                     }
@@ -133,7 +133,7 @@
                         $("#students").append("<tr>");
                         $("#students").append("<td>" + value["Code"] + "</td>");
                         $("#students").append("<td>" + value["StudentName"] + "</td>");
-                        $("#students").append("<td><input type='checkbox' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' class='form-check-input' checked /></td>");
+                        $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "'/><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' value='true'  class='form-check-input' /></td>");
                         $("#students").append("</tr><tr></tr>");
                     }
                 });
@@ -172,7 +172,7 @@
                     $("#students").append("<tr>");
                     $("#students").append("<td>" + value["Code"] + "</td>");
                     $("#students").append("<td>" + value["StudentName"] + "</td>");
-                    $("#students").append("<td><input type='checkbox' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' class='form-check-input' /></td>");
+                    $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "'/><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' value='false' class='form-check-input' /></td>");
                     $("#students").append("</tr><tr></tr>");
 
                 });
