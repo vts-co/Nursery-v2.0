@@ -50,7 +50,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", new EmployeesWorkShift());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(EmployeesWorkShift employeesWorkShift, List<Guid> emp)
+        public ActionResult Create(EmployeesWorkShift employeesWorkShift, List<Attend2> emp)
         {
             var result = employeesWorkShiftsServices.Create(employeesWorkShift, emp, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
@@ -100,7 +100,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", employeesWorkShift);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(EmployeesWorkShift employeesWorkShift, List<Guid> emp)
+        public ActionResult Edit(EmployeesWorkShift employeesWorkShift, List<Attend2> emp)
         {
 
             var result = employeesWorkShiftsServices.Edit(employeesWorkShift, emp, (Guid)TempData["UserId"]);
@@ -152,5 +152,11 @@ namespace NurseryProject.Controllers
             var model = employeesWorkShiftsServices.GetAll().Where(x => x.EmployeeId == EmployeeId && x.DepartmentId == DepartmentId && x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).ToList().Count();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+    }
+    public class Attend2
+    {
+        public Guid Id { get; set; }
+        public string Att { get; set; }
+
     }
 }

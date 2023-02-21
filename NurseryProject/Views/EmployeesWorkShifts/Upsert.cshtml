@@ -115,10 +115,10 @@
             $.each(data, function (key, value) {
                 $.get('/EmployeesWorkShifts/getEmployeesWorkShifts', { EmployeeId: value["Id"], DepartmentId: $("#DepartmentId").val(), WorkShiftId: $("#WorkShiftId").val(), StudyYearId: $("#StudyYearId").val() }, function (data1) {
                     if (data1 == "0") {
-                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/></td></tr>")
+                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' /></td></tr>")
                     }
                     else {
-                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "' checked/></td></tr>")
+                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' checked /></td></tr>")
                     }
                 });
             });
@@ -130,7 +130,7 @@
                 $("#empId").empty();
 
                 $.each(data, function (key, value) {
-                    $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "]' name='emp[" + key + "]' value='" + value["Id"] + "'/></td></tr>")
+                    $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' /></td></tr>")
                 });
 
             });

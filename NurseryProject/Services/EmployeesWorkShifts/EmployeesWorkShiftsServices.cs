@@ -1,4 +1,5 @@
-﻿using NurseryProject.Dtos.EmployeesWorkShifts;
+﻿using NurseryProject.Controllers;
+using NurseryProject.Dtos.EmployeesWorkShifts;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,11 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                     DepartmentName = x.Employee.Jop.Department.Name,
                     EmployeeId = x.Employee.Id,
                     EmployeeName = x.Employee.Name,
-                    Code=x.Employee.Code,
+                    Code = x.Employee.Code,
                     WorkShiftId = x.WorkShift.Id,
                     WorkShiftName = x.WorkShift.Name,
                     Notes = x.Notes,
-                    
+
                 }).ToList();
                 return model;
             }
@@ -39,29 +40,31 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                 return model;
             }
         }
-        public ResultDto<EmployeesWorkShift> Create(EmployeesWorkShift model, List<Guid> emp, Guid UserId)
+        public ResultDto<EmployeesWorkShift> Create(EmployeesWorkShift model, List<Attend2> emp, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<EmployeesWorkShift>();
                 foreach (var item in emp)
                 {
-
-                    var Oldmodel = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId && x.EmployeeId == item && x.IsDeleted == false).FirstOrDefault();
-                    if (Oldmodel == null)
+                    if (item.Att == "on")
                     {
-                        EmployeesWorkShift employeesWorkShift = new EmployeesWorkShift();
-                        employeesWorkShift.Id = Guid.NewGuid();
-                        employeesWorkShift.CreatedOn = DateTime.UtcNow;
-                        employeesWorkShift.CreatedBy = UserId;
-                        employeesWorkShift.IsDeleted = false;
-                        employeesWorkShift.EmployeeId = item;
-                        employeesWorkShift.StudyYearId = model.StudyYearId;
-                        employeesWorkShift.WorkShiftId = model.WorkShiftId;
-                        employeesWorkShift.Notes = model.Notes;
+                        var Oldmodel = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId && x.EmployeeId == item.Id && x.IsDeleted == false).FirstOrDefault();
+                        if (Oldmodel == null)
+                        {
+                            EmployeesWorkShift employeesWorkShift = new EmployeesWorkShift();
+                            employeesWorkShift.Id = Guid.NewGuid();
+                            employeesWorkShift.CreatedOn = DateTime.UtcNow;
+                            employeesWorkShift.CreatedBy = UserId;
+                            employeesWorkShift.IsDeleted = false;
+                            employeesWorkShift.EmployeeId = item.Id;
+                            employeesWorkShift.StudyYearId = model.StudyYearId;
+                            employeesWorkShift.WorkShiftId = model.WorkShiftId;
+                            employeesWorkShift.Notes = model.Notes;
 
-                        dbContext.EmployeesWorkShifts.Add(employeesWorkShift);
-                        dbContext.SaveChanges();
+                            dbContext.EmployeesWorkShifts.Add(employeesWorkShift);
+                            dbContext.SaveChanges();
+                        }
                     }
                 }
 
@@ -70,7 +73,7 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                 return result;
             }
         }
-        public ResultDto<EmployeesWorkShift> Edit(EmployeesWorkShift model, List<Guid> emp, Guid UserId)
+        public ResultDto<EmployeesWorkShift> Edit(EmployeesWorkShift model, List<Attend2> emp, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -87,30 +90,34 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                 //        return result;
                 //    }
                 //}
-                var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId&&x.IsDeleted==false).ToList();
+                var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId && x.IsDeleted == false).ToList();
                 foreach (var item in Oldmodel1)
                 {
                     item.IsDeleted = true;
                     item.DeletedBy = UserId;
-                    item.CreatedOn= DateTime.UtcNow;
+                    item.CreatedOn = DateTime.UtcNow;
                     dbContext.SaveChanges();
                 }
                 foreach (var item in emp)
                 {
-                    EmployeesWorkShift employeesWorkShift = new EmployeesWorkShift();
-                    employeesWorkShift.Id = Guid.NewGuid();
-                    employeesWorkShift.CreatedOn = DateTime.UtcNow;
-                    employeesWorkShift.CreatedBy = UserId;
-                    employeesWorkShift.IsDeleted = false;
-                    employeesWorkShift.EmployeeId = item;
-                    employeesWorkShift.StudyYearId = model.StudyYearId;
-                    employeesWorkShift.WorkShiftId = model.WorkShiftId;
-                    employeesWorkShift.Notes = model.Notes;
+                    if (item.Att == "on")
+                    {
+                        EmployeesWorkShift employeesWorkShift = new EmployeesWorkShift();
+                        employeesWorkShift.Id = Guid.NewGuid();
+                        employeesWorkShift.CreatedOn = DateTime.UtcNow;
+                        employeesWorkShift.CreatedBy = UserId;
+                        employeesWorkShift.IsDeleted = false;
+                        employeesWorkShift.EmployeeId = item.Id;
+                        employeesWorkShift.StudyYearId = model.StudyYearId;
+                        employeesWorkShift.WorkShiftId = model.WorkShiftId;
+                        employeesWorkShift.Notes = model.Notes;
 
-                    dbContext.EmployeesWorkShifts.Add(employeesWorkShift);
-                    dbContext.SaveChanges();
+                        dbContext.EmployeesWorkShifts.Add(employeesWorkShift);
+                        dbContext.SaveChanges();
+                    }
+
                 }
-               
+
                 result.IsSuccess = true;
                 result.Message = "تم تعديل البيانات بنجاح";
                 return result;
