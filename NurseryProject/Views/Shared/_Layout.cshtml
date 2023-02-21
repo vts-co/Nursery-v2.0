@@ -491,14 +491,13 @@
                                     {
                                         <li><a href="@Url.Action("DailyReports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير التحصيل اليومي للطلاب </a></li>
                                     }
-
                                     @if (ViewBag.userscreens.ToString().Contains(",60,"))
                                     {
-                                        <li><a href="@Url.Action("Reports", "EmployeeClasses")"><i class="fas fa-list p-1"></i> تقارير بمعلمي الفصول</a></li>
+                                        <li><a href="@Url.Action("Reports", "EmployeeClasses")"><i class="fas fa-users p-1"></i> تقارير بمعلمي الفصول</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",61,"))
                                     {
-                                        <li><a href="@Url.Action("Reports", "StudentsClass")"><i class="fas fa-user-alt p-1"></i> تقارير بمعلمي الطالب</a></li>
+                                        <li><a href="@Url.Action("Reports", "StudentsClass")"><i class="fas fa-users p-1"></i> تقارير بمعلمي الطالب</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",62,"))
                                     {
@@ -514,7 +513,7 @@
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",65,"))
                                     {
-                                        <li><a href="@Url.Action("MonthlyReports", "EmployeesReceipt")"><i class="fas fa-list p-1"></i> تقارير الاجور الشهري</a></li>
+                                        <li><a href="@Url.Action("MonthlyReports", "EmployeesReceipt")"><i class="fas fa-coins p-1"></i> تقارير الاجور الشهري</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",66,"))
                                     {

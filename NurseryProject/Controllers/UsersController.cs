@@ -155,6 +155,8 @@ namespace NurseryProject.Controllers
         public void SelectedTreeFunction(string user)
         {
             List<TreeViewNode> nodes = new List<TreeViewNode>();
+            List<TreeViewNode> Selectednodes = new List<TreeViewNode>();
+
             var pagesPerants = usersServices.GetAllPerants();
             var pagesChilds = usersServices.GetAllChilds();
 
@@ -170,6 +172,7 @@ namespace NurseryProject.Controllers
                 if (user.Contains("," + item.Id + ","))
                 {
                     nodes.Add(new TreeViewNode { id = item.ParentId.ToString() + "-" + item.Id.ToString(), parent = item.ParentId.ToString(), text = item.Name, state = new { opened = true, selected = true } });
+                    Selectednodes.Add(new TreeViewNode { id = item.Id.ToString(), parent = item.ParentId.ToString(), text = item.Name, state = new { opened = false, selected = false } });
                 }
                 else
                 {
@@ -180,6 +183,7 @@ namespace NurseryProject.Controllers
 
             //Serialize to JSON string.
             ViewBag.Json = (new JavaScriptSerializer()).Serialize(nodes);
+            ViewBag.JsonSelected= (new JavaScriptSerializer()).Serialize(Selectednodes);
         }
     }
     public class TreeViewNode
