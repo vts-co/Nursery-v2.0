@@ -565,11 +565,9 @@
                                     <ol class="breadcrumb m-0">
                                         @if (ViewBag.MainPage != null)
                                         {
-                                            <li class="breadcrumb-item">@ViewBag.MainPage</li>
+                                            <li class="breadcrumb-item text-primary">@ViewBag.MainPage</li>
                                         }
-                                        <li class="breadcrumb-item active">@ViewBag.Title</li>
-
-
+                                        <li class="breadcrumb-item text-secondary active">@ViewBag.Title</li>
                                     </ol>
                                 </div>
 
@@ -643,6 +641,8 @@
             var input, filter, ul, li, a, i;
             input = document.getElementById("mySearch");
             filter = input.value.toUpperCase();
+
+            
             ul = document.getElementById("side-menu");
             li = ul.getElementsByTagName("li");
 
@@ -655,7 +655,6 @@
                     li[i].style.display = "none";
                 }
             }
-
 
         }
     </script>

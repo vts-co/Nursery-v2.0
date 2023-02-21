@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " ادارة العاملين  ";
     string action = Model.Id == Guid.Empty ? "Create" : "Edit";
-    ViewBag.MainPage = "ادارات للعاملين";
+    ViewBag.MainPage = "ادارات العاملين";
 
 }
 @using (Html.BeginForm(action, "Departments", FormMethod.Post, new { enctype = "multipart/form-data" }))

@@ -71,6 +71,12 @@ namespace NurseryProject.Services.StudentsAttendance
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Models.StudentsAttendance>();
+                if (IsAttend == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "اختر طلاب";
+                    return result;
+                }
                 var studyYear = dbContext.StudyClasses.Where(x => x.IsDeleted == false && x.Id == model.StudyClassId).FirstOrDefault().StudyYearId;
 
                 var class1 = dbContext.Classes.Where(x => x.IsDeleted == false && x.Id == model.ClassId).FirstOrDefault();
@@ -124,6 +130,12 @@ namespace NurseryProject.Services.StudentsAttendance
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Models.StudentsAttendance>();
+                if (IsAttend == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "اختر طلاب";
+                    return result;
+                }
                 var studyYear = dbContext.StudyClasses.Where(x => x.IsDeleted == false && x.Id == model.StudyClassId).FirstOrDefault().StudyYearId;
 
                 var class1 = dbContext.Classes.Where(x => x.IsDeleted == false && x.Id == model.ClassId).FirstOrDefault();
