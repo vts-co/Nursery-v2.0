@@ -49,7 +49,7 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                 {
                     if (item.Att == "on")
                     {
-                        var Oldmodel = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId && x.EmployeeId == item.Id && x.IsDeleted == false).FirstOrDefault();
+                        var Oldmodel = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId && x.StudyYearId == model.StudyYearId && x.EmployeeId == item.Id && x.IsDeleted == false).FirstOrDefault();
                         if (Oldmodel == null)
                         {
                             EmployeesWorkShift employeesWorkShift = new EmployeesWorkShift();
@@ -90,7 +90,7 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                 //        return result;
                 //    }
                 //}
-                var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId && x.IsDeleted == false).ToList();
+                var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == model.WorkShiftId && x.StudyYearId == model.StudyYearId && x.IsDeleted == false).ToList();
                 foreach (var item in Oldmodel1)
                 {
                     item.IsDeleted = true;

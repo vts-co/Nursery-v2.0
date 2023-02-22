@@ -123,63 +123,40 @@ namespace NurseryProject.Services.EmployeesAttendance
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Models.EmployeesAttendance>();
-
-                if (emp == null)
+                
+                foreach (var item in emp)
                 {
-                    result.IsSuccess = false;
-                    result.Message = "اختر موظفين للحضور";
-                    return result;
-                }
-                var bol = false;
-
-                var id = emp[0].Id;
-                var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.Id == id && x.IsDeleted == false).FirstOrDefault();
-                var Oldmodel2 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == Oldmodel1.WorkShiftId && x.StudyYearId == Oldmodel1.StudyYearId && x.IsDeleted == false).ToList();
-                foreach (var item2 in Oldmodel2)
-                {
-                    foreach (var item in emp)
+                    var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false && x.EmployeeWorkShiftId == item.Id && x.Date == model.Date).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                    if (Oldmodel != null)
                     {
-                        if (item2.Id == item.Id && item.Att == "on")
-                        {
-                            var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.EmployeeWorkShiftId == item.Id && x.Date == model.Date.Value && x.IsDeleted == false).FirstOrDefault();
-
-                            if (Oldmodel != null)
-                            {
-                                Oldmodel.IsDeleted = true;
-                                Oldmodel.DeletedOn = DateTime.UtcNow;
-                                Oldmodel.DeletedBy = UserId;
-                                dbContext.SaveChanges();
-                            }
-                            Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
-                            employeesWorkShiftAttendance.Id = Guid.NewGuid();
-                            employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
-                            employeesWorkShiftAttendance.CreatedBy = UserId;
-                            employeesWorkShiftAttendance.IsDeleted = false;
-                            employeesWorkShiftAttendance.EmployeeWorkShiftId = item.Id;
-                            employeesWorkShiftAttendance.Date = model.Date;
-                            employeesWorkShiftAttendance.IsAttend = true;
-
-                            dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
-                            dbContext.SaveChanges();
-                            bol = true;
-                            break;
-                        }
+                        result.IsSuccess = false;
+                        result.Message = "تم اخذ الغياب لهذا اليوم";
+                        return result;
                     }
-                    if (bol == false)
+                }
+               
+                foreach (var item in emp)
+                {
+                    Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
+                    employeesWorkShiftAttendance.Id = Guid.NewGuid();
+                    employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
+                    employeesWorkShiftAttendance.CreatedBy = UserId;
+                    employeesWorkShiftAttendance.IsDeleted = false;
+                    employeesWorkShiftAttendance.EmployeeWorkShiftId = item.Id;
+                    employeesWorkShiftAttendance.Date = model.Date;
+                    if (item.Att == "on")
                     {
-                        Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
-                        employeesWorkShiftAttendance.Id = Guid.NewGuid();
-                        employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
-                        employeesWorkShiftAttendance.CreatedBy = UserId;
-                        employeesWorkShiftAttendance.IsDeleted = false;
-                        employeesWorkShiftAttendance.EmployeeWorkShiftId = item2.Id;
-                        employeesWorkShiftAttendance.Date = model.Date;
+                        employeesWorkShiftAttendance.IsAttend = true;
+                    }
+                    else
+                    {
                         employeesWorkShiftAttendance.IsAttend = false;
-
-                        dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
-                        dbContext.SaveChanges();
                     }
+                    dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
+                    dbContext.SaveChanges();
                 }
+
+
                 result.IsSuccess = true;
                 result.Message = "تم حفظ البيانات بنجاح";
                 return result;
@@ -191,66 +168,41 @@ namespace NurseryProject.Services.EmployeesAttendance
             {
                 var result = new ResultDto<Models.EmployeesAttendance>();
 
-                if (emp == null)
+                var Oldmodel1 = Get(model.Id);
+
+                var Oldmodel4 = dbContext.EmployeesAttendances.Where(x => x.EmployeesWorkShift.WorkShiftId == Oldmodel1.WorkShiftId && x.EmployeesWorkShift.StudyYearId == Oldmodel1.StudyYearId && x.Date.ToString() == Oldmodel1.Date && x.IsDeleted == false).ToList();
+                if (Oldmodel4 != null)
                 {
-                    result.IsSuccess = false;
-                    result.Message = "اختر موظفين للحضور";
-                    return result;
-                }
-                var bol = false;
-
-                var id = emp[0].Id;
-                var Oldmodel1 = dbContext.EmployeesWorkShifts.Where(x => x.Id == id && x.IsDeleted == false).FirstOrDefault();
-                var Oldmodel2 = dbContext.EmployeesWorkShifts.Where(x => x.WorkShiftId == Oldmodel1.WorkShiftId && x.StudyYearId == Oldmodel1.StudyYearId && x.IsDeleted == false).ToList();
-                foreach (var item2 in Oldmodel2)
-                {
-                    foreach (var item in emp)
+                    foreach (var item in Oldmodel4)
                     {
-                        if (item2.Id == item.Id && item.Att == "on")
-                        {
-
-                            var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.EmployeeWorkShiftId == item.Id && x.Date == model.Date.Value && x.IsDeleted == false).FirstOrDefault();
-
-                            if (Oldmodel != null)
-                            {
-                                Oldmodel.IsDeleted = true;
-                                Oldmodel.DeletedOn = DateTime.UtcNow;
-                                Oldmodel.DeletedBy = UserId;
-                                dbContext.SaveChanges();
-                            }
-
-                            Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
-                            employeesWorkShiftAttendance.Id = Guid.NewGuid();
-                            employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
-                            employeesWorkShiftAttendance.CreatedBy = UserId;
-                            employeesWorkShiftAttendance.IsDeleted = false;
-                            employeesWorkShiftAttendance.EmployeeWorkShiftId = item.Id;
-                            employeesWorkShiftAttendance.Date = model.Date;
-                            employeesWorkShiftAttendance.IsAttend = true;
-
-                            dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
-                            dbContext.SaveChanges();
-
-
-                            bol = true;
-                            break;
-                        }
-                    }
-                    if (bol == false)
-                    {
-                        Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
-                        employeesWorkShiftAttendance.Id = Guid.NewGuid();
-                        employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
-                        employeesWorkShiftAttendance.CreatedBy = UserId;
-                        employeesWorkShiftAttendance.IsDeleted = false;
-                        employeesWorkShiftAttendance.EmployeeWorkShiftId = item2.Id;
-                        employeesWorkShiftAttendance.Date = model.Date;
-                        employeesWorkShiftAttendance.IsAttend = false;
-
-                        dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
+                        item.IsDeleted = true;
+                        item.DeletedOn = DateTime.UtcNow;
+                        item.DeletedBy = UserId;
                         dbContext.SaveChanges();
                     }
                 }
+
+                foreach (var item2 in emp)
+                {
+                    Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
+                    employeesWorkShiftAttendance.Id = Guid.NewGuid();
+                    employeesWorkShiftAttendance.CreatedOn = DateTime.UtcNow;
+                    employeesWorkShiftAttendance.CreatedBy = UserId;
+                    employeesWorkShiftAttendance.IsDeleted = false;
+                    employeesWorkShiftAttendance.EmployeeWorkShiftId = item2.Id;
+                    employeesWorkShiftAttendance.Date = model.Date;
+                    if (item2.Att == "on")
+                    {
+                        employeesWorkShiftAttendance.IsAttend = true;
+                    }
+                    else
+                    {
+                        employeesWorkShiftAttendance.IsAttend = false;
+                    }
+                    dbContext.EmployeesAttendances.Add(employeesWorkShiftAttendance);
+                    dbContext.SaveChanges();
+                }
+
                 result.IsSuccess = true;
                 result.Message = "تم حفظ البيانات بنجاح";
                 return result;

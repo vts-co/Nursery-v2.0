@@ -70,7 +70,7 @@ namespace NurseryProject.Controllers
 
                 var workshift = workShiftsServices.GetAll();
                 ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name");
-
+                TempData["warning"] = result.Message;
                 return View("Upsert", new EmployeesAttendance());
             }
         }
@@ -90,12 +90,11 @@ namespace NurseryProject.Controllers
             ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name", employeesWorkShift.WorkShiftId);
             ViewBag.Date = employeesWorkShift.Date;
             ViewBag.readon = "readonly";
-            return View("Upsert", new EmployeesAttendance());
+            return View("Upsert", new EmployeesAttendance() { Id= employeesWorkShift.Id});
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(EmployeesAttendance employeesAttendance, List<Attend1> emp)
         {
-
             var result = employeesAttendanceServices.Edit(employeesAttendance, emp, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
@@ -117,7 +116,7 @@ namespace NurseryProject.Controllers
 
                 var workshift = workShiftsServices.GetAll();
                 ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name", employeesWorkShift.WorkShiftId.Value);
-                return View("Upsert", new EmployeesAttendance());
+                return View("Upsert", new EmployeesAttendance() { Id = employeesWorkShift.Id });
             }
         }
         public ActionResult Delete(Guid Id)

@@ -103,25 +103,15 @@ namespace NurseryProject.Services.StudentsAttendance
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Models.StudentsAttendance>();
-                if (IsAttend == null)
-                {
-                    result.IsSuccess = false;
-                    result.Message = "اختر طلاب";
-                    return result;
-                }
-                var studyYear = dbContext.StudyClasses.Where(x => x.IsDeleted == false && x.Id == model.StudyClassId).FirstOrDefault().StudyYearId;
 
-                var class1 = dbContext.Classes.Where(x => x.IsDeleted == false && x.Id == model.ClassId).FirstOrDefault();
-                var stId = dbContext.Levels.Where(x => x.IsDeleted == false && x.Id == class1.LevelId).FirstOrDefault();
-                var model1 = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyYearId == studyYear).ToList();
                 var test = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyClassId == model.StudyClassId && x.Date == model.Date).ToList();
                 if (test.Count() > 0)
                 {
                     result.IsSuccess = false;
-                    result.Message = "هذا اليوم تم اخذ الغياب له";
+                    result.Message = "تم اخذ الغياب لهذا اليوم";
                     return result;
                 }
-                foreach (var item2 in model1)
+                foreach (var item in IsAttend)
                 {
                     Models.StudentsAttendance model2 = new Models.StudentsAttendance();
                     var id = Guid.NewGuid();
@@ -133,20 +123,18 @@ namespace NurseryProject.Services.StudentsAttendance
                     model2.CreatedOn = DateTime.UtcNow;
                     model2.CreatedBy = UserId;
                     model2.IsDeleted = false;
-                    model2.StudentId = item2.StudentId;
+                    model2.StudentId = item.Id;
 
-                    foreach (var item in IsAttend)
+
+                    if (item.Att == "on")
                     {
-                        if (item2.StudentId == item.Id&&item.Att=="on")
-                        {
-                            model2.IsAttend = true;
-                            break;
-                        }
-                        else
-                        {
-                            model2.IsAttend = false;
-                        }
+                        model2.IsAttend = true;
                     }
+                    else
+                    {
+                        model2.IsAttend = false;
+                    }
+
                     dbContext.StudentsAttendances.Add(model2);
                     dbContext.SaveChanges();
 
@@ -162,19 +150,9 @@ namespace NurseryProject.Services.StudentsAttendance
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Models.StudentsAttendance>();
-                if (IsAttend == null)
-                {
-                    result.IsSuccess = false;
-                    result.Message = "اختر طلاب";
-                    return result;
-                }
-                var studyYear = dbContext.StudyClasses.Where(x => x.IsDeleted == false && x.Id == model.StudyClassId).FirstOrDefault().StudyYearId;
 
-                var class1 = dbContext.Classes.Where(x => x.IsDeleted == false && x.Id == model.ClassId).FirstOrDefault();
-                var stId = dbContext.Levels.Where(x => x.IsDeleted == false && x.Id == class1.LevelId).FirstOrDefault();
-                var model1 = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyYearId == studyYear).ToList();
                 var test = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyClassId == model.StudyClassId && x.Date == model.Date).ToList();
-                if (test != null)
+                if (test.Count() > 0)
                 {
                     foreach (var item in test)
                     {
@@ -182,11 +160,9 @@ namespace NurseryProject.Services.StudentsAttendance
                         item.DeletedOn = DateTime.UtcNow;
                         item.DeletedBy = UserId;
                         dbContext.SaveChanges();
-
                     }
                 }
-
-                foreach (var item2 in model1)
+                foreach (var item in IsAttend)
                 {
                     Models.StudentsAttendance model2 = new Models.StudentsAttendance();
                     var id = Guid.NewGuid();
@@ -198,25 +174,22 @@ namespace NurseryProject.Services.StudentsAttendance
                     model2.CreatedOn = DateTime.UtcNow;
                     model2.CreatedBy = UserId;
                     model2.IsDeleted = false;
-                    model2.StudentId = item2.StudentId;
+                    model2.StudentId = item.Id;
 
-                    foreach (var item in IsAttend)
+
+                    if (item.Att == "on")
                     {
-                        if (item2.StudentId == item.Id && item.Att == "on")
-                        {
-                            model2.IsAttend = true;
-                            break;
-                        }
-                        else
-                        {
-                            model2.IsAttend = false;
-                        }
+                        model2.IsAttend = true;
                     }
+                    else
+                    {
+                        model2.IsAttend = false;
+                    }
+
                     dbContext.StudentsAttendances.Add(model2);
                     dbContext.SaveChanges();
 
                 }
-
                 result.IsSuccess = true;
                 result.Message = "تم حفظ البيانات بنجاح";
                 return result;
