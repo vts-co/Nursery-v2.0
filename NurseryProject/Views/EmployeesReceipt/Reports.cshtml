@@ -217,7 +217,7 @@
             <hr />
             <div class="row justify-content-center">
                 <div class="col-3 mt-1">
-                    التاريخ :
+                    شهر القبض :
                     <input id="Month" class="form-control text-center" name="Month" value="@ViewBag.EmployeesReceipt.Month" disabled />
                 </div>
                 <div class="col-3 mt-1">
@@ -309,7 +309,7 @@
                     </div>
 
                     <div class="form-group mb-3 col-sm-6">
-                        @Html.Label("يوم القبض", htmlAttributes: new { @class = "control-label" })
+                        @Html.Label("تاريخ القبض", htmlAttributes: new { @class = "control-label" })
                         <div class="col-12">
                             @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", @Value = @ViewBag.EmployeesReceipt.Date, required = "required", disabled = "disabled" } })
                             @Html.ValidationMessage("Date", "", new { @class = "text-danger" })

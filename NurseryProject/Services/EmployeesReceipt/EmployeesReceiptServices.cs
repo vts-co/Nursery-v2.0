@@ -130,7 +130,7 @@ namespace NurseryProject.Services.EmployeesReceipt
                 }
                 if (Reciept != null)
                 {
-                    if (Reciept.Date.Value.ToString("yyyy-MM") == date)
+                    if (Reciept.Month.Value.ToString("yyyy-MM") == date)
                     {
                         RecieptCount += 1;
                         Date = Reciept.Date.Value.ToString("yyyy-MM-dd");

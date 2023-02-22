@@ -4,6 +4,7 @@ using NurseryProject.Enums;
 using NurseryProject.Services.Departments;
 using NurseryProject.Services.Employees;
 using NurseryProject.Services.EmployeesReceipt;
+using NurseryProject.Services.Settings;
 using NurseryProject.Services.StudyPlaces;
 using NurseryProject.Services.StudyYears;
 using System;
@@ -18,6 +19,7 @@ namespace NurseryProject.Controllers
 
     public class EmployeesReceiptController : Controller
     {
+        SettingsServices settingsServices = new SettingsServices();
         DepartmentsServices departmentsServices = new DepartmentsServices();
         EmployeesServices employeesServices = new EmployeesServices();
         EmployeesReceiptServices employeesReceiptServices = new EmployeesReceiptServices();
@@ -256,5 +258,13 @@ namespace NurseryProject.Controllers
             var model = employeesServices.GetAll().Where(x => x.DepartmentId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult getReportDesign()
+        {
+                        
+            var model = settingsServices.GetAll();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
