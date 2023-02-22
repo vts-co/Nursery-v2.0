@@ -261,7 +261,6 @@ namespace NurseryProject.Controllers
 
         public ActionResult getReportDesign()
         {
-                        
             var model = settingsServices.GetAll();
             return Json(model, JsonRequestBehavior.AllowGet);
         }

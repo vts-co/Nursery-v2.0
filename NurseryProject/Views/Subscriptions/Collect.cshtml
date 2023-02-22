@@ -16,7 +16,7 @@
                 <a href='/StudentsClass' title='الرجوع الي القائمة' class='btn btn-soft-info  waves-effect waves-light m-1 col-md-auto px-3'><i class="fas fa-arrow-left me-1"></i>الرجوع الي القائمة</a>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" id="divId">
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.StudentId)
             @Html.HiddenFor(model => model.StudyYearId)
@@ -83,17 +83,18 @@
                     </div>
                 </div>
                 @*@if (Model.IsAnother==true)
-        {
-            <div class="form-group mb-3 col-sm-3">
-                @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
-                </div>
-            </div>
-        }*@
+                    {
+                        <div class="form-group mb-3 col-sm-3">
+                            @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
+                            </div>
+                        </div>
+                    }*@
 
             </div>
-
+            @Html.HiddenFor(model => model.Code)
+            @Html.HiddenFor(model => model.StudentName)
 
             <div class="row" id="SubscriptionDiv">
 
@@ -147,7 +148,7 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
         var now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
 
@@ -256,7 +257,7 @@
                     i++;
                 });
             }
-            document.getElementById('Total').value = total+" جنيه "
+            document.getElementById('Total').value = total + " جنيه "
 
             $("#SubscriptionDiv2").append('<hr>');
 
@@ -266,14 +267,34 @@
 
             var Amount = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value);
 
-            var Date = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
+            var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
 
             var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value);
 
             if (Amount1 == Amount) {
-                $.get('/Subscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
+                $.get('/Subscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
                     if (data != "Faild")
-                        savedSL('/Subscriptions/Collect/' + $("#Id").val());
+                        $.get('/Subscriptions/getReportDesign', function (data) {
+                            var old = document.body.innerHTML;
+                            //Reset the page's HTML with div's HTML only
+                            var d = $("#StudentName").val().split("|");
+                            var da = new Date(Date1);
+
+                            document.body.innerHTML =
+                                "" + data.ReportHeader + "<hr>" +
+                                "<div class='row'>" +
+                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>اسم الطالب : " + d[1] + "</div>" +
+                            "<div class='col-6'>قيمة الاشتراك : " + Amount + " جنيه</div><div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+
+                                "</div>"
+                                + "<hr>" + data.ReportFooter + "";
+
+                            //Print Page
+                            window.print();
+                            document.body.innerHTML = old;
+                            savedSL('/Subscriptions/Collect/' + $("#Id").val());
+
+                        });
                     else {
                         savedF("لم يتم دفع القسط المسبق بعد")
                     }
@@ -300,7 +321,7 @@
                     t += "</select></div><button type='button' class='btn btn-success px-3 m-1 col-12 col-md-auto' onclick='Collectt(" + i + ")'><i class='fas fa-save me-1' ></i>حفظ التعديلات</button>";
 
                 }
-                 $("#exampleModal").find(".modal-body").html(t);
+                $("#exampleModal").find(".modal-body").html(t);
                 $("#exampleModal").modal('show');
             }
 
@@ -309,21 +330,42 @@
             var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
 
             var Amount = document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value;
-            var Date = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
+            var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
             var Amount1 = document.getElementById("SubscriptionMethod[" + i + "].Amount").value;
             var sub = Amount1 - Amount;
 
-            $.get('/Subscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date, Id2: $("#Date2").val(), Sub: sub, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
-                if (data != "Faild")
-                    savedSL('/Subscriptions/Collect/' + $("#Id").val());
+            $.get('/Subscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, Id2: $("#Date2").val(), Sub: sub, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
+                if (data != "Faild") {
+                    $.get('/Subscriptions/getReportDesign', function (data) {
+                        var old = document.body.innerHTML;
+                        //Reset the page's HTML with div's HTML only
+                        var d = $("#StudentName").val().split("|");
+                        var da = new Date(Date1);
+
+                        document.body.innerHTML =
+                            "" + data.ReportHeader + "<hr>" +
+                            "<div class='row'>" +
+                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>اسم الطالب : " + d[1] + "</div>" +
+                            "<div class='col-6'>قيمة الاشتراك : " + Amount + " جنيه</div><div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+
+                            "</div>"
+                            + "<hr>" + data.ReportFooter + "";
+
+                        //Print Page
+                        window.print();
+                        document.body.innerHTML = old;
+                        savedSL('/Subscriptions/Collect/' + $("#Id").val());
+                    });
+
+                }
                 else {
                     savedF("لم يتم دفع القسط المسبق بعد")
                 }
             });
         };
 
-    function Cancel(i, num) {
-        var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
+        function Cancel(i, num) {
+            var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
 
             $.get('/Subscriptions/CancelSubscriptionsMethodsPaid', { Id: Id }, function (data) {
                 if (data != "Faild")
@@ -332,8 +374,8 @@
                     savedF("لم يتم دفع القسط المسبق بعد")
                 }
             });
-       
-    };
 
-</script>
+        };
+
+    </script>
 }

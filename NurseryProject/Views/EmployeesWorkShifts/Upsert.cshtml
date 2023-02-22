@@ -10,7 +10,7 @@
 {
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-header" id="empp">
             <div class="row justify-content-between">
                 <h4 class="col-auto">@ViewBag.Title</h4>
                 @Url.BackToList()
@@ -123,6 +123,20 @@
                 });
             });
             
+
+            var mod1 = document.getElementById('StudyYearId').value;
+            var mod2 = document.getElementById('DepartmentId').value;
+            var mod3 = document.getElementById('WorkShiftId').value;
+
+            document.getElementById('StudyYearId').disabled = true;
+            document.getElementById('DepartmentId').disabled = true;
+            document.getElementById('WorkShiftId').disabled = true;
+
+
+            $('#empp').append("<input type='hidden' id='StudyYearId' name='StudyYearId' value='" + mod1 + "'/>");
+            $('#empp').append("<input type='hidden' id='DepartmentId' name='DepartmentId' value='" + mod2 + "'/>");
+            $('#empp').append("<input type='hidden' id='WorkShiftId' name='WorkShiftId' value='" + mod3 + "'/>");
+
         });
         
         $("#DepartmentId").change(function () {

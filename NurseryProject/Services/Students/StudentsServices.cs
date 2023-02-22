@@ -114,6 +114,7 @@ namespace NurseryProject.Services.Students
                 {
                     Id = x.Id,
                     Code = x.Code,
+                    OName= x.Name,
                     Name = x.Code + "|" + x.Name + "|" + x.Phone,
                     Phone = x.Phone,
                     Address = x.Address,

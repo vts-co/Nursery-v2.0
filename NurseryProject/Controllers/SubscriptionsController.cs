@@ -6,6 +6,7 @@ using NurseryProject.Models;
 using NurseryProject.Services.Classes;
 using NurseryProject.Services.Expenses;
 using NurseryProject.Services.Revenues;
+using NurseryProject.Services.Settings;
 using NurseryProject.Services.Students;
 using NurseryProject.Services.StudentsClass;
 using NurseryProject.Services.StudyTypes;
@@ -26,6 +27,8 @@ namespace NurseryProject.Controllers
 
     public class SubscriptionsController : Controller
     {
+        SettingsServices settingsServices = new SettingsServices();
+
         StudyTypesServices studyTypesServices = new StudyTypesServices();
         LevelsServices levelsServices = new LevelsServices();
         SubjectsServices subjectsServices = new SubjectsServices();
@@ -150,7 +153,12 @@ namespace NurseryProject.Controllers
             var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult getReportDesign()
+        {
 
+            var model = settingsServices.GetAll();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
 
         //تقرير إشتراك طالب
