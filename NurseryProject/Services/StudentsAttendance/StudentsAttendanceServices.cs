@@ -14,7 +14,7 @@ namespace NurseryProject.Services.StudentsAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.Student.IsDeleted == false).OrderBy(x => x.CreatedOn)
+                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn)
                     .Select(x => new { x.Id, x.Date, Code = x.Student.Code, x.ClassId, x.Class.Name, Plase = x.Class.StudyPlace.Name, Type = x.Class.Level.StudyType.Name, Level = x.Class.Level.Name, Class = x.StudyClass.Name, Year = x.StudyClass.StudyYear.Name }).ToList();
                 var model1 = date1.Count();
                 var mod = new List<StudentsAttendanceDto>();
@@ -41,7 +41,7 @@ namespace NurseryProject.Services.StudentsAttendance
                     foreach (var item in date1)
                     {
                         var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.ClassId == item.ClassId).ToList();
-                        var model2 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.Student.IsDeleted == false && x.Date == item.Date && x.ClassId == item.ClassId && x.IsAttend == true).ToList();
+                        var model2 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.Date == item.Date && x.ClassId == item.ClassId && x.IsAttend == true).ToList();
 
                         mod.Add(new StudentsAttendanceDto { Id = item.Id, Code = item.Code, StudyPlaceName = item.Plase, StudyTypeName = item.Type, LevelName = item.Level, StudyYearName = item.Year, StudyClassName = item.Class, NumAllAttend = model.Count().ToString(), NumAttend = model2.Count().ToString(), ClassName = item.Name, Date = item.Date.Value.ToString("yyyy-MM-dd") });
                     };
@@ -66,11 +66,26 @@ namespace NurseryProject.Services.StudentsAttendance
                 {
                     Id = x.Id,
                     StudentId = x.Student.Id,
+                    StudentName = x.Student.Name,
+                    Code = x.Student.Code,
+                    StudyClassId = x.StudyClass.Id,
+                    StudyClassName = x.StudyClass.Name,
+                    StudyPlaceId = x.Class.StudyPlace.Id,
+                    StudyPlaceName = x.Class.StudyPlace.Name,
+                    StudyTypeId = x.Class.Level.StudyType.Id,
+                    StudyTypeName = x.Class.Level.StudyType.Name,
+                    StudyYearName = x.StudyClass.StudyYear.Name,
                     StudyYearId = x.StudyClass.StudyYear.Id,
+                    ClassId = x.Class.Id,
+                    ClassName = x.Class.Name,
+                    LevelId = x.Class.Level.Id,
+                    LevelName = x.Class.Level.Name,
+
                     Date = x.Date.Value.ToString(),
-                    IsAttend = x.IsAttend.Value
+                    IsAttend = x.IsAttend.Value,
                 }
                 ).ToList();
+               
                 return model;
             }
         }
@@ -82,7 +97,21 @@ namespace NurseryProject.Services.StudentsAttendance
                 {
                     Id = x.Id,
                     StudentId = x.Student.Id,
+                    StudentName = x.Student.Name,
+                    Code = x.Student.Code,
+                    StudyClassId = x.StudyClass.Id,
+                    StudyClassName = x.StudyClass.Name,
+                    StudyPlaceId = x.Class.StudyPlace.Id,
+                    StudyPlaceName = x.Class.StudyPlace.Name,
+                    StudyTypeId = x.Class.Level.StudyType.Id,
+                    StudyTypeName = x.Class.Level.StudyType.Name,
+                    StudyYearName = x.StudyClass.StudyYear.Name,
                     StudyYearId = x.StudyClass.StudyYear.Id,
+                    ClassId = x.Class.Id,
+                    ClassName = x.Class.Name,
+                    LevelId = x.Class.Level.Id,
+                    LevelName = x.Class.Level.Name,
+
                     Date = x.Date.Value.ToString(),
                     IsAttend = x.IsAttend.Value
                 }

@@ -102,7 +102,7 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" })
+                        @Html.TextBoxFor(model => model.JoiningDate,  new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" })
                         @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
                     </div>
                 </div>

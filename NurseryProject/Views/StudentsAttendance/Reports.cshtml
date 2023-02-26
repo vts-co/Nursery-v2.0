@@ -28,33 +28,42 @@
 
                     <div class="col-12">
                         @Html.Label("العام الدراسي  ", htmlAttributes: new { @class = "control-label text-center mb-2" })
-                        <input type="radio" id="By" name="By" class="" value="3"  checked/>
+                        <input type="radio" id="By" name="By" class="" value="3" checked />
 
                         @Html.Label("الفصل الدراسي  ", htmlAttributes: new { @class = "control-label text-center mb-2" })
                         <input type="radio" id="By" name="By" class="" value="2" />
 
                         @Html.Label("الشهر ", htmlAttributes: new { @class = "control-label text-center mb-2" })
-                        <input type="radio" id="By" name="By" class="" value="1"  />
+                        <input type="radio" id="By" name="By" class="" value="1" />
+
+                        @Html.Label("اليوم ", htmlAttributes: new { @class = "control-label text-center mb-2" })
+                        <input type="radio" id="By" name="By" class="" value="4" />
                     </div>
                 </div>
 
 
-                <div class="form-group mb-3 col-sm-4">
+                <div class="form-group mb-3 col-sm-3">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", @disabled = "disabled" })
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", @disabled = "disabled", required = "required" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-4">
+                <div class="form-group mb-3 col-sm-3">
                     @Html.Label("الفصل الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyClassId", null, "--اختر--", new { @class = "form-control",  @disabled = "disabled" })
+                        @Html.DropDownList("StudyClassId", null, "--اختر--", new { @class = "form-control", @disabled = "disabled", required = "required" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-4">
+                <div class="form-group mb-3 col-sm-3">
                     @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month", @disabled = "disabled" } })
+                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month", @disabled = "disabled", required = "required" } })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-3">
+                    @Html.Label("اليوم", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", @disabled = "disabled", required = "required" } })
                     </div>
                 </div>
             </div>
@@ -70,7 +79,7 @@
 @if (ViewBag.Attendance != null)
 {
     <div class="text-center mb-3">
-        عدد ايام الغياب : @ViewBag.Count
+        عدد الغياب : @ViewBag.Count
     </div>
     <div class="card">
         <div class="card-header">
@@ -81,7 +90,28 @@
                 <thead class="bg-soft-primary">
                     <tr>
                         <th>
-                            @Html.DisplayName("م")
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("العام الدراسي")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفرع")
+                        </th>
+                        <th>
+                            @Html.DisplayName("نوع الدراسة")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الصف الدراسي")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفصل الدراسي")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفصل")
                         </th>
                         <th>
                             @Html.DisplayName("التاريخ")
@@ -97,31 +127,81 @@
                         {
                             <tr class="text-success">
                                 <td>
-                                    @i
+                                    @item.Code
+                                </td>
+                                <td>
+                                    @item.StudentName
+                                </td>
+                                <td>
+                                    @item.StudyYearName
+                                </td>
+                                <td>
+                                    @item.StudyPlaceName
+                                </td>
+                                <td>
+                                    @item.StudyTypeName
+                                </td>
+                                <td>
+                                    @item.LevelName
+                                </td>
+                                <td>
+                                    @item.StudyClassName
+                                </td>
+                                <td>
+                                    @item.ClassName
                                 </td>
 
                                 <td>
                                     @item.Date
                                 </td>
+
                             </tr>
                         }
                         else
                         {
                             <tr class="text-danger">
                                 <td>
-                                    @i
+                                    @item.Code
+                                </td>
+                                <td>
+                                    @item.StudentName
+                                </td>
+                                <td>
+                                    @item.StudyYearName
+                                </td>
+                                <td>
+                                    @item.StudyPlaceName
+                                </td>
+                                <td>
+                                    @item.StudyTypeName
+                                </td>
+                                <td>
+                                    @item.LevelName
+                                </td>
+                                <td>
+                                    @item.StudyClassName
+                                </td>
+                                <td>
+                                    @item.ClassName
                                 </td>
 
                                 <td>
                                     @item.Date
                                 </td>
+
                             </tr>
                         }
 
-                        i++;
                     }
                 </tbody>
             </table>
+
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row mb-3 m-auto w-50">
+            <div class="col-6"><i class="fa fa-circle text-success"></i> حضور </div>
+            <div class="col-6"><i class="fa fa-circle text-danger"></i>   غياب</div>
 
         </div>
     </div>
@@ -149,32 +229,82 @@
             $("#Month").prop("disabled", false);
             $("#StudyYearId").prop("disabled", true);
             $("#StudyClassId").prop("disabled", true);
+            $("#Date").prop("disabled", true);
+
+            $("#StudyYearId").val("");
+            $("#StudyClassId").val("");
+            $("#Date").val("");
+
         }
         else if ($("input[name='By']:checked").val() == "2") {
             $("#Month").prop("disabled", true);
             $("#StudyYearId").prop("disabled", false);
             $("#StudyClassId").prop("disabled", false);
+            $("#Date").prop("disabled", true);
+
+            $("#Month").val("");
+            $("#Date").val("");
         }
         else if ($("input[name='By']:checked").val() == "3") {
             $("#Month").prop("disabled", true);
             $("#StudyYearId").prop("disabled", false);
             $("#StudyClassId").prop("disabled", true);
+            $("#Date").prop("disabled", true);
+            $("#Month").val("");
+            $("#StudyClassId").val("");
+            $("#Date").val("");
+        }
+        else if ($("input[name='By']:checked").val() == "4") {
+            $("#Month").prop("disabled", true);
+            $("#StudyYearId").prop("disabled", true);
+            $("#StudyClassId").prop("disabled", true);
+            $("#Date").prop("disabled", false);
+
+            $("#Month").val("");
+            $("#StudyClassId").val("");
+            $("#StudyYearId").val("");
+
         }
         $("input[type=radio][name='By']").change(function () {
             if (this.value == "1") {
                 $("#Month").prop("disabled", false);
                 $("#StudyYearId").prop("disabled", true);
                 $("#StudyClassId").prop("disabled", true);
+                $("#Date").prop("disabled", true);
+
+                $("#StudyYearId").val("");
+                $("#StudyClassId").val("");
+                $("#Date").val("");
+
             }
             else if (this.value == "2") {
                 $("#Month").prop("disabled", true);
                 $("#StudyYearId").prop("disabled", false);
                 $("#StudyClassId").prop("disabled", false);
+                $("#Date").prop("disabled", true);
+
+                $("#Month").val("");
+                $("#Date").val("");
             }
             else if (this.value == "3") {
                 $("#Month").prop("disabled", true);
                 $("#StudyYearId").prop("disabled", false);
                 $("#StudyClassId").prop("disabled", true);
+                $("#Date").prop("disabled", true);
+
+                $("#Month").val("");
+                $("#StudyClassId").val("");
+                $("#Date").val("");
+            }
+            else if (this.value == "4") {
+                $("#Month").prop("disabled", true);
+                $("#StudyYearId").prop("disabled", true);
+                $("#StudyClassId").prop("disabled", true);
+                $("#Date").prop("disabled", false);
+
+                $("#StudyYearId").val("");
+                $("#StudyClassId").val("");
+                $("#Month").val("");
             }
         });
     </script>

@@ -195,56 +195,57 @@ namespace NurseryProject.Controllers
         }
         [HttpPost]
         [Authorized(ScreenId = "62")]
-        public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId, string Month, string By)
+        public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId, string Month,string Date, string By)
         {
             var students = studentsServices.GetAllDropDown();
             ViewBag.Students = students;
 
+            ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
+            ViewBag.StudyClassId = new SelectList("");
+
             var model = studentsAttendanceServices.GetAllAttendance();
-            var model2 = studentsAttendanceServices.GetAllNoAttendance();
+            //var model2 = studentsAttendanceServices.GetAllNoAttendance();
 
-            if (StudentId != "" && StudyYearId != "" && StudyClassId != null)
+            if (StudentId != ""&& StudentId != null)
             {
+                ViewBag.student = "1";
                 var studentId = Guid.Parse(StudentId);
-                var studyYearId = Guid.Parse(StudyYearId);
-                var studyClassId = Guid.Parse(StudyClassId);
-                ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", studyYearId);
-                ViewBag.StudyClassId = new SelectList(studyClassesServices.GetAll(), "Id", "Name", studyClassId);
-
-                model = model.Where(x => x.StudyClassId == studyClassId && x.StudentId == studentId).ToList();
-                model2 = model2.Where(x => x.StudyClassId == studyClassId && x.StudentId == studentId && x.IsAttend == false).ToList();
-            }
-            else if (StudentId != "" && StudyYearId != "")
-            {
-                var studentId = Guid.Parse(StudentId);
-                var studyYearId = Guid.Parse(StudyYearId);
-                ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", studyYearId);
-                ViewBag.StudyClassId = new SelectList("");
-
-                model = model.Where(x => x.StudyYearId == studyYearId && x.StudentId == studentId).ToList();
-                model2 = model2.Where(x => x.StudyYearId == studyYearId && x.StudentId == studentId && x.IsAttend == false).ToList();
-
-            }
-            else if (StudentId != "" && Month != null)
-            {
-                var studentId = Guid.Parse(StudentId);
-                var month = DateTime.Parse(Month).ToString("yyyy-MM");
-                ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
-                ViewBag.StudyClassId = new SelectList("");
-                model = model.Where(x => x.Date.Contains(month) && x.StudentId == studentId).ToList();
-                model2 = model2.Where(x => x.Date.Contains(month) && x.StudentId == studentId && x.IsAttend == false).ToList();
-                ViewBag.Count = model2;
+                model = model.Where(x =>x.StudentId == studentId).ToList();
             }
             else
             {
-                ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
-                ViewBag.StudyClassId = new SelectList("");
-
+                ViewBag.student = "2";
             }
-            ViewBag.Count = model2.Count();
+
+            if (StudyYearId != null && StudyClassId != null&& StudyYearId != "" && StudyClassId != "")
+            {
+                var studyYearId = Guid.Parse(StudyYearId);
+                var studyClassId = Guid.Parse(StudyClassId);
+               
+                model = model.Where(x => x.StudyClassId == studyClassId ).ToList();
+            }
+            else if (StudyYearId != ""&& StudyYearId != null)
+            {
+                var studyYearId = Guid.Parse(StudyYearId);
+
+                model = model.Where(x => x.StudyYearId == studyYearId ).ToList();
+            }
+            else if (Month != null)
+            {
+                var month = DateTime.Parse(Month).ToString("yyyy-MM");
+               
+                model = model.Where(x => x.Date.Contains(month)).ToList();
+            }
+            else if (Date != null)
+            {
+                var date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+              
+                model = model.Where(x => x.Date.ToString()==date).ToList();
+            }
+            
+            ViewBag.Count = model.Where(x =>x.IsAttend == false).ToList().Count();
             ViewBag.Attendance = model;
             ViewBag.By = By;
-
             return View();
 
         }
