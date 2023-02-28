@@ -187,7 +187,7 @@ namespace NurseryProject.Services.Students
                     result.Message = "هذا الطالب غير موجود ";
                     return result;
                 }
-                var Oldmodel2 = dbContext.Students.Where(x => x.Code == model.Code && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel2 = dbContext.Students.Where(x => x.Code == model.Code && x.IsDeleted == false&&x.Id!=model.Id).FirstOrDefault();
                 if (Oldmodel2 != null)
                 {
                     result.Result = model;
@@ -206,7 +206,7 @@ namespace NurseryProject.Services.Students
                 Oldmodel.BirthDate = model.BirthDate;
                 Oldmodel.GenderId = model.GenderId;
                 Oldmodel.MotherName = model.MotherName;
-                Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
+                //Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
                 Oldmodel.JoiningDate = model.JoiningDate.Value;
                 Oldmodel.DestrictId = model.DestrictId.Value;
                 Oldmodel.Notes = model.Notes;

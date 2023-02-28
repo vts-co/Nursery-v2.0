@@ -75,6 +75,8 @@ namespace NurseryProject.Services.Classes
                 Oldmodel.ModifiedOn = DateTime.UtcNow;
                 Oldmodel.ModifiedBy = UserId;
                 Oldmodel.LevelId = model.LevelId;
+                Oldmodel.StudyPlaceId = model.StudyPlaceId;
+
                 Oldmodel.Name = model.Name;
                 Oldmodel.Notes = model.Notes;
 
