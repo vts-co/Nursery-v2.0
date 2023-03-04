@@ -62,6 +62,17 @@
     <!-- App Css-->
     <link href="~/assets/css/@(lang == "en" ? "app.min.css" : "app-rtl.min.css")" id="app-style" rel="stylesheet" type="text/css" />
 
+    <script>
+        var loadFile = function (event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                $("#output").show();
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+    </script>
+
     @RenderSection("Styles", false)
 </head>
 
@@ -130,7 +141,7 @@
                         <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="rounded-circle header-profile-user" alt="User Picture" src="@TempData["SettingLogo"]" onError="this.onerror=null;this.src='@TempData["SettingLogo"]">
-                            <span class="d-none d-xl-inline-block ms-1 fw-medium">Admin</span>
+                            <span class="d-none d-xl-inline-block ms-1 fw-medium">@ViewBag.UserName</span>
                             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
@@ -276,7 +287,7 @@
                                 </ul>
                             </li>
                         }
-                        @if (ViewBag.userscreens.ToString().Contains(",18,") || ViewBag.userscreens.ToString().Contains(",19,"))
+                        @if (ViewBag.userscreens.ToString().Contains(",21,") || ViewBag.userscreens.ToString().Contains(",22,"))
                         {
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow">
@@ -303,11 +314,11 @@
                                     <span data-key="t-apps">الاختبارات</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false" id="side-menu6">
-                                    @if (ViewBag.userscreens.ToString().Contains(",21,"))
+                                    @if (ViewBag.userscreens.ToString().Contains(",24,"))
                                     {
                                         <li><a href="@Url.Action("Index", "ExamsTypes")"><i class="fas fa-file-alt p-1"></i>انواع الاختبارات </a></li>
                                     }
-                                    @if (ViewBag.userscreens.ToString().Contains(",21,"))
+                                    @if (ViewBag.userscreens.ToString().Contains(",25,"))
                                     {
                                         <li><a href="@Url.Action("Index", "Exams")"><i class="fas fa-edit p-1"></i>  تسجيل الاختبارات </a></li>
                                     }
@@ -552,7 +563,7 @@
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
-        <div class="main-content">
+        <div class="main-content" >
 
             <div class="page-content">
                 <div class="container-fluid">
@@ -641,9 +652,9 @@
 
     <script>
         $('#datatable').DataTable({
-
             "lengthChange": true,
             "lengthMenu": [10, 25, 50, 75, 100],
+            
             language: {
                 search: "بحث:",
                 lengthMenu: "عرض _MENU_ عنصر لكل صفحة",
@@ -658,7 +669,7 @@
                     last: "الاخير",
                     next: 'التالي',
                     previous: 'السابق'
-                },
+                }
 
             }, order: [[1, 'desc']],
             dom: 'Blfrtip',
@@ -697,6 +708,16 @@
             ]
 
         });
+        $("#datatable_length").addClass("col-lg-5 mt-2");
+        $("#datatable_filter").addClass("mt-2 col-lg-3");
+        var table = $('#datatable').DataTable();
+        var table_length = table.rows().count();
+        if (table_length > 0) {
+            $('<div class="dataTables_paginate paging_simple_numbers col-lg-4" id="datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="datatable_previous"><a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">السابق</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link">' + table_length + '</a></li><li class="paginate_button page-item next disabled" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">التالي</a></li></ul></div>').insertAfter($("#datatable_filter"));
+        }
+        else {
+            $('<div class="dataTables_paginate paging_simple_numbers col-lg-4" id="datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="datatable_previous"><a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">السابق</a></li><li class="paginate_button page-item next disabled" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">التالي</a></li></ul></div>').insertAfter($("#datatable_filter"));
+        }
     </script>
 
     <script>

@@ -22,7 +22,7 @@ namespace NurseryProject.Services.Classes
                     LevelName = x.Level.Name,
                     StudyPlaceId = x.StudyPlaceId != null ? x.StudyPlaceId.Value : Guid.Empty,
                     StudyPlaceName = x.StudyPlaceId != null ? x.StudyPlace.Name : "",
-
+                    StudentsNum=x.StudentsClasses.Where(y=>y.IsDeleted==false&&y.IsCurrent==true).ToList().Count().ToString(),
                     Name = x.Name,
                     Notes = x.Notes
                 }).ToList();

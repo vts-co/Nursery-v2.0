@@ -81,13 +81,13 @@ namespace NurseryProject.Services.Exams
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<ExamsDto>();
-                var Oldmodel = dbContext.Exams.Where(x => x.ExamTypeId == model.ExamTypeId && x.IsDeleted == false && x.SubjectId == model.SubjectId).FirstOrDefault();
-                if (Oldmodel != null)
-                {
-                    result.IsSuccess = false;
-                    result.Message = "هذا الاختبار موجود بالفعل";
-                    return result;
-                }
+                //var Oldmodel = dbContext.Exams.Where(x => x.ExamTypeId == model.ExamTypeId && x.IsDeleted == false && x.SubjectId == model.SubjectId).FirstOrDefault();
+                //if (Oldmodel != null)
+                //{
+                //    result.IsSuccess = false;
+                //    result.Message = "هذا الاختبار موجود بالفعل";
+                //    return result;
+                //}
                 
                 var Exam = new Models.Exam()
                 {

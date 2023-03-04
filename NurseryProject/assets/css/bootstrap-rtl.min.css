@@ -4986,8 +4986,7 @@ textarea.form-control-lg {
 }
 
 .card-header {
-  padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
-  margin-bottom: 0;
+  padding: 15px 10px 0px 10px;
   color: var(--bs-card-cap-color);
   background-color: var(--bs-card-cap-bg);
   border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
@@ -15035,7 +15034,8 @@ body[data-layout-mode=dark] .breadcrumb-item.active {
 }
 
 .card {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
+    background-color:silver;
 }
 
 .card-drop {

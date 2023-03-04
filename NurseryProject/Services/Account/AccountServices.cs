@@ -16,14 +16,14 @@ namespace NurseryProject.Services
             var result = new ResultDto<UserInfo>();
             using (var dbContext = new almohandes_DbEntities())
             {
-                if(userName==null || password==null)
+                if (userName == null || password == null)
                 {
                     result.IsSuccess = false;
                     result.Message = "اسم المستخدم او كلمة المرور غير صحيحة";
                     return result;
                 }
                 var pass = Security.Encrypt(password);
-                var user = dbContext.Users.Where(x => x.Username == userName && x.Password == pass&&x.IsDeleted==false).FirstOrDefault();
+                var user = dbContext.Users.Where(x => x.Username == userName && x.Password == pass && x.IsDeleted == false).FirstOrDefault();
                 if (user == null)
                 {
                     result.IsSuccess = false;
@@ -38,7 +38,7 @@ namespace NurseryProject.Services
                     RoleId = (Role)user.RoleId,
                     UserId = user.Id,
                     UserName = user.Username,
-                    UserScreens=user.UserScreens
+                    UserScreens = user.UserScreens
                 };
             }
             return result;

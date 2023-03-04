@@ -47,10 +47,18 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
-                    <td>
-                        @Url.Edit(routeValues: new { id = item.Id })
-                        @Url.Delete(routeValues: new { id = item.Id })
-                    </td>
+                    @if (item.Id == Guid.Parse("20A6A59E-088E-4E6A-AA27-8A15F051B1DE") || item.Id == Guid.Parse("A41366FB-D326-4723-A630-F81E38D5ED23"))
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+                    }
+
                 </tr>
                 }
             </tbody>

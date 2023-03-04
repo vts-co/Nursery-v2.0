@@ -49,9 +49,19 @@
                         <div class="form-group mb-3 col-sm-6">
                             @Html.Label("اللوجو ", htmlAttributes: new { @class = "control-label" })
                             <div class="col-12">
-                                @Html.Editor("Img", new { htmlAttributes = new { @class = "form-control", type = "file", accept = "image/*" } })
+                                @*@Html.Editor("Img", new { htmlAttributes = new { @class = "form-control", type = "file", accept = "image/*" } })*@
+                                <input type="file" name="Img" id="Img" accept="image/*" class="form-control" value="@Model.Logo" onchange="loadFile(event)" />
+
                                 @Html.ValidationMessage("Img", "", new { @class = "text-danger" })
                             </div>
+                            @if (Model.Id == Guid.Empty)
+                            {
+                                <img id="output" height="100" width="100" style="display:none" />
+                            }
+                            else
+                            {
+                                <img id="output" height="100" width="100" src="@Model.Logo" />
+                            }
                         </div>
                     </div>
                 </div>

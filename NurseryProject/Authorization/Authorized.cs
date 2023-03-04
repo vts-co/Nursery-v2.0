@@ -55,6 +55,7 @@ namespace NurseryProject.Authorization
                 filterContext.Controller.TempData["UserInfo"] = auth.CookieValues;
                 filterContext.Controller.TempData["UserId"] = auth.CookieValues.UserId;
                 filterContext.Controller.ViewBag.UserScreens = user.UserScreens;
+                filterContext.Controller.ViewBag.UserName = user.Username;
 
                 var setting = settingsServices.GetAll();
 

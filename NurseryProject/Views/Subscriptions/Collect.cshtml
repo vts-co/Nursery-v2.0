@@ -82,15 +82,21 @@
                         @Html.Editor("Total", new { htmlAttributes = new { @class = "form-control bg-soft-success", @disabled = "true" } })
                     </div>
                 </div>
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("المبلغ المتبقي : ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Total2", new { htmlAttributes = new { @class = "form-control bg-soft-success", @disabled = "true" } })
+                    </div>
+                </div>
                 @*@if (Model.IsAnother==true)
-                    {
-                        <div class="form-group mb-3 col-sm-3">
-                            @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
-                            <div class="col-12">
-                                @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
-                            </div>
-                        </div>
-                    }*@
+        {
+            <div class="form-group mb-3 col-sm-3">
+                @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
+                <div class="col-12">
+                    @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
+                </div>
+            </div>
+        }*@
 
             </div>
             @Html.HiddenFor(model => model.Code)
@@ -201,6 +207,8 @@
             $("#SubscriptionDiv").append('<hr>');
 
             var total = 0;
+            var total2 = 0;
+
             if (!data.IsAnother) {
 
                 $.each(data.result, function (key, value) {
@@ -212,7 +220,7 @@
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + value["Amount"] + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount" /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ الدفع </label><div class="col-12"><input class="form-control" value=' + now.toISOString().slice(0, 16) + ' id="SubscriptionMethod[' + i + '].PaidDate" name="SubscriptionMethod[' + i + '].PaidDate" type="datetime-local" /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid"  onclick="Collect(' + i + ',' + data.Num + ')" type="button" >دفع</button></div></div>');
-
+                        total2 += parseFloat(value["Amount"]);
                     }
                     else {
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
@@ -240,6 +248,7 @@
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + value["Amount"] + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount"  /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ الدفع </label><div class="col-12"><input class="form-control" value=' + now.toISOString().slice(0, 16) + ' id="SubscriptionMethod[' + i + '].PaidDate" name="SubscriptionMethod[' + i + '].PaidDate" type="datetime-local" /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid"  onclick="Collect(' + i + ',' + data.Num + ')" type="button" >دفع</button></div></div>');
+                        total2 += parseFloat(value["Amount"]);
 
                     }
                     else {
@@ -258,6 +267,7 @@
                 });
             }
             document.getElementById('Total').value = total + " جنيه "
+            document.getElementById('Total2').value = total2 + " جنيه "
 
             $("#SubscriptionDiv2").append('<hr>');
 
@@ -270,6 +280,8 @@
             var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
 
             var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value);
+            var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
+
 
             if (Amount1 == Amount) {
                 $.get('/Subscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
@@ -282,11 +294,13 @@
 
                             document.body.innerHTML =
                                 "" + data.ReportHeader + "<hr>" +
-                                "<div class='row'>" +
-                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>اسم الطالب : " + d[1] + "</div>" +
-                            "<div class='col-6'>قيمة الاشتراك : " + Amount + " جنيه</div><div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                            "<div class='row'>" + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
+                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>رقم التليفون : " + d[2] + "</div>" +
+                            "<div class='col-6'>قيمة القسط : " + Amount1 + " جنيه</div>" + "<div class='col-6'>تاريخ القسط : " + Date2 + " جنيه</div>" +
+                            "<div class='col-6'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                            "<div class='col-6'>قيمة المدفوع سابقا : " + document.getElementById("Total").value + "</div><div class='col-6'>قيمة المتبقي : " + document.getElementById('Total2').value + "</div>" +
 
-                                "</div>"
+                            "</div>"
                                 + "<hr>" + data.ReportFooter + "";
 
                             //Print Page
@@ -331,6 +345,8 @@
 
             var Amount = document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value;
             var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
+            var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
+
             var Amount1 = document.getElementById("SubscriptionMethod[" + i + "].Amount").value;
             var sub = Amount1 - Amount;
 
@@ -344,9 +360,10 @@
 
                         document.body.innerHTML =
                             "" + data.ReportHeader + "<hr>" +
-                            "<div class='row'>" +
-                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>اسم الطالب : " + d[1] + "</div>" +
-                            "<div class='col-6'>قيمة الاشتراك : " + Amount + " جنيه</div><div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                            "<div class='row'>" + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
+                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>رقم التليفون : " + d[2] + "</div>" +
+                            "<div class='col-6'>قيمة القسط : " + Amount1 + " جنيه</div>" + "<div class='col-6'>تاريخ القسط : " + Date2 + " جنيه</div>" +
+                            "<div class='col-6'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
 
                             "</div>"
                             + "<hr>" + data.ReportFooter + "";

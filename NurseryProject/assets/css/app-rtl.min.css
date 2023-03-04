@@ -550,7 +550,7 @@ body[data-layout=horizontal][data-sidebar=dark] .navbar-brand-box {
   }
 }
 .page-title-box {
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 .page-title-box .breadcrumb {
   background-color: transparent;
@@ -3571,7 +3571,12 @@ span.flatpickr-weekday {
 Datatable
 */
 div.dataTables_wrapper div.dataTables_filter {
-  text-align: left;
+/*    text-align: left;
+*/
+
+}
+div.dataTables_wrapper div.dt-buttons {
+    text-align: center;
 }
 @media (max-width: 767px) {
   div.dataTables_wrapper div.dataTables_filter {

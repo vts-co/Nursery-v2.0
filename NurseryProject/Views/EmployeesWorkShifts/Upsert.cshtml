@@ -48,7 +48,7 @@
                         @Html.ValidationMessageFor(model => model.WorkShiftId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6" style="height:200px;overflow-y:scroll">
+                <div class="form-group mb-3 col-sm-12" style="height:400px;overflow-y:scroll">
                     <label class="control-label">الموظفين</label>
                     <div class="col-12">
                         <table id="datatable2" class="table table-striped dt-responsive  nowrap w-100">
@@ -153,13 +153,13 @@
             if (document.getElementById('All').checked) {
                 var rowCount = $('#datatable2 tr').length;
                 for (var i = 0; i < rowCount; i++) {
-                    document.getElementById('emp[' + i + ']').checked = true;
+                    document.getElementById("emp[" + i + "].Att").checked = true;
                 }
             }
             else {
                 var rowCount = $('#datatable2 tr').length;
                 for (var i = 0; i < rowCount; i++) {
-                    document.getElementById('emp[' + i + ']').checked = false;
+                    document.getElementById("emp[" + i + "].Att").checked = false;
                 }
             }
         });
