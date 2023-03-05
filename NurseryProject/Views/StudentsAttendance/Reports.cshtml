@@ -36,34 +36,43 @@
                         @Html.Label("الشهر ", htmlAttributes: new { @class = "control-label text-center mb-2" })
                         <input type="radio" id="By" name="By" class="" value="1" />
 
-                        @Html.Label("اليوم ", htmlAttributes: new { @class = "control-label text-center mb-2" })
+                        @Html.Label("فترة ", htmlAttributes: new { @class = "control-label text-center mb-2" })
                         <input type="radio" id="By" name="By" class="" value="4" />
                     </div>
                 </div>
 
 
-                <div class="form-group mb-3 col-sm-3">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", @disabled = "disabled", required = "required" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-3">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الفصل الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownList("StudyClassId", null, "--اختر--", new { @class = "form-control", @disabled = "disabled", required = "required" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-3">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month", @disabled = "disabled", required = "required" } })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-3">
-                    @Html.Label("اليوم", htmlAttributes: new { @class = "control-label" })
+
+                </div>
+                <div class="form-group mb-3 col-sm-3">
+                    @Html.Label("من", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", @disabled = "disabled", required = "required" } })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-3">
+                    @Html.Label("الي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Date2", new { htmlAttributes = new { @class = "form-control", type = "date", @disabled = "disabled", required = "required" } })
                     </div>
                 </div>
             </div>
@@ -78,9 +87,15 @@
 
 @if (ViewBag.Attendance != null)
 {
-    <div class="text-center mb-3">
-        عدد الغياب : @ViewBag.Count
-    </div>
+    @*<div class="text-center row mb-3">
+        <div class="col-lg-6">
+            عدد ايام الغياب : @ViewBag.Count
+        </div>
+        <div class="col-lg-6">
+            عدد ايام الحضور : @ViewBag.Count2
+        </div>
+
+    </div>*@
     <div class="card">
         <div class="card-header">
             تقرير حضور وغياب الطلاب
@@ -105,7 +120,7 @@
                             @Html.DisplayName("نوع الدراسة")
                         </th>
                         <th>
-                            @Html.DisplayName("الصف الدراسي")
+                            @Html.DisplayName("الصف ")
                         </th>
                         <th>
                             @Html.DisplayName("الفصل الدراسي")
@@ -114,7 +129,13 @@
                             @Html.DisplayName("الفصل")
                         </th>
                         <th>
-                            @Html.DisplayName("التاريخ")
+                            @Html.DisplayName("عدد ايام الحضور")
+                        </th>
+                        <th>
+                            @Html.DisplayName("عدد ايام الغياب")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الحضور")
                         </th>
 
                     </tr>
@@ -123,9 +144,8 @@
 
                     @foreach (var item in ViewBag.Attendance)
                     {
-                        if (@item.IsAttend == true)
-                        {
-                            <tr class="text-success">
+                      
+                            <tr >
                                 <td>
                                     @item.Code
                                 </td>
@@ -150,48 +170,52 @@
                                 <td>
                                     @item.ClassName
                                 </td>
+                                <td>
+                                    @item.NumAttend
+                                </td>
+                                <td>
+                                    @item.NumAllAttend
+                                </td>
 
                                 <td>
-                                    @item.Date
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                               
+                                                <th>
+                                                    التاريخ
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item2 in item.Days)
+                                            {
+                                                if (@item2.IsAttend == true)
+                                                {
+                                                    <tr class="text-success">
+                                                        
+                                                        <td>
+                                                            @item.Date
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    <tr class="text-danger">
+                                                       
+                                                        <td>
+                                                            @item.Date
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+
+                                    </table>
                                 </td>
 
                             </tr>
-                        }
-                        else
-                        {
-                            <tr class="text-danger">
-                                <td>
-                                    @item.Code
-                                </td>
-                                <td>
-                                    @item.StudentName
-                                </td>
-                                <td>
-                                    @item.StudyYearName
-                                </td>
-                                <td>
-                                    @item.StudyPlaceName
-                                </td>
-                                <td>
-                                    @item.StudyTypeName
-                                </td>
-                                <td>
-                                    @item.LevelName
-                                </td>
-                                <td>
-                                    @item.StudyClassName
-                                </td>
-                                <td>
-                                    @item.ClassName
-                                </td>
-
-                                <td>
-                                    @item.Date
-                                </td>
-
-                            </tr>
-                        }
-
+                       
                     }
                 </tbody>
             </table>
@@ -205,6 +229,7 @@
 
         </div>
     </div>
+
 }
 @section scripts{
 
@@ -230,10 +255,12 @@
             $("#StudyYearId").prop("disabled", true);
             $("#StudyClassId").prop("disabled", true);
             $("#Date").prop("disabled", true);
+            $("#Date2").prop("disabled", true);
 
             $("#StudyYearId").val("");
             $("#StudyClassId").val("");
             $("#Date").val("");
+            $("#Date2").val("");
 
         }
         else if ($("input[name='By']:checked").val() == "2") {
@@ -241,6 +268,7 @@
             $("#StudyYearId").prop("disabled", false);
             $("#StudyClassId").prop("disabled", false);
             $("#Date").prop("disabled", true);
+            $("#Date2").prop("disabled", true);
 
             $("#Month").val("");
             $("#Date").val("");
@@ -250,15 +278,20 @@
             $("#StudyYearId").prop("disabled", false);
             $("#StudyClassId").prop("disabled", true);
             $("#Date").prop("disabled", true);
+            $("#Date2").prop("disabled", true);
+
             $("#Month").val("");
             $("#StudyClassId").val("");
             $("#Date").val("");
+            $("#Date2").val("");
+
         }
         else if ($("input[name='By']:checked").val() == "4") {
             $("#Month").prop("disabled", true);
             $("#StudyYearId").prop("disabled", true);
             $("#StudyClassId").prop("disabled", true);
             $("#Date").prop("disabled", false);
+            $("#Date2").prop("disabled", false);
 
             $("#Month").val("");
             $("#StudyClassId").val("");
@@ -271,10 +304,12 @@
                 $("#StudyYearId").prop("disabled", true);
                 $("#StudyClassId").prop("disabled", true);
                 $("#Date").prop("disabled", true);
+                $("#Date2").prop("disabled", true);
 
                 $("#StudyYearId").val("");
                 $("#StudyClassId").val("");
                 $("#Date").val("");
+                $("#Date2").val("");
 
             }
             else if (this.value == "2") {
@@ -282,25 +317,32 @@
                 $("#StudyYearId").prop("disabled", false);
                 $("#StudyClassId").prop("disabled", false);
                 $("#Date").prop("disabled", true);
+                $("#Date2").prop("disabled", true);
 
                 $("#Month").val("");
                 $("#Date").val("");
+                $("#Date2").val("");
+
             }
             else if (this.value == "3") {
                 $("#Month").prop("disabled", true);
                 $("#StudyYearId").prop("disabled", false);
                 $("#StudyClassId").prop("disabled", true);
                 $("#Date").prop("disabled", true);
+                $("#Date2").prop("disabled", true);
 
                 $("#Month").val("");
                 $("#StudyClassId").val("");
                 $("#Date").val("");
+                $("#Date2").val("");
+
             }
             else if (this.value == "4") {
                 $("#Month").prop("disabled", true);
                 $("#StudyYearId").prop("disabled", true);
                 $("#StudyClassId").prop("disabled", true);
                 $("#Date").prop("disabled", false);
+                $("#Date2").prop("disabled", false);
 
                 $("#StudyYearId").val("");
                 $("#StudyClassId").val("");

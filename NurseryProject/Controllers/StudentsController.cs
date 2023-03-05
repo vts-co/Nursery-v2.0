@@ -316,17 +316,28 @@ namespace NurseryProject.Controllers
         public ActionResult Reports()
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
-          
+            ViewBag.StudentId=new SelectList(studentsServices.GetAll(), "Id", "Name");
+            ViewBag.Count = 0;
             return View();
         }
         [HttpPost, ValidateInput(false)]
         [Authorized(ScreenId = "53")]
-        public ActionResult Reports(Guid? StudyYearId = null)
+        public ActionResult Reports(Guid? StudyYearId = null,Guid? StudentId=null)
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", StudyYearId);
-
             var students = studentsServices.GetAllReport(StudyYearId.Value);
+
+            if (StudentId!=null)
+            {
+                students = students.Where(x => x.Id == StudentId).ToList();
+                ViewBag.StudentId = new SelectList(studentsServices.GetAll(), "Id", "Name", StudentId);
+            }
+            else
+            {
+                ViewBag.StudentId = new SelectList(studentsServices.GetAll(), "Id", "Name");
+            }
             ViewBag.Students = students;
+            ViewBag.Count = students.Count();
             return View();
         }
         

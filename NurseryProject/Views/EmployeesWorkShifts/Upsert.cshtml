@@ -50,7 +50,7 @@
                 </div>
                 <div class="form-group mb-3 col-sm-12" style="height:400px;overflow-y:scroll">
                     <label class="control-label">الموظفين</label>
-                    <div class="col-12">
+                    <div class="col-12" id="">
                         <table id="datatable2" class="table table-striped dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
@@ -110,6 +110,7 @@
         //        });
         //    });
         //});
+
         $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
             $("#empId").empty();
             $.each(data, function (key, value) {
@@ -144,7 +145,7 @@
                 $("#empId").empty();
 
                 $.each(data, function (key, value) {
-                    $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' /></td></tr>")
+                    $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' /></td></tr>");
                 });
 
             });

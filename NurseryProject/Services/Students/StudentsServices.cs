@@ -1,5 +1,6 @@
 ﻿using NurseryProject.Dtos.EmployeeClasses;
 using NurseryProject.Dtos.Students;
+using NurseryProject.Dtos.StudentsClassesTransfer;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -52,10 +53,42 @@ namespace NurseryProject.Services.Students
                     CountOfLatecomers = "",
                     CountOfNormal = "",
                     CountOfPart = "",
-                    CountOfPaidNoTime="",
+                    CountOfPaidNoTime = "",
                     AttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == true).ToList().Count().ToString(),
                     NoAttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == false).ToList().Count().ToString(),
                     CountOfTransferClasses = dbContext.StudentsClassesTransfers.Where(i => i.IsDeleted == false && i.StudentsClass.IsDeleted == false && i.StudentsClass.StudentId == x.Id).ToList().Count().ToString(),
+                    TransferClasses = dbContext.StudentsClassesTransfers.Where(i => i.IsDeleted == false && i.StudentsClass.StudyYearId == StudyYearId && i.StudentsClass.IsDeleted == false && i.StudentsClass.StudentId == x.Id).OrderBy(i => i.CreatedOn).Select(i => new StudentsClassesTransferDto
+                    {
+                        Id = i.Id,
+                        StudentClassId = i.StudentClassId.Value,
+
+                        StudyYearId = i.StudentsClass.StudyYearId.Value,
+                        StudyYearName = i.StudentsClass.StudyYear.Name,
+
+                        StudyPlaceId = i.StudentsClass.Class.StudyPlaceId.Value,
+                        StudyPlaceName = i.StudentsClass.Class.StudyPlace.Name,
+
+                        StudyTypeId = i.StudentsClass.Class.Level.StudyTypeId.Value,
+                        StudyTypeName = i.StudentsClass.Class.Level.StudyType.Name,
+
+                        LevelId = i.StudentsClass.Class.LevelId.Value,
+                        LevelName = i.StudentsClass.Class.Level.Name,
+
+                        ClassFromId = i.Class.Id,
+                        ClassFromName = i.Class.Name,
+
+                        ClassToId = i.Class1.Id,
+                        ClassToName = i.Class1.Name,
+
+                        Code = i.StudentsClass.Student.Code,
+                        StudentId = i.StudentsClass.Student.Id,
+                        StudentName = i.StudentsClass.Student.Name,
+
+                        Date = i.Date.ToString(),
+
+                        Notes = i.Notes
+
+                    }).ToList(),
                     ExamsRate = ((x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.Degree)) / (x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.ClassExam.Exam.TotalDegree)) * 100).ToString(),
                     Employees = x.StudentsClasses.Where(b => b.IsDeleted == false).FirstOrDefault().Class.EmployeeClasses.Where(e => e.IsDeleted == false).Select(e => new EmployeeClassesDto
                     {

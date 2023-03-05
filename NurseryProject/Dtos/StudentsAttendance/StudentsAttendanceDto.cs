@@ -25,8 +25,16 @@ namespace NurseryProject.Dtos.StudentsAttendance
 
         public string StudentName { get; set; }
         public bool IsAttend { get; set; }
-        public string NumAttend{ get; set; }
+        public string NumAttend { get; set; }
         public string NumAllAttend { get; set; }
         public string Date { get; set; }
+        public List<StudentsAttendanceDaysDto> Days { get; set; }
+
+    }
+    public class StudentsAttendanceDaysDto
+    {
+        public string Date { get; set; }
+        public bool IsAttend { get; set; }
+
     }
 }

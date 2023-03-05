@@ -281,9 +281,14 @@ namespace NurseryProject.Services.StudentsClass
 
         public List<StudentsClassDto> GetDayMoney(string Date)
         {
+            var date = int.Parse(DateTime.Parse(Date).ToString("yyyy"));
+            var date2 = int.Parse(DateTime.Parse(Date).ToString("MM"));
+            var date3 = int.Parse(DateTime.Parse(Date).ToString("dd"));
+
+
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.IsPaid == true && x.PaidDate.ToString().Contains(Date)).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.IsPaid == true && x.PaidDate.Value!=null && x.PaidDate.Value.Month == date2 && x.PaidDate.Value.Day == date3).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.StudentsClass.Student.Code,

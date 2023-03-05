@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Dtos.EmployeeClasses;
+using NurseryProject.Dtos.StudentsClassesTransfer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace NurseryProject.Dtos.Students
         public string NoAttendanceNum { get; set; }
 
         public string CountOfTransferClasses { get; set; }
+        public List<StudentsClassesTransferDto> TransferClasses { get; set; }
         public string ExamsRate { get; set; }
         public List<EmployeeClassesDto> Employees { get; set; }
 

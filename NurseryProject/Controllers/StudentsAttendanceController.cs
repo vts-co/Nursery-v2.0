@@ -156,7 +156,7 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
-       
+
         public ActionResult getLevels(Guid Id)
         {
             var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
@@ -195,7 +195,7 @@ namespace NurseryProject.Controllers
         }
         [HttpPost]
         [Authorized(ScreenId = "62")]
-        public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId, string Month,string Date, string By)
+        public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId, string Month, string Date, string Date2, string By)
         {
             var students = studentsServices.GetAllDropDown();
             ViewBag.Students = students;
@@ -203,47 +203,62 @@ namespace NurseryProject.Controllers
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
             ViewBag.StudyClassId = new SelectList("");
 
-            var model = studentsAttendanceServices.GetAllAttendance();
+            var model = studentsAttendanceServices.GetAllByStudent();
             //var model2 = studentsAttendanceServices.GetAllNoAttendance();
 
-            if (StudentId != ""&& StudentId != null)
+            if (StudentId != "" && StudentId != null)
             {
                 ViewBag.student = "1";
                 var studentId = Guid.Parse(StudentId);
-                model = model.Where(x =>x.StudentId == studentId).ToList();
+                model = model.Where(x => x.StudentId == studentId).ToList();
             }
             else
             {
                 ViewBag.student = "2";
             }
 
-            if (StudyYearId != null && StudyClassId != null&& StudyYearId != "" && StudyClassId != "")
+            if (StudyYearId != null && StudyClassId != null && StudyYearId != "" && StudyClassId != "")
             {
                 var studyYearId = Guid.Parse(StudyYearId);
                 var studyClassId = Guid.Parse(StudyClassId);
-               
-                model = model.Where(x => x.StudyClassId == studyClassId ).ToList();
+
+                model = model.Where(x => x.StudyClassId == studyClassId).ToList();
             }
-            else if (StudyYearId != ""&& StudyYearId != null)
+            else if (StudyYearId != "" && StudyYearId != null)
             {
                 var studyYearId = Guid.Parse(StudyYearId);
 
-                model = model.Where(x => x.StudyYearId == studyYearId ).ToList();
+                model = model.Where(x => x.StudyYearId == studyYearId).ToList();
             }
             else if (Month != null)
             {
                 var month = DateTime.Parse(Month).ToString("yyyy-MM");
-               
-                model = model.Where(x => x.Date.Contains(month)).ToList();
+                foreach (var item in model)
+                {
+                    if (!item.Days.Any(y => y.Date.Contains(month)))
+                    {
+                        model.Remove(item);
+                    }
+
+                }
             }
-            else if (Date != null)
+            else if (Date != null && Date2 != null)
             {
-                var date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
-              
-                model = model.Where(x => x.Date.ToString()==date).ToList();
+                var date = DateTime.Parse(Date);
+                var date2 = DateTime.Parse(Date2);
+
+                foreach (var item in model)
+                {
+                    if (!item.Days.Any(y => DateTime.Parse(y.Date).AddDays(1) >= date && DateTime.Parse(y.Date) <= date2))
+                    {
+                        model.Remove(item);
+                    }
+                }
             }
-            
-            ViewBag.Count = model.Where(x =>x.IsAttend == false).ToList().Count();
+
+            ViewBag.Count = model.Where(x => x.IsAttend == false).ToList().Count();
+            ViewBag.Count2 = model.Where(x => x.IsAttend == true).ToList().Count();
+
             ViewBag.Attendance = model;
             ViewBag.By = By;
             return View();
