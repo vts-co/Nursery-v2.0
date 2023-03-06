@@ -368,6 +368,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StudyYearId" Type="uniqueidentifier" />
           <Property Name="StudyPlaceId" Type="uniqueidentifier" />
+          <Property Name="ClassId" Type="uniqueidentifier" />
           <Property Name="ExpenseTypeId" Type="uniqueidentifier" />
           <Property Name="EmployeeId" Type="uniqueidentifier" />
           <Property Name="ExpenseValue" Type="nvarchar(max)" />
@@ -494,6 +495,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StudyYearId" Type="uniqueidentifier" />
           <Property Name="StudyPlaceId" Type="uniqueidentifier" />
+          <Property Name="ClassId" Type="uniqueidentifier" />
           <Property Name="RevenueTypeId" Type="uniqueidentifier" />
           <Property Name="EmployeeId" Type="uniqueidentifier" />
           <Property Name="RevenueValue" Type="nvarchar(max)" />
@@ -2687,6 +2689,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="StudyYearId" Type="Guid" />
           <Property Name="StudyPlaceId" Type="Guid" />
+          <Property Name="ClassId" Type="Guid" />
           <Property Name="ExpenseTypeId" Type="Guid" />
           <Property Name="EmployeeId" Type="Guid" />
           <Property Name="ExpenseValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -2830,6 +2833,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="StudyYearId" Type="Guid" />
           <Property Name="StudyPlaceId" Type="Guid" />
+          <Property Name="ClassId" Type="Guid" />
           <Property Name="RevenueTypeId" Type="Guid" />
           <Property Name="EmployeeId" Type="Guid" />
           <Property Name="RevenueValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -4420,6 +4424,7 @@
                 <ScalarProperty Name="ExpenseValue" ColumnName="ExpenseValue" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="ExpenseTypeId" ColumnName="ExpenseTypeId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
                 <ScalarProperty Name="StudyPlaceId" ColumnName="StudyPlaceId" />
                 <ScalarProperty Name="StudyYearId" ColumnName="StudyYearId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -4554,6 +4559,7 @@
                 <ScalarProperty Name="RevenueValue" ColumnName="RevenueValue" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="RevenueTypeId" ColumnName="RevenueTypeId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
                 <ScalarProperty Name="StudyPlaceId" ColumnName="StudyPlaceId" />
                 <ScalarProperty Name="StudyYearId" ColumnName="StudyYearId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

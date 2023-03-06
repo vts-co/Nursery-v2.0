@@ -1,6 +1,7 @@
 ﻿using NurseryProject.Authorization;
 using NurseryProject.Enums;
 using NurseryProject.Models;
+using NurseryProject.Services.Classes;
 using NurseryProject.Services.Employees;
 using NurseryProject.Services.Revenues;
 using NurseryProject.Services.RevenuesTypes;
@@ -23,6 +24,7 @@ namespace NurseryProject.Controllers
         RevenuesServices revenuesServices = new RevenuesServices();
         RevenuesTypesServices revenuesTypesServices = new RevenuesTypesServices();
         EmployeesServices employeesServices = new EmployeesServices();
+        ClassesServices classesServices = new ClassesServices();
 
         // GET: Destricts
         public ActionResult Index()
@@ -43,6 +45,7 @@ namespace NurseryProject.Controllers
             ViewBag.RevenueTypeParentId = new SelectList(RevenueTypeParentIdModel, "Id", "Name");
 
             ViewBag.RevenueTypeId = new SelectList("");
+            ViewBag.ClassId = new SelectList("");
 
             var revenuesTypesModel = revenuesTypesServices.GetAll();
             ViewBag.RevenuesTypes = revenuesTypesModel;
@@ -86,6 +89,8 @@ namespace NurseryProject.Controllers
             var RevenueTypesModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == revenuetype.ParentId).ToList();
             ViewBag.RevenueTypeId = new SelectList(RevenueTypesModel, "Id", "Name", revenue.RevenueTypeId);
 
+            var classes = classesServices.GetAll().Where(x => x.StudyPlaceId == revenue.StudyPlaceId).ToList();
+            ViewBag.ClassId = new SelectList(classes,"Id","Name", revenue.ClassId);
 
             var employeesModel = employeesServices.GetAll();
             ViewBag.Employees = employeesModel;
@@ -105,22 +110,10 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                var studyPlaces = studyPlacesServices.GetAll();
-                ViewBag.StudyPlaces = studyPlaces;
-
-                var studyYears = studyYearsServices.GetAll();
-                ViewBag.StudyYears = studyYears;
-
-                var revenuesTypesModel = revenuesTypesServices.GetAll();
-                ViewBag.RevenuesTypes = revenuesTypesModel;
-
-                var employeesModel = employeesServices.GetAll();
-                ViewBag.Employees = employeesModel;
-
-                ViewBag.RevenueDate = revenue.RevenueDate.Value.ToString("yyyy-MM-dd");
+               
 
                 TempData["warning"] = result.Message;
-                return View("Upsert", revenue);
+                return RedirectToAction("Index");
             }
         }
         public ActionResult Delete(Guid Id)
@@ -210,6 +203,10 @@ namespace NurseryProject.Controllers
             var model = revenuesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult getClasses(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.StudyPlaceId == Id).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

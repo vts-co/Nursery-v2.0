@@ -27,7 +27,7 @@
             @Html.HiddenFor(model => model.IsAnother)
 
             <div class="row">
-                <div class="form-group mb-3 col-sm-12">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الطالب", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.TextBoxFor(model => model.StudentName, new { @class = "form-control", required = "required", @Value = Model.Code + "|" + Model.StudentName + "|" + Model.StudentPhone, @disabled = "true" })
@@ -162,7 +162,7 @@
             document.getElementById('JoiningDate').value = now.toISOString().slice(0, 10);
         }
         $("#StudyTypeId").change(function () {
-            $.get('/StudentsClass/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
                 $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -171,14 +171,14 @@
             });
         });
         $("#LevelId").change(function () {
-            $.get('/StudentsClass/getClasses', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getClasses', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });
             });
-            $.get('/StudentsClass/getSubscriptions', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getSubscriptions', { Id: $("#LevelId").val() }, function (data) {
                 $("#SubscriptionId").empty();
                 $("#SubscriptionId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -196,7 +196,7 @@
         else {
             $("#SubscriptionDiv").empty();
         }
-        $.get('/Subscriptions/getSubscriptionsMethods', { Id: $("#Id").val() }, function (data) {
+        $.get('/StudentsSubscriptions/getSubscriptionsMethods', { Id: $("#Id").val() }, function (data) {
             $("#SubscriptionDiv").empty();
             $("#SubscriptionDiv2").empty();
 
@@ -284,7 +284,7 @@
 
 
             if (Amount1 == Amount) {
-                $.get('/Subscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
+                $.get('/StudentsSubscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
                     if (data != "Faild")
                         $.get('/Subscriptions/getReportDesign', function (data) {
                             var old = document.body.innerHTML;
@@ -306,7 +306,7 @@
                             //Print Page
                             window.print();
                             document.body.innerHTML = old;
-                            savedSL('/Subscriptions/Collect/' + $("#Id").val());
+                            savedSL('/StudentsSubscriptions/Collect/' + $("#Id").val());
 
                         });
                     else {
@@ -350,7 +350,7 @@
             var Amount1 = document.getElementById("SubscriptionMethod[" + i + "].Amount").value;
             var sub = Amount1 - Amount;
 
-            $.get('/Subscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, Id2: $("#Date2").val(), Sub: sub, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, Id2: $("#Date2").val(), Sub: sub, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
                 if (data != "Faild") {
                     $.get('/Subscriptions/getReportDesign', function (data) {
                         var old = document.body.innerHTML;
@@ -371,7 +371,7 @@
                         //Print Page
                         window.print();
                         document.body.innerHTML = old;
-                        savedSL('/Subscriptions/Collect/' + $("#Id").val());
+                        savedSL('/StudentsSubscriptions/Collect/' + $("#Id").val());
                     });
 
                 }
@@ -384,9 +384,9 @@
         function Cancel(i, num) {
             var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
 
-            $.get('/Subscriptions/CancelSubscriptionsMethodsPaid', { Id: Id }, function (data) {
+            $.get('/StudentsSubscriptions/CancelSubscriptionsMethodsPaid', { Id: Id }, function (data) {
                 if (data != "Faild")
-                    savedSL('/Subscriptions/Collect/' + $("#Id").val());
+                    savedSL('/StudentsSubscriptions/Collect/' + $("#Id").val());
                 else {
                     savedF("لم يتم دفع القسط المسبق بعد")
                 }

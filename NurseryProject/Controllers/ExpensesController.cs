@@ -1,6 +1,7 @@
 ﻿using NurseryProject.Authorization;
 using NurseryProject.Enums;
 using NurseryProject.Models;
+using NurseryProject.Services.Classes;
 using NurseryProject.Services.Employees;
 using NurseryProject.Services.Expenses;
 using NurseryProject.Services.ExpensesTypes;
@@ -24,6 +25,8 @@ namespace NurseryProject.Controllers
         ExpensesServices expensesServices = new ExpensesServices();
         ExpensesTypesServices expensesTypesServices = new ExpensesTypesServices();
         EmployeesServices employeesServices = new EmployeesServices();
+        ClassesServices classesServices = new ClassesServices();
+
 
         // GET: Destricts
         public ActionResult Index()
@@ -44,6 +47,7 @@ namespace NurseryProject.Controllers
             ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name");
 
             ViewBag.ExpenseTypeId = new SelectList("");
+            ViewBag.ClassId = new SelectList("");
 
             var employeesModel = employeesServices.GetAll();
             ViewBag.Employees = employeesModel;
@@ -83,6 +87,9 @@ namespace NurseryProject.Controllers
 
             var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == expensetype.ParentId).ToList();
             ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel, "Id", "Name", expenses.ExpenseTypeId);
+
+            var classes = classesServices.GetAll().Where(x => x.StudyPlaceId == expenses.StudyPlaceId).ToList();
+            ViewBag.ClassId = new SelectList(classes, "Id", "Name", expenses.ClassId);
 
             var employeesModel = employeesServices.GetAll();
             ViewBag.Employees = employeesModel;
@@ -192,6 +199,10 @@ namespace NurseryProject.Controllers
             var model = expensesTypesServices.GetAll().Where(x => x.ParentId == Id).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult getClasses(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.StudyPlaceId == Id).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

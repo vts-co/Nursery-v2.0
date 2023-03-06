@@ -74,7 +74,7 @@ namespace NurseryProject.Services.Revenues
                 Oldmodel.RevenueValue = model.RevenueValue;
                 Oldmodel.RevenueDate = model.RevenueDate;
                 Oldmodel.Notes = model.Notes;
-
+                Oldmodel.ClassId = model.ClassId;
                 dbContext.SaveChanges();
                 result.IsSuccess = true;
                 result.Message = "تم تعديل البيانات بنجاح";

@@ -11,8 +11,7 @@ namespace NurseryProject.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Student
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -34,7 +33,6 @@ namespace NurseryProject.Models
         public string MotherName { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
-
         public Nullable<System.DateTime> JoiningDate { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }

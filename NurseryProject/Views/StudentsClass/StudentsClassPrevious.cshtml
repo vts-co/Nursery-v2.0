@@ -54,14 +54,17 @@
                         @Html.DisplayName("عدد الاقساط ")
                     </th>
                     <th>
+                        @Html.DisplayName("تفاصيل الاشتراك ")
+                    </th>
+                    <th>
                         @Html.DisplayName("تاريخ الالتحاق ")
                     </th>
                     <th>
                         @Html.DisplayName("ملاحظات ")
                     </th>
-                    <th>
-                        @Html.DisplayName("عمليات")
-                    </th>
+                    @*<th>
+            @Html.DisplayName("عمليات")
+        </th>*@
                 </tr>
             </thead>
             <tbody>
@@ -95,17 +98,54 @@
                             @Html.DisplayFor(modelItem => item.Number)
                         </td>
                         <td>
+                            @foreach (var item2 in item.SubscriptionMethod)
+                            {
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                قيمة القسط
+                                            </th>
+                                            <th>
+                                                تاريخ القسط
+                                            </th>
+                                            <th>
+                                                قيمة المدفوع
+                                            </th>
+                                            <th>
+                                                تاريخ الدفع
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            @item2.Amount
+                                        </td>
+                                        <td>
+                                            @item2.Date
+                                        </td>
+                                        <td>
+                                            @item2.PaidAmount
+                                        </td>
+                                        <td>
+                                            @item2.PaidDate
+                                        </td>
+                                    </tr>
+                                </table>
+                            }
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.JoiningDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Notes)
                         </td>
-                        <td>
+                        @*<td>
                            
                             @Url.Edit(routeValues: new { id = item.Id })
                             @Url.Delete(routeValues: new { id = item.Id })
 
-                        </td>
+                        </td>*@
                     </tr>
                 }
             </tbody>

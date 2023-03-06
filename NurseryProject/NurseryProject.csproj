@@ -167,6 +167,7 @@
     <Compile Include="Controllers\StudentsClassesTransferController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\StudentsExamDegreesController.cs" />
+    <Compile Include="Controllers\StudentsLevelsTransferController.cs" />
     <Compile Include="Controllers\StudyClassesController.cs" />
     <Compile Include="Controllers\StudyPlacesController.cs" />
     <Compile Include="Controllers\StudyTypesController.cs" />
@@ -434,6 +435,7 @@
     <Compile Include="Utilities\GenerateRandomCode.cs" />
     <Compile Include="Utilities\Security.cs" />
     <Compile Include="Services\SubscriptionsMethods\SubscriptionsMethodsServices.cs" />
+    <Compile Include="Controllers\StudentsSubscriptionsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\app-rtl.min.css" />
@@ -2144,9 +2146,9 @@
     <Content Include="Views\StudentsClass\Upsert.cshtml" />
     <Content Include="Views\Subscriptions\Index.cshtml" />
     <Content Include="Views\Subscriptions\Upsert.cshtml" />
-    <Content Include="Views\Subscriptions\Reports.cshtml" />
-    <Content Include="Views\Subscriptions\Collect.cshtml" />
-    <Content Include="Views\Subscriptions\LatecomersReports.cshtml" />
+    <Content Include="Views\StudentsSubscriptions\Reports.cshtml" />
+    <Content Include="Views\StudentsSubscriptions\Collect.cshtml" />
+    <Content Include="Views\StudentsSubscriptions\LatecomersReports.cshtml" />
     <Content Include="Views\StudentsAttendance\Index.cshtml" />
     <Content Include="Views\StudentsAttendance\Upsert.cshtml" />
     <Content Include="Views\StudentsAttendance\Reports.cshtml" />
@@ -2167,13 +2169,17 @@
     <Content Include="Views\EmployeesAttendance\Upsert.cshtml" />
     <Content Include="Views\EmployeesReceipt\Index.cshtml" />
     <Content Include="Views\EmployeesReceipt\Reports.cshtml" />
-    <Content Include="Views\Subscriptions\StudentRegularReports.cshtml" />
-    <Content Include="Views\Subscriptions\DailyReports.cshtml" />
+    <Content Include="Views\StudentsSubscriptions\StudentRegularReports.cshtml" />
+    <Content Include="Views\StudentsSubscriptions\DailyReports.cshtml" />
     <Content Include="Views\EmployeesReceipt\Upsert.cshtml" />
     <Content Include="Views\EmployeesReceipt\MonthlyReports.cshtml" />
-    <Content Include="Views\Subscriptions\PreviousReports.cshtml" />
+    <Content Include="Views\StudentsSubscriptions\PreviousReports.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Upsert.cshtml" />
+    <Content Include="Views\StudentsClassesTransfer\Search.cshtml" />
+    <Content Include="Views\StudentsSubscriptions\Index.cshtml" />
+    <Content Include="Views\StudentsLevelsTransfer\Index.cshtml" />
+    <Content Include="Views\StudentsLevelsTransfer\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

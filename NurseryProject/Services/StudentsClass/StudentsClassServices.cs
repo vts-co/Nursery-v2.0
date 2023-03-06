@@ -279,16 +279,19 @@ namespace NurseryProject.Services.StudentsClass
             }
         }
 
-        public List<StudentsClassDto> GetDayMoney(string Date)
+        public List<StudentsClassDto> GetDayMoney(string Date, string Date2)
         {
             var date = int.Parse(DateTime.Parse(Date).ToString("yyyy"));
             var date2 = int.Parse(DateTime.Parse(Date).ToString("MM"));
             var date3 = int.Parse(DateTime.Parse(Date).ToString("dd"));
 
+            var date4 = int.Parse(DateTime.Parse(Date2).ToString("yyyy"));
+            var date5 = int.Parse(DateTime.Parse(Date2).ToString("MM"));
+            var date6 = int.Parse(DateTime.Parse(Date2).ToString("dd"));
 
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.IsPaid == true && x.PaidDate.Value!=null && x.PaidDate.Value.Month == date2 && x.PaidDate.Value.Day == date3).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.IsPaid == true && x.PaidDate.Value!=null && x.PaidDate.Value.Year >= date && x.PaidDate.Value.Month >= date2 && x.PaidDate.Value.Day >= date3&& x.PaidDate.Value.Year <= date4 && x.PaidDate.Value.Month <= date5 && x.PaidDate.Value.Day <= date6).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.StudentsClass.Student.Code,

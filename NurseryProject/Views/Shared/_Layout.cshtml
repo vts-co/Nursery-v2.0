@@ -325,7 +325,7 @@
                                 </ul>
                             </li>
                         }
-                        @if (ViewBag.userscreens.ToString().Contains(",27,") || ViewBag.userscreens.ToString().Contains(",28,") || ViewBag.userscreens.ToString().Contains(",29,") || ViewBag.userscreens.ToString().Contains(",30,"))
+                        @if (ViewBag.userscreens.ToString().Contains(",27,") || ViewBag.userscreens.ToString().Contains(",28,") || ViewBag.userscreens.ToString().Contains(",29,") || ViewBag.userscreens.ToString().Contains(",30,") || ViewBag.userscreens.ToString().Contains(",70,") || ViewBag.userscreens.ToString().Contains(",71,") || ViewBag.userscreens.ToString().Contains(",72,"))
                         {
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow">
@@ -340,6 +340,18 @@
                                     @if (ViewBag.userscreens.ToString().Contains(",28,"))
                                     {
                                         <li><a href="@Url.Action("Index", "StudentsClass")"><i class="fas fa-user-edit p-1"></i> التحاق الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",70,"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "StudentsSubscriptions")"><i class="fas fa-coins p-1"></i> ادارة تحصيل اشتراكات الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",72,"))
+                                    {
+                                        <li><a href="@Url.Action("Search", "StudentsClassesTransfer")"><i class="bx bx-transfer p-1"></i> ادارة تحويل الطلاب بين الفصول</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",73,"))
+                                    {
+                                        <li><a href="@Url.Action("Search", "StudentsLevelsTransfer")"><i class="fa fa-arrow-alt-circle-up p-1"></i>  ادارة تحويل من صف لصف</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",29,"))
                                     {
@@ -482,19 +494,19 @@
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",54,"))
                                     {
-                                        <li><a href="@Url.Action("Reports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> استعلام عن إشترك طالب</a></li>
+                                        <li><a href="@Url.Action("Reports", "StudentsSubscriptions")"><i class="fas fa-credit-card p-1"></i> استعلام عن إشترك طالب</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",55,"))
                                     {
-                                        <li><a href="@Url.Action("PreviousReports", "Subscriptions")"><i class="fas fa-id-card p-1"></i> التحاقات الطالب السابقة</a></li>
+                                        <li><a href="@Url.Action("PreviousReports", "StudentsSubscriptions")"><i class="fas fa-id-card p-1"></i> التحاقات الطالب السابقة</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",56,"))
                                     {
-                                        <li><a href="@Url.Action("LatecomersReports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i>   الاقساط المتأخرة</a></li>
+                                        <li><a href="@Url.Action("LatecomersReports", "StudentsSubscriptions")"><i class="fas fa-credit-card p-1"></i>   الاقساط المتأخرة</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",57,"))
                                     {
-                                        <li><a href="@Url.Action("StudentRegularReports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير الطلاب المنتظمة والغير منتظمة </a></li>
+                                        <li><a href="@Url.Action("StudentRegularReports", "StudentsSubscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير الطلاب المنتظمة والغير منتظمة </a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",58,"))
                                     {
@@ -502,7 +514,7 @@
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",59,"))
                                     {
-                                        <li><a href="@Url.Action("DailyReports", "Subscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير التحصيل اليومي للطلاب </a></li>
+                                        <li><a href="@Url.Action("DailyReports", "StudentsSubscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير التحصيل اليومي للطلاب </a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",60,"))
                                     {

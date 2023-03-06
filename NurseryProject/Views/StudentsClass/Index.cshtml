@@ -145,17 +145,17 @@
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
                     <td>
-                        @if (item.SubscriptionMethod.Count() > 0)
+                        @*@if (item.SubscriptionMethod.Count() > 0)
                         {
-                            <a class='btn btn-soft-warning waves-effect waves-light p-2' href="/Subscriptions/Collect/@item.Id" title="تحصيل قسط الاشتراك"><i class='fas fa-coins me-1'></i></a>
+                            <a class='btn btn-soft-warning waves-effect waves-light p-2' href="/StudentsSubscriptions/Collect/@item.Id" title="تحصيل قسط الاشتراك"><i class='fas fa-coins me-1'></i></a>
                         }
                         else
                         {
-                            <button class='btn btn-soft-warning p-2' disabled><i class='fas fa-coins me-1'></i></button>
+                            <button class='btn btn-soft-warning p-2' title="تحصيل قسط الاشتراك" disabled ><i class='fas fa-coins me-1'></i></button>
 
-                        }
-                        <a class='btn btn-soft-primary waves-effect waves-light p-2' href="/StudentsClassesTransfer/Index?StudentClassId=@item.Id" title="نقل الطالب من فصل لفصل"><i class='bx bx-transfer'></i></a>
-                        <a class='btn btn-soft-secondary waves-effect waves-light p-2' href="/StudentsClass/StudentsLevelsTransfer?Id=@item.Id" title="نقل الطالب من صف لصف"><i class='fa fa-arrow-alt-circle-up'></i></a>
+                        }*@
+                        @*<a class='btn btn-soft-primary waves-effect waves-light p-2' href="/StudentsClassesTransfer/Index?StudentClassId=@item.Id" title="نقل الطالب من فصل لفصل"><i class='bx bx-transfer'></i></a>*@
+                        @*<a class='btn btn-soft-secondary waves-effect waves-light p-2' href="/StudentsClass/StudentsLevelsTransfer?Id=@item.Id" title="نقل الطالب من صف لصف"><i class='fa fa-arrow-alt-circle-up'></i></a>*@
                         <a class='btn btn-soft-info waves-effect waves-light p-2' href="/StudentsClass/StudentsClassPrevious?StudentClassId=@item.Id" title="الالتحاقات السابقة للطالب"><i class='mdi mdi-cards'></i></a>
 
                         @Url.Edit(routeValues: new { id = item.Id })

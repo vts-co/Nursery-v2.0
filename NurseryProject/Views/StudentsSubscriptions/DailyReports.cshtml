@@ -6,7 +6,7 @@
     var remain = 0;
 
 }
-@using (Html.BeginForm("DailyReports", "Subscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("DailyReports", "StudentsSubscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="card">
@@ -18,17 +18,24 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="form-group mb-3 col-sm-6">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الطالب", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("التاريخ ", htmlAttributes: new { @class = "control-label" })
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("من تاريخ ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
                         @Html.ValidationMessage("Date", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("الي تاريخ ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Date2", new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
+                        @Html.ValidationMessage("Date2", "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -158,8 +165,11 @@
         if (document.getElementById('Date').value == "") {
             document.getElementById('Date').value = now.toISOString().slice(0, 10);
         }
+        if (document.getElementById('Date2').value == "") {
+            document.getElementById('Date2').value = now.toISOString().slice(0, 10);
+        }
         $("#StudyTypeId").change(function () {
-            $.get('/Subscriptions/getLevelsDailyReport', { Id: $("#StudyTypeId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getLevelsDailyReport', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
                 $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -168,14 +178,14 @@
             });
         });
         $("#LevelId").change(function () {
-            $.get('/Subscriptions/getClassesDailyReport', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getClassesDailyReport', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });
             });
-            $.get('/Subscriptions/getSubjectsDailyReport', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getSubjectsDailyReport', { Id: $("#LevelId").val() }, function (data) {
                 $("#SubjectId").empty();
                 $("#SubjectId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

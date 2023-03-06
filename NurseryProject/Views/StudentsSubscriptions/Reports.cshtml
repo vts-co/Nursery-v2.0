@@ -6,7 +6,7 @@
     var remain = 0;
 
 }
-@using (Html.BeginForm("Reports", "Subscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Reports", "StudentsSubscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="card">
@@ -184,7 +184,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("#StudyTypeId").change(function () {
-            $.get('/Subscriptions/getLevelsReport', { Id: $("#StudyTypeId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getLevelsReport', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
                 $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -193,14 +193,14 @@
             });
         });
         $("#LevelId").change(function () {
-            $.get('/Subscriptions/getClassesReport', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getClassesReport', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });
             });
-            $.get('/Subscriptions/getSubjectsReport', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getSubjectsReport', { Id: $("#LevelId").val() }, function (data) {
                 $("#SubjectId").empty();
                 $("#SubjectId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

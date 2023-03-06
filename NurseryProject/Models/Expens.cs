@@ -17,6 +17,7 @@ namespace NurseryProject.Models
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> StudyYearId { get; set; }
         public Nullable<System.Guid> StudyPlaceId { get; set; }
+        public Nullable<System.Guid> ClassId { get; set; }
         public Nullable<System.Guid> ExpenseTypeId { get; set; }
         public Nullable<System.Guid> EmployeeId { get; set; }
         public string ExpenseValue { get; set; }

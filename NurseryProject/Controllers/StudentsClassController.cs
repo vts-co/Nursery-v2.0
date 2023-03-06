@@ -196,7 +196,6 @@ namespace NurseryProject.Controllers
             var model = studentsClassServices.GetAll().Where(x => x.Id == StudentClassId).FirstOrDefault();
             return View(model);
         }
-
         public ActionResult StudentsLevelsTransfer(Guid Id)
         {
             var subs = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id && x.IsDeleted == false && x.IsPaid == false).ToList().Count();
@@ -233,6 +232,8 @@ namespace NurseryProject.Controllers
         {
             var id = Class.Id;
             Class.Id = Guid.NewGuid();
+            Class.IsCurrent = true;
+
             if (Class.IsAnother == true)
             {
                 Class.SubscriptionId = null;

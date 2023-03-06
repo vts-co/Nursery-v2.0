@@ -6,7 +6,7 @@
     var remain = 0;
 
 }
-@using (Html.BeginForm("StudentRegularReports", "Subscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("StudentRegularReports", "StudentsSubscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="card">
@@ -300,7 +300,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("#StudyTypeId").change(function () {
-            $.get('/Subscriptions/getLevelsStudentRegularReport', { Id: $("#StudyTypeId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getLevelsStudentRegularReport', { Id: $("#StudyTypeId").val() }, function (data) {
                 $("#LevelId").empty();
                 $("#LevelId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
@@ -309,7 +309,7 @@
             });
         });
         $("#LevelId").change(function () {
-            $.get('/Subscriptions/getClassesStudentRegularReport', { Id: $("#LevelId").val() }, function (data) {
+            $.get('/StudentsSubscriptions/getClassesStudentRegularReport', { Id: $("#LevelId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

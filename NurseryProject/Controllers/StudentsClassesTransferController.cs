@@ -1,9 +1,13 @@
 ﻿using NurseryProject.Authorization;
+using NurseryProject.Dtos.StudentsClass;
 using NurseryProject.Dtos.StudentsClassesTransfer;
 using NurseryProject.Enums;
+using NurseryProject.Levels.Services;
 using NurseryProject.Services.Classes;
+using NurseryProject.Services.Students;
 using NurseryProject.Services.StudentsClass;
 using NurseryProject.Services.StudentsClassesTransfer;
+using NurseryProject.Services.Subscriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +16,29 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(ScreenId = "28")]
+    [Authorized(ScreenId = "71")]
 
     public class StudentsClassesTransferController : Controller
     {
         ClassesServices classesServices = new ClassesServices();
+        LevelsServices levelsServices = new LevelsServices();
+        SubscriptionsServices subscriptionsServices = new SubscriptionsServices();
+
+        StudentsServices studentsServices = new StudentsServices();
         StudentsClassServices studentsClassServices = new StudentsClassServices();
         StudentsClassesTransferServices studentsClassesTransferServices = new StudentsClassesTransferServices();
+        public ActionResult Search()
+        {
+            ViewBag.StudentId = new SelectList(studentsServices.GetAllDropDown(),"Id","Name");
+            return View(new List<StudentsClassDto>());
+        }
+        [HttpPost]
+        public ActionResult Search(Guid StudentId)
+        {
+            ViewBag.StudentId = new SelectList(studentsServices.GetAllDropDown(), "Id", "Name", StudentId);
+            var model = studentsClassServices.GetAll().Where(x => x.StudentId == StudentId &&x.IsCurrent==true).ToList();
+            return View(model);
+        }
         public ActionResult Index(Guid StudentClassId)
         {
             ViewBag.StudentClass = StudentClassId;
@@ -85,6 +105,22 @@ namespace NurseryProject.Controllers
                 TempData["warning"] = result.Message;
                 return RedirectToAction("Index", new { StudentClassId = result1.StudentClassId });
             }
+        }
+
+        public ActionResult getLevels(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getClasses(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getSubscriptions(Guid Id)
+        {
+            var model = subscriptionsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + " جنيه/ عدد الاقساط : " + x.InstallmentsNumber) });
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
     }
 }
