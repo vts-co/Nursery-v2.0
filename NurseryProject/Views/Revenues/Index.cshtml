@@ -18,10 +18,13 @@
             <thead class="bg-soft-primary">
                 <tr>
                     <th>
+                        @Html.DisplayName("العام الدراسي")
+                    </th>
+                    <th>
                         @Html.DisplayName("الفرع ")
                     </th>
                     <th>
-                        @Html.DisplayName("العام الدراسي")
+                        @Html.DisplayName("الفصل")
                     </th>
                     <th>
                         @Html.DisplayName("نوع الايراد ")
@@ -51,12 +54,15 @@
                 {
                 <tr>
                     <td>
+                        @Html.DisplayFor(modelItem => item.StudyYearName)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.StudyPlaceName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.StudyYearName)
+                        @Html.DisplayFor(modelItem => item.ClassName)
                     </td>
-                    
+
                     <td>
                         @Html.DisplayFor(modelItem => item.RevenueTypeParentName)
                     </td>

@@ -138,24 +138,70 @@ namespace NurseryProject.Controllers
             ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name");
 
             ViewBag.RevenueTypeId = new SelectList("");
+            ViewBag.StudyPlaceId = new SelectList(studyPlacesServices.GetAll(), "Id", "Name");
+            ViewBag.ClassId = new SelectList("");
             return View();
         }
         [HttpPost]
         [Authorized(ScreenId = "67")]
 
-        public ActionResult Reports(string Month, bool AllYear, Guid? RevenueTypeParentId = null, Guid? RevenueTypeId = null)
+        public ActionResult Reports(string date, string date2, Guid? RevenueTypeParentId = null, Guid? RevenueTypeId = null, Guid? StudyPlaceId = null, Guid? ClassId = null)
         {
             var total = 0.0;
             var model = revenuesServices.GetAll();
-            if (AllYear)
+            //if (AllYear)
+            //{
+            //    var year = DateTime.Now.Date.Year;
+            //    model = model.Where(x => x.Date.Year == year).ToList();
+            //}
+            //if (Month != "")
+            //{
+            //    var mon = DateTime.Parse(Month).ToString("MM-yyyy");
+            //    model = model.Where(x => x.Date.ToString("MM-yyyy") == mon).ToList();
+            //}
+            if (date != "" && date != null)
             {
-                var year = DateTime.Now.Date.Year;
-                model = model.Where(x => x.Date.Year == year).ToList();
+                var mon = DateTime.Parse(date).Year;
+                var mon2 = DateTime.Parse(date).Month;
+                var mon3 = DateTime.Parse(date).Day;
+
+                model = model.Where(x => x.Date.Year >= mon && x.Date.Month >= mon2 && x.Date.Day >= mon3).ToList();
             }
-            if (Month != "")
+            if (date2 != "" && date2 != null)
             {
-                var mon = DateTime.Parse(Month).ToString("MM-yyyy");
-                model = model.Where(x => x.Date.ToString("MM-yyyy") == mon).ToList();
+                var mon = DateTime.Parse(date2).Year;
+                var mon2 = DateTime.Parse(date2).Month;
+                var mon3 = DateTime.Parse(date2).Day;
+
+                model = model.Where(x => x.Date.Year <= mon && x.Date.Month <= mon2 && x.Date.Day <= mon3).ToList();
+            }
+            if (StudyPlaceId != null)
+            {
+                model = model.Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+
+                var StudyPlaceModel = studyPlacesServices.GetAll();
+                ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name", StudyPlaceId);
+            }
+            else
+            {
+                var StudyPlaceModel = studyPlacesServices.GetAll();
+                ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name");
+            }
+            if (ClassId != null)
+            {
+                model = model.Where(x => x.ClassId == ClassId).ToList();
+
+                var classes = classesServices.GetAll().Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
+            }
+            else if (StudyPlaceId != null)
+            {
+                var classes = classesServices.GetAll().Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
+            }
+            else
+            {
+                ViewBag.ClassId = new SelectList("");
             }
             if (RevenueTypeParentId != null)
             {
@@ -204,6 +250,13 @@ namespace NurseryProject.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getClasses(Guid Id)
+        {
+            var model = classesServices.GetAll().Where(x => x.StudyPlaceId == Id).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [Authorized(ScreenId = "67")]
+
+        public ActionResult getClassesReport(Guid Id)
         {
             var model = classesServices.GetAll().Where(x => x.StudyPlaceId == Id).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);

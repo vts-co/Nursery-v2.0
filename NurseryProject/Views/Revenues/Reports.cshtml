@@ -17,6 +17,19 @@
         <div class="card-body">
             <div class="row">
                 <div class="form-group mb-3 col-sm-6">
+
+                    @Html.Label("الفرع ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyPlaceId", null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("نوع الايراد ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownList("RevenueTypeParentId", null, "--اختر--", new { @class = "form-control" })
@@ -28,18 +41,31 @@
                         @Html.DropDownList("RevenueTypeId", null, "--اختر--", new { @class = "form-control" })
                     </div>
                 </div>
+                @*<div class="form-group mb-3 col-sm-6">
+            @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+            <div class="col-12">
+                @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month" } })
+                @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-3 col-sm-6 mt-2">
+            @Html.Label("طوال العام ", htmlAttributes: new { @class = "control-label" })
+            <div class="col-12">
+                @Html.CheckBox("AllYear", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>*@
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("من تاريخ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month" } })
-                        @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
+                        @Html.Editor("date", new { htmlAttributes = new { @class = "form-control", type = "date" } })
                     </div>
                 </div>
 
-                <div class="form-group mb-3 col-sm-6 mt-2">
-                    @Html.Label("طوال العام ", htmlAttributes: new { @class = "control-label" })
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الي تاريخ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.CheckBox("AllYear", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.Editor("date2", new { htmlAttributes = new { @class = "form-control", type = "date" } })
                     </div>
                 </div>
             </div>
@@ -135,6 +161,15 @@
                 $("#RevenueTypeId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
                     $("#RevenueTypeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#StudyPlaceId").change(function () {
+            $.get('/Revenues/getClassesReport', { Id: $("#StudyPlaceId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });
             });
         });

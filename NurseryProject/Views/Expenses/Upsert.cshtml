@@ -19,43 +19,43 @@
         <div class="card-body">
             @Html.HiddenFor(model => model.Id)
             <div class="row">
-                <div class="form-group mb-3 col-sm-6">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownListFor(model => model.StudyYearId, new SelectList(ViewBag.StudyYears, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.StudyYearId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الفرع ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownListFor(model => model.StudyPlaceId, new SelectList(ViewBag.StudyPlaces, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.StudyPlaceId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الفصل ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownListFor(model => model.ClassId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.DropDownListFor(model => model.ClassId, null, "--اختر--", new { @class = "form-control"})
                         @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group mb-3 col-sm-6">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("نوع المصروف ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownList("ExpenseTypeParentId", null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessage("ExpenseTypeParentId", "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("البيان", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownListFor(model => model.ExpenseTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.ExpenseTypeId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
+                <div class="form-group mb-3 col-sm-4">
                     @Html.Label("قيمة المصروف", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.EditorFor(model => model.ExpenseValue, new { htmlAttributes = new { @class = "form-control", required = "required" } })
@@ -119,7 +119,7 @@
             });
         });
         $("#StudyPlaceId").change(function () {
-            $.get('/Revenues/getClasses', { Id: $("#StudyPlaceId").val() }, function (data) {
+            $.get('/Expenses/getClasses', { Id: $("#StudyPlaceId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

@@ -1212,6 +1212,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Expenses_Classes">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
+          <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Expenses">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Expenses_Employees">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
@@ -1305,6 +1317,18 @@
             </Principal>
             <Dependent Role="Pages1">
               <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Revenues_Classes">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
+          <End Role="Revenues" Type="Self.Revenues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenues">
+              <PropertyRef Name="ClassId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1806,6 +1830,10 @@
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Exams" EntitySet="Exams" />
           </AssociationSet>
+          <AssociationSet Name="FK_Expenses_Classes" Association="Self.FK_Expenses_Classes">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
           <AssociationSet Name="FK_Expenses_Employees" Association="Self.FK_Expenses_Employees">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Expenses" EntitySet="Expenses" />
@@ -1837,6 +1865,10 @@
           <AssociationSet Name="FK_Pages_Pages" Association="Self.FK_Pages_Pages">
             <End Role="Pages" EntitySet="Pages" />
             <End Role="Pages1" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Revenues_Classes" Association="Self.FK_Revenues_Classes">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Revenues" EntitySet="Revenues" />
           </AssociationSet>
           <AssociationSet Name="FK_Revenues_Employees" Association="Self.FK_Revenues_Employees">
             <End Role="Employees" EntitySet="Employees" />
@@ -2036,6 +2068,14 @@
           <AssociationSet Name="FK_EmployeeClasses_EmployeeClasses" Association="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses">
             <End Role="Class" EntitySet="Classes" />
             <End Role="EmployeeClass" EntitySet="EmployeeClasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Expenses_Classes" Association="almohandes_DbModel.FK_Expenses_Classes">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Expens" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Revenues_Classes" Association="almohandes_DbModel.FK_Revenues_Classes">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Revenue" EntitySet="Revenues" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentsClass_Classes" Association="almohandes_DbModel.FK_StudentsClass_Classes">
             <End Role="Class" EntitySet="Classes" />
@@ -2322,6 +2362,8 @@
           <NavigationProperty Name="ClassesLeaders" Relationship="almohandes_DbModel.FK_ClassesLeaders_Classes" FromRole="Class" ToRole="ClassesLeader" />
           <NavigationProperty Name="ClassExams" Relationship="almohandes_DbModel.FK_ClassExams_Classes" FromRole="Class" ToRole="ClassExam" />
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses" FromRole="Class" ToRole="EmployeeClass" />
+          <NavigationProperty Name="Expenses" Relationship="almohandes_DbModel.FK_Expenses_Classes" FromRole="Class" ToRole="Expens" />
+          <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_Classes" FromRole="Class" ToRole="Revenue" />
           <NavigationProperty Name="StudentsClasses" Relationship="almohandes_DbModel.FK_StudentsClass_Classes" FromRole="Class" ToRole="StudentsClass" />
           <NavigationProperty Name="StudentsClassesTransfers" Relationship="almohandes_DbModel.FK_StudentsClassesTransfer_Classes" FromRole="Class" ToRole="StudentsClassesTransfer" />
           <NavigationProperty Name="StudentsClassesTransfers1" Relationship="almohandes_DbModel.FK_StudentsClassesTransfer_Classes1" FromRole="Class" ToRole="StudentsClassesTransfer" />
@@ -2703,6 +2745,7 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_Expenses_Classes" FromRole="Expens" ToRole="Class" />
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_Expenses_Employees" FromRole="Expens" ToRole="Employee" />
           <NavigationProperty Name="ExpensesType" Relationship="almohandes_DbModel.FK_Expenses_ExpensesTypes" FromRole="Expens" ToRole="ExpensesType" />
           <NavigationProperty Name="StudyPlace" Relationship="almohandes_DbModel.FK_Expenses_StudyPlaces" FromRole="Expens" ToRole="StudyPlace" />
@@ -2847,6 +2890,7 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_Revenues_Classes" FromRole="Revenue" ToRole="Class" />
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_Revenues_Employees" FromRole="Revenue" ToRole="Employee" />
           <NavigationProperty Name="RevenuesType" Relationship="almohandes_DbModel.FK_Revenues_RevenuesTypes" FromRole="Revenue" ToRole="RevenuesType" />
           <NavigationProperty Name="StudyPlace" Relationship="almohandes_DbModel.FK_Revenues_StudyPlaces" FromRole="Revenue" ToRole="StudyPlace" />
@@ -3337,6 +3381,30 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="EmployeeClass">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Expenses_Classes">
+          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Expens" Role="Expens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Expens">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Revenues_Classes">
+          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenue">
               <PropertyRef Name="ClassId" />
             </Dependent>
           </ReferentialConstraint>

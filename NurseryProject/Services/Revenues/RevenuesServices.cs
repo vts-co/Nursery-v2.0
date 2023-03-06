@@ -18,6 +18,8 @@ namespace NurseryProject.Services.Revenues
                     Id = x.Id,
                     StudyPlaceId = x.StudyPlaceId.Value,
                     StudyPlaceName = x.StudyPlace.Name,
+                    ClassId = x.ClassId == null ? Guid.Empty : x.Class.Id,
+                    ClassName = x.ClassId == null ? "" : x.Class.Name,
                     StudyYearId = x.StudyYearId.Value,
                     StudyYearName = x.StudyYear.Name,
                     RevenueTypeParentId=x.RevenuesType.ParentId.Value,

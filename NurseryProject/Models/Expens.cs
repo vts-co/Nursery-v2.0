@@ -32,6 +32,7 @@ namespace NurseryProject.Models
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
     
+        public virtual Class Class { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual ExpensesType ExpensesType { get; set; }
         public virtual StudyPlace StudyPlace { get; set; }

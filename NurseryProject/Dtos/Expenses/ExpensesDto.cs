@@ -10,6 +10,8 @@ namespace NurseryProject.Dtos.Expenses
         public Guid Id { get; set; }
         public Guid StudyPlaceId { get; set; }
         public string StudyPlaceName { get; set; }
+        public Guid ClassId { get; set; }
+        public string ClassName { get; set; }
         public Guid StudyYearId { get; set; }
         public string StudyYearName { get; set; }
         public Guid ExpenseTypePatentId { get; set; }
