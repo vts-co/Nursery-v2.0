@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="http://static.jstree.com/3.0.0-beta5/assets/bootstrap/css/bootstrap.css" />
     <link href="~/assets/css/docs.css" rel="stylesheet" />
     <link href="~/assets/css/default/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
 
     <link rel="stylesheet" href="~/assets/trumbowygEditor/ui/trumbowyg.min.css">
     <link rel="stylesheet" href="~/assets/trumbowygEditor/plugins/mathml/ui/trumbowyg.mathml.min.css">
@@ -182,6 +183,8 @@
                                     <span data-key="t-dashboard">Admin Dashboard</span>
                                 </a>
                             </li>*@
+
+                        @*//0-1 =>1*@
                         @if (ViewBag.userscreens.ToString().Contains(",2,"))
                         {
                             <li id="">
@@ -194,6 +197,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//2-7 =>2*@
                         @if (ViewBag.userscreens.ToString().Contains(",4,") || ViewBag.userscreens.ToString().Contains(",5,") || ViewBag.userscreens.ToString().Contains(",6,") || ViewBag.userscreens.ToString().Contains(",7,") || ViewBag.userscreens.ToString().Contains(",8,"))
                         {
                             <li>
@@ -226,8 +230,7 @@
                                 </ul>
                             </li>
                         }
-
-
+                        @*//8-15 =>3*@
                         @if (ViewBag.userscreens.ToString().Contains(",10,") || ViewBag.userscreens.ToString().Contains(",11,") || ViewBag.userscreens.ToString().Contains(",12,") || ViewBag.userscreens.ToString().Contains(",13,") || ViewBag.userscreens.ToString().Contains(",14,") || ViewBag.userscreens.ToString().Contains(",15,") || ViewBag.userscreens.ToString().Contains(",16,"))
                         {
                             <li>
@@ -268,6 +271,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//16-18 =>4*@
                         @if (ViewBag.userscreens.ToString().Contains(",18,") || ViewBag.userscreens.ToString().Contains(",19,"))
                         {
                             <li>
@@ -287,6 +291,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//19-21 =>5*@
                         @if (ViewBag.userscreens.ToString().Contains(",21,") || ViewBag.userscreens.ToString().Contains(",22,"))
                         {
                             <li>
@@ -306,6 +311,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//22-24 =>6*@
                         @if (ViewBag.userscreens.ToString().Contains(",24,") || ViewBag.userscreens.ToString().Contains(",25,"))
                         {
                             <li>
@@ -325,6 +331,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//25-32 =>7*@
                         @if (ViewBag.userscreens.ToString().Contains(",27,") || ViewBag.userscreens.ToString().Contains(",28,") || ViewBag.userscreens.ToString().Contains(",29,") || ViewBag.userscreens.ToString().Contains(",30,") || ViewBag.userscreens.ToString().Contains(",70,") || ViewBag.userscreens.ToString().Contains(",71,") || ViewBag.userscreens.ToString().Contains(",72,"))
                         {
                             <li>
@@ -345,11 +352,11 @@
                                     {
                                         <li><a href="@Url.Action("Index", "StudentsSubscriptions")"><i class="fas fa-coins p-1"></i> ادارة تحصيل اشتراكات الطلاب</a></li>
                                     }
-                                    @if (ViewBag.userscreens.ToString().Contains(",72,"))
+                                    @if (ViewBag.userscreens.ToString().Contains(",71,"))
                                     {
                                         <li><a href="@Url.Action("Search", "StudentsClassesTransfer")"><i class="bx bx-transfer p-1"></i> ادارة تحويل الطلاب بين الفصول</a></li>
                                     }
-                                    @if (ViewBag.userscreens.ToString().Contains(",73,"))
+                                    @if (ViewBag.userscreens.ToString().Contains(",72,"))
                                     {
                                         <li><a href="@Url.Action("Search", "StudentsLevelsTransfer")"><i class="fa fa-arrow-alt-circle-up p-1"></i>  ادارة تحويل من صف لصف</a></li>
                                     }
@@ -364,6 +371,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//33-39 =>8*@
                         @if (ViewBag.userscreens.ToString().Contains(",32,") || ViewBag.userscreens.ToString().Contains(",33,") || ViewBag.userscreens.ToString().Contains(",34,") || ViewBag.userscreens.ToString().Contains(",35,") || ViewBag.userscreens.ToString().Contains(",36,") || ViewBag.userscreens.ToString().Contains(",37,"))
                         {
                             <li>
@@ -400,6 +408,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//40-42 =>9*@
                         @if (ViewBag.userscreens.ToString().Contains(",39,") || ViewBag.userscreens.ToString().Contains(",40,"))
                         {
                             <li>
@@ -419,6 +428,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//43-45 =>10*@
                         @if (ViewBag.userscreens.ToString().Contains(",42,") || ViewBag.userscreens.ToString().Contains(",43,"))
                         {
                             <li>
@@ -438,6 +448,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//46-52 =>11*@
                         @if (ViewBag.userscreens.ToString().Contains(",45,") || ViewBag.userscreens.ToString().Contains(",46,") || ViewBag.userscreens.ToString().Contains(",47,") || ViewBag.userscreens.ToString().Contains(",48,") || ViewBag.userscreens.ToString().Contains(",49,") || ViewBag.userscreens.ToString().Contains(",50,"))
                         {
                             <li>
@@ -476,6 +487,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//53-69 =>12*@
                         @if (ViewBag.userscreens.ToString().Contains(",52,") || ViewBag.userscreens.ToString().Contains(",53,") || ViewBag.userscreens.ToString().Contains(",54,") || ViewBag.userscreens.ToString().Contains(",55,") || ViewBag.userscreens.ToString().Contains(",56,") || ViewBag.userscreens.ToString().Contains(",57,") || ViewBag.userscreens.ToString().Contains(",58,") || ViewBag.userscreens.ToString().Contains(",59,") || ViewBag.userscreens.ToString().Contains(",60,") || ViewBag.userscreens.ToString().Contains(",61,") || ViewBag.userscreens.ToString().Contains(",62,") || ViewBag.userscreens.ToString().Contains(",63,") || ViewBag.userscreens.ToString().Contains(",64,") || ViewBag.userscreens.ToString().Contains(",65,") || ViewBag.userscreens.ToString().Contains(",66,") || ViewBag.userscreens.ToString().Contains(",67,"))
                         {
                             <li>
@@ -554,6 +566,7 @@
                                 </ul>
                             </li>
                         }
+                        @*//70-71 =>13*@
                         @if (ViewBag.userscreens.ToString().Contains(",69,"))
                         {
                             <li>
@@ -575,7 +588,7 @@
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
-        <div class="main-content" >
+        <div class="main-content">
 
             <div class="page-content">
                 <div class="container-fluid">
@@ -627,6 +640,9 @@
     </div>
     <!-- END layout-wrapper -->
     <!-- JAVASCRIPT -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
     <script src="~/assets/libs/jquery/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
@@ -655,6 +671,7 @@
 
     <script src="~/assets/js/jstree.min.js"></script>
 
+   
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
@@ -666,7 +683,7 @@
         $('#datatable').DataTable({
             "lengthChange": true,
             "lengthMenu": [10, 25, 50, 75, 100],
-            
+
             language: {
                 search: "بحث:",
                 lengthMenu: "عرض _MENU_ عنصر لكل صفحة",
@@ -722,6 +739,7 @@
         });
         $("#datatable_length").addClass("col-lg-5 mt-2");
         $("#datatable_filter").addClass("mt-2 col-lg-3");
+
         var table = $('#datatable').DataTable();
         var table_length = table.rows().count();
         if (table_length > 0) {
@@ -730,6 +748,64 @@
         else {
             $('<div class="dataTables_paginate paging_simple_numbers col-lg-4" id="datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="datatable_previous"><a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">السابق</a></li><li class="paginate_button page-item next disabled" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">التالي</a></li></ul></div>').insertAfter($("#datatable_filter"));
         }
+
+        $('.datatable').DataTable({
+            "lengthChange": true,
+            "lengthMenu": [10, 25, 50, 75, 100],
+
+            language: {
+                search: "بحث:",
+                lengthMenu: "عرض _MENU_ عنصر لكل صفحة",
+
+                info: "العناصر من _START_ الي _END_ من اصل _TOTAL_ عنصر",
+                processing: "جارى التحميل",
+                zeroRecords: "لا يوجد سجلات لعرضها",
+                infoFiltered: "",
+                infoEmpty: 'لا يوجد سجلات متاحه',
+                paginate: {
+                    first: "الاول",
+                    last: "الاخير",
+                    next: 'التالي',
+                    previous: 'السابق'
+                }
+
+            }, order: [[1, 'desc']],
+            dom: 'Blfrtip',
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: '<i class="fa fa-file p-1"></i>نسخ',
+                    className: 'btn btn-default'
+                },
+
+                {
+                    extend: 'excel',
+                    text: '<i class="fa fa-list-alt p-1"></i>نسخة اكسيل',
+                    className: 'btn btn-default',
+
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fa fa-print p-1"></i>طباعة',
+                    title: 'حضانة المهندس',
+                    className: 'btn btn-default',
+                    autoPrint: true,
+
+                    customize: function (win) {
+                        $(win.document.body).find('th').addClass('display').css('text-align', 'center');
+                        $(win.document.body).find('table').addClass('display').css('font-size', '16px');
+                        $(win.document.body).find('table').addClass('display').css('text-align', 'center');
+                        $(win.document.body).find('tr:nth-child(odd) td').each(function (index) {
+                            $(this).css('background-color', '#D0D0D0');
+                        });
+                        $(win.document.body).find('h1').css('text-align', 'center');
+                        $(win.document.body).css('direction', 'rtl');
+
+                    }
+                }
+            ]
+
+        });
     </script>
 
     <script>
@@ -748,11 +824,11 @@
                 a = li[i].getElementsByTagName("a")[0];
 
                 if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    if (i < 2) {
+                    if (i <= 1) {
                         li[0].style.display = "";
                         display(1);
                     }
-                    else if (i > 2 && i <= 7) {
+                    else if (i > 1 && i <= 7) {
                         li[2].style.display = "";
                         display(2);
                     }
@@ -772,34 +848,34 @@
                         li[22].style.display = "";
                         display(6);
                     }
-                    else if (i > 24 && i <= 29) {
+                    else if (i > 24 && i <= 32) {
                         li[25].style.display = "";
                         display(7);
                     }
-                    else if (i > 29 && i <= 36) {
-                        li[30].style.display = "";
+                    else if (i > 32 && i <= 39) {
+                        li[33].style.display = "";
                         display(8);
                     }
 
 
-                    else if (i > 36 && i <= 39) {
-                        li[37].style.display = "";
-                        display(9);
-                    }
                     else if (i > 39 && i <= 42) {
                         li[40].style.display = "";
+                        display(9);
+                    }
+                    else if (i > 42 && i <= 45) {
+                        li[43].style.display = "";
                         display(10);
                     }
-                    else if (i > 42 && i <= 49) {
-                        li[43].style.display = "";
+                    else if (i > 45 && i <= 52) {
+                        li[46].style.display = "";
                         display(11);
                     }
-                    else if (i > 49 && i <= 66) {
-                        li[50].style.display = "";
+                    else if (i > 52 && i <= 69) {
+                        li[53].style.display = "";
                         display(12);
                     }
-                    else if (i > 66 && i <= 69) {
-                        li[67].style.display = "";
+                    else if (i > 69 && i <= 71) {
+                        li[70].style.display = "";
                         display(13);
                     }
 
@@ -899,7 +975,7 @@
     <script src="/assets/trumbowygEditor/plugins/insertaudio/trumbowyg.insertaudio.min.js"></script>
     <script src="/assets/trumbowygEditor/plugins/lineheight/trumbowyg.lineheight.min.js"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <script src="/assets/trumbowygEditor/plugins/mathml/trumbowyg.mathml.min.js"></script>
 
     <script src="/assets/trumbowygEditor/plugins/noembed/trumbowyg.noembed.min.js"></script>

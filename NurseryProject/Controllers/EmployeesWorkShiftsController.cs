@@ -147,11 +147,24 @@ namespace NurseryProject.Controllers
             var model = employeesServices.GetAll().Where(x => x.DepartmentId == DepartmentId).Select(x => new { x.Id, x.Name, x.Code }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult getEmployeesBysearch(Guid DepartmentId, string search)
+        {
+            var model = employeesServices.GetAll().Where(x => x.DepartmentId == DepartmentId && (x.Code.Contains(search) || x.Name.Contains(search))).Select(x => new { x.Id, x.Name, x.Code }).ToList();
+
+            if (search!=null)
+            {
+                 model = model.Where(x =>x.Code.Contains(search) || x.Name.Contains(search)).Select(x => new { x.Id, x.Name, x.Code }).ToList();
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult getEmployeesWorkShifts(Guid EmployeeId, Guid DepartmentId, Guid WorkShiftId, Guid StudyYearId)
         {
             var model = employeesWorkShiftsServices.GetAll().Where(x => x.EmployeeId == EmployeeId && x.DepartmentId == DepartmentId && x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).ToList().Count();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+
     }
     public class Attend2
     {

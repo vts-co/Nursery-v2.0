@@ -172,6 +172,15 @@ namespace NurseryProject.Controllers
             var model = studentsClassServices.GetAll().Where(x => x.ClassId == ClassId).Select(x => new { x.Id, x.StudentId, x.Code, x.StudentName }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult getStudentsBysearch(Guid ClassId, string search)
+        {
+            var model = studentsClassServices.GetAll().Where(x => x.ClassId == ClassId).Select(x => new { x.Id, x.StudentId, x.Code, x.StudentName }).ToList();
+            if (search != null)
+            {
+                model = model.Where(x => x.Code.Contains(search) || x.StudentName.Contains(search)).Select(x => new { x.Id, x.StudentId, x.Code, x.StudentName }).ToList();
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult getStudentAttendans(string Date, Guid ClassId, Guid StudyYearId, Guid StudyClassId, Guid StudentId)
         {
             var date1 = DateTime.Parse(Date);

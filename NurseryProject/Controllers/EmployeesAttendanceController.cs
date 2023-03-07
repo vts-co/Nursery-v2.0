@@ -143,6 +143,15 @@ namespace NurseryProject.Controllers
             var model = employeesWorkShiftsServices.GetAll().Where(x =>x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x=>new {x.Id,x.Code,x.EmployeeId,x.EmployeeName }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult getEmployeesWorkShiftsBysearch(Guid StudyYearId, Guid WorkShiftId,string search)
+        {
+            var model = employeesWorkShiftsServices.GetAll().Where(x => x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x => new { x.Id, x.Code, x.EmployeeId, x.EmployeeName }).ToList();
+            if (search != null)
+            {
+                model = model.Where(x => x.Code.Contains(search) || x.EmployeeName.Contains(search)).Select(x => new { x.Id, x.Code, x.EmployeeId, x.EmployeeName }).ToList();
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult getEmployeesAttendance(Guid Id, string Date)
         {
             var model = employeesAttendanceServices.GetByEmployeeWorkShift().Where(x => x.EmployeeWorkShiftId == Id && x.Date == Date&&x.IsAttend==true).Select(x => new { x.Id,x.Code, x.EmployeeId, x.EmployeeName,x.EmployeeWorkShiftId }).ToList().Count();

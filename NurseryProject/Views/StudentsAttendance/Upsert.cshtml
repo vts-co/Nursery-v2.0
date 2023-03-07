@@ -78,6 +78,11 @@
                         </div>
                     </div>
                 }
+                <hr />
+                <div class="dataTables_filter mt-2 col-lg-3">
+                    <label>بحث:</label>
+                    <input type="search" id="search" name="search" class="form-control form-control-sm" onkeyup="searchFunction()">
+                </div>
                 <div class="form-group mb-3 col-sm-12" style="height:200px;overflow-y:scroll">
                     <div class="card-body">
                         <table class="table table-primary w-100" id="table1">
@@ -213,7 +218,45 @@
 
         });
 
+        function searchFunction() {
+            $.get('/StudentsAttendance/getStudentsBysearch', { ClassId: $("#ClassId").val(), search: document.getElementById("search").value }, function (data) {
+                $("#students").empty();
+                if ($("#Id").val() == "00000000-0000-0000-0000-000000000000") {
 
+                    $.each(data, function (key, value) {
+
+                        $("#students").append("<tr>");
+                        $("#students").append("<td>" + value["Code"] + "</td>");
+                        $("#students").append("<td>" + value["StudentName"] + "</td>");
+                        $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' /><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' class='form-check-input' /></td>");
+                        $("#students").append("</tr><tr></tr>");
+
+                    });
+                }
+                else {
+                    $.each(data, function (key, value) {
+                        $.get('/StudentsAttendance/getStudentAttendans', { StudentId: value["StudentId"], Date: document.getElementById("Date").value, StudyYearId: $("#StudyYearId").val(), ClassId: $("#ClassId").val(), StudyClassId: $("#StudyClassId").val() }, function (data1) {
+                            if (data1 == "0") {
+
+                                $("#students").append("<tr>");
+                                $("#students").append("<td>" + value["Code"] + "</td>");
+                                $("#students").append("<td>" + value["StudentName"] + "</td>");
+                                $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' /><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' class='form-check-input' /></td>");
+                                $("#students").append("</tr><tr></tr>");
+
+                            }
+                            else {
+                                $("#students").append("<tr>");
+                                $("#students").append("<td>" + value["Code"] + "</td>");
+                                $("#students").append("<td>" + value["StudentName"] + "</td>");
+                                $("#students").append("<td><input type='hidden' id='IsAttend[" + key + "].Id' name='IsAttend[" + key + "].Id' value='" + value["StudentId"] + "' /><input type='checkbox' id='IsAttend[" + key + "].Att' name='IsAttend[" + key + "].Att' class='form-check-input' checked /></td>");
+                                $("#students").append("</tr><tr></tr>");
+                            }
+                        });
+                    });
+                }
+            });
+        }
        
         $("#All").change(function () {
             if (document.getElementById('All').checked) {

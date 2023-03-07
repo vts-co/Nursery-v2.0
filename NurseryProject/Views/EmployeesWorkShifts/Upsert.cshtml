@@ -49,27 +49,20 @@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-12" style="height:400px;overflow-y:scroll">
-                    <label class="control-label">الموظفين</label>
-                    <div class="col-12" id="">
-                        <table id="datatable2" class="table table-striped dt-responsive  nowrap w-100">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayName("الكود")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("الاسم")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("الكل")
-                                        <input type='checkbox' class='form-check-input' id='All' name='All' value='' />
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="empId">
-                            </tbody>
-                        </table>
+                    <label class="control-label text-center">الموظفين</label>
+                    <hr />
+                    <div class="dataTables_filter mt-2 col-lg-3">
+                        <label>بحث:</label>
+                        <input type="search" id="search" name="search" class="form-control form-control-sm" onkeyup="searchFunction()">
+                    </div>
+                    <div class="col-12">
 
+                        <table id="datatable1" class="table table-striped dt-responsive nowrap w-100 mt-2">
+
+                            <thead class="bg-soft-primary"><tr><th>الكود</th><th>الاسم</th><th>الكل <input type="checkbox" class="form-check-input" id="All" name="All" value="" /></th></tr></thead>
+
+                            <tbody id="databody"></tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-12">
@@ -110,20 +103,54 @@
         //        });
         //    });
         //});
+        
+        function searchFunction() {
+            $.get('/EmployeesWorkShifts/getEmployeesBysearch', { DepartmentId: $("#DepartmentId").val(), search: document.getElementById("search").value }, function (data) {
+                $("#databody").empty();
+                $.each(data, function (key, value) {
+                    $("#databody").append('<tr><td>' + value["Code"] + '</td><td>' + value["Name"] + '</td><td><input type="hidden" id="emp[' + key + '].Id" name="emp[' + key + '].Id" value="' + value["Id"] + '"/><input type="checkbox" class="form-check-input p-1" id="emp[' + key + '].Att" name="emp[' + key + '].Att" /></td></tr>');
+                });
+            });
+        }
 
+        $("#DepartmentId").change(function () {
+            $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
+                $("#databody").empty();
+                $.each(data, function (key, value) {
+                    $("#databody").append('<tr><td>' + value["Code"] + '</td><td>' + value["Name"] + '</td><td><input type="hidden" id="emp[' + key + '].Id" name="emp[' + key + '].Id" value="' + value["Id"] + '"/><input type="checkbox" class="form-check-input p-1" id="emp[' + key + '].Att" name="emp[' + key + '].Att" /></td></tr>');
+                });
+            });
+        });
+
+        $("#All").change(function () {
+
+            if (document.getElementById('All').checked) {
+                var rowCount = $('#datatable1 tr').length;
+
+                for (var i = 0; i < rowCount; i++) {
+                    document.getElementById("emp[" + i + "].Att").checked = true;
+                }
+            }
+            else {
+                var rowCount = $('#datatable1 tr').length;
+                for (var i = 0; i < rowCount; i++) {
+                    document.getElementById("emp[" + i + "].Att").checked = false;
+                }
+            }
+        });
         $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
-            $("#empId").empty();
+            $("#databody").empty();
+
             $.each(data, function (key, value) {
                 $.get('/EmployeesWorkShifts/getEmployeesWorkShifts', { EmployeeId: value["Id"], DepartmentId: $("#DepartmentId").val(), WorkShiftId: $("#WorkShiftId").val(), StudyYearId: $("#StudyYearId").val() }, function (data1) {
                     if (data1 == "0") {
-                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' /></td></tr>")
+                        $("#databody").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' /></td></tr>")
                     }
                     else {
-                        $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' checked /></td></tr>")
+                        $("#databody").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' checked /></td></tr>")
                     }
                 });
             });
-            
 
             var mod1 = document.getElementById('StudyYearId').value;
             var mod2 = document.getElementById('DepartmentId').value;
@@ -139,30 +166,7 @@
             $('#empp').append("<input type='hidden' id='WorkShiftId' name='WorkShiftId' value='" + mod3 + "'/>");
 
         });
-        
-        $("#DepartmentId").change(function () {
-            $.get('/EmployeesWorkShifts/getEmployees', { DepartmentId: $("#DepartmentId").val() }, function (data) {
-                $("#empId").empty();
 
-                $.each(data, function (key, value) {
-                    $("#empId").append("<tr><td>" + value["Code"] + "</td><td>" + value["Name"] + " </td><td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "'/><input type='checkbox' class='form-check-input p-1' id='emp[" + key + "].Att' name='emp[" + key + "].Att' /></td></tr>");
-                });
 
-            });
-        });
-        $("#All").change(function () {
-            if (document.getElementById('All').checked) {
-                var rowCount = $('#datatable2 tr').length;
-                for (var i = 0; i < rowCount; i++) {
-                    document.getElementById("emp[" + i + "].Att").checked = true;
-                }
-            }
-            else {
-                var rowCount = $('#datatable2 tr').length;
-                for (var i = 0; i < rowCount; i++) {
-                    document.getElementById("emp[" + i + "].Att").checked = false;
-                }
-            }
-        });
     </script>
 }

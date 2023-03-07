@@ -35,12 +35,12 @@
                     </div>
                 </div>
                 @*<div class="form-group mb-3 col-sm-6">
-            @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
-            <div class="col-12">
-                @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                @Html.ValidationMessage("DepartmentId", "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                        @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessage("DepartmentId", "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
                 @if (ViewBag.readon == null)
                 {
                     <div class="form-group mb-3 col-sm-6">
@@ -56,12 +56,16 @@
                     <div class="form-group mb-3 col-sm-6">
                         @Html.Label("تاريخ اليوم", htmlAttributes: new { @class = "control-label" })
                         <div class="col-12">
-                            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date", Value = ViewBag.Date, required = "required",@readonly= "readonly" } })
+                            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date", Value = ViewBag.Date, required = "required", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 }
-
+                <hr />
+                <div class="dataTables_filter mt-2 col-lg-3">
+                    <label>بحث:</label>
+                    <input type="search" id="search" name="search" class="form-control form-control-sm" onkeyup="searchFunction()">
+                </div>
                 <div class="form-group mb-3 col-sm-12" style="height:200px;overflow-y:scroll">
                     <div class="card-body">
                         <table class="table table-primary w-100" id="table1">
@@ -119,14 +123,11 @@
             $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
                 $("#employees").empty();
                 $.each(data, function (key, value) {
-                    $.get('/EmployeesAttendance/getEmployees', { Id: value["EmployeeId"] }, function (data1) {
-                        $("#employees").append("<tr>");
-                        $("#employees").append("<td>" + data1["Code"] + "</td>");
-                        $("#employees").append("<td>" + data1["Name"] + "</td>");
-                        $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
-                        $("#employees").append("</tr><tr></tr>");
-                    });
-
+                    $("#employees").append("<tr>");
+                    $("#employees").append("<td>" + value["Code"] + "</td>");
+                    $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
+                    $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["EmployeeId"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
+                    $("#employees").append("</tr><tr></tr>");
                 });
 
             });
@@ -135,14 +136,11 @@
             $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
                 $("#employees").empty();
                 $.each(data, function (key, value) {
-                    $.get('/EmployeesAttendance/getEmployees', { Id: value["EmployeeId"] }, function (data1) {
-                        $("#employees").append("<tr>");
-                        $("#employees").append("<td>" + data1["Code"] + "</td>");
-                        $("#employees").append("<td>" + data1["Name"] + "</td>");
-                        $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
-                        $("#employees").append("</tr><tr></tr>");
-                    });
-
+                    $("#employees").append("<tr>");
+                    $("#employees").append("<td>" + value["Code"] + "</td>");
+                    $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
+                    $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["EmployeeId"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
+                    $("#employees").append("</tr><tr></tr>");
                 });
 
             });
@@ -166,7 +164,7 @@
                         $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' checked /></td>");
                         $("#employees").append("</tr><tr></tr>");
                     }
-                   
+
                 });
 
             });
@@ -174,8 +172,45 @@
             document.getElementById('WorkShiftId').disabled = true;
         });
 
-       
-       
+        function searchFunction() {
+            $.get('/EmployeesAttendance/getEmployeesWorkShiftsBysearch', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val(), search: document.getElementById("search").value }, function (data) {
+                $("#employees").empty();
+                /**/
+                if ($("#Id").val() == "00000000-0000-0000-0000-000000000000") {
+                    /**/
+                    $.each(data, function (key, value) {
+                        $("#employees").append("<tr>");
+                        $("#employees").append("<td>" + value["Code"] + "</td>");
+                        $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
+                        $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["EmployeeId"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
+                        $("#employees").append("</tr><tr></tr>");
+                    });
+                }
+                else {
+                    $.each(data, function (key, value) {
+                        $.get('/EmployeesAttendance/getEmployeesAttendance', { Id: value["Id"], Date: document.getElementById('Date').value }, function (data1) {
+                            if (data1 == "0") {
+                                $("#employees").append("<tr>");
+                                $("#employees").append("<td>" + value["Code"] + "</td>");
+                                $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
+                                $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' /></td>");
+                                $("#employees").append("</tr><tr></tr>");
+                            }
+                            else {
+                                $("#employees").append("<tr>");
+                                $("#employees").append("<td>" + value["Code"] + "</td>");
+                                $("#employees").append("<td>" + value["EmployeeName"] + "</td>");
+                                $("#employees").append("<td><input type='hidden' id='emp[" + key + "].Id' name='emp[" + key + "].Id' value='" + value["Id"] + "' /><input type='checkbox' id='emp[" + key + "].Att' name='emp[" + key + "].Att' class='form-check-input' checked /></td>");
+                                $("#employees").append("</tr><tr></tr>");
+                            }
+
+                        });
+                    });
+                }
+
+            });
+        }
+
         $("#All").change(function () {
             if (document.getElementById('All').checked) {
                 var rowCount = $('#table1 tr').length;
