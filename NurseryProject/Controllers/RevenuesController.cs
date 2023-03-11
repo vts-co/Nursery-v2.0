@@ -35,7 +35,7 @@ namespace NurseryProject.Controllers
 
         public ActionResult Create()
         {
-            var studyPlaces = studyPlacesServices.GetAll();
+            var studyPlaces = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudyPlaces = studyPlaces;
 
             var studyYears = studyYearsServices.GetAll();
@@ -50,7 +50,7 @@ namespace NurseryProject.Controllers
             var revenuesTypesModel = revenuesTypesServices.GetAll();
             ViewBag.RevenuesTypes = revenuesTypesModel;
 
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             return View("Upsert", new Revenue());
@@ -77,7 +77,7 @@ namespace NurseryProject.Controllers
             var revenue = revenuesServices.Get(Id);
             var revenuetype = revenuesTypesServices.GetAll().Where(x => x.Id == revenue.RevenueTypeId).FirstOrDefault();
 
-            var studyPlaces = studyPlacesServices.GetAll();
+            var studyPlaces = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudyPlaces = studyPlaces;
 
             var studyYears = studyYearsServices.GetAll();
@@ -89,10 +89,10 @@ namespace NurseryProject.Controllers
             var RevenueTypesModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == revenuetype.ParentId).ToList();
             ViewBag.RevenueTypeId = new SelectList(RevenueTypesModel, "Id", "Name", revenue.RevenueTypeId);
 
-            var classes = classesServices.GetAll().Where(x => x.StudyPlaceId == revenue.StudyPlaceId).ToList();
+            var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == revenue.StudyPlaceId).ToList();
             ViewBag.ClassId = new SelectList(classes,"Id","Name", revenue.ClassId);
 
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             ViewBag.RevenueDate= revenue.RevenueDate.Value.ToString("yyyy-MM-dd");
@@ -110,8 +110,6 @@ namespace NurseryProject.Controllers
             }
             else
             {
-               
-
                 TempData["warning"] = result.Message;
                 return RedirectToAction("Index");
             }
@@ -138,7 +136,7 @@ namespace NurseryProject.Controllers
             ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name");
 
             ViewBag.RevenueTypeId = new SelectList("");
-            ViewBag.StudyPlaceId = new SelectList(studyPlacesServices.GetAll(), "Id", "Name");
+            ViewBag.StudyPlaceId = new SelectList(studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
             ViewBag.ClassId = new SelectList("");
             return View();
         }
@@ -179,24 +177,24 @@ namespace NurseryProject.Controllers
             {
                 model = model.Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
 
-                var StudyPlaceModel = studyPlacesServices.GetAll();
+                var StudyPlaceModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name", StudyPlaceId);
             }
             else
             {
-                var StudyPlaceModel = studyPlacesServices.GetAll();
+                var StudyPlaceModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name");
             }
             if (ClassId != null)
             {
                 model = model.Where(x => x.ClassId == ClassId).ToList();
 
-                var classes = classesServices.GetAll().Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
                 ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
             }
             else if (StudyPlaceId != null)
             {
-                var classes = classesServices.GetAll().Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
                 ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
             }
             else
@@ -251,14 +249,14 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getClasses(Guid Id)
         {
-            var model = classesServices.GetAll().Where(x => x.StudyPlaceId == Id).ToList();
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == Id).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         [Authorized(ScreenId = "67")]
 
         public ActionResult getClassesReport(Guid Id)
         {
-            var model = classesServices.GetAll().Where(x => x.StudyPlaceId == Id).ToList();
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == Id).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
     }

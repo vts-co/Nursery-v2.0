@@ -37,6 +37,7 @@ namespace NurseryProject.Services
                 {
                     RoleId = (Role)user.RoleId,
                     UserId = user.Id,
+                    EmployeeId = user.EmployeeId != null ? user.EmployeeId.Value : Guid.Empty,
                     UserName = user.Username,
                     UserScreens = user.UserScreens
                 };

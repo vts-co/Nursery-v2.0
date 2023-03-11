@@ -19,7 +19,7 @@ namespace NurseryProject.Controllers
         // GET: Cities
         public ActionResult Index()
         {
-            var model = workShiftsServices.GetAll();
+            var model = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
         public ActionResult Create()

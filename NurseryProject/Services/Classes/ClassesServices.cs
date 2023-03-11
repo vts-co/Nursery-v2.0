@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Dtos.Classes;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace NurseryProject.Services.Classes
 {
     public class ClassesServices
     {
-        public List<ClassesDto> GetAll()
+        public List<ClassesDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Classes.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new ClassesDto
+                var model = dbContext.Classes.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeeClasses.Any(y => y.EmployeeId == EmployeeId && y.IsDeleted == false)||x.ClassesLeaders.Any(z => z.EmployeeId == EmployeeId && z.IsDeleted == false)||x.StudyPlace.BuildingSupervisors.Any(i=>i.IsDeleted==false&&i.EmployeeId==EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new ClassesDto
                 {
                     Id = x.Id,
                     StudyTypeId = x.Level.StudyType.Id,
@@ -22,7 +23,7 @@ namespace NurseryProject.Services.Classes
                     LevelName = x.Level.Name,
                     StudyPlaceId = x.StudyPlaceId != null ? x.StudyPlaceId.Value : Guid.Empty,
                     StudyPlaceName = x.StudyPlaceId != null ? x.StudyPlace.Name : "",
-                    StudentsNum=x.StudentsClasses.Where(y=>y.IsDeleted==false&&y.IsCurrent==true).ToList().Count().ToString(),
+                    StudentsNum = x.StudentsClasses.Where(y => y.IsDeleted == false && y.IsCurrent == true).ToList().Count().ToString(),
                     Name = x.Name,
                     Notes = x.Notes
                 }).ToList();
@@ -98,7 +99,7 @@ namespace NurseryProject.Services.Classes
                     result.Message = "هذا الفصل غير موجود ";
                     return result;
                 }
-                if (Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false)|| Oldmodel.EmployeeClasses.Any(y => y.IsDeleted == false) || Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false) || Oldmodel.ClassesLeaders.Any(y => y.IsDeleted == false) || Oldmodel.ClassExams.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClassesTransfers.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClassesTransfers1.Any(y => y.IsDeleted == false))
+                if (Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false) || Oldmodel.EmployeeClasses.Any(y => y.IsDeleted == false) || Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false) || Oldmodel.ClassesLeaders.Any(y => y.IsDeleted == false) || Oldmodel.ClassExams.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClassesTransfers.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClassesTransfers1.Any(y => y.IsDeleted == false))
                 {
                     result.IsSuccess = false;
                     result.Message = "هذا الفصل مرتبط ببعض العمليات لا يمكن حذفه";

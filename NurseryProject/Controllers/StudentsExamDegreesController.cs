@@ -28,7 +28,7 @@ namespace NurseryProject.Controllers
         // GET: Cities
         public ActionResult Index()
         {
-            var model = studentExamDegreesServices.GetAll();
+            var model = studentExamDegreesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
         public ActionResult Create()
@@ -36,7 +36,7 @@ namespace NurseryProject.Controllers
             var studyTypes = studyTypesServices.GetAll();
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
 
-            var exams = examsServices.GetAll();
+            var exams = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.ExamId = new SelectList("");
 
             ViewBag.LevelId = new SelectList("");
@@ -59,10 +59,10 @@ namespace NurseryProject.Controllers
             var level = levelsServices.GetAll().Where(x => x.StudyTypeId == studentExamDegreesDto.StudyTypeId);
             ViewBag.LevelId = new SelectList(level, "Id", "Name", studentExamDegreesDto.LevelId);
 
-            var class1 = classesServices.GetAll().Where(x => x.LevelId == studentExamDegreesDto.LevelId);
+            var class1 = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == studentExamDegreesDto.LevelId);
             ViewBag.ClassId = new SelectList(class1, "Id", "Name", studentExamDegreesDto.ClassId);
 
-            var exams = examsServices.GetAll().Where(x => x.LevelId == studentExamDegreesDto.LevelId); ;
+            var exams = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == studentExamDegreesDto.LevelId); ;
             ViewBag.ExamId = new SelectList(exams, "Id", "Name", studentExamDegreesDto.ExamId);
 
             return View("Upsert", new StudentExamDegreesDto());
@@ -70,18 +70,18 @@ namespace NurseryProject.Controllers
 
         public ActionResult Edit(Guid Id)
         {
-            var model = studentExamDegreesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+            var model = studentExamDegreesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
 
             var studyTypes = studyTypesServices.GetAll();
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", model.StudyTypeId);
 
-            var exams = examsServices.GetAll();
+            var exams = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.ExamId = new SelectList(exams, "Id", "Name", model.ExamId);
 
             var level = levelsServices.GetAll();
             ViewBag.LevelId = new SelectList(level, "Id", "Name", model.LevelId);
 
-            var class1 = classesServices.GetAll();
+            var class1 = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.ClassId = new SelectList(class1, "Id", "Name", model.ClassId);
 
             return View("Upsert", model);
@@ -101,10 +101,10 @@ namespace NurseryProject.Controllers
             var level = levelsServices.GetAll().Where(x => x.StudyTypeId == studentExamDegreesDto.StudyTypeId);
             ViewBag.LevelId = new SelectList(level, "Id", "Name", studentExamDegreesDto.LevelId);
 
-            var class1 = classesServices.GetAll().Where(x => x.LevelId == studentExamDegreesDto.LevelId);
+            var class1 = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == studentExamDegreesDto.LevelId);
             ViewBag.ClassId = new SelectList(class1, "Id", "Name", studentExamDegreesDto.ClassId);
 
-            var exams = examsServices.GetAll().Where(x => x.LevelId == studentExamDegreesDto.LevelId); ;
+            var exams = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == studentExamDegreesDto.LevelId); ;
             ViewBag.ExamId = new SelectList(exams, "Id", "Name", studentExamDegreesDto.ExamId);
 
             return View("Upsert", new StudentExamDegreesDto());
@@ -127,23 +127,23 @@ namespace NurseryProject.Controllers
 
         public ActionResult getClasses(Guid Id)
         {
-            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult get(Guid Id)
         {
-            var model = examsServices.GetAll().Where(x => x.Id == Id).Select(x => new { x.Id, Name = x.Name, x.IsOneQuestion, x.TotalDegree, x.MoreQuestion }).ToList();
+            var model = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).Select(x => new { x.Id, Name = x.Name, x.IsOneQuestion, x.TotalDegree, x.MoreQuestion }).ToList();
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getStudents(Guid Id)
         {
-            var model = studentsClassServices.GetAll().Where(x => x.ClassId == Id).Select(x => new { Id = x.StudentId, x.Code, Name = x.StudentName }).ToList();
+            var model = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.ClassId == Id).Select(x => new { Id = x.StudentId, x.Code, Name = x.StudentName }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getExams(Guid Id)
         {
-            var model = examsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name }).ToList();
+            var model = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getLevels(Guid Id)
@@ -153,8 +153,8 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getExamClass(Guid Id)
         {
-            var model = studentExamDegreesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
-            var students = studentsClassServices.GetAll().Where(x => x.ClassId == model.ClassId).ToList();
+            var model = studentExamDegreesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
+            var students = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.ClassId == model.ClassId).ToList();
             var count = model.Students.Count();
 
             for (int i = 0; i < students.Count(); i++)
@@ -193,9 +193,9 @@ namespace NurseryProject.Controllers
         {
             List<StudentExamDegreesDetailsDto> studentExamDegreesDetailsDtos = new List<StudentExamDegreesDetailsDto>();
             var model = studentExamDegreesServices.StudentExamDegrees(Id, StudentId).ToList();
-            var model1 = examsServices.GetAll().Where(x => x.Id == ExamId).FirstOrDefault();
+            var model1 = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == ExamId).FirstOrDefault();
 
-            var item = studentsClassServices.GetAll().Where(x => x.StudentId == StudentId).FirstOrDefault();
+            var item = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudentId == StudentId).FirstOrDefault();
             List<StudentExamDegreesDetailsDto> studentExamDegreesDetailsDto2 = new List<StudentExamDegreesDetailsDto>();
 
             if (model.Count() == 0)

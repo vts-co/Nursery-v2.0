@@ -124,6 +124,7 @@ namespace NurseryProject.Services.Users
                 Oldmodel.Password = pass;
                 Oldmodel.UserScreens = model.UserScreens;
                 Oldmodel.EmployeeId = model.EmployeeId;
+                Oldmodel.RoleId = model.RoleId;
 
                 dbContext.SaveChanges();
                 result.IsSuccess = true;

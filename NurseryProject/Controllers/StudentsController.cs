@@ -1,4 +1,5 @@
-﻿using NurseryProject.Authorization;
+﻿using ExcelDataReader;
+using NurseryProject.Authorization;
 using NurseryProject.Dtos.Students;
 using NurseryProject.Enums;
 using NurseryProject.Models;
@@ -10,6 +11,7 @@ using NurseryProject.Services.StudyYears;
 using NurseryProject.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -32,7 +34,7 @@ namespace NurseryProject.Controllers
         // GET: Cities
         public ActionResult Index()
         {
-            var model = studentsServices.GetAll();
+            var model = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
         public ActionResult Create()
@@ -195,12 +197,12 @@ namespace NurseryProject.Controllers
             ViewBag.CityId = new SelectList(citiesServices.GetAll(), "Id", "Name");
             ViewBag.DestrictId = new SelectList("");
 
-            var students = studentsServices.GetAll();
+            var students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             if (student.Code != null)
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.Code.Contains(student.Code)).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Code.Contains(student.Code)).ToList();
                 }
                 else
                 {
@@ -211,7 +213,7 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.Name.Contains(student.Name)).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Name.Contains(student.Name)).ToList();
                 }
                 else
                 {
@@ -222,7 +224,7 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.GenderId == student.GenderId).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.GenderId == student.GenderId).ToList();
                 }
                 else
                 {
@@ -233,7 +235,7 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.RegistrationTypeId == student.RegistrationTypeId).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.RegistrationTypeId == student.RegistrationTypeId).ToList();
                 }
                 else
                 {
@@ -244,7 +246,7 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.CityId == CityId).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.CityId == CityId).ToList();
                 }
                 else
                 {
@@ -255,7 +257,7 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.DestrictId == student.DestrictId).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.DestrictId == student.DestrictId).ToList();
                 }
                 else
                 {
@@ -266,7 +268,7 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.Phone.Contains(student.Phone)).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Phone.Contains(student.Phone)).ToList();
                 }
                 else
                 {
@@ -277,7 +279,7 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll().Where(x => x.JoiningDate == student.JoiningDate.Value.ToString()).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.JoiningDate == student.JoiningDate.Value.ToString()).ToList();
                 }
                 else
                 {
@@ -288,7 +290,7 @@ namespace NurseryProject.Controllers
 
             return View(student);
         }
-        
+
         [Authorized(ScreenId = "52")]
         public ActionResult getDestrictsSearch(Guid Id)
         {
@@ -316,31 +318,31 @@ namespace NurseryProject.Controllers
         public ActionResult Reports()
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
-            ViewBag.StudentId=new SelectList(studentsServices.GetAll(), "Id", "Name");
+            ViewBag.StudentId = new SelectList(studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
             ViewBag.Count = 0;
             return View();
         }
         [HttpPost, ValidateInput(false)]
         [Authorized(ScreenId = "53")]
-        public ActionResult Reports(Guid? StudyYearId = null,Guid? StudentId=null)
+        public ActionResult Reports(Guid? StudyYearId = null, Guid? StudentId = null)
         {
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name", StudyYearId);
-            var students = studentsServices.GetAllReport(StudyYearId.Value);
+            var students = studentsServices.GetAllReport(StudyYearId.Value, (Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
 
-            if (StudentId!=null)
+            if (StudentId != null)
             {
                 students = students.Where(x => x.Id == StudentId).ToList();
-                ViewBag.StudentId = new SelectList(studentsServices.GetAll(), "Id", "Name", StudentId);
+                ViewBag.StudentId = new SelectList(studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name", StudentId);
             }
             else
             {
-                ViewBag.StudentId = new SelectList(studentsServices.GetAll(), "Id", "Name");
+                ViewBag.StudentId = new SelectList(studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
             }
             ViewBag.Students = students;
             ViewBag.Count = students.Count();
             return View();
         }
-        
+
         public ActionResult getDestricts(Guid Id)
         {
             if (Id == null)
@@ -366,5 +368,115 @@ namespace NurseryProject.Controllers
             }
             return items;
         }
+
+        #region Import MCQ Question Excel
+
+        public ActionResult ImportExcel(HttpPostedFileBase upload)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    // ExcelDataReader works with the binary Excel file, so it needs a FileStream
+                    // to get started. This is how we avoid dependencies on ACE or Interop:
+                    Stream stream = upload.InputStream;
+
+                    IExcelDataReader reader = null;
+
+
+                    if (upload.FileName.EndsWith(".xls"))
+                    {
+                        reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                    }
+                    else if (upload.FileName.EndsWith(".xlsx"))
+                    {
+                        reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                    }
+                    else
+                    {
+                        TempData["warning"] = "البيانات المدخلة غير صحيحة";
+                        return RedirectToAction("Index");
+                    }
+                    int fieldcount = reader.FieldCount;
+                    int rowcount = reader.RowCount;
+                    DataTable model = new DataTable();
+                    DataRow row;
+                    DataTable dt_ = new DataTable();
+                    try
+                    {
+                        dt_ = reader.AsDataSet().Tables[0];
+                        for (int i = 0; i < dt_.Columns.Count; i++)
+                        {
+                            var ss = dt_.Rows[0][i].ToString();
+                            model.Columns.Add(dt_.Rows[0][i].ToString());
+                        }
+                        int rowcounter = 0;
+                        for (int row_ = 1; row_ < rowcount; row_++)
+                        {
+                            row = model.NewRow();
+                            for (int col = 0; col < fieldcount; col++)
+                            {
+                                row[col] = dt_.Rows[row_][col].ToString();
+                                var sss = dt_.Rows[row_][col].ToString();
+
+                                rowcounter++;
+                            }
+                            model.Rows.Add(row);
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["warning"] = "البيانات المدخلة غير صحيحة";
+                        return RedirectToAction("Index");
+                    }
+
+                    reader.Close();
+                    reader.Dispose();
+                    for (int i = 0; i < model.Rows.Count; i++)
+                    {
+                        Student student = new Student();
+                        student.Id = Guid.NewGuid();
+                        if (model.Rows[i][0].ToString() == ""|| model.Rows[i][0].ToString() == null)
+                            student.Code = randomCode.GenerateStudentCodeRandom();
+                        else if (studentsServices.CodeExist(model.Rows[i][0].ToString()))
+                            student.Code = randomCode.GenerateStudentCodeRandom();
+                        else
+                            student.Code = model.Rows[i][0].ToString();
+
+                        student.Name = model.Rows[i][1].ToString();
+                        student.Phone = model.Rows[i][2].ToString();
+                        student.Address = model.Rows[i][3].ToString();
+                        student.BirthDate = DateTime.Parse(model.Rows[i][4].ToString()).Date;
+                        if (model.Rows[i][5].ToString() == "ذكر")
+                            student.GenderId = (int)Gender.ذكر;
+                        else
+                            student.GenderId = (int)Gender.انثي;
+
+                        student.MotherName = model.Rows[i][6].ToString();
+                        student.RegistrationTypeId = Guid.Parse("E31AC343-47DA-4DFE-8970-E1719DEEC869");
+                        student.JoiningDate = DateTime.Parse(model.Rows[i][7].ToString()).Date;
+                        student.Notes = model.Rows[i][8].ToString();
+
+                        studentsServices.Create(student, (Guid)TempData["UserId"]);
+
+                    }
+
+                    TempData["success"] = "تم حفظ البيانات بنجاح";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["warning"] = "البيانات المدخلة غير صحيحة";
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
+        }
+
+        #endregion
+
     }
 }

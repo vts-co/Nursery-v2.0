@@ -29,14 +29,14 @@ namespace NurseryProject.Controllers
         // GET: Cities
         public ActionResult Index()
         {
-            var model = employeesServices.GetAll();
+            var model = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
         public ActionResult Create()
         {
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text");
             ViewBag.MaritalStateId = new SelectList(MaritalStatus(), "Value", "Text");
-            ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name");
+            ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
             ViewBag.JopId = new SelectList("");
             return View("Upsert", new Employee());
         }
@@ -76,13 +76,13 @@ namespace NurseryProject.Controllers
 
                 if (employee.JopId != null)
                 {
-                    var DepartmentId = jopsServices.GetAll().Where(x => x.Id == employee.JopId).FirstOrDefault().DepartmentId;
-                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name", DepartmentId);
-                    ViewBag.JopId = new SelectList(jopsServices.GetAll().Where(x => x.DepartmentId == DepartmentId).ToList(), "Id", "Name", employee.JopId);
+                    var DepartmentId = jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == employee.JopId).FirstOrDefault().DepartmentId;
+                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name", DepartmentId);
+                    ViewBag.JopId = new SelectList(jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.DepartmentId == DepartmentId).ToList(), "Id", "Name", employee.JopId);
                 }
                 else
                 {
-                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name");
+                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
                     ViewBag.JopId = new SelectList("");
                 }
 
@@ -104,13 +104,13 @@ namespace NurseryProject.Controllers
 
             if (employee.JopId != null)
             {
-                var DepartmentId = jopsServices.GetAll().Where(x => x.Id == employee.JopId).FirstOrDefault().DepartmentId;
-                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name", DepartmentId);
-                ViewBag.JopId = new SelectList(jopsServices.GetAll().Where(x => x.DepartmentId == DepartmentId).ToList(), "Id", "Name", employee.JopId);
+                var DepartmentId = jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == employee.JopId).FirstOrDefault().DepartmentId;
+                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name", DepartmentId);
+                ViewBag.JopId = new SelectList(jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.DepartmentId == DepartmentId).ToList(), "Id", "Name", employee.JopId);
             }
             else
             {
-                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name");
+                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
                 ViewBag.JopId = new SelectList("");
             }
             return View("Upsert", employee);
@@ -146,13 +146,13 @@ namespace NurseryProject.Controllers
 
                 if (employee.JopId != null)
                 {
-                    var DepartmentId = jopsServices.GetAll().Where(x => x.Id == employee.JopId).FirstOrDefault().DepartmentId;
-                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name", DepartmentId);
-                    ViewBag.JopId = new SelectList(jopsServices.GetAll().Where(x => x.DepartmentId == DepartmentId).ToList(), "Id", "Name", employee.JopId);
+                    var DepartmentId = jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == employee.JopId).FirstOrDefault().DepartmentId;
+                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name", DepartmentId);
+                    ViewBag.JopId = new SelectList(jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.DepartmentId == DepartmentId).ToList(), "Id", "Name", employee.JopId);
                 }
                 else
                 {
-                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name");
+                    ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
                     ViewBag.JopId = new SelectList("");
                 }
                 TempData["warning"] = result.Message;
@@ -163,7 +163,7 @@ namespace NurseryProject.Controllers
         [Authorized(ScreenId = "63")]
         public ActionResult Reports()
         {
-            ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name");
+            ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
             return View();
         }
         [HttpPost]
@@ -172,12 +172,12 @@ namespace NurseryProject.Controllers
         public ActionResult Reports(Guid? DepartmentId=null, bool All = false)
         {
             if (DepartmentId != null && DepartmentId != Guid.Empty)
-                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name",DepartmentId);
+                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name",DepartmentId);
             else
-                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll(), "Id", "Name", DepartmentId);
+                ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name", DepartmentId);
 
 
-            var employees = employeesServices.GetAll();
+            var employees = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             if (All)
             {
                 ViewBag.Reports = employees;
@@ -216,7 +216,7 @@ namespace NurseryProject.Controllers
             {
                 return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
             }
-            var model = jopsServices.GetAll().Where(x => x.DepartmentId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            var model = jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.DepartmentId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         List<ListItem> Genders()

@@ -26,18 +26,18 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Create()
         {
-            ViewBag.Employees = employeesServices.GetAll();
+            ViewBag.Employees = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             TreeFunction();
             return View("Upsert", new User());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(User user, string selectedItems)
+        public ActionResult Create(User user, string selectedItems, bool IsAdmin=false)
         {
             string pages = ",0,";
             user.Id = Guid.NewGuid();
 
             List<TreeViewNode> items = (new JavaScriptSerializer()).Deserialize<List<TreeViewNode>>(selectedItems);
-            if(items!=null)
+            if (items != null)
             {
                 foreach (var item in items)
                 {
@@ -50,9 +50,13 @@ namespace NurseryProject.Controllers
                     }
                 }
             }
-           
+
             user.UserScreens = pages;
-            user.RoleId = (int)Role.Employee;
+            if (IsAdmin)
+                user.RoleId = (int)Role.SystemAdmin;
+            else
+                user.RoleId = (int)Role.Employee;
+
             var result = usersServices.Create(user, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
@@ -62,7 +66,7 @@ namespace NurseryProject.Controllers
             else
             {
                 user.Id = Guid.Empty;
-                ViewBag.Employees = employeesServices.GetAll();
+                ViewBag.Employees = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 TreeFunction();
                 TempData["warning"] = result.Message;
                 return View("Upsert", user);
@@ -72,13 +76,16 @@ namespace NurseryProject.Controllers
         public ActionResult Edit(Guid Id)
         {
             var user = usersServices.Get(Id);
+            if (user.RoleId == 1)
+                ViewBag.IsAdmin = "checked";
+
             user.Password = Security.Decrypt(user.Password);
-            ViewBag.Employees = employeesServices.GetAll();
+            ViewBag.Employees = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             SelectedTreeFunction(user.UserScreens);
             return View("Upsert", user);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(User user, string selectedItems)
+        public ActionResult Edit(User user, string selectedItems, bool IsAdmin)
         {
             string pages = ",0,";
 
@@ -98,7 +105,10 @@ namespace NurseryProject.Controllers
             }
 
             user.UserScreens = pages;
-            user.RoleId = (int)Role.Employee;
+            if (IsAdmin)
+                user.RoleId = (int)Role.SystemAdmin;
+            else
+                user.RoleId = (int)Role.Employee;
             var result = usersServices.Edit(user, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
@@ -107,9 +117,8 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                user.Id = Guid.Empty;
                 //user.Password = Security.Decrypt(user.Password);
-                ViewBag.Employees = employeesServices.GetAll();
+                ViewBag.Employees = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 SelectedTreeFunction(user.UserScreens);
                 TempData["warning"] = result.Message;
                 return View("Upsert", user);
@@ -183,7 +192,7 @@ namespace NurseryProject.Controllers
 
             //Serialize to JSON string.
             ViewBag.Json = (new JavaScriptSerializer()).Serialize(nodes);
-            ViewBag.JsonSelected= (new JavaScriptSerializer()).Serialize(Selectednodes);
+            ViewBag.JsonSelected = (new JavaScriptSerializer()).Serialize(Selectednodes);
         }
     }
     public class TreeViewNode

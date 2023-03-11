@@ -29,26 +29,26 @@ namespace NurseryProject.Controllers
         StudentsClassesTransferServices studentsClassesTransferServices = new StudentsClassesTransferServices();
         public ActionResult Search()
         {
-            ViewBag.StudentId = new SelectList(studentsServices.GetAllDropDown(),"Id","Name");
+            ViewBag.StudentId = new SelectList(studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]),"Id","Name");
             return View(new List<StudentsClassDto>());
         }
         [HttpPost]
         public ActionResult Search(Guid StudentId)
         {
-            ViewBag.StudentId = new SelectList(studentsServices.GetAllDropDown(), "Id", "Name", StudentId);
-            var model = studentsClassServices.GetAll().Where(x => x.StudentId == StudentId &&x.IsCurrent==true).ToList();
+            ViewBag.StudentId = new SelectList(studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name", StudentId);
+            var model = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudentId == StudentId &&x.IsCurrent==true).ToList();
             return View(model);
         }
         public ActionResult Index(Guid StudentClassId)
         {
             ViewBag.StudentClass = StudentClassId;
-            var model = studentsClassesTransferServices.GetAll().Where(x=>x.StudentClassId== StudentClassId).ToList();
+            var model = studentsClassesTransferServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x=>x.StudentClassId== StudentClassId).ToList();
             return View(model);
         }
         public ActionResult Create(Guid StudentClassId)
         {
             var strdentClass = studentsClassServices.Get(StudentClassId);
-            var classto = classesServices.GetAll().Where(x => x.LevelId == strdentClass.LevelId && x.Id != strdentClass.ClassId).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            var classto = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == strdentClass.LevelId && x.Id != strdentClass.ClassId).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
             var treansfer = new StudentsClassesTransferDto() {
                 Id=Guid.NewGuid(),
                 StudentClassId= StudentClassId,
@@ -114,7 +114,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getClasses(Guid Id)
         {
-            var model = classesServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getSubscriptions(Guid Id)

@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Dtos.EmployeesDiscounts;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace NurseryProject.Services.EmployeesDiscounts
 {
     public class EmployeesDiscountsServices
     {
-        public List<EmployeesDiscountsDto> GetAll()
+        public List<EmployeesDiscountsDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesDiscounts.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesDiscountsDto
+                var model = dbContext.EmployeesDiscounts.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeeId == EmployeeId || x.Employee.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new EmployeesDiscountsDto
                 {
                     Id = x.Id,
                     DiscountTypeId = x.DiscountTypeId.Value,

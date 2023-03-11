@@ -1,5 +1,6 @@
 ﻿using NurseryProject.Controllers;
 using NurseryProject.Dtos.StudentsAttendance;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ namespace NurseryProject.Services.StudentsAttendance
 {
     public class StudentsAttendanceServices
     {
-        public List<StudentsAttendanceDto> GetAll()
+        public List<StudentsAttendanceDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn)
+                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId) || x.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn)
                     .Select(x => new { x.Id, x.Date, Code = x.Student.Code, x.ClassId, x.Class.Name, Plase = x.Class.StudyPlace.Name, Type = x.Class.Level.StudyType.Name, Level = x.Class.Level.Name, Class = x.StudyClass.Name, Year = x.StudyClass.StudyYear.Name }).ToList();
                 var model1 = date1.Count();
                 var mod = new List<StudentsAttendanceDto>();
@@ -50,11 +51,11 @@ namespace NurseryProject.Services.StudentsAttendance
                 return mod;
             }
         }
-        public List<StudentsAttendanceDto> GetAllByStudent()
+        public List<StudentsAttendanceDto> GetAllByStudent(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).ToList();
+                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId))).OrderBy(x => x.CreatedOn).ToList();
                 var model1 = date1.Count();
                 var mod = new List<StudentsAttendanceDto>();
 
@@ -101,11 +102,11 @@ namespace NurseryProject.Services.StudentsAttendance
                 return model;
             }
         }
-        public List<StudentsAttendanceDto> GetAllAttendance()
+        public List<StudentsAttendanceDto> GetAllAttendance(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
+                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
                 {
                     Id = x.Id,
                     StudentId = x.Student.Id,
@@ -132,11 +133,11 @@ namespace NurseryProject.Services.StudentsAttendance
                 return model;
             }
         }
-        public List<StudentsAttendanceDto> GetAllNoAttendance()
+        public List<StudentsAttendanceDto> GetAllNoAttendance(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.IsAttend == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
+                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.IsAttend == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
                 {
                     Id = x.Id,
                     StudentId = x.Student.Id,

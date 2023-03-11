@@ -1,5 +1,6 @@
 ﻿using NurseryProject.Dtos.ShiftsTimes;
 using NurseryProject.Dtos.WorkShifts;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ namespace NurseryProject.Services.WorkShifts
 {
     public class WorkShiftsServices
     {
-        public List<WorkShiftsDto> GetAll()
+        public List<WorkShiftsDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.WorkShifts.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new WorkShiftsDto
+                var model = dbContext.WorkShifts.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeesWorkShifts.Any(y=>y.IsDeleted == false && y.EmployeeId == EmployeeId) || x.EmployeesWorkShifts.Any(p => p.IsDeleted == false && p.Employee.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new WorkShiftsDto
                 {
                     Id = x.Id,
                     Name = x.Name,

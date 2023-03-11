@@ -27,7 +27,7 @@ namespace NurseryProject.Controllers
 
         public ActionResult Create()
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             return View("Upsert", new EmployeesTransferAllowance());
@@ -46,7 +46,7 @@ namespace NurseryProject.Controllers
             {
                 employeesTransferAllowance.Id = Guid.Empty;
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 TempData["warning"] = result.Message;
@@ -55,7 +55,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Edit(Guid Id)
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             var employeesTransferAllowance = employeesTransferAllowanceServices.Get(Id);
@@ -77,7 +77,7 @@ namespace NurseryProject.Controllers
             {
                 ViewBag.Date = employeesTransferAllowance.TransferDate.Value.ToString("yyyy-MM-dd");
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 TempData["warning"] = result.Message;

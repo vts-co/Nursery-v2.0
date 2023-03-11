@@ -1,0 +1,126 @@
+      #region Import MCQ Question Excel
+     
+        public ActionResult ImportMCQQuestions(Guid? LessonId, HttpPostedFileBase upload)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    // ExcelDataReader works with the binary Excel file, so it needs a FileStream
+                    // to get started. This is how we avoid dependencies on ACE or Interop:
+                    Stream stream = upload.InputStream;
+
+                    IExcelDataReader reader = null;
+
+
+                    if (upload.FileName.EndsWith(".xls"))
+                    {
+                        reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                    }
+                    else if (upload.FileName.EndsWith(".xlsx"))
+                    {
+                        reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                    }
+                    else
+                    {
+                        TempData["warning"] = Messages.NotValidData;
+                        return RedirectToAction("Index", "Questions",new { lessonId =LessonId});
+                    }
+                    int fieldcount = reader.FieldCount;
+                    int rowcount = reader.RowCount;
+                    DataTable questionsdatatable = new DataTable();
+                    DataRow row;
+                    DataTable dt_ = new DataTable();
+                    try
+                    {
+                        dt_ = reader.AsDataSet().Tables[0];
+                        for (int i = 0; i < dt_.Columns.Count; i++)
+                        {
+                            var ss = dt_.Rows[0][i].ToString();
+                            questionsdatatable.Columns.Add(dt_.Rows[0][i].ToString());
+                        }
+                        int rowcounter = 0;
+                        for (int row_ = 1; row_ < rowcount; row_++)
+                        {
+                            row = questionsdatatable.NewRow();
+                            for (int col = 0; col < fieldcount; col++)
+                            {
+                                row[col] = dt_.Rows[row_][col].ToString();
+                                var sss = dt_.Rows[row_][col].ToString();
+
+                                rowcounter++;
+                            }
+                            questionsdatatable.Rows.Add(row);
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["warning"] = Messages.NotValidData;
+                        return RedirectToAction("Index", "Questions", new { lessonId = LessonId });
+                    }
+
+                    reader.Close();
+                    reader.Dispose();
+                    for (int i = 0; i < questionsdatatable.Rows.Count; i++)
+                    {
+                        Question question = new Question();
+                        question.Id = Guid.NewGuid();
+                        question.Answers = new List<QuestionAnswer>();
+                        question.QuestionType = QuestionType.McQ;
+                        question.QuestionContent = questionsdatatable.Rows[i][0].ToString();
+                       var dsd = questionsdatatable.Rows[i][1].ToString();
+                        question.QuestionMark = double.Parse(questionsdatatable.Rows[i][1].ToString());
+                        question.DisplayOrder = 0;
+                        question.IsRevision = false;
+                        for (int j = 3; j < questionsdatatable.Columns.Count; j++)
+                        {
+                            var Answer = questionsdatatable.Rows[i][j].ToString();
+                            if (Answer.Length > 0)
+                            {
+                                QuestionAnswer questionAnswer = new QuestionAnswer();
+                                questionAnswer.Id = Guid.NewGuid();
+                                questionAnswer.QuestionId = question.Id;
+                                questionAnswer.Answer = Answer;
+                                questionAnswer.DisplayOrder = j - 2;
+                                if (questionsdatatable.Rows[i][2].ToString() == Answer)
+                                {
+                                    questionAnswer.IsCorrect = true;
+
+                                }
+                                else
+                                {
+                                    questionAnswer.IsCorrect = false;
+
+                                }
+
+                                question.Answers.Add(questionAnswer);
+                            }
+
+                        }
+
+                        questionServices.AddNew(question, (Guid)TempData["UserId"], LessonId.Value);
+
+                    }
+
+                    TempData["success"] = Messages.DataSavedSuccessfully;
+                    return RedirectToAction("Index", "Questions", new { lessonId = LessonId });
+
+
+
+                }
+                else
+                {
+                    TempData["warning"] = Messages.NotValidData;
+                    return RedirectToAction("Index", "Questions", new { lessonId = LessonId });
+                }
+            }
+            return View();
+        }
+
+        #endregion
+
+
+                        <input type="file" class="form-control" name="upload" id="upload" accept=".xlsx,.xls" />

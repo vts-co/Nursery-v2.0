@@ -23,13 +23,13 @@ namespace NurseryProject.Controllers
         // GET: Destricts
         public ActionResult Index()
         {
-            var model = employeesVacationServices.GetAll();
+            var model = employeesVacationServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
 
         public ActionResult Create()
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             var vacationsTypesModel = vacationsTypesServices.GetAll();
@@ -51,7 +51,7 @@ namespace NurseryProject.Controllers
             {
                 employeesVacation.Id = Guid.Empty;
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 var vacationsTypesModel = vacationsTypesServices.GetAll();
@@ -64,7 +64,7 @@ namespace NurseryProject.Controllers
         public ActionResult Edit(Guid Id)
         {
 
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             var vacationsTypesModel = vacationsTypesServices.GetAll();
@@ -91,7 +91,7 @@ namespace NurseryProject.Controllers
                 ViewBag.DateFrom = employeesVacation.DateFrom.Value.ToString("yyyy-MM-dd");
                 ViewBag.DateTo = employeesVacation.DateTo.Value.ToString("yyyy-MM-dd");
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 var vacationsTypesModel = vacationsTypesServices.GetAll();

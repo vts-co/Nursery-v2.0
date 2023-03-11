@@ -13,6 +13,9 @@ namespace NurseryProject.Authorization
     public class Authorized : ActionFilterAttribute, IExceptionFilter
     {
         public Role Role { get; set; } = 0;
+        public Guid UserId { get; set; }
+        public Guid EmployeeId { get; set; }
+
         public string[] UserScreens = null;
         public string ScreenId = null;
 
@@ -54,6 +57,9 @@ namespace NurseryProject.Authorization
                 }
                 filterContext.Controller.TempData["UserInfo"] = auth.CookieValues;
                 filterContext.Controller.TempData["UserId"] = auth.CookieValues.UserId;
+                filterContext.Controller.TempData["EmployeeId"] = auth.CookieValues.EmployeeId;
+                filterContext.Controller.TempData["RoleId"] = auth.CookieValues.RoleId;
+
                 filterContext.Controller.ViewBag.UserScreens = user.UserScreens;
                 filterContext.Controller.ViewBag.UserName = user.Username;
 
@@ -67,6 +73,7 @@ namespace NurseryProject.Authorization
                     UserScreens = strArray;
 
                 }
+                
             }
             else
             {
@@ -83,6 +90,7 @@ namespace NurseryProject.Authorization
     public class UserInfo
     {
         public Guid UserId { get; set; }
+        public Guid EmployeeId { get; set; }
         public Role RoleId { get; set; }
         public string UserName { get; set; }
         public string UserScreens { get; set; }

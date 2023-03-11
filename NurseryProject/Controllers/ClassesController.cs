@@ -25,7 +25,7 @@ namespace NurseryProject.Controllers
         public ActionResult Index()
         {
 
-            var model = classesServices.GetAll();
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
 
@@ -36,7 +36,7 @@ namespace NurseryProject.Controllers
 
             ViewBag.LevelId = new SelectList("");
 
-            var studyPlaces = studyPlacesServices.GetAll();
+            var studyPlaces = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudyPlaces = studyPlaces;
 
             return View("Upsert", new Class());
@@ -64,7 +64,7 @@ namespace NurseryProject.Controllers
                 ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", StudyTypeId);
                 ViewBag.LevelId = new SelectList(levels, "Id", "Name", Class.LevelId.Value);
 
-                var studyPlaces = studyPlacesServices.GetAll();
+                var studyPlaces = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.StudyPlaces = studyPlaces;
 
                 TempData["warning"] = result.Message;
@@ -75,7 +75,7 @@ namespace NurseryProject.Controllers
         {
             var class1 = classesServices.Get(Id);
 
-            var studyPlaces = studyPlacesServices.GetAll();
+            var studyPlaces = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudyPlaces = studyPlaces;
 
             var level1 = levelsServices.Get(class1.LevelId.Value);
@@ -104,7 +104,7 @@ namespace NurseryProject.Controllers
                 var level1 = levelsServices.Get(Class.LevelId.Value);
                 var StudyTypeId = level1.StudyTypeId;
 
-                var studyPlaces = studyPlacesServices.GetAll();
+                var studyPlaces = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.StudyPlaces = studyPlaces;
 
                 var studyTypes = studyTypesServices.GetAll();

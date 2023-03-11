@@ -28,7 +28,7 @@ namespace NurseryProject.Controllers
         // GET: Destricts
         public ActionResult Index()
         {
-            var model = examsServices.GetAll();
+            var model = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
 
@@ -152,7 +152,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getExamDegrees(Guid Id)
         {
-            var model = examsServices.GetAll().Where(x => x.Id == Id).Select(x => new { x.Id, count = x.MoreQuestion.Count(),total=x.TotalDegree,Degrees=x.MoreQuestion.ToList() }).ToList();
+            var model = examsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).Select(x => new { x.Id, count = x.MoreQuestion.Count(),total=x.TotalDegree,Degrees=x.MoreQuestion.ToList() }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         

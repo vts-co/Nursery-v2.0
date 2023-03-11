@@ -1,6 +1,7 @@
 ﻿using NurseryProject.Dtos.EmployeeClasses;
 using NurseryProject.Dtos.Students;
 using NurseryProject.Dtos.StudentsClassesTransfer;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,11 @@ namespace NurseryProject.Services.Students
 {
     public class StudentsServices
     {
-        public List<StudentsDto> GetAll()
+        public List<StudentsDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.StudentsClasses.Any(y => y.Class.EmployeeClasses.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(i => i.Class.ClassesLeaders.Any(l => l.IsDeleted == false && l.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(p=>p.IsDeleted==false&&p.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
                 {
                     Id = x.Id,
                     Code = x.Code,
@@ -39,11 +40,11 @@ namespace NurseryProject.Services.Students
                 return model;
             }
         }
-        public List<StudentsReportDto> GetAllReport(Guid StudyYearId)
+        public List<StudentsReportDto> GetAllReport(Guid StudyYearId, Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.StudentsClasses.Any(y => y.StudyYearId == StudyYearId && y.IsDeleted == false)).OrderBy(x => x.CreatedOn).Select(x => new StudentsReportDto
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.StudentsClasses.Any(y => y.StudyYearId == StudyYearId && y.IsDeleted == false) && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.StudentsClasses.Any(y => y.Class.EmployeeClasses.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(i => i.Class.ClassesLeaders.Any(l => l.IsDeleted == false && l.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(p => p.IsDeleted == false && p.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new StudentsReportDto
                 {
                     Id = x.Id,
                     Code = x.Code,
@@ -139,11 +140,11 @@ namespace NurseryProject.Services.Students
                 return model;
             }
         }
-        public List<StudentsDto> GetAllDropDown()
+        public List<StudentsDto> GetAllDropDown(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.StudentsClasses.Any(y => y.Class.EmployeeClasses.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(i => i.Class.ClassesLeaders.Any(l => l.IsDeleted == false && l.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(p => p.IsDeleted == false && p.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
                 {
                     Id = x.Id,
                     Code = x.Code,
@@ -174,6 +175,17 @@ namespace NurseryProject.Services.Students
             {
                 var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Id == Id).OrderBy(x => x.CreatedOn).FirstOrDefault();
                 return model;
+            }
+        }
+        public bool CodeExist(string code)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Code == code).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                if (model == null)
+                    return false;
+                else
+                    return true;
             }
         }
         public ResultDto<Student> Create(Student model, Guid UserId)
@@ -239,9 +251,12 @@ namespace NurseryProject.Services.Students
                 Oldmodel.BirthDate = model.BirthDate;
                 Oldmodel.GenderId = model.GenderId;
                 Oldmodel.MotherName = model.MotherName;
-                //Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
+                if(model.RegistrationTypeId!=Guid.Empty|| model.RegistrationTypeId !=null)
+                    Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
                 Oldmodel.JoiningDate = model.JoiningDate.Value;
-                Oldmodel.DestrictId = model.DestrictId.Value;
+                if(model.DestrictId!=null)
+                    Oldmodel.DestrictId = model.DestrictId.Value;
+
                 Oldmodel.Notes = model.Notes;
                 if (model.Image != null)
                 {

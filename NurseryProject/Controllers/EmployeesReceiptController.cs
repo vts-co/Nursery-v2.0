@@ -35,7 +35,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Create()
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name");
 
             return View("Upsert");
@@ -47,7 +47,7 @@ namespace NurseryProject.Controllers
             if (date != null)
                 mon = DateTime.Parse(date).ToString("yyyy-MM");
 
-            var employeesModel = employeesServices.GetAll().ToList();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).ToList();
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
 
             var model = employeesReceiptServices.GetAll(mon, EmployeeId);
@@ -56,7 +56,7 @@ namespace NurseryProject.Controllers
             if (model.Reciept == "0")
             {
                 ViewBag.StudyYears= studyYearsServices.GetAll();
-                ViewBag.StudyPlaces = studyPlacesServices.GetAll();
+                ViewBag.StudyPlaces = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             }
             else
             {
@@ -91,7 +91,7 @@ namespace NurseryProject.Controllers
             if (Date != null)
                 year = DateTime.Parse(Date).ToString("yyyy-MM-dd");
 
-            var employeesModel = employeesServices.GetAll().ToList();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).ToList();
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
 
             var model = employeesReceiptServices.GetAll(mon, EmployeeId);
@@ -117,7 +117,7 @@ namespace NurseryProject.Controllers
             if (Month != null)
                 mon = DateTime.Parse(Month).ToString("yyyy-MM");
 
-            var employeesModel = employeesServices.GetAll().ToList();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).ToList();
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
 
             var model = employeesReceiptServices.GetAll(mon, EmployeeId);
@@ -141,7 +141,7 @@ namespace NurseryProject.Controllers
         [Authorized(ScreenId = "64")]
         public ActionResult Reports()
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name");
             return View();
         }
@@ -155,7 +155,7 @@ namespace NurseryProject.Controllers
 
 
 
-            var employeesModel = employeesServices.GetAll().ToList();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).ToList();
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
 
             var model = employeesReceiptServices.GetAll(mon, EmployeeId);
@@ -181,7 +181,7 @@ namespace NurseryProject.Controllers
             if (Date != null)
                 year = DateTime.Parse(Date).ToString("yyyy-MM-dd");
 
-            var employeesModel = employeesServices.GetAll().ToList();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).ToList();
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
 
             var model = employeesReceiptServices.GetAll(mon, EmployeeId);
@@ -229,7 +229,7 @@ namespace NurseryProject.Controllers
             if (Date != null)
                 year = DateTime.Parse(Date).ToString("yyyy-MM-dd");
 
-            var employeesModel = employeesServices.GetAll().ToList();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).ToList();
             ViewBag.EmployeeId = new SelectList(employeesModel, "Id", "Name", EmployeeId);
 
             var model = employeesReceiptServices.GetAll(mon, EmployeeId);
@@ -255,7 +255,7 @@ namespace NurseryProject.Controllers
             {
                 return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
             }
-            var model = employeesServices.GetAll().Where(x => x.DepartmentId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            var model = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.DepartmentId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 

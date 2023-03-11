@@ -27,19 +27,19 @@ namespace NurseryProject.Controllers
         // GET: Destricts
         public ActionResult Index()
         {
-            var model = buildingSupervisorsServices.GetAll();
+            var model = buildingSupervisorsServices.GetAll((Guid)TempData["UserId"],(Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
 
         public ActionResult Create()
         {
-            var PlacesModel = studyPlacesServices.GetAll();
+            var PlacesModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudyPlaces = PlacesModel;
 
-            var departments = departmentsServices.GetAll();
+            var departments = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.DepartmentId = new SelectList(departments, "Id", "Name");
 
-            var EmployeesModel = employeesServices.GetAll();
+            var EmployeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.EmployeeId = new SelectList("");
 
             return View("Upsert", new BuildingSupervisor());
@@ -58,15 +58,15 @@ namespace NurseryProject.Controllers
             {
                 buildingSupervisor.Id = Guid.Empty;
 
-                var employee = employeesServices.GetAll().Where(x=>x.Id== buildingSupervisor.EmployeeId.Value).FirstOrDefault();
+                var employee = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x=>x.Id== buildingSupervisor.EmployeeId.Value).FirstOrDefault();
 
-                var departments = departmentsServices.GetAll();
+                var departments = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.DepartmentId = new SelectList(departments, "Id", "Name", employee.DepartmentId);
                 
-                var PlacesModel = studyPlacesServices.GetAll();
+                var PlacesModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.StudyPlaces = PlacesModel;
 
-                var EmployeesModel = employeesServices.GetAll();
+                var EmployeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.EmployeeId = new SelectList(EmployeesModel,"Id","Name", buildingSupervisor.EmployeeId);
 
                 TempData["warning"] = result.Message;
@@ -77,15 +77,15 @@ namespace NurseryProject.Controllers
         {
             var destrict = buildingSupervisorsServices.Get(Id);
 
-            var PlacesModel = studyPlacesServices.GetAll();
+            var PlacesModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudyPlaces = PlacesModel;
 
-            var EmployeesModel = employeesServices.GetAll();
+            var EmployeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.EmployeeId = new SelectList(EmployeesModel, "Id", "Name", destrict.EmployeeId);
 
-            var employee = employeesServices.GetAll().Where(x => x.Id == destrict.EmployeeId.Value).FirstOrDefault();
+            var employee = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == destrict.EmployeeId.Value).FirstOrDefault();
 
-            var departments = departmentsServices.GetAll();
+            var departments = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.DepartmentId = new SelectList(departments, "Id", "Name", employee.DepartmentId);
 
             return View("Upsert", destrict);
@@ -102,15 +102,15 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                var employee = employeesServices.GetAll().Where(x => x.Id == buildingSupervisor.EmployeeId.Value).FirstOrDefault();
+                var employee = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == buildingSupervisor.EmployeeId.Value).FirstOrDefault();
 
-                var departments = departmentsServices.GetAll();
+                var departments = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.DepartmentId = new SelectList(departments, "Id", "Name", employee.DepartmentId);
 
-                var PlacesModel = studyPlacesServices.GetAll();
+                var PlacesModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.StudyPlaces = PlacesModel;
 
-                var EmployeesModel = employeesServices.GetAll();
+                var EmployeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.EmployeeId = new SelectList(EmployeesModel, "Id", "Name", buildingSupervisor.EmployeeId);
 
 
@@ -135,8 +135,9 @@ namespace NurseryProject.Controllers
 
         public ActionResult getEmployees(Guid DepartmentId)
         {
-            var model = employeesServices.GetAll().Where(x => x.DepartmentId == DepartmentId).Select(x => new { x.Id, x.Name }).ToList();
+            var model = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.DepartmentId == DepartmentId).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
     }
 }

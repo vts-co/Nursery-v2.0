@@ -23,13 +23,13 @@ namespace NurseryProject.Controllers
         // GET: Destricts
         public ActionResult Index()
         {
-            var model = employeesDiscountsServices.GetAll();
+            var model = employeesDiscountsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
 
         public ActionResult Create()
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             var DiscountsTypesModel = discountsTypesServices.GetAll();
@@ -51,7 +51,7 @@ namespace NurseryProject.Controllers
             {
                 employeesDiscount.Id = Guid.Empty;
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 var DiscountsTypesModel = discountsTypesServices.GetAll();
@@ -63,7 +63,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Edit(Guid Id)
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             var DiscountsTypesModel = discountsTypesServices.GetAll();
@@ -88,7 +88,7 @@ namespace NurseryProject.Controllers
             {
                 ViewBag.Date = employeesDiscount.DiscountDate.Value.ToString("yyyy-MM-dd");
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 var DiscountsTypesModel = discountsTypesServices.GetAll();

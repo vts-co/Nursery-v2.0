@@ -20,7 +20,7 @@ namespace NurseryProject.Controllers
         // GET: Cities
         public ActionResult Index()
         {
-            var model = departmentsServices.GetAll();
+            var model = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
         public ActionResult Create()
@@ -47,7 +47,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Edit(Guid Id)
         {
-            var department = departmentsServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+            var department = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
             return View("Upsert", department);
         }
         [HttpPost, ValidateInput(false)]

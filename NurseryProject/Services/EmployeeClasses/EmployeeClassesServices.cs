@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Dtos.EmployeeClasses;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace NurseryProject.Services.EmployeeClasses
 {
     public class EmployeeClassesServices
     {
-        public List<EmployeeClassesDto> GetAll()
+        public List<EmployeeClassesDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeeClasses.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeeClassesDto
+                var model = dbContext.EmployeeClasses.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeeId == EmployeeId || x.Class.StudyPlace.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new EmployeeClassesDto
                 {
                     Id = x.Id,
                     StudyPlaceId = x.Class.StudyPlaceId.Value,

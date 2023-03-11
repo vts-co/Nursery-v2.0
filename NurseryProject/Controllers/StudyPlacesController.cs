@@ -18,7 +18,7 @@ namespace NurseryProject.Controllers
         // GET: Cities
         public ActionResult Index()
         {
-            var model = studyPlacesServices.GetAll();
+            var model = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
         public ActionResult Create()
@@ -45,7 +45,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Edit(Guid Id)
         {
-            var studyPlace = studyPlacesServices.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+            var studyPlace = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
             return View("Upsert", studyPlace);
         }
         [HttpPost, ValidateInput(false)]

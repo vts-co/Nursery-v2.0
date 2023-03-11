@@ -1,4 +1,5 @@
-﻿using NurseryProject.Models;
+﻿using NurseryProject.Enums;
+using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,12 @@ namespace NurseryProject.Services.Departments
 {
     public class DepartmentsServices
     {
-        public List<Department> GetAll()
+
+        public List<Department> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Departments.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).ToList();
+                var model = dbContext.Departments.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Jops.Any(y=>y.IsDeleted==false &&y.Employees.Any(z=>z.Id== EmployeeId)))).OrderBy(x => x.CreatedOn).ToList();
                 return model;
             }
         }

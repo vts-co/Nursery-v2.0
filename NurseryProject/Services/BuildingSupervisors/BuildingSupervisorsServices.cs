@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Dtos.BuildingSupervisors;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace NurseryProject.Services.BuildingSupervisors
 {
     public class BuildingSupervisorsServices
     {
-        public List<BuildingSupervisorsDto> GetAll()
+        public List<BuildingSupervisorsDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new BuildingSupervisorsDto
+                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false && (x.CreatedBy== UserId || RoleId== Role.SystemAdmin || x.EmployeeId== EmployeeId)).OrderBy(x => x.CreatedOn).Select(x => new BuildingSupervisorsDto
                 {
                     Id = x.Id,
                     StudyPlaceId = x.StudyPlaceId != null ? x.StudyPlaceId.Value : Guid.Empty,

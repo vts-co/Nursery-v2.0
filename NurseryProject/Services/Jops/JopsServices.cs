@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Dtos.Jops;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace NurseryProject.Services.Jops
 {
     public class JopsServices
     {
-        public List<JopsDto> GetAll()
+        public List<JopsDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Jops.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new JopsDto
+                var model = dbContext.Jops.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Employees.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Employees.Any(i=>i.IsDeleted==false&&i.BuildingSupervisors.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new JopsDto
                 {
                     Id = x.Id,
                     DepartmentId = x.DepartmentId.Value,

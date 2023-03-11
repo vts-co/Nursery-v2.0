@@ -44,7 +44,7 @@ namespace NurseryProject.Controllers
             //var Departments = departmentsServices.GetAll();
             //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name");
 
-            var workshift = workShiftsServices.GetAll();
+            var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name");
 
             return View("Upsert", new EmployeesAttendance());
@@ -68,7 +68,7 @@ namespace NurseryProject.Controllers
                 //var Departments = departmentsServices.GetAll();
                 //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name");
 
-                var workshift = workShiftsServices.GetAll();
+                var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name");
                 TempData["warning"] = result.Message;
                 return View("Upsert", new EmployeesAttendance());
@@ -86,7 +86,7 @@ namespace NurseryProject.Controllers
             //var Departments = departmentsServices.GetAll();
             //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name", jop.DepartmentId);
 
-            var workshift = workShiftsServices.GetAll();
+            var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name", employeesWorkShift.WorkShiftId);
             ViewBag.Date = employeesWorkShift.Date;
             ViewBag.readon = "readonly";
@@ -114,7 +114,7 @@ namespace NurseryProject.Controllers
                 //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name", jop.DepartmentId);
                 ViewBag.readon = "readonly";
 
-                var workshift = workShiftsServices.GetAll();
+                var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name", employeesWorkShift.WorkShiftId.Value);
                 return View("Upsert", new EmployeesAttendance() { Id = employeesWorkShift.Id });
             }
@@ -135,17 +135,17 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getEmployees(Guid Id)
         {
-            var model = employeesServices.GetAll().Where(x => x.Id == Id).Select(x => new { x.Id, x.Name, x.Code }).FirstOrDefault();
+            var model = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).Select(x => new { x.Id, x.Name, x.Code }).FirstOrDefault();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getEmployeesWorkShifts(Guid StudyYearId,Guid WorkShiftId)
         {
-            var model = employeesWorkShiftsServices.GetAll().Where(x =>x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x=>new {x.Id,x.Code,x.EmployeeId,x.EmployeeName }).ToList();
+            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x =>x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x=>new {x.Id,x.Code,x.EmployeeId,x.EmployeeName }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getEmployeesWorkShiftsBysearch(Guid StudyYearId, Guid WorkShiftId,string search)
         {
-            var model = employeesWorkShiftsServices.GetAll().Where(x => x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x => new { x.Id, x.Code, x.EmployeeId, x.EmployeeName }).ToList();
+            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x => new { x.Id, x.Code, x.EmployeeId, x.EmployeeName }).ToList();
             if (search != null)
             {
                 model = model.Where(x => x.Code.Contains(search) || x.EmployeeName.Contains(search)).Select(x => new { x.Id, x.Code, x.EmployeeId, x.EmployeeName }).ToList();

@@ -23,13 +23,13 @@ namespace NurseryProject.Controllers
         public ActionResult Index()
         {
 
-            var model = jopsServices.GetAll();
+            var model = jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
 
         public ActionResult Create()
         {
-            var cityModel = departmentsServices.GetAll();
+            var cityModel = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Departments = cityModel;
 
             return View("Upsert", new Jop());
@@ -48,7 +48,7 @@ namespace NurseryProject.Controllers
             {
                 jop.Id = Guid.Empty;
 
-                var cityModel = departmentsServices.GetAll();
+                var cityModel = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Departments = cityModel;
 
                 TempData["warning"] = result.Message;
@@ -57,7 +57,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Edit(Guid Id)
         {
-            var cityModel = departmentsServices.GetAll();
+            var cityModel = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Departments = cityModel;
 
             var jop = jopsServices.Get(Id);
@@ -75,7 +75,7 @@ namespace NurseryProject.Controllers
             }
             else
             {
-                var cityModel = departmentsServices.GetAll();
+                var cityModel = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Departments = cityModel;
 
 

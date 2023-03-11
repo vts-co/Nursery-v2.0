@@ -1,4 +1,5 @@
 ﻿using NurseryProject.Dtos.Exams;
+using NurseryProject.Enums;
 using NurseryProject.Models;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace NurseryProject.Services.Exams
 {
     public class ExamsServices
     {
-        public List<ExamsDto> GetAll()
+        public List<ExamsDto> GetAll(Guid UserId, Guid EmployeeId, Role RoleId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Exams.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new ExamsDto
+                var model = dbContext.Exams.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.ClassExams.Any(y=>y.IsDeleted==false&&y.Class.EmployeeClasses.Any(z=>z.IsDeleted==false&&z.EmployeeId== EmployeeId)) || x.ClassExams.Any(y => y.IsDeleted == false && y.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new ExamsDto
                 {
                     Id = x.Id,
                     Name = x.IsOneQuestion == true ? x.Subject.Name + "/" + x.ExamsType.Name + "/" + "سؤال" + "/" + x.TotalDegree : x.Subject.Name + "/" + x.ExamsType.Name + "/" + "عدة اسئلة" + "/" + x.TotalDegree,

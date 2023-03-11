@@ -23,13 +23,13 @@ namespace NurseryProject.Controllers
         // GET: Destricts
         public ActionResult Index()
         {
-            var model = employeesIncreasesServices.GetAll();
+            var model = employeesIncreasesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
 
         public ActionResult Create()
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             var IncreasesTypesModel = increasesTypesServices.GetAll();
@@ -51,7 +51,7 @@ namespace NurseryProject.Controllers
             {
                 employeesIncreas.Id = Guid.Empty;
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 var IncreasesTypesModel = increasesTypesServices.GetAll();
@@ -63,7 +63,7 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Edit(Guid Id)
         {
-            var employeesModel = employeesServices.GetAll();
+            var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
             var IncreasesTypesModel = increasesTypesServices.GetAll();
@@ -88,7 +88,7 @@ namespace NurseryProject.Controllers
             {
                 ViewBag.Date = employeesIncreas.IncreaseDate.Value.ToString("yyyy-MM-dd");
 
-                var employeesModel = employeesServices.GetAll();
+                var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
                 ViewBag.Employees = employeesModel;
 
                 var IncreasesTypesModel = increasesTypesServices.GetAll();
