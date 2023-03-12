@@ -31,7 +31,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", new User());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Create(User user, string selectedItems, bool IsAdmin=false)
+        public ActionResult Create(User user, string selectedItems, string IsAdmin)
         {
             string pages = ",0,";
             user.Id = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace NurseryProject.Controllers
             }
 
             user.UserScreens = pages;
-            if (IsAdmin)
+            if (IsAdmin == "on")
                 user.RoleId = (int)Role.SystemAdmin;
             else
                 user.RoleId = (int)Role.Employee;
@@ -85,7 +85,7 @@ namespace NurseryProject.Controllers
             return View("Upsert", user);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(User user, string selectedItems, bool IsAdmin)
+        public ActionResult Edit(User user, string selectedItems, string IsAdmin )
         {
             string pages = ",0,";
 
@@ -105,7 +105,7 @@ namespace NurseryProject.Controllers
             }
 
             user.UserScreens = pages;
-            if (IsAdmin)
+            if (IsAdmin=="on")
                 user.RoleId = (int)Role.SystemAdmin;
             else
                 user.RoleId = (int)Role.Employee;
