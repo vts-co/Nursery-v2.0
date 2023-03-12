@@ -16,7 +16,7 @@
                 <a href='/StudentsClass' title='الرجوع الي القائمة' class='btn btn-soft-info  waves-effect waves-light m-1 col-md-auto px-3'><i class="fas fa-arrow-left me-1"></i>الرجوع الي القائمة</a>
             </div>
         </div>
-        <div class="card-body" id="divId">
+        <div class="card-body" id="divId" size="A6">
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.StudentId)
             @Html.HiddenFor(model => model.StudyYearId)
@@ -293,7 +293,7 @@
                             var da = new Date(Date1);
 
                             document.body.innerHTML =
-                                "" + data.ReportHeader + "<hr>" +
+                                "<div size='A6'>" + data.ReportHeader + "<hr>" +
                             "<div class='row'>" + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
                             "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>رقم التليفون : " + d[2] + "</div>" +
                             "<div class='col-6'>قيمة القسط : " + Amount1 + " جنيه</div>" + "<div class='col-6'>تاريخ القسط : " + Date2 + " جنيه</div>" +
@@ -301,7 +301,7 @@
                             "<div class='col-6'>قيمة المدفوع سابقا : " + document.getElementById("Total").value + "</div><div class='col-6'>قيمة المتبقي : " + document.getElementById('Total2').value + "</div>" +
 
                             "</div>"
-                                + "<hr>" + data.ReportFooter + "";
+                            + "<hr>" + data.ReportFooter + "</div>";
 
                             //Print Page
                             window.print();
@@ -359,14 +359,14 @@
                         var da = new Date(Date1);
 
                         document.body.innerHTML =
-                            "" + data.ReportHeader + "<hr>" +
+                            "<div size='A6'>" + data.ReportHeader + "<hr>" +
                             "<div class='row'>" + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
                             "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>رقم التليفون : " + d[2] + "</div>" +
                             "<div class='col-6'>قيمة القسط : " + Amount1 + " جنيه</div>" + "<div class='col-6'>تاريخ القسط : " + Date2 + " جنيه</div>" +
                             "<div class='col-6'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
 
                             "</div>"
-                            + "<hr>" + data.ReportFooter + "";
+                        + "<hr>" + data.ReportFooter + "</div>";
 
                         //Print Page
                         window.print();
