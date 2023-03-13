@@ -251,7 +251,7 @@ namespace NurseryProject.Services.Students
                 Oldmodel.BirthDate = model.BirthDate;
                 Oldmodel.GenderId = model.GenderId;
                 Oldmodel.MotherName = model.MotherName;
-                if(model.RegistrationTypeId!=Guid.Empty|| model.RegistrationTypeId !=null)
+                if(model.RegistrationTypeId!=Guid.Empty&& model.RegistrationTypeId !=null)
                     Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
                 Oldmodel.JoiningDate = model.JoiningDate.Value;
                 if(model.DestrictId!=null)
