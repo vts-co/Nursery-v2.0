@@ -159,7 +159,7 @@
                 </div>
             </div>
         </header>
-
+        
         <!-- Loading side bar -->
         <!-- ========== Left Sidebar Start ========== -->
         <div class="vertical-menu">
@@ -671,7 +671,7 @@
 
     <script src="~/assets/js/jstree.min.js"></script>
 
-   
+
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
@@ -700,7 +700,7 @@
                     previous: 'السابق'
                 }
 
-            }, order: [[1, 'desc']],
+            }, order: [[0, 'desc']],
             dom: 'Blfrtip',
             buttons: [
                 {
@@ -737,19 +737,23 @@
             ]
 
         });
+        //var datatable_length = document.getElementsByName("datatable_length").value;
+        //console.log(datatable_length);
+
         $("#datatable_length").addClass("col-lg-5 mt-2");
         $("#datatable_filter").addClass("mt-2 col-lg-3");
+        $("#datatable_paginate").addClass("col-lg-4");
+        //$("#datatable_info").addClass("col-lg-8");
 
-        var table = $('#datatable').DataTable();
-        var table_length = table.rows().count();
-        if (table_length > 0) {
-            $('<div class="dataTables_paginate paging_simple_numbers col-lg-4" id="datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="datatable_previous"><a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">السابق</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link">' + table_length + '</a></li><li class="paginate_button page-item next disabled" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">التالي</a></li></ul></div>').insertAfter($("#datatable_filter"));
-        }
-        else {
-            $('<div class="dataTables_paginate paging_simple_numbers col-lg-4" id="datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="datatable_previous"><a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">السابق</a></li><li class="paginate_button page-item next disabled" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">التالي</a></li></ul></div>').insertAfter($("#datatable_filter"));
-        }
+        var element = document.getElementById('datatable_paginate');
+        var element2 = document.getElementById('datatable_filter');
+        var element3 = document.getElementById('datatable_info');
 
-        
+        element2.after(element);
+
+        //$("#datatable_paginate").clone().insertAfter($("#datatable_info"));
+
+
     </script>
 
     <script>

@@ -456,14 +456,12 @@ namespace NurseryProject.Controllers
                             student.GenderId = (int)Gender.انثي;
 
                         student.MotherName = model.Rows[i][6].ToString();
-                        student.RegistrationTypeId = Guid.Parse("E31AC343-47DA-4DFE-8970-E1719DEEC869");
                         student.JoiningDate = DateTime.Parse(model.Rows[i][7].ToString()).Date;
                         student.Notes = model.Rows[i][8].ToString();
 
                         studentsServices.Create(student, (Guid)TempData["UserId"]);
-
+                        
                     }
-
                     TempData["success"] = "تم حفظ البيانات بنجاح";
                     return RedirectToAction("Index");
                 }

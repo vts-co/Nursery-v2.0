@@ -253,8 +253,10 @@ namespace NurseryProject.Services.Students
                 Oldmodel.MotherName = model.MotherName;
                 if(model.RegistrationTypeId!=Guid.Empty&& model.RegistrationTypeId !=null)
                     Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
+
                 Oldmodel.JoiningDate = model.JoiningDate.Value;
-                if(model.DestrictId!=null)
+
+                if(model.DestrictId!=null&& model.RegistrationTypeId != Guid.Empty)
                     Oldmodel.DestrictId = model.DestrictId.Value;
 
                 Oldmodel.Notes = model.Notes;
