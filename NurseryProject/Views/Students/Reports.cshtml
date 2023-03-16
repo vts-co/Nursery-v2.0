@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "تقرير الطلاب";
     ViewBag.MainPage = "الطلاب";
-    var count = " : لم يمتحن بعد  ";
+    var count = " لم يمتحن بعد  ";
     var num = "%";
 }
 @using (Html.BeginForm("Reports", "Students", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -48,10 +48,15 @@
 }
 @if (ViewBag.Students != null)
 {
-  
+    if (ViewBag.Count > 1)
+    {
         <div class="card">
             <div class="card-header">
-                تقارير الطلاب
+                <div class="row justify-content-between">
+                    <h4 class="col-auto">
+                        تقارير الطلاب
+                    </h4>
+                </div>
             </div>
             <div class="card-body">
                 <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
@@ -102,277 +107,358 @@
                     <tbody>
                         @foreach (var item in ViewBag.Students)
                         {
-                        <tr>
-                            <td>
-                                @item.Code
-                            </td>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                @item.Phone
-                            </td>
+                            <tr>
+                                <td>
+                                    @item.Code
+                                </td>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    @item.Phone
+                                </td>
 
-                            <td>
-                                @item.Address
-                            </td>
+                                <td>
+                                    @item.Address
+                                </td>
 
-                            <td>
-                                @item.CountOfLatecomers
-                            </td>
-                            <td>
-                                @item.CountOfNormal
-                            </td>
-                            <td>
-                                @item.CountOfPart
-                            </td>
-                            <td>
-                                @item.CountOfPaidNoTime
-                            </td>
-                            <td>
-                                @item.AttendanceNum
-                            </td>
+                                <td>
+                                    @item.CountOfLatecomers
+                                </td>
+                                <td>
+                                    @item.CountOfNormal
+                                </td>
+                                <td>
+                                    @item.CountOfPart
+                                </td>
+                                <td>
+                                    @item.CountOfPaidNoTime
+                                </td>
+                                <td>
+                                    @item.AttendanceNum
+                                </td>
 
-                            <td>
-                                @item.NoAttendanceNum
-                            </td>
-                            <td>
-                                @item.CountOfTransferClasses
-                            </td>
-                            <td>
-                                @if (@item.ExamsRate != "")
-                                {
-                                    @item.ExamsRate @num
-                                }
-                                else
-                                {
-                                    @count
-                                }
-                            </td>
-                            <td>
-                                 
-                                @if (item.TransferClasses.Count > 0)
-                                {
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>الفرع </th>
-                                                <th>نوع الدراسة </th>
-                                                <th>الصف </th>
-                                                <th>من قصل </th>
-                                                <th>الي فصل </th>
-                                                <th>بتاريخ </th>
-                                                <th>ملاحظات </th>
+                                <td>
+                                    @item.NoAttendanceNum
+                                </td>
+                                <td>
+                                    @item.CountOfTransferClasses
+                                </td>
+                                <td>
+                                    @if (@item.ExamsRate != "")
+                                    {
+                                        @item.ExamsRate @num
+                                    }
+                                    else
+                                    {
+                                        @count
+                                    }
+                                </td>
+                                <td>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item2 in item.TransferClasses)
-                                            {
+                                    @if (item.TransferClasses.Count > 0)
+                                    {
+                                        <table>
+                                            <thead>
                                                 <tr>
-                                                    <td>
-                                                        @item2.StudyPlaceName
-                                                    </td>
-                                                    <td>
-                                                        @item2.StudyTypeName
-                                                    </td>
-                                                    <td>
-                                                        @item2.LevelName
-                                                    </td>
-                                                    <td>
-                                                        @item2.ClassFromName
-                                                    </td>
-                                                    <td>
-                                                        @item2.ClassToName
-                                                    </td>
-                                                    <td>
-                                                        @item2.Notes
-                                                    </td>
+                                                    <th>الفرع </th>
+                                                    <th>نوع الدراسة </th>
+                                                    <th>الصف </th>
+                                                    <th>من قصل </th>
+                                                    <th>الي فصل </th>
+                                                    <th>بتاريخ </th>
+                                                    <th>ملاحظات </th>
+
                                                 </tr>
-                                            }
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item2 in item.TransferClasses)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item2.StudyPlaceName
+                                                        </td>
+                                                        <td>
+                                                            @item2.StudyTypeName
+                                                        </td>
+                                                        <td>
+                                                            @item2.LevelName
+                                                        </td>
+                                                        <td>
+                                                            @item2.ClassFromName
+                                                        </td>
+                                                        <td>
+                                                            @item2.ClassToName
+                                                        </td>
+                                                        <td>
+                                                            @item2.Notes
+                                                        </td>
+                                                    </tr>
+                                                }
 
-                                        </tbody>
-                                    </table>
-                                }
+                                            </tbody>
+                                        </table>
+                                    }
 
-                            </td>
-                            <td>
-                                @if (item.Employees.Count > 0)
-                                {
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>الاسم </th>
-                                                <th>رقم التليفون </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item2 in item.Employees)
-                                            {
+                                </td>
+                                <td>
+                                    @if (item.Employees.Count > 0)
+                                    {
+                                        <table>
+                                            <thead>
                                                 <tr>
-                                                    <td>
-                                                        م.  @item2.EmployeeName
-                                                    </td>
-                                                    <td>
-                                                        |  @item2.EmployeePhone
-                                                    </td>
+                                                    <th>الاسم </th>
+                                                    <th>رقم التليفون </th>
                                                 </tr>
-                                            }
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item2 in item.Employees)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            م.  @item2.EmployeeName
+                                                        </td>
+                                                        <td>
+                                                            |  @item2.EmployeePhone
+                                                        </td>
+                                                    </tr>
+                                                }
 
-                                        </tbody>
-                                    </table>
-                                }
+                                            </tbody>
+                                        </table>
+                                    }
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
 
             </div>
         </div>
-
     }
-
     else
     {
-<div class="card">
-    <div class="card-header">
-        تقارير طالب
-    </div>
-    <div class="card-body">
-        @foreach (var item in ViewBag.Students)
-        {
-        <div class="row">
-            <div class="col-lg-4">
-                @item.Code كود الطالب :
+        <div class="card">
+            <div class="card-header mb-3">
+                <div class="row justify-content-between">
+                    <h4 class="col-auto">
+                        تقرير طالب
+                    </h4>
+                </div>
             </div>
-            <div class="col-lg-4">
-                @item.Name اسم الطالب :
-            </div>
-            <div class="col-lg-4">
-                @item.Phone رقم التليفون :
-            </div>
-
-            <div class="col-lg-12">
-                @item.Address العنوان
-            </div>
-
-            <div class="col-lg-3">
-                @item.CountOfLatecomers عدد الاقساط المتاخرة :
-            </div>
-            <div class="col-lg-3">
-                @item.CountOfNormal عدد الاقساط الطبيعية :
-            </div>
-            <div class="col-lg-3">
-                @item.CountOfPart عدد الاقساط المدفوعة جزئيا :
-            </div>
-            <div class="col-lg-3">
-                @item.CountOfPaidNoTime عدد الاقساط المدفوعة متاخر :
-            </div>
-            <div class="col-lg-3">
-                @item.AttendanceNum عددايام الحضور :
-            </div>
-
-            <div class="col-lg-3">
-                @item.NoAttendanceNum عددايام الغياب :
-            </div>
-            <div class="col-lg-3">
-                @item.CountOfTransferClasses عدد مرات التحويل بين الفصول :
-            </div>
-            <div class="col-lg-3">
-                معدل درجات الامتحانات :
-                @if (@item.ExamsRate != "")
+            <div class="card-body">
+                @foreach (var item in ViewBag.Students)
                 {
-                    @item.ExamsRate @num
-                }
-                else
-                {
-                    @count
-                }
-            </div>
-            <div class="col-lg-6">
-                التحويل بين الفصول :
-                @if (item.TransferClasses.Count > 0)
-                {
-                    <table>
-                        <thead>
+                    <table id="" class="table table-striped dt-responsive  nowrap w-100">
+                        <thead class="bg-soft-primary">
                             <tr>
-                                <th>الفرع </th>
-                                <th>نوع الدراسة </th>
-                                <th>الصف </th>
-                                <th>من قصل </th>
-                                <th>الي فصل </th>
-                                <th>بتاريخ </th>
-                                <th>ملاحظات </th>
+                                <th>
+                                    @Html.DisplayName("الكود")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("الاسم")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("رقم التليفون")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("العنوان")
+                                </th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item2 in item.TransferClasses)
-                            {
+
                             <tr>
                                 <td>
-                                    @item2.StudyPlaceName
+                                    @item.Code
                                 </td>
                                 <td>
-                                    @item2.StudyTypeName
+                                    @item.Name
                                 </td>
                                 <td>
-                                    @item2.LevelName
+                                    @item.Phone
                                 </td>
+
                                 <td>
-                                    @item2.ClassFromName
+                                    @item.Address
                                 </td>
-                                <td>
-                                    @item2.ClassToName
-                                </td>
-                                <td>
-                                    @item2.Notes
-                                </td>
+
                             </tr>
-                            }
 
                         </tbody>
                     </table>
-                }
 
-            </div>
-
-            <div class="col-lg-6">
-                معلمي فصله :
-                @if (item.Employees.Count > 0)
-                {
-                    <table>
-                        <thead>
+                    <table id="" class="table table-striped dt-responsive  nowrap w-100">
+                        <thead class="bg-soft-primary">
                             <tr>
-                                <th>الاسم </th>
-                                <th>رقم التليفون </th>
+                                <th>
+                                    @Html.DisplayName("عدد الاقساط المتاخرة")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("عدد الاقساط الطبيعية")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("عدد الاقساط المدفوعة جزئيا")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("عدد الاقساط المدفوعة متاخر")
+                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item2 in item.Employees)
-                            {
-                                <tr>
-                                    <td>
-                                        م.  @item2.EmployeeName
-                                    </td>
-                                    <td>
-                                        @item2.EmployeePhone
-                                    </td>
-                                </tr>
-                            }
+
+                            <tr>
+                                <td>
+                                    @item.CountOfLatecomers
+                                </td>
+                                <td>
+                                    @item.CountOfNormal
+                                </td>
+                                <td>
+                                    @item.CountOfPart
+                                </td>
+
+                                <td>
+                                    @item.CountOfPaidNoTime
+                                </td>
+
+                            </tr>
 
                         </tbody>
                     </table>
+
+                    <table id="" class="table table-striped dt-responsive  nowrap w-100">
+                        <thead class="bg-soft-primary">
+                            <tr>
+                                <th>
+                                    @Html.DisplayName("عددايام الحضور")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("عددايام الغياب")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("عدد مرات التحويل بين الفصول")
+                                </th>
+                                <th>
+                                    @Html.DisplayName(" معدل درجات الامتحانات")
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>
+                                    @item.AttendanceNum
+                                </td>
+                                <td>
+                                    @item.NoAttendanceNum
+                                </td>
+                                <td>
+                                    @item.CountOfTransferClasses
+                                </td>
+
+                                <td>
+                                    @if (@item.ExamsRate != "")
+                                    {
+                                        @item.ExamsRate @num
+                                    }
+                                    else
+                                    {
+                                        @count
+                                    }
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            التحويل بين الفصول :
+                           
+                                <table id="" class="table table-striped dt-responsive  nowrap w-100">
+                                    <thead class="bg-soft-primary">
+                                        <tr>
+                                            <th>الفرع </th>
+                                            <th>نوع الدراسة </th>
+                                            <th>الصف </th>
+                                            <th>من فصل </th>
+                                            <th>الي فصل </th>
+                                            <th>بتاريخ </th>
+                                            <th>ملاحظات </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item2 in item.TransferClasses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item2.StudyPlaceName
+                                                </td>
+                                                <td>
+                                                    @item2.StudyTypeName
+                                                </td>
+                                                <td>
+                                                    @item2.LevelName
+                                                </td>
+                                                <td>
+                                                    @item2.ClassFromName
+                                                </td>
+                                                <td>
+                                                    @item2.ClassToName
+                                                </td>
+                                                <td>
+                                                    @item2.Notes
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            
+
+                        </div>
+
+                        <div class="col-lg-12">
+                            معلمي فصله :
+                           
+                                <table id="" class="table table-striped dt-responsive  nowrap w-100">
+                                    <thead class="bg-soft-primary">
+                                        <tr>
+                                            <th>الاسم </th>
+                                            <th>رقم التليفون </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item2 in item.Employees)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    م.  @item2.EmployeeName
+                                                </td>
+                                                <td>
+                                                    @item2.EmployeePhone
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            
+
+                        </div>
+                    </div>
                 }
 
             </div>
         </div>
-        }
-
-    </div>
-</div>
     }
 }
 
