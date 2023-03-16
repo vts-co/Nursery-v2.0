@@ -62,6 +62,10 @@ namespace NurseryProject.Authorization
 
                 filterContext.Controller.ViewBag.UserScreens = user.UserScreens;
                 filterContext.Controller.ViewBag.UserName = user.Username;
+                if (user.EmployeeId==null)
+                    filterContext.Controller.ViewBag.EmployeeName = "Admin";
+                else
+                    filterContext.Controller.ViewBag.EmployeeName = user.Employee.Name;
 
                 var setting = settingsServices.GetAll();
 

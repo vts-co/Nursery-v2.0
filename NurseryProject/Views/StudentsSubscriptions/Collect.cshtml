@@ -89,14 +89,14 @@
                     </div>
                 </div>
                 @*@if (Model.IsAnother==true)
-        {
-            <div class="form-group mb-3 col-sm-3">
-                @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
-                </div>
-            </div>
-        }*@
+                    {
+                        <div class="form-group mb-3 col-sm-3">
+                            @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
+                            </div>
+                        </div>
+                    }*@
 
             </div>
             @Html.HiddenFor(model => model.Code)
@@ -149,12 +149,13 @@
                     }
                 </div>
             </div>*@
+        <input type="hidden" id="EmpName" name="EmpName" value="@ViewBag.EmployeeName" />
     </div>
 }
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         var now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
 
@@ -266,8 +267,8 @@
                     i++;
                 });
             }
-            document.getElementById('Total').value = total + " جنيه "
-            document.getElementById('Total2').value = total2 + " جنيه "
+            document.getElementById('Total').value = total 
+            document.getElementById('Total2').value = total2 
 
             $("#SubscriptionDiv2").append('<hr>');
 
@@ -294,11 +295,11 @@
 
                             document.body.innerHTML =
                                 "<div size='A6'>" + data.ReportHeader + "<hr>" +
-                            "<div class='row'>" + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
-                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>رقم التليفون : " + d[2] + "</div>" +
-                            "<div class='col-6'>قيمة القسط : " + Amount1 + " جنيه</div>" + "<div class='col-6'>تاريخ القسط : " + Date2 + " جنيه</div>" +
-                            "<div class='col-6'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
-                            "<div class='col-6'>قيمة المدفوع سابقا : " + document.getElementById("Total").value + "</div><div class='col-6'>قيمة المتبقي : " + document.getElementById('Total2').value + "</div>" +
+                            "<div class='row text-center'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "</div><div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
+                            "<div class='col-12'>تاريخ القسط : " + Date2 + " جنيه</div>" +"<div class='col-12'>قيمة القسط : " + Amount1 + " جنيه</div>" +
+                            "<div class='col-12'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-12'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                            "<div class='col-12'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + "</div>" +
+                            "<div class='col-12'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
 
                             "</div>"
                             + "<hr>" + data.ReportFooter + "</div>";
@@ -360,10 +361,11 @@
 
                         document.body.innerHTML =
                             "<div size='A6'>" + data.ReportHeader + "<hr>" +
-                            "<div class='row'>" + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
-                            "<div class='col-6'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6'>رقم التليفون : " + d[2] + "</div>" +
-                            "<div class='col-6'>قيمة القسط : " + Amount1 + " جنيه</div>" + "<div class='col-6'>تاريخ القسط : " + Date2 + " جنيه</div>" +
-                            "<div class='col-6'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-6'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                        "<div class='row text-center'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
+                        "<div class='col-12'>تاريخ القسط : " + Date2 +"<div class='col-12'>قيمة القسط : " + Amount1 + " جنيه</div>" +  " جنيه</div>" +
+                        "<div class='col-12'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-12'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                        "<div class='col-12'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + "</div>" +
+                        "<div class='col-12'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
 
                             "</div>"
                         + "<hr>" + data.ReportFooter + "</div>";
@@ -394,5 +396,5 @@
 
         };
 
-    </script>
+</script>
 }
