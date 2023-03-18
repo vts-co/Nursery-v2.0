@@ -756,6 +756,26 @@
 
     </script>
 
+
+    <script>
+
+        function setDefaultSort() {
+            var dataTables = document.getElementById("datatable");
+            for (var i = 0; i < (dataTables.length); i++) {
+                var columns = dataTables[i].getElementsByTagName("th");
+                for (var x = 0; x < (columns.length); x++) {
+                    if (jQuery(columns[x]).hasClass("dataTable-defaultSort")) {
+                        $.fn.dataTableExt.iApiIndex = i;
+                        oTable.fnSort([x, 'desc']);
+                    }
+                }
+            }
+            $.fn.dataTableExt.iApiIndex = 0;
+        }
+    </script>
+
+
+
     <script>
         function myFunction() {
             // Declare variables

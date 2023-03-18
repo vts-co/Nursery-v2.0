@@ -38,6 +38,8 @@ namespace NurseryProject.Services
                     RoleId = (Role)user.RoleId,
                     UserId = user.Id,
                     EmployeeId = user.EmployeeId != null ? user.EmployeeId.Value : Guid.Empty,
+                    EmployeeName = user.EmployeeId != null ? user.Employee.Name : "Admin",
+
                     UserName = user.Username,
                     UserScreens = user.UserScreens
                 };

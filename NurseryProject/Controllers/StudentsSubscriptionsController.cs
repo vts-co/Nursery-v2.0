@@ -3,6 +3,7 @@ using NurseryProject.Dtos.StudentsClass;
 using NurseryProject.Enums;
 using NurseryProject.Levels.Services;
 using NurseryProject.Services.Classes;
+using NurseryProject.Services.Employees;
 using NurseryProject.Services.Settings;
 using NurseryProject.Services.Students;
 using NurseryProject.Services.StudentsClass;
@@ -36,8 +37,9 @@ namespace NurseryProject.Views
         StudentsClassServices studentsClassServices = new StudentsClassServices();
         SubscriptionsMethodsServices subscriptionsMethodsServices = new SubscriptionsMethodsServices();
         ClassesServices classesServices = new ClassesServices();
+        EmployeesServices employeesServices = new EmployeesServices();
         // GET: StudentsSubscriptions
-        
+
         public ActionResult Index()
         {
             ViewBag.StudentId = new SelectList(studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
@@ -82,6 +84,7 @@ namespace NurseryProject.Views
                 if (item.PaidDate == null)
                     item.PaidDate = item.Date;
             }
+            
             return View(class1);
         }
 

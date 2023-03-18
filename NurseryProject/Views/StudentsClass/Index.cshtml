@@ -67,22 +67,20 @@
             <thead class="bg-soft-primary">
                 <tr>
                     <th>
-                        @Html.DisplayName("الفرع ")
+                        @Html.DisplayName("الفصل ")
                     </th>
                     <th>
-                        @Html.DisplayName("العام الدراسي")
+                        @Html.DisplayName("الصف ")
                     </th>
                     <th>
                         @Html.DisplayName("نوع الدراسة")
                     </th>
                     <th>
-                        @Html.DisplayName("الصف ")
+                        @Html.DisplayName("الفرع ")
                     </th>
-
                     <th>
-                        @Html.DisplayName("الفصل ")
+                        @Html.DisplayName("العام الدراسي")
                     </th>
-
                     <th>
                         @Html.DisplayName("الطالب ")
                     </th>
@@ -111,49 +109,49 @@
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.StudyPlaceName)
+                        @item.ClassName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.StudyYearName)
+                        @item.LevelName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.StudyTypeName)
+                        @item.StudyTypeName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LevelName)
+                        @item.StudyPlaceName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClassName)
+                        @item.StudyYearName
+                    </td>
 
+                    <td>
+                        @item.StudentName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.StudentName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubscriptionName)
+                        @item.SubscriptionName
                     </td>
                     <td>
                         @item.Amount جنيه
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Number)
+                        @item.Number
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.JoiningDate)
+                        @item.JoiningDate
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
+                        @item.Notes
                     </td>
                     <td>
                         @*@if (item.SubscriptionMethod.Count() > 0)
-                        {
-                            <a class='btn btn-soft-warning waves-effect waves-light p-2' href="/StudentsSubscriptions/Collect/@item.Id" title="تحصيل قسط الاشتراك"><i class='fas fa-coins me-1'></i></a>
-                        }
-                        else
-                        {
-                            <button class='btn btn-soft-warning p-2' title="تحصيل قسط الاشتراك" disabled ><i class='fas fa-coins me-1'></i></button>
+            {
+                <a class='btn btn-soft-warning waves-effect waves-light p-2' href="/StudentsSubscriptions/Collect/@item.Id" title="تحصيل قسط الاشتراك"><i class='fas fa-coins me-1'></i></a>
+            }
+            else
+            {
+                <button class='btn btn-soft-warning p-2' title="تحصيل قسط الاشتراك" disabled ><i class='fas fa-coins me-1'></i></button>
 
-                        }*@
+            }*@
                         @*<a class='btn btn-soft-primary waves-effect waves-light p-2' href="/StudentsClassesTransfer/Index?StudentClassId=@item.Id" title="نقل الطالب من فصل لفصل"><i class='bx bx-transfer'></i></a>*@
                         @*<a class='btn btn-soft-secondary waves-effect waves-light p-2' href="/StudentsClass/StudentsLevelsTransfer?Id=@item.Id" title="نقل الطالب من صف لصف"><i class='fa fa-arrow-alt-circle-up'></i></a>*@
                         <a class='btn btn-soft-info waves-effect waves-light p-2' href="/StudentsClass/StudentsClassPrevious?StudentClassId=@item.Id" title="الالتحاقات السابقة للطالب"><i class='mdi mdi-cards'></i></a>

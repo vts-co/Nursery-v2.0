@@ -59,14 +59,11 @@ namespace NurseryProject.Authorization
                 filterContext.Controller.TempData["UserId"] = auth.CookieValues.UserId;
                 filterContext.Controller.TempData["EmployeeId"] = auth.CookieValues.EmployeeId;
                 filterContext.Controller.TempData["RoleId"] = auth.CookieValues.RoleId;
+                filterContext.Controller.ViewBag.EmployeeName = auth.CookieValues.EmployeeName;
 
                 filterContext.Controller.ViewBag.UserScreens = user.UserScreens;
                 filterContext.Controller.ViewBag.UserName = user.Username;
-                if (user.EmployeeId==null)
-                    filterContext.Controller.ViewBag.EmployeeName = "Admin";
-                else
-                    filterContext.Controller.ViewBag.EmployeeName = user.Employee.Name;
-
+                
                 var setting = settingsServices.GetAll();
 
                 filterContext.Controller.TempData["SettingLogo"] = setting.Logo;
@@ -95,7 +92,10 @@ namespace NurseryProject.Authorization
     {
         public Guid UserId { get; set; }
         public Guid EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+
         public Role RoleId { get; set; }
+
         public string UserName { get; set; }
         public string UserScreens { get; set; }
 
