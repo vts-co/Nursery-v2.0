@@ -295,11 +295,11 @@
 
                             document.body.innerHTML =
                                 "<div size='A6'>" + data.ReportHeader + "<hr>" +
-                            "<div class='row text-center'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "</div><div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
-                            "<div class='col-12'>تاريخ القسط : " + Date2 + " جنيه</div>" +"<div class='col-12'>قيمة القسط : " + Amount1 + " جنيه</div>" +
-                            "<div class='col-12'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-12'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
-                            "<div class='col-12'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
-                            "<div class='col-12'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
+                            "<div class='row'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "</div><div class='col-12 mb-2'>اسم الطالب : " + d[1] + "</div>" +
+                            "<div class='col-12 mb-2'>تاريخ القسط : " + Date2 + "</div>" +"<div class='col-12 mb-2'>قيمة القسط : " + Amount1 + " جنيه</div>" +
+                            "<div class='col-12 mb-2'> قيمة المدفوع : " + Amount + " جنيه</div> <div class='col-12 mb-2'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                            "<div class='col-12 mb-2'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                            "<div class='col-12 mb-2'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
 
                             "</div>"
                             + "<hr>" + data.ReportFooter + "</div>";
@@ -361,11 +361,11 @@
 
                         document.body.innerHTML =
                             "<div size='A6'>" + data.ReportHeader + "<hr>" +
-                        "<div class='row text-center'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "<div class='col-12'>اسم الطالب : " + d[1] + "</div>" +
-                        "<div class='col-12'>تاريخ القسط : " + Date2 +"<div class='col-12'>قيمة القسط : " + Amount1 + " جنيه</div>" +  " جنيه</div>" +
-                        "<div class='col-12'> قيمة المدفوع : " + Amount + " جنيه</div > <div class='col-12'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
-                        "<div class='col-12'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
-                        "<div class='col-12'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
+                        "<div class='row'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "<div class='col-12 mb-2'>اسم الطالب : " + d[1] + "</div>" +
+                        "<div class='col-12 mb-2'>تاريخ القسط : " + Date2 +"</div><div class='col-12 mb-2'>قيمة القسط : " + Amount1 + " جنيه</div>"  +
+                        "<div class='col-12 mb-2'> قيمة المدفوع : " + Amount + " جنيه</div> <div class='col-12 mb-2'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + "  " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                        "<div class='col-12 mb-2'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                        "<div class='col-12 mb-2'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
 
                             "</div>"
                         + "<hr>" + data.ReportFooter + "</div>";
