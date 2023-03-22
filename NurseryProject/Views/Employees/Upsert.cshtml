@@ -4,6 +4,7 @@
     ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " موظف  ";
     string action = Model.Id == Guid.Empty ? "Create" : "Edit";
     ViewBag.MainPage = "الموظفين";
+    DateTime startDt = DateTime.Now;
 
 }
 @using (Html.BeginForm(action, "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
