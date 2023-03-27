@@ -70,6 +70,9 @@ namespace NurseryProject.Services.StudentsClass
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
                     item.StudentsClassPrevious = GetAllPrevious(item.StudentId, item.StudyTypeId);
+                    item.Paid = item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString();
+                    item.Remain = item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString();
+
                     foreach (var item2 in item.SubscriptionMethod)
                     {
                         if (DateTime.Parse(item2.Date).Date.AddDays(15) < DateTime.Now.Date)
@@ -142,6 +145,8 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
+                    item.Paid = item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString();
+                    item.Remain = item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString();
                 }
 
                 return model;
@@ -209,7 +214,8 @@ namespace NurseryProject.Services.StudentsClass
                     model.Amount = total.ToString();
                     model.Number = model.SubscriptionMethod.Where(y => y.StudentClassId == model.Id).ToList().Count().ToString();
                 }
-
+                item.Paid = item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString();
+                item.Remain = item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString();
                 return model;
             }
         }
@@ -272,7 +278,8 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
-                   
+                    item.Paid = item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString();
+                    item.Remain = item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString();
                 }
 
                 return model;

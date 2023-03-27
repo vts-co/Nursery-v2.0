@@ -39,6 +39,9 @@ namespace NurseryProject.Dtos.StudentsClass
         public List<StudentsClassDto> StudentsClassPrevious { get; set; }
 
         public string Paid { get; set; }
+        public string Remain { get; set; }
+
+        
         public string Date { get; set; }
     }
     public class SubscriptionMethodDto
