@@ -89,7 +89,7 @@
                     @foreach (var item in ViewBag.Reports)
                     {
                     <tr>
-                        @foreach (var item2 in item.SubscriptionMethod)
+                        @*@foreach (var item2 in item.SubscriptionMethod)
                         {
                             if (@item2.IsPaid == true)
                             {
@@ -99,7 +99,7 @@
                             {
                                 remain += float.Parse(@item2.Amount);
                             }
-                        }
+                        }*@
                         <td>
                             @item.Code
                         </td>
