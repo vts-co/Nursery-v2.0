@@ -214,8 +214,8 @@ namespace NurseryProject.Services.StudentsClass
                     model.Amount = total.ToString();
                     model.Number = model.SubscriptionMethod.Where(y => y.StudentClassId == model.Id).ToList().Count().ToString();
                 }
-                item.Paid = item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString();
-                item.Remain = item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString();
+                model.Paid = model.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString();
+                model.Remain = model.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString();
                 return model;
             }
         }

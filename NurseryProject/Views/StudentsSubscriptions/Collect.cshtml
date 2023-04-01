@@ -282,6 +282,7 @@
 
             var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value);
             var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
+            var Date3 = document.getElementById("SubscriptionMethod[" + (i+1) + "].Date").value;
 
 
             if (Amount1 == Amount) {
@@ -297,8 +298,11 @@
                                 "<div size='A6'>" + data.ReportHeader + "<hr>" +
                             "<div class='row'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "</div><div class='col-12 mb-2'>اسم الطالب : " + d[1] + "</div>" +
                             "<div class='col-12 mb-2'>تاريخ القسط : " + Date2 + "</div>" + "<div class='col-12 mb-2'>قيمة القسط : " + Amount1 + " جنيه</div>" +
-                            "<div class='col-12 mb-2'> قيمة المدفوع : " + Amount + " جنيه</div> <div class='col-12 mb-2'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + " | " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
+                            "<div class='col-12 mb-2'> قيمة المدفوع : " + Amount + " جنيه</div>" +
+                            " <div class='col-12 mb-2'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + " | " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
                             "<div class='col-12 mb-2'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                            " <div class='col-12 mb-2'> تاريخ القسط القادم : " + Date3 + "  </div>" +
+
                             "<div class='col-12 mb-2'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
 
                             "</div>"
@@ -349,6 +353,8 @@
             var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
 
             var Amount1 = document.getElementById("SubscriptionMethod[" + i + "].Amount").value;
+            var Date3 = document.getElementById("SubscriptionMethod[" + (i + 1) + "].Date").value;
+
             var sub = Amount1 - Amount;
 
             $.get('/StudentsSubscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, Id2: $("#Date2").val(), Sub: sub, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
@@ -365,6 +371,8 @@
                         "<div class='col-12 mb-2'>تاريخ القسط : " + Date2 +"</div><div class='col-12 mb-2'>قيمة القسط : " + Amount1 + " جنيه</div>"  +
                         "<div class='col-12 mb-2'> قيمة المدفوع : " + Amount + " جنيه</div> <div class='col-12 mb-2'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + " | " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
                         "<div class='col-12 mb-2'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                        " <div class='col-12 mb-2'> تاريخ القسط القادم : " + Date3 + "  </div>" +
+
                         "<div class='col-12 mb-2'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
 
                             "</div>"
