@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<NurseryProject.Dtos.StudentsClass.StudentsClassDto>
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = " تحصيل اشتراكات الطلاب  ";
+    ViewBag.Title = " ادارة تحويل من صف لصف  ";
 }
 <div class="card">
     <div class="card-header">
@@ -12,7 +12,7 @@
             </p>
         </div>
     </div>
-    @using (Html.BeginForm("Index", "StudentsSubscriptions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Search", "StudentsLevelsTransfer", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="card-body">
             <div class="row mt-3">

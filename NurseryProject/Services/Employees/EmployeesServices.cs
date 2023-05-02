@@ -125,6 +125,7 @@ namespace NurseryProject.Services.Employees
                 Oldmodel.JopId = model.JopId.Value;
                 Oldmodel.Notes = model.Notes;
                 Oldmodel.Qualification = model.Qualification;
+
                 if (model.Image != null)
                 {
                     Oldmodel.Image = model.Image;

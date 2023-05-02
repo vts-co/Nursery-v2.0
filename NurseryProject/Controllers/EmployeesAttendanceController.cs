@@ -145,10 +145,10 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getEmployeesWorkShiftsBysearch(Guid StudyYearId, Guid WorkShiftId,string search)
         {
-            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x => new { x.Id, x.Code, x.EmployeeId, x.EmployeeName }).ToList();
+            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).ToList();
             if (search != null)
             {
-                model = model.Where(x => x.Code.Contains(search) || x.EmployeeName.Contains(search)).Select(x => new { x.Id, x.Code, x.EmployeeId, x.EmployeeName }).ToList();
+                model = model.Where(x => x.Code.Contains(search) || x.EmployeeName.Contains(search)).ToList();
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }

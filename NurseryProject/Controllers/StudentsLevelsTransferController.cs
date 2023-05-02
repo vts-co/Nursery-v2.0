@@ -51,7 +51,7 @@ namespace NurseryProject.Controllers
             if (subs > 0)
             {
                 TempData["warning"] = "هذا الطالب لا يمكن نقله لعدم دفع جميع الاقساط";
-                return RedirectToAction("Index");
+                return RedirectToAction("Search");
             }
             var class1 = studentsClassServices.Get(Id);
             class1.IsAnother = false;
