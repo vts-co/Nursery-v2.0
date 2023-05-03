@@ -1,12 +1,12 @@
 ﻿@model NurseryProject.Dtos.StudentsClass.StudentsClassDto
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = "  نقل الطالب من صف لصف   ";
-    string action = "StudentsLevelsTransfer";
+    ViewBag.Title = "  نقل الطالب من صف لصف";
+    string action = "Index";
     ViewBag.MainPage = "التحاق الطلاب ";
 
 }
-@using (Html.BeginForm(action, "StudentsClass", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm(action, "StudentsLevelsTransfer", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="card">
