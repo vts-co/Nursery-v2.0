@@ -45,7 +45,7 @@
                 {
                     <div class="form-group mb-3 col-sm-1">
                         <div class="col-12">
-                            @Html.CheckBoxFor(model => model.ShiftTimes[i].IsFound,  new { @class = "form-check-input"})
+                            @Html.CheckBoxFor(model => model.ShiftTimes[i].IsFound,  new { @class = "form-check-input", @onchange = "show1(" + i + ");" })
                         </div>
                     </div>
                     <div class="form-group mb-3 col-sm-3">
@@ -56,12 +56,12 @@
                     </div>
                     <div class="form-group mb-3 col-sm-4">
                         <div class="col-12">
-                            @Html.EditorFor(model => model.ShiftTimes[i].TimeFrom, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                            @Html.EditorFor(model => model.ShiftTimes[i].TimeFrom, new { htmlAttributes = new { @class = "form-control", type = "time", @disabled = "disabled" } })
                         </div>
                     </div>
                     <div class="form-group mb-3 col-sm-4">
                         <div class="col-12">
-                            @Html.EditorFor(model => model.ShiftTimes[i].TimeTo, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                            @Html.EditorFor(model => model.ShiftTimes[i].TimeTo, new { htmlAttributes = new { @class = "form-control", type = "time", @disabled = "disabled" } })
                         </div>
                     </div>
                 }
@@ -90,5 +90,20 @@
 }
 
 @section scripts{
-  
+  <script>
+      function show1(i) {
+          console.log("ShiftTimes_" + i + "__IsFound");
+          if (document.getElementById("ShiftTimes_" + i + "__IsFound").checked == true) {
+
+              document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled= false;
+              document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled= false;
+
+          }
+          else {
+              document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled = true;
+              document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled = true;
+          }
+         
+      }
+    </script>
 }
