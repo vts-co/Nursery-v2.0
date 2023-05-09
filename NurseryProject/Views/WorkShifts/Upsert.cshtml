@@ -45,7 +45,7 @@
                 {
                     <div class="form-group mb-3 col-sm-1">
                         <div class="col-12">
-                            @Html.CheckBoxFor(model => model.ShiftTimes[i].IsFound,  new { @class = "form-check-input", @onchange = "show1(" + i + ");" })
+                            @Html.CheckBoxFor(model => model.ShiftTimes[i].IsFound, new { @class = "form-check-input", @onchange = "show1(" + i + ");" })
                         </div>
                     </div>
                     <div class="form-group mb-3 col-sm-3">
@@ -90,20 +90,33 @@
 }
 
 @section scripts{
-  <script>
-      function show1(i) {
-          console.log("ShiftTimes_" + i + "__IsFound");
-          if (document.getElementById("ShiftTimes_" + i + "__IsFound").checked == true) {
+    <script>
+        function show1(i) {
+            console.log("ShiftTimes_" + i + "__IsFound");
+            if (document.getElementById("ShiftTimes_" + i + "__IsFound").checked == true) {
 
-              document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled= false;
-              document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled= false;
+                document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled = false;
+                document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled = false;
 
-          }
-          else {
-              document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled = true;
-              document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled = true;
-          }
-         
-      }
+            }
+            else {
+                document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled = true;
+                document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled = true;
+            }
+
+        }
+        for (var i = 0; i < 7; i++)
+        {
+            if (document.getElementById("ShiftTimes_" + i + "__IsFound").checked == true) {
+
+                document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled = false;
+                document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled = false;
+
+            }
+            else {
+                document.getElementById("ShiftTimes_" + i + "__TimeFrom").disabled = true;
+                document.getElementById("ShiftTimes_" + i + "__TimeTo").disabled = true;
+            }
+        }
     </script>
 }
