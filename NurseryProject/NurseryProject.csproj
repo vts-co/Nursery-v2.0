@@ -2025,7 +2025,6 @@
     <Content Include="assets\libs\feather-icons\icons.json" />
     <Content Include="assets\libs\gmaps\jsdoc.json" />
     <Content Include="assets\libs\gmaps\umd.hbs" />
-    <Content Include="assets\libs\gmaps\yarn-error.log" />
     <Content Include="assets\libs\swiper\angular\swiper_angular.metadata.json" />
     <Content Include="assets\libs\swiper\cjs\svelte\swiper-slide.svelte" />
     <Content Include="assets\libs\swiper\cjs\svelte\swiper.svelte" />

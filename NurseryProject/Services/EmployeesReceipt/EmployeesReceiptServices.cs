@@ -139,8 +139,8 @@ namespace NurseryProject.Services.EmployeesReceipt
 
                 }
 
-                var discounts = dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == Id).ToList();
-                var increases = dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == Id).ToList();
+                var discounts = dbContext.EmployeesDiscounts.Where(y => !y.IsDeleted && y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == Id).ToList();
+                var increases = dbContext.EmployeesIncreases.Where(z => !z.IsDeleted && z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == Id).ToList();
                 var model = dbContext.Employees.Where(x => x.IsDeleted == false && x.Id == Id).OrderBy(x => x.CreatedOn).Select(x => new EmployeesReceiptDto
                 {
                     Id = x.Id,
@@ -154,7 +154,7 @@ namespace NurseryProject.Services.EmployeesReceipt
                     EmployeesAttended = attendCount,
                     EmployeesNoAttended = noattendCount,
                     TotalCost = (totalCostCount * x.WorkDayCost).ToString(),
-                    EmployeesDiscount = dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == x.Id).Select(y => new Dtos.EmployeesReceipt.EmployeesDiscounts
+                    EmployeesDiscount = dbContext.EmployeesDiscounts.Where(y => !y.IsDeleted && y.DiscountDate.Value.ToString().Contains(date) && y.EmployeeId == x.Id).Select(y => new Dtos.EmployeesReceipt.EmployeesDiscounts
                     {
                         Id = y.Id,
                         DiscountTypeId = y.DiscountTypeId.Value,
@@ -165,7 +165,7 @@ namespace NurseryProject.Services.EmployeesReceipt
                         Value = y.DiscountValue.Value.ToString(),
                         Reason = y.DiscountReason
                     }).ToList(),
-                    EmployeesIncreases = dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == x.Id).Select(z => new Dtos.EmployeesReceipt.EmployeesIncreases
+                    EmployeesIncreases = dbContext.EmployeesIncreases.Where(z => !z.IsDeleted && z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == x.Id).Select(z => new Dtos.EmployeesReceipt.EmployeesIncreases
                     {
                         Id = z.Id,
                         IncreaseTypeId = z.IncreaseTypeId.Value,

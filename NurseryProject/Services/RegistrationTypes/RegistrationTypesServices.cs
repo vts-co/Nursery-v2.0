@@ -68,7 +68,7 @@ namespace NurseryProject.Services.RegistrationTypes
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<RegistrationType>();
-                if(Id==Guid.Parse("E31AC343-47DA-4DFE-8970-E1719DEEC869"))
+                if(Id==Guid.Parse("E31AC343-47DA-4DFE-8970-E1719DEEC869") || Id==Guid.Parse("5cf58b9e-d1eb-41d8-9b11-4ccc120648a3"))
                 {
                     result.IsSuccess = false;
                     result.Message = "هذه الحالة لا يمكن حذفها ";
