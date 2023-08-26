@@ -72,9 +72,9 @@ namespace NurseryProject.Controllers
                 student.Id = Guid.Empty;
 
                 if (student.BirthDate != null)
-                    ViewBag.BirthDate = student.BirthDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.BirthDate = student.BirthDate;
                 if (student.JoiningDate != null)
-                    ViewBag.JoiningDate = student.JoiningDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.JoiningDate = student.JoiningDate;
 
                 ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", student.GenderId);
                 ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", student.RegistrationTypeId);
@@ -100,9 +100,9 @@ namespace NurseryProject.Controllers
             var student = studentsServices.Get(Id);
 
             if (student.BirthDate != null)
-                ViewBag.BirthDate = student.BirthDate.Value.ToString("yyyy-MM-dd");
+                ViewBag.BirthDate = student.BirthDate;
             if (student.JoiningDate != null)
-                ViewBag.JoiningDate = student.JoiningDate.Value.ToString("yyyy-MM-dd");
+                ViewBag.JoiningDate = student.JoiningDate;
 
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", student.GenderId);
             ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", student.RegistrationTypeId);
@@ -141,9 +141,9 @@ namespace NurseryProject.Controllers
             else
             {
                 if (student.BirthDate != null)
-                    ViewBag.BirthDate = student.BirthDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.BirthDate = student.BirthDate.ToString();
                 if (student.JoiningDate != null)
-                    ViewBag.JoiningDate = student.JoiningDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.JoiningDate = student.JoiningDate;
 
 
                 ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", student.GenderId);
@@ -279,11 +279,11 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.JoiningDate == student.JoiningDate.Value.ToString()).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.JoiningDate == student.JoiningDate).ToList();
                 }
                 else
                 {
-                    students = students.Where(x => x.JoiningDate == student.JoiningDate.Value.ToString()).ToList();
+                    students = students.Where(x => x.JoiningDate == student.JoiningDate).ToList();
                 }
             }
             ViewBag.Students = students;
@@ -449,14 +449,14 @@ namespace NurseryProject.Controllers
                         student.Name = model.Rows[i][1].ToString();
                         student.Phone = model.Rows[i][2].ToString();
                         student.Address = model.Rows[i][3].ToString();
-                        student.BirthDate = DateTime.Parse(model.Rows[i][4].ToString()).Date;
+                        student.BirthDate = model.Rows[i][4].ToString();
                         if (model.Rows[i][5].ToString() == "ذكر")
                             student.GenderId = (int)Gender.ذكر;
-                        else
+                        else if (model.Rows[i][5].ToString() == "انثي")
                             student.GenderId = (int)Gender.انثي;
 
                         student.MotherName = model.Rows[i][6].ToString();
-                        student.JoiningDate = DateTime.Parse(model.Rows[i][7].ToString()).Date;
+                        student.JoiningDate = model.Rows[i][7].ToString();
                         student.Notes = model.Rows[i][8].ToString();
 
                         studentsServices.Create(student, (Guid)TempData["UserId"]);

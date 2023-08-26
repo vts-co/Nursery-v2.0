@@ -28,12 +28,12 @@ namespace NurseryProject.Models
         public string Code { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
+        public string BirthDate { get; set; }
         public Nullable<int> GenderId { get; set; }
         public string MotherName { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
-        public Nullable<System.DateTime> JoiningDate { get; set; }
+        public string JoiningDate { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }

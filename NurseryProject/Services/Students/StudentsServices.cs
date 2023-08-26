@@ -25,12 +25,12 @@ namespace NurseryProject.Services.Students
                     Address = x.Address,
                     Image = x.Image,
                     BirthDate = x.BirthDate.ToString(),
-                    GenderId = x.GenderId.Value,
-                    GenderName = x.GenderId == 1 ? "ذكر" : "انثي",
+                    GenderId = x.GenderId!=null?(int)x.GenderId:0,
+                    GenderName = x.GenderId != null?((Gender)x.GenderId).ToString():"",
                     MotherName = x.MotherName,
                     RegistrationTypeId = x.RegistrationTypeId.Value,
                     RegistrationTypeName = x.RegistrationType.Name,
-                    JoiningDate = x.JoiningDate.Value.ToString(),
+                    JoiningDate = x.JoiningDate,
                     CityId = x.DestrictId != null ? x.Destrict.CityId.Value:Guid.Empty,
                     CityName = x.DestrictId != null ? x.Destrict.City.Name:"",
                     DestrictId =x.DestrictId!=null? x.DestrictId.Value:Guid.Empty,
@@ -154,12 +154,12 @@ namespace NurseryProject.Services.Students
                     Address = x.Address,
                     Image = x.Image,
                     BirthDate = x.BirthDate.ToString(),
-                    GenderId = x.GenderId.Value,
-                    GenderName = x.GenderId == 1 ? "ذكر" : "انثي",
+                    GenderId = x.GenderId != null ? (int)x.GenderId : 0,
+                    GenderName = x.GenderId != null ? ((Gender)x.GenderId).ToString() : "",
                     MotherName = x.MotherName,
                     RegistrationTypeId = x.RegistrationTypeId.Value,
                     RegistrationTypeName = x.RegistrationType.Name,
-                    JoiningDate = x.JoiningDate.Value.ToString(),
+                    JoiningDate = x.JoiningDate,
                     CityId = x.DestrictId != null ? x.Destrict.CityId.Value : Guid.Empty,
                     CityName = x.DestrictId != null ? x.Destrict.City.Name : "",
                     DestrictId = x.DestrictId != null ? x.DestrictId.Value : Guid.Empty,
@@ -254,7 +254,7 @@ namespace NurseryProject.Services.Students
                 if(model.RegistrationTypeId!=Guid.Empty&& model.RegistrationTypeId !=null)
                     Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
 
-                Oldmodel.JoiningDate = model.JoiningDate.Value;
+                Oldmodel.JoiningDate = model.JoiningDate;
 
                 if(model.DestrictId!=null&& model.RegistrationTypeId != Guid.Empty)
                     Oldmodel.DestrictId = model.DestrictId.Value;

@@ -570,12 +570,12 @@
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Image" Type="nvarchar(max)" />
-          <Property Name="BirthDate" Type="date" />
+          <Property Name="BirthDate" Type="nvarchar(max)" />
           <Property Name="GenderId" Type="int" />
           <Property Name="MotherName" Type="nvarchar(max)" />
           <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
-          <Property Name="JoiningDate" Type="date" />
+          <Property Name="JoiningDate" Type="nvarchar(max)" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -2961,12 +2961,12 @@
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="BirthDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GenderId" Type="Int32" />
           <Property Name="MotherName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="JoiningDate" Type="DateTime" Precision="0" />
+          <Property Name="JoiningDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
