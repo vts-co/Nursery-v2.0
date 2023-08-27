@@ -47,6 +47,7 @@ namespace NurseryProject.Services.StudentsClass
                         Date = y.Date.Value.ToString(),
                         PaidAmount = y.PaidAmount,
                         IsPaid = y.IsPaid.Value,
+                        Collector=y.ModifiedBy != null?y.ModifiedBy.ToString():"",
                         Paided = y.IsPaid.Value == true ? "تم الدفع" : "لم يتم الدفع بعد",
                         PaidDate = y.PaidDate.Value.ToString()
                     }).ToList(),
@@ -81,7 +82,16 @@ namespace NurseryProject.Services.StudentsClass
                             item.Regular = "غير منتظم";
                             break;
                         }
-
+                        if (item2.Collector != ""&& item2.IsPaid==true)
+                        {
+                            var id = Guid.Parse(item2.Collector);
+                            var ff = dbContext.Users.Where(x => x.Id == id && !x.IsDeleted).FirstOrDefault();
+                            item2.Collector = ff.Username;
+                        }
+                        else 
+                        {
+                            item2.Collector = "";
+                        }
                     }
 
                 }
@@ -362,6 +372,7 @@ namespace NurseryProject.Services.StudentsClass
                     Amount = x.StudentsClass.IsAnother != true ? x.StudentsClass.Subscription.Amount : "",
                     Number = x.StudentsClass.IsAnother != true ? x.StudentsClass.Subscription.InstallmentsNumber : "",
                     Paid = x.PaidAmount,
+                    Collector=x.ModifiedBy != null? x.ModifiedBy.ToString():"",
                     Date = x.PaidDate.Value.ToString()
 
                 }).ToList();
@@ -381,7 +392,12 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
-
+                    if(item.Collector!="")
+                    {
+                        var id = Guid.Parse(item.Collector);
+                        var ff = dbContext.Users.Where(x => x.Id == id && !x.IsDeleted).FirstOrDefault();
+                        item.Collector = ff.Username;
+                    }
                 }
 
                 return model;

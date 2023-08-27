@@ -167,6 +167,8 @@ namespace NurseryProject.Controllers
             {
                 Class.SubscriptionId = null;
             }
+            Class.IsCurrent = true;
+
             var result = studentsClassServices.Edit(Class, RegistrationTypeId, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {

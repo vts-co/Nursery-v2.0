@@ -26,6 +26,7 @@ namespace NurseryProject.Dtos.Employees
         public int MaritalStateId { get; set; }
         public string MaritalStateName { get; set; }
         public string WorkDayCost { get; set; }
+        public string WorkShifts { get; set; }
         public string Notes { get; set; }
     }
 }

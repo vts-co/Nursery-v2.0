@@ -37,6 +37,7 @@ namespace NurseryProject.Services.SubscriptionsMethods
                         var mod = float.Parse(model1.Amount);
                         mod += Sub;
                         model1.Amount = mod.ToString();
+                        model1.ModifiedBy = UserId;
                         dbContext.SaveChanges();
 
                     }

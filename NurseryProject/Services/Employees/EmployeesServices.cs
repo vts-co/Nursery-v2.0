@@ -35,15 +35,14 @@ namespace NurseryProject.Services.Employees
                     //MaritalStateId = (int)x.MaritalStateId,
                     Notes = x.Notes
                 }).ToList();
+                
                 foreach (var item in model)
                 {
                     if (item.BirthDate != null && item.BirthDate.Trim() != "")
                         item.BirthDate = DateTime.Parse(item.BirthDate).ToString("yyyy-MM-dd");
                     if (item.JoiningDate != null && item.JoiningDate != string.Empty && item.JoiningDate != "")
                         item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
-                }
-                foreach (var item in model)
-                {
+
                     if (item.MaritalStateId == 1)
                         item.MaritalStateName = "اعزب";
                     if (item.MaritalStateId == 2)
@@ -52,6 +51,16 @@ namespace NurseryProject.Services.Employees
                         item.MaritalStateName = "مطلق";
                     if (item.MaritalStateId == 4)
                         item.MaritalStateName = "ارمل";
+
+                    var gg = dbContext.EmployeesWorkShifts.Where(x => !x.IsDeleted && x.EmployeeId == item.Id && x.StudyYear.IsCurrentYear == true).ToList();
+                    for (int i = 0; i < gg.Count(); i++)
+                    {
+                        if (i == 0)
+                            item.WorkShifts = gg[i].WorkShift.Name;
+                        else
+                            item.WorkShifts += ","+gg[i].WorkShift.Name;
+
+                    }
                 }
                 return model;
             }
