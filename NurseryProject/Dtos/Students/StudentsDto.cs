@@ -8,6 +8,10 @@ namespace NurseryProject.Dtos.Students
     public class StudentsDto
     {
         public Guid Id { get; set; }
+        public Guid? StudyTypeId { get; set; }
+        public Guid? StudyYearId { get; set; }
+        public Guid? LevelId { get; set; }
+        public Guid? ClassId { get; set; }
         public Guid CityId { get; set; }
         public string CityName { get; set; }
         public Guid DestrictId { get; set; }

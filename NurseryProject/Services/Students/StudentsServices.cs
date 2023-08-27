@@ -19,6 +19,11 @@ namespace NurseryProject.Services.Students
                 var model = dbContext.Students.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.StudentsClasses.Any(y => y.Class.EmployeeClasses.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(i => i.Class.ClassesLeaders.Any(l => l.IsDeleted == false && l.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(p=>p.IsDeleted==false&&p.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
                 {
                     Id = x.Id,
+                    StudyTypeId=x.StudentsClasses.Where(y=>!y.IsDeleted&&y.IsCurrent==true).Select(y=>y.Subscription.Level.StudyTypeId).FirstOrDefault(),
+                    StudyYearId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.StudyYearId).FirstOrDefault(),
+                    LevelId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.Subscription.LevelId).FirstOrDefault(),
+                    ClassId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.ClassId).FirstOrDefault(),
+
                     Code = x.Code,
                     Name = x.Name,
                     Phone = x.Phone,

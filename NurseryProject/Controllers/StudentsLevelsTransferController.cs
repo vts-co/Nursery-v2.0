@@ -268,15 +268,20 @@ namespace NurseryProject.Controllers
                         }
                         var studentClass = studentsClassServices.GetByStudentCurent(student.Id);
 
-                        Class.Id = Guid.NewGuid();
-                        Class.IsCurrent = true;
-                        Class.StudentId = student.Id;
-
-                        var result = studentsClassServices.Create(Class, (Guid)TempData["UserId"]);
-                        if (result.IsSuccess)
+                        var subs = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == studentClass.Id && x.IsDeleted == false && x.IsPaid == false).ToList().Count();
+                        if(subs==0)
                         {
-                            var result2 = studentsClassServices.UpateCurrentId(studentClass.Id, (Guid)TempData["UserId"]);
+                            Class.Id = Guid.NewGuid();
+                            Class.IsCurrent = true;
+                            Class.StudentId = student.Id;
+
+                            var result = studentsClassServices.Create(Class, (Guid)TempData["UserId"]);
+                            if (result.IsSuccess)
+                            {
+                                var result2 = studentsClassServices.UpateCurrentId(studentClass.Id, (Guid)TempData["UserId"]);
+                            }
                         }
+                        
                     }
                     TempData["success"] = "تم حفظ البيانات بنجاح";
                     return RedirectToAction("Search");

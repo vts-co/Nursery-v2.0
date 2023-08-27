@@ -2,11 +2,14 @@
 using NurseryProject.Authorization;
 using NurseryProject.Dtos.Students;
 using NurseryProject.Enums;
+using NurseryProject.Levels.Services;
 using NurseryProject.Models;
 using NurseryProject.Services.Cities;
+using NurseryProject.Services.Classes;
 using NurseryProject.Services.Destricts;
 using NurseryProject.Services.RegistrationTypes;
 using NurseryProject.Services.Students;
+using NurseryProject.Services.StudyTypes;
 using NurseryProject.Services.StudyYears;
 using NurseryProject.Utilities;
 using System;
@@ -30,11 +33,65 @@ namespace NurseryProject.Controllers
         RegistrationTypesServices registrationTypes = new RegistrationTypesServices();
         CitiesServices citiesServices = new CitiesServices();
         DestrictsServices destrictsServices = new DestrictsServices();
-
+        StudyTypesServices studyTypesServices = new StudyTypesServices();
+        LevelsServices levelsServices = new LevelsServices();
+        ClassesServices classesServices = new ClassesServices();
         // GET: Cities
         public ActionResult Index()
         {
+            var studyTypes = studyTypesServices.GetAll();
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
+
+            var StudyYear = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
+
+            ViewBag.LevelId = new SelectList("");
+            ViewBag.ClassId = new SelectList("");
+
             var model = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            return View(model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Index(Guid? StudyTypeId, Guid? StudyYearId, Guid? LevelId, Guid? ClassId)
+        {
+            var studyTypes = studyTypesServices.GetAll();
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", StudyTypeId);
+
+            var StudyYear = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", StudyYearId);
+
+            var model = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+
+            if (StudyYearId != null && StudyYearId != Guid.Empty)
+            {
+                model = model.Where(x => x.StudyYearId == StudyYearId).ToList();
+            }
+            if (StudyTypeId != null && StudyTypeId != Guid.Empty)
+            {
+                ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == StudyTypeId).ToList(), "Id", "Name", LevelId);
+                if (LevelId != null && LevelId != Guid.Empty)
+                {
+                    ViewBag.ClassId = new SelectList(classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == LevelId).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", ClassId);
+                }
+                else
+                {
+                    ViewBag.ClassId = new SelectList("");
+                }
+                model = model.Where(x => x.StudyTypeId == StudyTypeId).ToList();
+            }
+            else
+            {
+                ViewBag.LevelId = new SelectList("");
+                ViewBag.ClassId = new SelectList("");
+            }
+            if (LevelId != null && LevelId != Guid.Empty)
+            {
+                model = model.Where(x => x.LevelId == LevelId).ToList();
+            }
+            if (ClassId != null && ClassId != Guid.Empty)
+            {
+                model = model.Where(x => x.ClassId == ClassId).ToList();
+            }
             return View(model);
         }
         public ActionResult Create()
@@ -177,6 +234,17 @@ namespace NurseryProject.Controllers
                 TempData["warning"] = result.Message;
                 return RedirectToAction("Index");
             }
+        }
+
+        public ActionResult getLevels(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getClasses(Guid Id)
+        {
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         [Authorized(ScreenId = "52")]
@@ -439,7 +507,7 @@ namespace NurseryProject.Controllers
                     {
                         Student student = new Student();
                         student.Id = Guid.NewGuid();
-                        if (model.Rows[i][0].ToString() == ""|| model.Rows[i][0].ToString() == null)
+                        if (model.Rows[i][0].ToString() == "" || model.Rows[i][0].ToString() == null)
                             student.Code = randomCode.GenerateStudentCodeRandom();
                         else if (studentsServices.CodeExist(model.Rows[i][0].ToString()))
                             student.Code = randomCode.GenerateStudentCodeRandom();
@@ -460,7 +528,7 @@ namespace NurseryProject.Controllers
                         student.Notes = model.Rows[i][8].ToString();
 
                         studentsServices.Create(student, (Guid)TempData["UserId"]);
-                        
+
                     }
                     TempData["success"] = "تم حفظ البيانات بنجاح";
                     return RedirectToAction("Index");
