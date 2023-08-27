@@ -21,6 +21,7 @@ namespace NurseryProject.Dtos.StudentsClass
         public string StudyYearName { get; set; }
         public Guid StudentId { get; set; }
         public string StudentName { get; set; }
+        public string StudentCode { get; set; }
         public string StudentPhone { get; set; }
 
         public Guid? SubscriptionId { get; set; }

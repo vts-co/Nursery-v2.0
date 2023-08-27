@@ -31,6 +31,7 @@ namespace NurseryProject.Services.StudentsClass
                     StudyYearName = x.StudyYear.Name,
                     StudentId = x.Student.Id,
                     StudentName = x.Student.Name,
+                    StudentCode = x.Student.Code,
                     StudentPhone = x.Student.Phone,
                     IsAnother = x.IsAnother.Value,
                     SubscriptionId = x.SubscriptionId.Value,
@@ -80,7 +81,7 @@ namespace NurseryProject.Services.StudentsClass
                             item.Regular = "غير منتظم";
                             break;
                         }
-                       
+
                     }
 
                 }
@@ -219,6 +220,41 @@ namespace NurseryProject.Services.StudentsClass
                 return model;
             }
         }
+        public StudentsClassDto GetByStudentCurent(Guid Id)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.StudentId == Id&&x.IsCurrent==true).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                {
+                    Id = x.Id,
+                    Code = x.Student.Code,
+
+                    StudyPlaceId = x.Class.StudyPlaceId.Value,
+                    StudyPlaceName = x.Class.StudyPlace.Name,
+                    StudyTypeId = x.Class.Level.StudyTypeId.Value,
+
+                    StudyTypeName = x.Class.Level.StudyType.Name,
+                    LevelId = x.Class.LevelId.Value,
+                    LevelName = x.Class.Level.Name,
+                    ClassId = x.ClassId.Value,
+                    ClassName = x.Class.Name,
+                    StudyYearId = x.StudyYearId.Value,
+                    StudyYearName = x.StudyYear.Name,
+                    StudentId = x.Student.Id,
+                    StudentName = x.Student.Name,
+                    StudentPhone = x.Student.Phone,
+                    IsCurrent = x.IsCurrent.Value,
+                    IsAnother = x.IsAnother.Value,
+
+                    SubscriptionId = x.SubscriptionId.Value,
+                    SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
+                    Amount = x.IsAnother != true ? x.Subscription.Amount : "",
+                    Number = x.IsAnother != true ? x.Subscription.InstallmentsNumber : "",
+
+                }).FirstOrDefault();                
+                return model;
+            }
+        }
 
         public List<StudentsClassDto> GetAllPrevious(Guid StudentId)
         {
@@ -299,7 +335,7 @@ namespace NurseryProject.Services.StudentsClass
 
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.IsPaid == true && x.PaidDate.Value!=null && x.PaidDate.Value.Year >= date && x.PaidDate.Value.Month >= date2 && x.PaidDate.Value.Day >= date3&& x.PaidDate.Value.Year <= date4 && x.PaidDate.Value.Month <= date5 && x.PaidDate.Value.Day <= date6).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.IsPaid == true && x.PaidDate.Value != null && x.PaidDate.Value.Year >= date && x.PaidDate.Value.Month >= date2 && x.PaidDate.Value.Day >= date3 && x.PaidDate.Value.Year <= date4 && x.PaidDate.Value.Month <= date5 && x.PaidDate.Value.Day <= date6).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.StudentsClass.Student.Code,
@@ -398,7 +434,7 @@ namespace NurseryProject.Services.StudentsClass
                     result.Message = "هذا الطالب تم التحاقه بالفعل";
                     return result;
                 }
-                var student = dbContext.Students.Find(model.StudentId);
+                var student = dbContext.Students.Where(x => !x.IsDeleted && x.Id == model.StudentId).FirstOrDefault();
                 student.RegistrationTypeId = RegistrationTypeId;
                 dbContext.SaveChanges();
 

@@ -10,10 +10,52 @@
         <div class="row">
             <h2 class="col">  </h2>
             <p class="col-auto">
+                <button onclick="excel()" class='btn btn-soft-primary  waves-effect waves-light px-4'><i class="fas fa-list-alt me-3"></i> استيراد البيانات</button>
+            </p>
+            <p class="col-auto">
                 @Url.Create()
             </p>
         </div>
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                @using (Html.BeginForm("ImportExcel", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("الوظيفة", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("JopId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessage("JopId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-12">
+                                @Html.Label("شيت الاكسيل ", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    <input type="file" class="form-control" name="upload" id="upload" accept=".xlsx,.xls" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+
+                            @Url.SubmitCreate()
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
     <div class="card-body">
         <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
             <thead class="bg-soft-primary">
@@ -25,8 +67,8 @@
                         @Html.DisplayName("الاسم")
                     </th>
                     @*<th>
-                        @Html.DisplayName("الصورة الشخصية")
-                    </th>*@
+            @Html.DisplayName("الصورة الشخصية")
+        </th>*@
                     <th>
                         @Html.DisplayName("الإدارة")
                     </th>
@@ -38,13 +80,14 @@
                         @Html.DisplayName("تاريخ التعيين")
                     </th>
                     <th>
-                        @Html.DisplayName("العنوان")
-                    </th>
-                    <th>
                         @Html.DisplayName("رقم التليفون")
                     </th>
+                    <th>
+                        @Html.DisplayName("العنوان")
+                    </th>
 
-                   
+
+
                     <th>
                         @Html.DisplayName("عمليات")
                     </th>
@@ -61,26 +104,27 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     @*<td>
-                        <img src="@item.Image" width="50" />
-                    </td>*@
+            <img src="@item.Image" width="50" />
+        </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.DepartmentName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.JopName)
                     </td>
-                    
+
                     <td>
                         @Html.DisplayFor(modelItem => item.JoiningDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Phone)
                     </td>
-                    
-                   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+
+
+
                     <td>
                         @Url.Edit(routeValues: new { id = item.Id })
                         @Url.Delete(routeValues: new { id = item.Id })
@@ -92,3 +136,23 @@
 
     </div>
 </div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#DepartmentId").change(function () {
+            $.get('/Employees/getJops', { Id: $("#DepartmentId").val() }, function (data) {
+                $("#JopId").empty();
+                $("#JopId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#JopId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+
+        function excel() {
+            $("#exampleModal").modal('show');
+        }
+
+    </script>
+}

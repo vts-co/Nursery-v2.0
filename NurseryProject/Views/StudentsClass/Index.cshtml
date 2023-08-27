@@ -5,12 +5,98 @@
 }
 <div class="card">
     <div class="card-header">
-
         <div class="row">
             <h2 class="col">  </h2>
             <p class="col-auto">
+                <button onclick="excel()" class='btn btn-soft-primary  waves-effect waves-light px-4'><i class="fas fa-list-alt me-3"></i> استيراد البيانات</button>
+            </p>
+            <p class="col-auto">
                 @Url.Create()
             </p>
+
+        </div>
+
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                @using (Html.BeginForm("ImportExcel", "StudentsClass", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="modal-body">
+                        <div class="row mt-5">
+                            @Html.Label("البيانات الدراسية", htmlAttributes: new { @class = "control-label text-center mb-3 bg-warning" })
+                            <hr />
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("الصف ", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-12 text-center bg-warning">طريقة الدفع </div>
+                            <hr />
+                            <div class="form-group mb-3 col-sm-12">
+                                @Html.Label("طريقة الاشتراك", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("SubscriptionId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessage("SubscriptionId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row" id="SubscriptionDiv"></div>
+                            </div>
+                            <hr />
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.Editor("JoiningDate", new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" } })
+                                    @Html.ValidationMessage("JoiningDate", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                @Html.Label("حالة الطالب ", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    @Html.DropDownList("RegistrationTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessage("RegistrationTypeId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3 col-sm-12">
+                                @Html.Label("شيت الاكسيل ", htmlAttributes: new { @class = "control-label" })
+                                <div class="col-12">
+                                    <input type="file" class="form-control" name="upload" id="upload" accept=".xlsx,.xls" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+
+                            @Url.SubmitCreate()
+
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
     <div class="card-body">
@@ -67,22 +153,16 @@
             <thead class="bg-soft-primary">
                 <tr>
                     <th>
-                        @Html.DisplayName("الفصل ")
+                        @Html.DisplayName("كود الطالب ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الطالب ")
                     </th>
                     <th>
                         @Html.DisplayName("الصف ")
                     </th>
                     <th>
-                        @Html.DisplayName("نوع الدراسة")
-                    </th>
-                    <th>
-                        @Html.DisplayName("الفرع ")
-                    </th>
-                    <th>
-                        @Html.DisplayName("العام الدراسي")
-                    </th>
-                    <th>
-                        @Html.DisplayName("الطالب ")
+                        @Html.DisplayName("الفصل ")
                     </th>
                     <th>
                         @Html.DisplayName("طريقة الاشتراك ")
@@ -92,6 +172,15 @@
                     </th>
                     <th>
                         @Html.DisplayName("عدد الاقساط ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("نوع الدراسة")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الفرع ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("العام الدراسي")
                     </th>
                     <th>
                         @Html.DisplayName("تاريخ الالتحاق ")
@@ -107,60 +196,62 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>
-                        @item.ClassName
-                    </td>
-                    <td>
-                        @item.LevelName
-                    </td>
-                    <td>
-                        @item.StudyTypeName
-                    </td>
-                    <td>
-                        @item.StudyPlaceName
-                    </td>
-                    <td>
-                        @item.StudyYearName
-                    </td>
+                    <tr>
+                        <td>
+                            @item.StudentCode
+                        </td>
+                        <td>
+                            @item.StudentName
+                        </td>
+                        <td>
+                            @item.LevelName
+                        </td>
+                        <td>
+                            @item.ClassName
+                        </td>
+                        <td>
+                            @item.SubscriptionName
+                        </td>
+                        <td>
+                            @item.Amount جنيه
+                        </td>
+                        <td>
+                            @item.Number
+                        </td>
+                        <td>
+                            @item.StudyTypeName
+                        </td>
+                        <td>
+                            @item.StudyPlaceName
+                        </td>
+                        <td>
+                            @item.StudyYearName
+                        </td>
+                        <td>
+                            @item.JoiningDate
+                        </td>
+                        <td>
+                            @item.Notes
+                        </td>
+                        <td>
+                            @*@if (item.SubscriptionMethod.Count() > 0)
+                                {
+                                    <a class='btn btn-soft-warning waves-effect waves-light p-2' href="/StudentsSubscriptions/Collect/@item.Id" title="تحصيل قسط الاشتراك"><i class='fas fa-coins me-1'></i></a>
+                                }
+                                else
+                                {
+                                    <button class='btn btn-soft-warning p-2' title="تحصيل قسط الاشتراك" disabled ><i class='fas fa-coins me-1'></i></button>
 
-                    <td>
-                        @item.StudentName
-                    </td>
-                    <td>
-                        @item.SubscriptionName
-                    </td>
-                    <td>
-                        @item.Amount جنيه
-                    </td>
-                    <td>
-                        @item.Number
-                    </td>
-                    <td>
-                        @item.JoiningDate
-                    </td>
-                    <td>
-                        @item.Notes
-                    </td>
-                    <td>
-                        @*@if (item.SubscriptionMethod.Count() > 0)
-            {
-                <a class='btn btn-soft-warning waves-effect waves-light p-2' href="/StudentsSubscriptions/Collect/@item.Id" title="تحصيل قسط الاشتراك"><i class='fas fa-coins me-1'></i></a>
-            }
-            else
-            {
-                <button class='btn btn-soft-warning p-2' title="تحصيل قسط الاشتراك" disabled ><i class='fas fa-coins me-1'></i></button>
+                                }*@
+                            @*<a class='btn btn-soft-primary waves-effect waves-light p-2' href="/StudentsClassesTransfer/Index?StudentClassId=@item.Id" title="نقل الطالب من فصل لفصل"><i class='bx bx-transfer'></i></a>*@
+                            @*<a class='btn btn-soft-secondary waves-effect waves-light p-2' href="/StudentsClass/StudentsLevelsTransfer?Id=@item.Id" title="نقل الطالب من صف لصف"><i class='fa fa-arrow-alt-circle-up'></i></a>*@
+                            <a class='btn btn-soft-info waves-effect waves-light p-2' href="/StudentsClass/StudentsClassPrevious?StudentClassId=@item.Id" title="الالتحاقات السابقة للطالب"><i class='mdi mdi-cards'></i></a>
 
-            }*@
-                        @*<a class='btn btn-soft-primary waves-effect waves-light p-2' href="/StudentsClassesTransfer/Index?StudentClassId=@item.Id" title="نقل الطالب من فصل لفصل"><i class='bx bx-transfer'></i></a>*@
-                        @*<a class='btn btn-soft-secondary waves-effect waves-light p-2' href="/StudentsClass/StudentsLevelsTransfer?Id=@item.Id" title="نقل الطالب من صف لصف"><i class='fa fa-arrow-alt-circle-up'></i></a>*@
-                        <a class='btn btn-soft-info waves-effect waves-light p-2' href="/StudentsClass/StudentsClassPrevious?StudentClassId=@item.Id" title="الالتحاقات السابقة للطالب"><i class='mdi mdi-cards'></i></a>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
 
-                        @Url.Edit(routeValues: new { id = item.Id })
-                        @Url.Delete(routeValues: new { id = item.Id })
-
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -196,6 +287,36 @@
                 });
             });
         });
+        $("#SubscriptionId").change(function () {
+            $.get('/StudentsClass/getSubscriptionsById', { Id: $("#SubscriptionId").val() }, function (data) {
+                $("#SubscriptionDiv").empty();
+
+                var now1 = new Date();
+                now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
+                $.each(data, function (key, value) {
+                    var amount = parseInt(value["InstallmentsNumber"]);
+                    $("#SubscriptionDiv").append('<hr>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
+                    $("#SubscriptionDiv").append('<hr>');
+
+                    var j = 1;
+                    for (var i = 0; i < amount; i++) {
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] / value["InstallmentsNumber"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>')
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>')
+                        now1.setMonth(now1.getMonth() + 1);
+                        j++;
+                    }
+
+                });
+            });
+        });
+
+
+    </script>
+    <script>
+        function excel() {
+            $("#exampleModal").modal('show');
+        }
 
     </script>
 }

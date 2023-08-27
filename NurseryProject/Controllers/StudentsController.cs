@@ -99,10 +99,10 @@ namespace NurseryProject.Controllers
         {
             var student = studentsServices.Get(Id);
 
-            if (student.BirthDate != null)
-                ViewBag.BirthDate = student.BirthDate;
-            if (student.JoiningDate != null)
-                ViewBag.JoiningDate = student.JoiningDate;
+            if (student.BirthDate != null && student.BirthDate != string.Empty && student.BirthDate != "")
+                ViewBag.BirthDate = DateTime.Parse(student.BirthDate).ToString("yyyy-MM-dd");
+            if (student.JoiningDate != null && student.JoiningDate != string.Empty && student.JoiningDate != "")
+                ViewBag.JoiningDate = DateTime.Parse(student.JoiningDate).ToString("yyyy-MM-dd");
 
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", student.GenderId);
             ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", student.RegistrationTypeId);

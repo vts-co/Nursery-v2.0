@@ -37,6 +37,14 @@ namespace NurseryProject.Services.Students
                     DestrictName = x.DestrictId != null ? x.Destrict.Name:"",
                     Notes = x.Notes
                 }).ToList();
+
+                foreach (var item in model)
+                {
+                    if (item.BirthDate != null && item.BirthDate.Trim() != "")
+                        item.BirthDate = DateTime.Parse(item.BirthDate).ToString("yyyy-MM-dd");
+                    if (item.JoiningDate != null && item.JoiningDate != string.Empty && item.JoiningDate != "")
+                        item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
+                }
                 return model;
             }
         }
@@ -174,6 +182,14 @@ namespace NurseryProject.Services.Students
             using (var dbContext = new almohandes_DbEntities())
             {
                 var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Id == Id).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                return model;
+            }
+        }
+        public Student GetByCode(string code,string name)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Code == code&&x.Name==name).OrderBy(x => x.CreatedOn).FirstOrDefault();
                 return model;
             }
         }

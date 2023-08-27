@@ -18,23 +18,21 @@
             <thead class="bg-soft-primary">
                 <tr>
                     @*<th>
-                        @Html.DisplayName("مكان الدراسة")
-                    </th>*@
+            @Html.DisplayName("مكان الدراسة")
+        </th>*@
                     <th>
-                        @Html.DisplayName("العام الدراسي")
+                        @Html.DisplayName("الكود")
                     </th>
                     <th>
-                        @Html.DisplayName("الادارة")
-                    </th>
-                    <th>
-                        @Html.DisplayName("الموظف")
+                        @Html.DisplayName("الاسم")
                     </th>
                     <th>
                         @Html.DisplayName("الفترة")
                     </th>
                     <th>
-                        @Html.DisplayName("ملاحظات")
+                        @Html.DisplayName("الادارة")
                     </th>
+
                     <th>
                         @Html.DisplayName("عمليات")
                     </th>
@@ -45,13 +43,13 @@
                 {
                 <tr>
                     @*<td>
-                        @Html.DisplayFor(modelItem => item.StudyPlaceName)
-                    </td>*@
+            @Html.DisplayFor(modelItem => item.StudyPlaceName)
+        </td>*@
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.StudyYearName)
+        </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.StudyYearName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DepartmentName)
+                        @Html.DisplayFor(modelItem => item.Code)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.EmployeeName)
@@ -60,7 +58,7 @@
                         @Html.DisplayFor(modelItem => item.WorkShiftName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
+                        @Html.DisplayFor(modelItem => item.DepartmentName)
                     </td>
                     <td>
                         @Url.Edit(routeValues: new { id = item.Id })

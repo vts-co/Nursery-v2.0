@@ -9,6 +9,7 @@
         <div class="row">
             <h2 class="col">  </h2>
             <p class="col-auto">
+                <button onclick="excel()" class='btn btn-soft-primary  waves-effect waves-light px-4'><i class="fas fa-list-alt me-3"></i> استيراد البيانات</button>
             </p>
         </div>
     </div>
@@ -32,6 +33,82 @@
             </div>
         </div>
     }
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            @using (Html.BeginForm("ImportExcel", "StudentsLevelsTransfer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    <div class="row mt-5">
+                        @Html.Label("البيانات الدراسية", htmlAttributes: new { @class = "control-label text-center mb-3 bg-warning" })
+                        <hr />
+                        <div class="form-group mb-3 col-sm-6">
+                            @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-sm-6">
+                            @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-sm-6">
+                            @Html.Label(" الصف المحول اليه ", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-sm-6">
+                            @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-sm-12 text-center bg-warning">طريقة الدفع </div>
+                        <hr />
+                        <div class="form-group mb-3 col-sm-12">
+                            @Html.Label("طريقة الاشتراك", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.DropDownList("SubscriptionId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessage("SubscriptionId", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="row" id="SubscriptionDiv"></div>
+                        </div>
+                        <hr />
+                        <div class="form-group mb-3 col-sm-6">
+                            @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.Editor("JoiningDate", new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" } })
+                                @Html.ValidationMessage("JoiningDate", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                       
+
+                        <div class="form-group mb-3 col-sm-12">
+                            @Html.Label("شيت الاكسيل ", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                <input type="file" class="form-control" name="upload" id="upload" accept=".xlsx,.xls" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+
+                        @Url.SubmitCreate()
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
@@ -153,6 +230,34 @@
                 });
             });
         });
+        $("#SubscriptionId").change(function () {
+            $.get('/StudentsLevelsTransfer/getSubscriptionsById', { Id: $("#SubscriptionId").val() }, function (data) {
+                $("#SubscriptionDiv").empty();
+
+                var now1 = new Date();
+                now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
+                $.each(data, function (key, value) {
+                    var amount = parseInt(value["InstallmentsNumber"]);
+                    $("#SubscriptionDiv").append('<hr>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
+                    $("#SubscriptionDiv").append('<hr>');
+
+                    var j = 1;
+                    for (var i = 0; i < amount; i++) {
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] / value["InstallmentsNumber"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>')
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>')
+                        now1.setMonth(now1.getMonth() + 1);
+                        j++;
+                    }
+
+                });
+            });
+        });
+    </script>
+    <script>
+        function excel() {
+            $("#exampleModal").modal('show');
+        }
 
     </script>
 }
