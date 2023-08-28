@@ -1,0 +1,150 @@
+﻿@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير غياب وحضور الموظفين";
+    ViewBag.MainPage = "الطلاب";
+    var count = " لم يمتحن بعد  ";
+    var num = "%";
+}
+@using (Html.BeginForm("Reports", "EmployeesAttendance", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.Hidden("Id")
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("فترة العمل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("WorkShiftId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("WorkShiftId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("من", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Date", new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("Date2", new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+
+}
+@if (ViewBag.Attend != null)
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">
+                    تقرير غياب وحضور الموظفين
+                </h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead class="bg-soft-primary">
+                    <tr>
+                        <th>
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("رقم التليفون")
+                        </th>
+                        <th>
+                            @Html.DisplayName("العام الدراسي ")
+                        </th>
+                       
+                        <th>
+                            @Html.DisplayName("الغياب/الحضور")
+                        </th>
+                        <th>
+                            @Html.DisplayName("اليوم ")
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Attend)
+                    {
+                    <tr>
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.EmployeeName
+                        </td>
+                        <td>
+                            @item.EmployeePhone
+                        </td>
+
+                        <td>
+                            @item.StudyYearName
+                        </td>
+
+                        @if (item.IsAttend == true)
+                        {
+                            <td>
+                                حاضر
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                غائب
+                            </td>
+                        }
+                        <td>
+                            @item.ClassName
+                        </td>
+                        <td>
+                            @item.Date
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+    </script>
+}

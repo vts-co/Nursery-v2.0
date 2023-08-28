@@ -2196,6 +2196,7 @@
     <Content Include="Views\EmployeesRegistrationTypes\Upsert.cshtml" />
     <Content Include="Views\StudentsAttendance\DetailReport.cshtml" />
     <Content Include="Views\StudentsExamDegrees\Reports.cshtml" />
+    <Content Include="Views\EmployeesAttendance\Reports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

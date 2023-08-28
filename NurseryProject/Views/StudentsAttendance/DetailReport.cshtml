@@ -1,7 +1,7 @@
 ﻿@model NurseryProject.Dtos.StudentExamDegrees.StudentExamDegreesDto
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = "تقرير غياب وحضور مفصل";
+    ViewBag.Title = "تقرير غياب وحضور الطلاب مفصل";
     ViewBag.MainPage = "الطلاب";
     var count = " لم يمتحن بعد  ";
     var num = "%";
@@ -73,7 +73,7 @@
             <div class="card-header">
                 <div class="row justify-content-between">
                     <h4 class="col-auto">
-                        تقارير غياب وحضور مفصل
+                        تقارير غياب وحضور الطلاب مفصل
                     </h4>
                 </div>
             </div>
@@ -97,9 +97,7 @@
                             <th>
                                 @Html.DisplayName("نوع الدراسة ")
                             </th>
-                            <th>
-                                @Html.DisplayName("الصف ")
-                            </th>
+                           
                             <th>
                                 @Html.DisplayName("الصف ")
                             </th>

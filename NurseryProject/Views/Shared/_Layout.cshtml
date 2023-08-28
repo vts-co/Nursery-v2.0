@@ -550,7 +550,11 @@
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",75,"))
                                     {
-                                        <li class="Stund2"><a href="@Url.Action("Reports", "StudentsExamDegrees")"><i class="fas fa-calendar-check p-1"></i> تقرير درجات اختبارات طالب</a></li>
+                                        <li class="Stund2"><a href="@Url.Action("Reports", "StudentsExamDegrees")"><i class="fas fa-layer-group p-1"></i> تقرير درجات اختبارات طالب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",76,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Reports", "EmployeesAttendance")"><i class="fas fa-calendar-check p-1"></i> تقرير حضور وغياب الموظفين</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",63,"))
                                     {

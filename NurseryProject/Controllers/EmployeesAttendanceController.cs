@@ -174,6 +174,61 @@ namespace NurseryProject.Controllers
             var model = employeesAttendanceServices.GetByEmployeeWorkShift().Where(x => x.EmployeeWorkShiftId == Id && x.Date == Date&&x.IsAttend==true).Select(x => new { x.Id,x.Code, x.EmployeeId, x.EmployeeName,x.EmployeeWorkShiftId }).ToList().Count();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+
+        [Authorized(ScreenId = "76")]
+
+        public ActionResult Reports()
+        {
+            
+            var Years = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(Years, "Id", "Name");
+
+            
+            var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name");
+
+            return View();
+        }
+        [Authorized(ScreenId = "76")]
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Reports(Guid StudyYearId,Guid WorkShiftId, string Date, string Date2)
+        {
+            var Years = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(Years, "Id", "Name");
+
+           
+            var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name");
+
+            var model = employeesAttendanceServices.GetByEmployeeWorkShift();
+            if (StudyYearId != Guid.Empty && StudyYearId != null)
+            {
+                model = model.Where(x => x.StudyYearId == StudyYearId).ToList();
+            }
+            
+            if (WorkShiftId != Guid.Empty && WorkShiftId != null)
+            {
+                model = model.Where(x => x.WorkShiftId == WorkShiftId).ToList();
+            }
+            if (Date != null && Date2 != null)
+            {
+                var date = DateTime.Parse(Date);
+                var date2 = DateTime.Parse(Date2);
+
+                foreach (var item in model)
+                {
+                    if (DateTime.Parse(item.Date).AddDays(1) >= date && DateTime.Parse(item.Date) <= date2)
+                    {
+                        model.Remove(item);
+                    }
+                }
+            }
+            ViewBag.Attend = model;
+            return View();
+            
+        }
     }
     public class Attend1
     {

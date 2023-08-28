@@ -104,10 +104,12 @@ namespace NurseryProject.Services.EmployeesAttendance
                     EmployeeWorkShiftId = x.EmployeeWorkShiftId.Value,
                     StudyYearId = x.EmployeesWorkShift.StudyYearId.Value,
                     StudyYearName = x.EmployeesWorkShift.StudyYear.Name,
+                    
                     DepartmentId = x.EmployeesWorkShift.Employee.Jop.DepartmentId.Value,
                     DepartmentName = x.EmployeesWorkShift.Employee.Jop.Department.Name,
                     EmployeeId = x.EmployeesWorkShift.Employee.Id,
                     EmployeeName = x.EmployeesWorkShift.Employee.Name,
+                    EmployeePhone=x.EmployeesWorkShift.Employee.Phone,
                     WorkShiftId = x.EmployeesWorkShift.WorkShift.Id,
                     WorkShiftName = x.EmployeesWorkShift.WorkShift.Name,
                     IsAttend = x.IsAttend.Value,
