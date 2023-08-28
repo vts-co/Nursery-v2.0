@@ -218,6 +218,10 @@
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index","RegistrationTypes")"><i class="fas fa-search-minus p-1"></i> حالات قيد الطلاب </a></li>
                                     }
+                                    @if (ViewBag.userscreens.ToString().Contains(",73,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","EmployeesRegistrationTypes")"><i class="fas fa-search-minus p-1"></i> حالات الموظفين </a></li>
+                                    }
                                     @if (ViewBag.userscreens.ToString().Contains(",7,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index","Departments")"><i class="fas fa-list p-1"></i>الادارات (للعاملين)  </a></li>
@@ -539,6 +543,14 @@
                                     @if (ViewBag.userscreens.ToString().Contains(",62,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Reports", "StudentsAttendance")"><i class="fas fa-calendar-check p-1"></i> تقرير حضور وغياب الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",74,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("DetailReport", "StudentsAttendance")"><i class="fas fa-calendar-check p-1"></i> تقرير حضور وغياب الطلاب مفصل</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",75,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Reports", "StudentsExamDegrees")"><i class="fas fa-calendar-check p-1"></i> تقرير درجات اختبارات طالب</a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",63,"))
                                     {

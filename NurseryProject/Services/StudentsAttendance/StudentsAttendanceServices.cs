@@ -84,7 +84,22 @@ namespace NurseryProject.Services.StudentsAttendance
                         var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == item.StudentId && x.ClassId == item.ClassId && x.IsAttend == false).ToList();
                         var model2 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == item.StudentId && x.ClassId == item.ClassId && x.IsAttend == true).ToList();
 
-                        mod.Add(new StudentsAttendanceDto { Id = item.Id,StudentName=item.Student.Name, Code = item.Student.Code, StudyPlaceName = item.Class.StudyPlace.Name, StudyTypeName = item.Class.Level.StudyType.Name, LevelName = item.Class.Level.Name, StudyYearName = item.StudyClass.StudyYear.Name,StudyYearId=item.StudyClass.StudyYear.Id, StudyClassName = item.StudyClass.Name,StudyClassId=item.StudyClass.Id, NumAllAttend = model.Count().ToString(), NumAttend = model2.Count().ToString(), ClassName = item.Class.Name, Date = item.Date.Value.ToString("yyyy-MM-dd"),
+                        mod.Add(new StudentsAttendanceDto {
+                            Id = item.Id,
+                            StudentId=item.Student.Id,
+                            StudentName=item.Student.Name,
+                            Code = item.Student.Code,
+                            StudyPlaceName = item.Class.StudyPlace.Name,
+                            StudyTypeName = item.Class.Level.StudyType.Name,
+                            LevelName = item.Class.Level.Name,
+                            StudyYearName = item.StudyClass.StudyYear.Name,
+                            StudyYearId=item.StudyClass.StudyYear.Id,
+                            StudyClassName = item.StudyClass.Name,
+                            StudyClassId=item.StudyClass.Id,
+                            NumAllAttend = model.Count().ToString(),
+                            NumAttend = model2.Count().ToString(),
+                            ClassName = item.Class.Name,
+                            Date = item.Date.Value.ToString("yyyy-MM-dd"),
                         Days= dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == item.StudentId && x.ClassId == item.ClassId).Select(y=>new StudentsAttendanceDaysDto {Date=y.Date.Value.ToString(),IsAttend=y.IsAttend.Value }).ToList(),
 
                         });
@@ -212,7 +227,29 @@ namespace NurseryProject.Services.StudentsAttendance
                     dbContext.SaveChanges();
 
                 }
-
+                foreach (var item in IsAttend)
+                {
+                    var test2 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.ClassId == model.ClassId && x.StudyClassId == model.StudyClassId && x.StudentId == item.Id && x.IsAttend == false).ToList();
+                    if (test2.Count() >= 16)
+                    {
+                        var Attendcount = 1;
+                        var attend = test2[0].Date;
+                        for (int i = 1; i < test2.Count(); i++)
+                        {
+                            if (attend.Value.AddDays(1).ToString("yyyy-MM-dd") == test2[i].Date.Value.ToString("yyyy-MM-dd"))
+                            {
+                                Attendcount += 1;
+                                attend = test2[i].Date;
+                            }
+                        }
+                        if (Attendcount >= 16)
+                        {
+                            var test3 = dbContext.Students.Where(x => x.IsDeleted == false && x.Id == item.Id).FirstOrDefault();
+                            test3.RegistrationTypeId = Guid.Parse("B8650DC5-A83D-4A48-B99F-B75196A1DF8C");
+                            dbContext.SaveChanges();
+                        }
+                    }
+                }
                 result.IsSuccess = true;
                 result.Message = "تم حفظ البيانات بنجاح";
                 return result;

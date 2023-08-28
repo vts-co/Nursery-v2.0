@@ -28,19 +28,20 @@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفرع ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyPlaceId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("StudyPlaceId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الفترة", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownList("WorkShiftId", null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessage("WorkShiftId", "", new { @class = "text-danger" })
                     </div>
                 </div>
-                @*<div class="form-group mb-3 col-sm-6">
-                        @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
-                        <div class="col-12">
-                            @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                            @Html.ValidationMessage("DepartmentId", "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
+
                 @if (ViewBag.readon == null)
                 {
                     <div class="form-group mb-3 col-sm-6">
@@ -120,7 +121,7 @@
             document.getElementById('Date').value = now.toISOString().slice(0, 10);
         }
         $("#StudyYearId").change(function () {
-            $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
+            $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val(), StudyPlaceId: $("#StudyPlaceId").val() }, function (data) {
                 $("#employees").empty();
                 $.each(data, function (key, value) {
                     $("#employees").append("<tr>");
@@ -133,7 +134,7 @@
             });
         });
         $("#WorkShiftId").change(function () {
-            $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
+            $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val(), StudyPlaceId: $("#StudyPlaceId").val() }, function (data) {
                 $("#employees").empty();
                 $.each(data, function (key, value) {
                     $("#employees").append("<tr>");
@@ -146,7 +147,7 @@
             });
         });
 
-        $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val() }, function (data) {
+        $.get('/EmployeesAttendance/getEmployeesWorkShifts', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val(), StudyPlaceId: $("#StudyPlaceId").val() }, function (data) {
             $("#employees").empty();
             $.each(data, function (key, value) {
                 $.get('/EmployeesAttendance/getEmployeesAttendance', { Id: value["Id"], Date: document.getElementById('Date').value }, function (data1) {
@@ -173,7 +174,7 @@
         });
 
         function searchFunction() {
-            $.get('/EmployeesAttendance/getEmployeesWorkShiftsBysearch', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val(), search: document.getElementById("search").value }, function (data) {
+            $.get('/EmployeesAttendance/getEmployeesWorkShiftsBysearch', { StudyYearId: $("#StudyYearId").val(), WorkShiftId: $("#WorkShiftId").val(), StudyPlaceId: $("#StudyPlaceId").val(), search: document.getElementById("search").value }, function (data) {
                 $("#employees").empty();
                 /**/
                 if ($("#Id").val() == "00000000-0000-0000-0000-000000000000") {

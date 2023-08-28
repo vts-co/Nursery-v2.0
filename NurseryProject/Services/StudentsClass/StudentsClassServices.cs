@@ -14,7 +14,8 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == true && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(i => i.IsDeleted == false && i.EmployeeId == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId) || x.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var id1 = Guid.Parse("B8650DC5-A83D-4A48-B99F-B75196A1DF8C");
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == true&&x.Student.RegistrationTypeId!= id1 && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(i => i.IsDeleted == false && i.EmployeeId == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId) || x.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,

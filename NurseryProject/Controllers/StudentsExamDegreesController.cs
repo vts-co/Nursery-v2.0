@@ -5,8 +5,10 @@ using NurseryProject.Levels.Services;
 using NurseryProject.Services.Classes;
 using NurseryProject.Services.Exams;
 using NurseryProject.Services.StudentExamDegrees;
+using NurseryProject.Services.Students;
 using NurseryProject.Services.StudentsClass;
 using NurseryProject.Services.StudyTypes;
+using NurseryProject.Services.StudyYears;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,8 @@ namespace NurseryProject.Controllers
         ExamsServices examsServices = new ExamsServices();
         StudentsClassServices studentsClassServices = new StudentsClassServices();
         StudentExamDegreesServices studentExamDegreesServices = new StudentExamDegreesServices();
+        StudentsServices studentsServices = new StudentsServices();
+        StudyYearsServices studyYearsServices = new StudyYearsServices();
         // GET: Cities
         public ActionResult Index()
         {
@@ -125,6 +129,7 @@ namespace NurseryProject.Controllers
             }
         }
 
+       
         public ActionResult getClasses(Guid Id)
         {
             var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
@@ -215,6 +220,92 @@ namespace NurseryProject.Controllers
                 return Json(studentExamDegreesDetailsDto2, JsonRequestBehavior.AllowGet);
             }
 
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorized(ScreenId = "75")]
+        public ActionResult Reports()
+        {
+            var students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.StudentId = new SelectList(students, "Id", "Name");
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll(), "Id", "Name");
+            ViewBag.ClassId = new SelectList("");
+            return View();
+        }
+        [HttpPost]
+        [Authorized(ScreenId = "75")]
+        public ActionResult Reports(string StudentId, string ClassId, string LevelId, string Date, string Date2)
+        {
+            var students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.StudentId = new SelectList(students, "Id", "Name");
+
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll(), "Id", "Name");
+
+            var model = studentExamDegreesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            //var model2 = studentsAttendanceServices.GetAllNoAttendance();
+
+            if (StudentId != "" && StudentId != null)
+            {
+                ViewBag.student = "1";
+                var studentId = Guid.Parse(StudentId);
+                model = model.Where(x => x.StudentId == studentId).ToList();
+            }
+            else
+            {
+                ViewBag.student = "2";
+            }
+
+            //if (StudyYearId != null && ClassId != null && StudyYearId != "" && ClassId != "")
+            //{
+            //    var studyYearId = Guid.Parse(StudyYearId);
+            //    var ClassId1 = Guid.Parse(ClassId);
+
+            //    model = model.Where(x => x.ClassId == ClassId1).ToList();
+            //}
+            if (LevelId != "" && LevelId != null)
+            {
+                var LevelId1 = Guid.Parse(LevelId);
+
+                model = model.Where(x => x.LevelId == LevelId1).ToList();
+                ViewBag.ClassId = new SelectList(classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == LevelId1).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name");
+
+            }
+            else
+            {
+                ViewBag.ClassId = new SelectList("");
+            }
+            if (ClassId != "" && ClassId != null)
+            {
+                var ClassId1 = Guid.Parse(ClassId);
+
+                model = model.Where(x => x.ClassId == ClassId1).ToList();
+            }
+            if (Date != null && Date2 != null)
+            {
+                var date = DateTime.Parse(Date);
+                var date2 = DateTime.Parse(Date2);
+
+                foreach (var item in model)
+                {
+                    if (DateTime.Parse(item.Date).AddDays(1) >= date && DateTime.Parse(item.Date) <= date2)
+                    {
+                        model.Remove(item);
+                    }
+                }
+            }
+
+            //ViewBag.Count = model.Where(x => x.IsAttend == false).ToList().Count();
+            //ViewBag.Count2 = model.Where(x => x.IsAttend == true).ToList().Count();
+
+            ViewBag.Degrees = model;
+            //ViewBag.By = By;
+            return View();
+
+        }
+
+        public ActionResult getClassesReport(Guid Id)
+        {
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
     }

@@ -181,47 +181,50 @@
             $("#SubscriptionDiv").empty();
             $("#SubscriptionId").prop("disabled", false);
         }
-        $.get('/StudentsClass/getSubscriptionsMethods', { Id: $("#Id").val() }, function (data) {
-            $("#SubscriptionDiv").empty();
-            $("#SubscriptionDiv2").empty();
+        if ($("#Id").val() != "00000000-0000-0000-0000-000000000000") {
+            $.get('/StudentsClass/getSubscriptionsMethods', { Id: $("#Id").val() }, function (data) {
+                $("#SubscriptionDiv").empty();
+                $("#SubscriptionDiv2").empty();
 
-            var j = 1;
-            var i = 0;
-            if (data.Num > 0) {
-                $("#SubscriptionDiv").append('<hr>');
-                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
-                $("#SubscriptionDiv").append('<hr>');
+                var j = 1;
+                var i = 0;
+                if (data.Num > 0) {
+                    $("#SubscriptionDiv").append('<hr>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-12 text-center bg-warning">الاقساط  </div>');
+                    $("#SubscriptionDiv").append('<hr>');
 
-            }
+                }
 
-            if (!data.IsAnother) {
+                if (!data.IsAnother) {
 
-                $.each(data.result, function (key, value) {
+                    $.each(data.result, function (key, value) {
 
-                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
-                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
-                    j++;
-                    i++;
-                });
-            }
-            else {
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                        j++;
+                        i++;
+                    });
+                }
+                else {
 
-                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">المبلغ : </label><div class="col-12"><input class="form-control" value=' + data.Amoun + ' id="Amount1" name="Amount1" type="number" onchange="Numbers()" required /></div></div>')
-                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-5"><label class="control-label">عدد الاقساط : </label><div class="col-12"><input class="form-control" value=' + data.Num + ' id="InstallmentsNumber1" name="InstallmentsNumber1" type="number" onchange="Numbers()" required /></div></div>')
-                $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success" id="" name="" type="button" onclick="Numbers()"><i class"fa fa-calculator"></i>احسب</button></div></div>')
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">المبلغ : </label><div class="col-12"><input class="form-control" value=' + data.Amoun + ' id="Amount1" name="Amount1" type="number" onchange="Numbers()" required /></div></div>')
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-5"><label class="control-label">عدد الاقساط : </label><div class="col-12"><input class="form-control" value=' + data.Num + ' id="InstallmentsNumber1" name="InstallmentsNumber1" type="number" onchange="Numbers()" required /></div></div>')
+                    $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success" id="" name="" type="button" onclick="Numbers()"><i class"fa fa-calculator"></i>احسب</button></div></div>')
 
-                $.each(data.result, function (key, value) {
-                    $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
-                    $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
-                    j++;
-                    i++;
-                });
-            }
+                    $.each(data.result, function (key, value) {
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                        j++;
+                        i++;
+                    });
+                }
 
 
-            $("#SubscriptionDiv2").append('<hr>');
+                $("#SubscriptionDiv2").append('<hr>');
 
-        });
+            });
+
+        }
 
 
 

@@ -30,6 +30,30 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                     Notes = x.Notes,
 
                 }).ToList();
+                foreach (var item in model)
+                {
+                    var emp = dbContext.EmployeeClasses.Where(y => !y.IsDeleted && y.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if(emp!=null)
+                    {
+                        var class1=dbContext.Classes.Where(y => !y.IsDeleted && y.Id == emp.ClassId).FirstOrDefault();
+                        item.StudyPlaceId = (Guid)class1.StudyPlaceId;
+                        item.StudyPlaceName = class1.StudyPlace.Name;
+                    }
+                    var emp2 = dbContext.BuildingSupervisors.Where(y => !y.IsDeleted && y.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if (emp2 != null)
+                    {
+                        item.StudyPlaceId = (Guid)emp2.StudyPlaceId;
+                        item.StudyPlaceName = emp2.StudyPlace.Name;
+                    }
+                    var emp3 = dbContext.ClassesLeaders.Where(y => !y.IsDeleted && y.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if (emp3 != null)
+                    {
+                        var class1 = dbContext.Classes.Where(y => !y.IsDeleted && y.Id == emp3.ClassId).FirstOrDefault();
+                        item.StudyPlaceId = (Guid)class1.StudyPlaceId;
+                        item.StudyPlaceName = class1.StudyPlace.Name;
+                    }
+                }
+
                 return model;
             }
         }

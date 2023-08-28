@@ -141,6 +141,7 @@ namespace NurseryProject.Services.Employees
                     Oldmodel.Code = model.Code;
 
                 Oldmodel.Name = model.Name;
+                Oldmodel.RegistrationTypeId = model.RegistrationTypeId;
                 Oldmodel.Phone = model.Phone;
                 Oldmodel.Address = model.Address;
                 Oldmodel.BirthDate = model.BirthDate;

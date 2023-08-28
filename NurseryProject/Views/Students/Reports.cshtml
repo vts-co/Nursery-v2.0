@@ -31,7 +31,7 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الطالب ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable" })
                         @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
 
                     </div>

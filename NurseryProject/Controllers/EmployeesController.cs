@@ -5,7 +5,7 @@ using NurseryProject.Models;
 using NurseryProject.Services.Departments;
 using NurseryProject.Services.Employees;
 using NurseryProject.Services.Jops;
-using NurseryProject.Services.RegistrationTypes;
+using NurseryProject.Services.EmployeesRegistrationTypes;
 using NurseryProject.Utilities;
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,7 @@ namespace NurseryProject.Controllers
         RegistrationTypesServices registrationTypes = new RegistrationTypesServices();
         DepartmentsServices departmentsServices = new DepartmentsServices();
         JopsServices jopsServices = new JopsServices();
+        RegistrationTypesServices registrationTypesServices = new RegistrationTypesServices();
 
         // GET: Cities
         public ActionResult Index()
@@ -38,6 +39,9 @@ namespace NurseryProject.Controllers
         }
         public ActionResult Create()
         {
+            var model = registrationTypesServices.GetAll();
+
+            ViewBag.RegistrationTypeId = new SelectList(model, "Id", "Name");
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text");
             ViewBag.MaritalStateId = new SelectList(MaritalStatus(), "Value", "Text");
             ViewBag.DepartmentId = new SelectList(departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
@@ -78,6 +82,9 @@ namespace NurseryProject.Controllers
                 ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", employee.GenderId);
                 ViewBag.MaritalStateId = new SelectList(MaritalStatus(), "Value", "Text");
 
+                var model = registrationTypesServices.GetAll();
+                ViewBag.RegistrationTypeId = new SelectList(model, "Id", "Name", employee.RegistrationTypeId);
+
                 if (employee.JopId != null)
                 {
                     var DepartmentId = jopsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == employee.JopId).FirstOrDefault().DepartmentId;
@@ -105,6 +112,10 @@ namespace NurseryProject.Controllers
 
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", employee.GenderId);
             ViewBag.MaritalStateId = new SelectList(MaritalStatus(), "Value", "Text");
+
+            var model = registrationTypesServices.GetAll();
+            ViewBag.RegistrationTypeId = new SelectList(model, "Id", "Name", employee.RegistrationTypeId);
+
 
             if (employee.JopId != null)
             {
@@ -147,6 +158,10 @@ namespace NurseryProject.Controllers
 
                 ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", employee.GenderId);
                 ViewBag.MaritalStateId = new SelectList(MaritalStatus(), "Value", "Text");
+
+                var model = registrationTypesServices.GetAll();
+                ViewBag.RegistrationTypeId = new SelectList(model, "Id", "Name", employee.RegistrationTypeId);
+
 
                 if (employee.JopId != null)
                 {

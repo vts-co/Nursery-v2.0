@@ -406,7 +406,8 @@
             var StudyYearId = document.getElementById("StudyYearId").value;
             var StudyPlaceId = document.getElementById("StudyPlaceId").value;
             $.get('/EmployeesReceipt/Collect', { EmployeeId: EmployeeId, StudyYearId: StudyYearId, StudyPlaceId: StudyPlaceId, Date: Date, Month: Month, Total: Total, TotalIncreasesCost: TotalIncreasesCost, TotalDiscountCost: TotalDiscountCost, Final: Final }, function (data) {
-                window.location.href = '/EmployeesReceipt/Index';
+                Print();
+                //window.location.href = '/EmployeesReceipt/Create';
             });
         }
         function Print() {
@@ -425,6 +426,8 @@
                     $("#delet").hide();
 
                     window.print();
+                    window.location.reload();
+
                 }
                 else
                     alert("اختر العام الدراسي و الفرع");

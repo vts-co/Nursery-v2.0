@@ -148,6 +148,21 @@
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="EmployeeRegistrationTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
         <EntityType Name="Employees">
           <Key>
             <PropertyRef Name="Id" />
@@ -161,6 +176,7 @@
           <Property Name="Qualification" Type="nvarchar(max)" />
           <Property Name="GenderId" Type="int" />
           <Property Name="MaritalStateId" Type="int" />
+          <Property Name="RegistrationTypeId" Type="uniqueidentifier" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="JoiningDate" Type="nvarchar(max)" />
@@ -1008,6 +1024,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employees_EmployeeRegistrationTypes">
+          <End Role="EmployeeRegistrationTypes" Type="Self.EmployeeRegistrationTypes" Multiplicity="0..1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeRegistrationTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="RegistrationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Employees_Jops">
           <End Role="Jops" Type="Self.Jops" Multiplicity="0..1" />
           <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
@@ -1666,6 +1694,7 @@
           <EntitySet Name="Destricts" EntityType="Self.Destricts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiscountsTypes" EntityType="Self.DiscountsTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeClasses" EntityType="Self.EmployeeClasses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeRegistrationTypes" EntityType="Self.EmployeeRegistrationTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesAttendance" EntityType="Self.EmployeesAttendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesDelay" EntityType="Self.EmployeesDelay" Schema="dbo" store:Type="Tables" />
@@ -1761,6 +1790,10 @@
           <AssociationSet Name="FK_EmployeeClasses_Subjects" Association="Self.FK_EmployeeClasses_Subjects">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="EmployeeClasses" EntitySet="EmployeeClasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_EmployeeRegistrationTypes" Association="Self.FK_Employees_EmployeeRegistrationTypes">
+            <End Role="EmployeeRegistrationTypes" EntitySet="EmployeeRegistrationTypes" />
+            <End Role="Employees" EntitySet="Employees" />
           </AssociationSet>
           <AssociationSet Name="FK_Employees_Jops" Association="Self.FK_Employees_Jops">
             <End Role="Jops" EntitySet="Jops" />
@@ -1993,6 +2026,7 @@
           <EntitySet Name="Destricts" EntityType="almohandes_DbModel.Destrict" />
           <EntitySet Name="DiscountsTypes" EntityType="almohandes_DbModel.DiscountsType" />
           <EntitySet Name="EmployeeClasses" EntityType="almohandes_DbModel.EmployeeClass" />
+          <EntitySet Name="EmployeeRegistrationTypes" EntityType="almohandes_DbModel.EmployeeRegistrationType" />
           <EntitySet Name="Employees" EntityType="almohandes_DbModel.Employee" />
           <EntitySet Name="EmployeesAttendances" EntityType="almohandes_DbModel.EmployeesAttendance" />
           <EntitySet Name="EmployeesDelays" EntityType="almohandes_DbModel.EmployeesDelay" />
@@ -2124,6 +2158,10 @@
           <AssociationSet Name="FK_EmployeeClasses_Subjects" Association="almohandes_DbModel.FK_EmployeeClasses_Subjects">
             <End Role="Subject" EntitySet="Subjects" />
             <End Role="EmployeeClass" EntitySet="EmployeeClasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_EmployeeRegistrationTypes" Association="almohandes_DbModel.FK_Employees_EmployeeRegistrationTypes">
+            <End Role="EmployeeRegistrationType" EntitySet="EmployeeRegistrationTypes" />
+            <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
           <AssociationSet Name="FK_Employees_Jops" Association="almohandes_DbModel.FK_Employees_Jops">
             <End Role="Jop" EntitySet="Jops" />
@@ -2476,6 +2514,22 @@
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeeClasses_Employees" FromRole="EmployeeClass" ToRole="Employee" />
           <NavigationProperty Name="Subject" Relationship="almohandes_DbModel.FK_EmployeeClasses_Subjects" FromRole="EmployeeClass" ToRole="Subject" />
         </EntityType>
+        <EntityType Name="EmployeeRegistrationType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Employees" Relationship="almohandes_DbModel.FK_Employees_EmployeeRegistrationTypes" FromRole="EmployeeRegistrationType" ToRole="Employee" />
+        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Id" />
@@ -2489,6 +2543,7 @@
           <Property Name="Qualification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GenderId" Type="Int32" />
           <Property Name="MaritalStateId" Type="Int32" />
+          <Property Name="RegistrationTypeId" Type="Guid" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="JoiningDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -2504,6 +2559,7 @@
           <NavigationProperty Name="BuildingSupervisors" Relationship="almohandes_DbModel.FK_BuildingSupervisors_Employees" FromRole="Employee" ToRole="BuildingSupervisor" />
           <NavigationProperty Name="ClassesLeaders" Relationship="almohandes_DbModel.FK_ClassesLeaders_Employees" FromRole="Employee" ToRole="ClassesLeader" />
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_Employees" FromRole="Employee" ToRole="EmployeeClass" />
+          <NavigationProperty Name="EmployeeRegistrationType" Relationship="almohandes_DbModel.FK_Employees_EmployeeRegistrationTypes" FromRole="Employee" ToRole="EmployeeRegistrationType" />
           <NavigationProperty Name="Jop" Relationship="almohandes_DbModel.FK_Employees_Jops" FromRole="Employee" ToRole="Jop" />
           <NavigationProperty Name="EmployeesDelays" Relationship="almohandes_DbModel.FK_EmployeesDelay_Employees" FromRole="Employee" ToRole="EmployeesDelay" />
           <NavigationProperty Name="EmployeesDiscounts" Relationship="almohandes_DbModel.FK_EmployeesDiscounts_Employees" FromRole="Employee" ToRole="EmployeesDiscount" />
@@ -3553,6 +3609,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employees_EmployeeRegistrationTypes">
+          <End Type="almohandes_DbModel.EmployeeRegistrationType" Role="EmployeeRegistrationType" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeRegistrationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="RegistrationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Employees_Jops">
           <End Type="almohandes_DbModel.Jop" Role="Jop" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="*" />
@@ -4251,6 +4319,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeRegistrationTypes">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeeRegistrationType">
+              <MappingFragment StoreEntitySet="EmployeeRegistrationTypes">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="almohandes_DbModel.Employee">
               <MappingFragment StoreEntitySet="Employees">
@@ -4266,6 +4350,7 @@
                 <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="RegistrationTypeId" ColumnName="RegistrationTypeId" />
                 <ScalarProperty Name="MaritalStateId" ColumnName="MaritalStateId" />
                 <ScalarProperty Name="GenderId" ColumnName="GenderId" />
                 <ScalarProperty Name="Qualification" ColumnName="Qualification" />
