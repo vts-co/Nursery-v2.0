@@ -68,91 +68,122 @@
 }
 @if (ViewBag.Attendance != null)
 {
-    
-        <div class="card">
-            <div class="card-header">
-                <div class="row justify-content-between">
-                    <h4 class="col-auto">
-                        تقارير غياب وحضور الطلاب مفصل
-                    </h4>
-                </div>
-            </div>
-            <div class="card-body">
-                <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
-                    <thead class="bg-soft-primary">
-                        <tr>
-                            <th>
-                                @Html.DisplayName("الكود")
-                            </th>
-                            <th>
-                                @Html.DisplayName("الاسم")
-                            </th>
-                            <th>
-                                @Html.DisplayName("رقم التليفون")
-                            </th>
 
-                            <th>
-                                @Html.DisplayName("الفرع ")
-                            </th>
-                            <th>
-                                @Html.DisplayName("نوع الدراسة ")
-                            </th>
-                           
-                            <th>
-                                @Html.DisplayName("الصف ")
-                            </th>
-                            <th>
-                                @Html.DisplayName("الفصل")
-                            </th>
-                            <th>
-                                @Html.DisplayName("اليوم ")
-                            </th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.Attendance)
-                        {
-                        <tr>
-                            <td>
-                                @item.Code
-                            </td>
-                            <td>
-                                @item.StudentName
-                            </td>
-                            <td>
-                                @item.StudentPhone
-                            </td>
-
-                            <td>
-                                @item.StudyPlaceName
-                            </td>
-                            <td>
-                                @item.StudyTypeName
-                            </td>
-                            <td>
-                                @item.LevelName
-                            </td>
-
-                            <td>
-                                @item.ClassName
-                            </td>
-                            <td>
-                                @item.Date
-                            </td>
-                           
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">
+                    تقارير غياب وحضور الطلاب مفصل
+                </h4>
             </div>
         </div>
-    
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead class="bg-soft-primary">
+                    <tr>
+                        <th>
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("رقم التليفون")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("الفرع ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("نوع الدراسة ")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("الصف ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفصل")
+                        </th>
+                        <th>
+                            @Html.DisplayName("غياب/حضور")
+                        </th>
+                        <th>
+                            @Html.DisplayName("اليوم ")
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Attendance)
+                    {
+                    <tr>
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.StudentName
+                        </td>
+                        <td>
+                            @item.StudentPhone
+                        </td>
+
+                        <td>
+                            @item.StudyPlaceName
+                        </td>
+                        <td>
+                            @item.StudyTypeName
+                        </td>
+                        <td>
+                            @item.LevelName
+                        </td>
+
+                        <td>
+                            @item.ClassName
+                        </td>
+                        @if (item.IsAttend == true)
+                        {
+                            <td>
+                                حاضر
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                غائب
+                            </td>
+                        }
+                        <td>
+                            @item.Date
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>عدد الغياب : @ViewBag.Count </th>
+                        <th>عدد الحضور : @ViewBag.Count2 </th>
+
+
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+
 }
 
 @section scripts{
     <script type="text/javascript">
-       
+
     </script>
 }

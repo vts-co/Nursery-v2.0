@@ -99,6 +99,7 @@ namespace NurseryProject.Services.StudentsAttendance
                             NumAllAttend = model.Count().ToString(),
                             NumAttend = model2.Count().ToString(),
                             ClassName = item.Class.Name,
+                            IsAttend=item.IsAttend.Value,
                             Date = item.Date.Value.ToString("yyyy-MM-dd"),
                         Days= dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == item.StudentId && x.ClassId == item.ClassId).Select(y=>new StudentsAttendanceDaysDto {Date=y.Date.Value.ToString(),IsAttend=y.IsAttend.Value }).ToList(),
 

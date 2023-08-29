@@ -5,8 +5,13 @@ using NurseryProject.Services.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+
+using System.Web.UI.WebControls;
+using Microsoft.Data.SqlClient;
+using System.IO;
 
 namespace NurseryProject.Controllers
 {
@@ -37,7 +42,7 @@ namespace NurseryProject.Controllers
                         Icon = page.Icone,
                         Link = page.Link
                     });
-                    
+
                 }
             }
             return View(homePages);
@@ -55,6 +60,29 @@ namespace NurseryProject.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult BackUpDatabase()
+        {
+            var dbPath = Server.MapPath(@"~\DataBackUp\DBBackup.bak");
+            settingsServices.BackUp(dbPath);
+            return RedirectToAction("Index");
+
+        }
+
+        public ActionResult RestorDatabase()
+        {
+            var dbPath = Server.MapPath(@"~\DataBackUp\DBBackup.bak");
+            settingsServices.Restore(dbPath);
+            return RedirectToAction("Index");
+
+        }
+        public ActionResult DeleteAllFromDatabase()
+        {
+            var dbPath = Server.MapPath(@"~\DataBackUp\DBBackup.bak");
+            settingsServices.DeleteAll(dbPath);
+            return RedirectToAction("Index");
+
         }
     }
 }

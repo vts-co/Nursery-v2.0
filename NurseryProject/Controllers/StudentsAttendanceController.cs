@@ -317,6 +317,9 @@ namespace NurseryProject.Controllers
             ViewBag.StudentId = new SelectList(students,"Id","Name") ;
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
             ViewBag.ClassId = new SelectList(classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name");
+
+            ViewBag.Count = 0;
+            ViewBag.Count2 = 0;
             return View();
         }
         [HttpPost]
