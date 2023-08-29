@@ -1,8 +1,8 @@
 ﻿@model NurseryProject.Dtos.Students.StudentsReportDto
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = "تقرير الطلاب";
-    ViewBag.MainPage = "الطلاب";
+    ViewBag.Title = "تقرير شامل للطلاب";
+    ViewBag.MainPage = "تقارير الطلاب";
     var count = " لم يمتحن بعد  ";
     var num = "%";
 }
@@ -174,26 +174,29 @@
                                             <tbody>
                                                 @foreach (var item2 in item.TransferClasses)
                                                 {
-                                                    <tr>
-                                                        <td>
-                                                            @item2.StudyPlaceName
-                                                        </td>
-                                                        <td>
-                                                            @item2.StudyTypeName
-                                                        </td>
-                                                        <td>
-                                                            @item2.LevelName
-                                                        </td>
-                                                        <td>
-                                                            @item2.ClassFromName
-                                                        </td>
-                                                        <td>
-                                                            @item2.ClassToName
-                                                        </td>
-                                                        <td>
-                                                            @item2.Notes
-                                                        </td>
-                                                    </tr>
+                                                <tr>
+                                                    <td>
+                                                        @item2.StudyPlaceName
+                                                    </td>
+                                                    <td>
+                                                        @item2.StudyTypeName
+                                                    </td>
+                                                    <td>
+                                                        @item2.LevelName
+                                                    </td>
+                                                    <td>
+                                                        @item2.ClassFromName
+                                                    </td>
+                                                    <td>
+                                                        @item2.ClassToName
+                                                    </td>
+                                                    <td>
+                                                        @item2.Date
+                                                    </td>
+                                                    <td>
+                                                        @item2.Notes
+                                                    </td>
+                                                </tr>
                                                 }
 
                                             </tbody>
@@ -398,26 +401,29 @@
                                     <tbody>
                                         @foreach (var item2 in item.TransferClasses)
                                         {
-                                            <tr>
-                                                <td>
-                                                    @item2.StudyPlaceName
-                                                </td>
-                                                <td>
-                                                    @item2.StudyTypeName
-                                                </td>
-                                                <td>
-                                                    @item2.LevelName
-                                                </td>
-                                                <td>
-                                                    @item2.ClassFromName
-                                                </td>
-                                                <td>
-                                                    @item2.ClassToName
-                                                </td>
-                                                <td>
-                                                    @item2.Notes
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>
+                                                @item2.StudyPlaceName
+                                            </td>
+                                            <td>
+                                                @item2.StudyTypeName
+                                            </td>
+                                            <td>
+                                                @item2.LevelName
+                                            </td>
+                                            <td>
+                                                @item2.ClassFromName
+                                            </td>
+                                            <td>
+                                                @item2.ClassToName
+                                            </td>
+                                            <td>
+                                                @item2.Date
+                                            </td>
+                                            <td>
+                                                @item2.Notes
+                                            </td>
+                                        </tr>
                                         }
 
                                     </tbody>
