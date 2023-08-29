@@ -264,7 +264,6 @@ namespace NurseryProject.Services.Settings
                     db.SaveChanges();
 
 
-
                     var SettingId = Guid.Parse("D3D28F6D-0B7E-4FE7-8EAB-DA0B3FC3ECB2");
                     var Setting = new Setting
                     {
