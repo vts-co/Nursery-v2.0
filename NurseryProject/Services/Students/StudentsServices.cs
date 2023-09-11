@@ -68,6 +68,7 @@ namespace NurseryProject.Services.Students
                     CountOfNormal = "",
                     CountOfPart = "",
                     CountOfPaidNoTime = "",
+                    ClassName=x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false&&y.IsCurrent==true).Select(y=>y.Class.Name).FirstOrDefault(),
                     AttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == true).ToList().Count().ToString(),
                     NoAttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == false).ToList().Count().ToString(),
                     CountOfTransferClasses = dbContext.StudentsClassesTransfers.Where(i => i.IsDeleted == false && i.StudentsClass.IsDeleted == false && i.StudentsClass.StudentId == x.Id).ToList().Count().ToString(),
@@ -103,6 +104,7 @@ namespace NurseryProject.Services.Students
                         Notes = i.Notes
 
                     }).ToList(),
+                    
                     ExamsRate = ((x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.Degree)) / (x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.ClassExam.Exam.TotalDegree)) * 100).ToString(),
                     Employees = x.StudentsClasses.Where(b => b.IsDeleted == false).FirstOrDefault().Class.EmployeeClasses.Where(e => e.IsDeleted == false).Select(e => new EmployeeClassesDto
                     {

@@ -21,6 +21,7 @@ namespace NurseryProject.Dtos.Students
 
         public string AttendanceNum { get; set; }
         public string NoAttendanceNum { get; set; }
+        public string ClassName { get; set; }
 
         public string CountOfTransferClasses { get; set; }
         public List<StudentsClassesTransferDto> TransferClasses { get; set; }

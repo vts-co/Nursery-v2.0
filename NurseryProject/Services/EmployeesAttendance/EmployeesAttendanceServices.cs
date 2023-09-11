@@ -14,7 +14,7 @@ namespace NurseryProject.Services.EmployeesAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
+                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false && !x.EmployeesWorkShift.Employee.EmployeesVacations.Any(y => !y.IsDeleted && y.DateFrom <= DateTime.Now && y.DateTo <= DateTime.Now)).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
                 {
                     Id = x.Id,
                     EmployeeWorkShiftId = x.EmployeeWorkShiftId.Value,
@@ -98,7 +98,7 @@ namespace NurseryProject.Services.EmployeesAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
+                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false && !x.EmployeesWorkShift.Employee.EmployeesVacations.Any(y => !y.IsDeleted && y.DateFrom <= DateTime.Now && y.DateTo <= DateTime.Now)).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
                 {
                     Id = x.Id,
                     EmployeeWorkShiftId = x.EmployeeWorkShiftId.Value,

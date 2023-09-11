@@ -1684,6 +1684,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="DeleteAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GenerateSchema" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="almohandes_DbModelStoreContainer">
           <EntitySet Name="BuildingSupervisors" EntityType="Self.BuildingSupervisors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
@@ -2017,6 +2019,8 @@
     <edmx:ConceptualModels>
       <Schema Namespace="almohandes_DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="almohandes_DbEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="DeleteAll" />
+          <FunctionImport Name="GenerateSchema" />
           <EntitySet Name="BuildingSupervisors" EntityType="almohandes_DbModel.BuildingSupervisor" />
           <EntitySet Name="Cities" EntityType="almohandes_DbModel.City" />
           <EntitySet Name="Classes" EntityType="almohandes_DbModel.Class" />
@@ -2343,7 +2347,7 @@
             <End Role="SubscriptionsType" EntitySet="SubscriptionsTypes" />
             <End Role="Subscription" EntitySet="Subscriptions" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="BuildingSupervisor">
           <Key>
             <PropertyRef Name="Id" />
@@ -4167,6 +4171,8 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="almohandes_DbModelStoreContainer" CdmEntityContainer="almohandes_DbEntities">
+          <FunctionImportMapping FunctionImportName="DeleteAll" FunctionName="almohandes_DbModel.Store.DeleteAll" />
+          <FunctionImportMapping FunctionImportName="GenerateSchema" FunctionName="almohandes_DbModel.Store.GenerateSchema" />
           <EntitySetMapping Name="BuildingSupervisors">
             <EntityTypeMapping TypeName="almohandes_DbModel.BuildingSupervisor">
               <MappingFragment StoreEntitySet="BuildingSupervisors">
@@ -5068,7 +5074,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

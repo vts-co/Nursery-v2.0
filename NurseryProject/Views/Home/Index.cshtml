@@ -9,18 +9,18 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-sm-6 col-md-4 col-xl-3">
-            <div class="card card-h-100">
-                <div class="card-body">
-                    <span class="text-muted mb-3 lh-1 d-block text-truncate"><a href="@item.Link"><i class="@item.Icon p-1"></i>@item.Name</a></span>
-                    @*<h1 class="text-info">@item.</h1>*@
-                    <div class="text-nowrap">
-                        @*<span class="badge bg-soft-success text-success">+ info.LastMonth</span>*@
-                        <span class="ms-1 text-muted font-size-13">@item.Name</span>
-                    </div>
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <span class="text-muted mb-3 lh-1 d-block text-truncate"><a href="@item.Link"><i class="@item.Icon p-1"></i>@item.Name</a></span>
+                @*<h1 class="text-info">@item.</h1>*@
+                <div class="text-nowrap">
+                    @*<span class="badge bg-soft-success text-success">+ info.LastMonth</span>*@
+                    <span class="ms-1 text-muted font-size-13">@item.Name</span>
                 </div>
             </div>
         </div>
+    </div>
     }
 </div>
 <div class="text-center">
@@ -28,6 +28,6 @@
 </div>
 <div class="text-center mt-3 mb-3">
 
-    <a href="/Home/BackUpDatabase" class="btn btn-success">BackUp</a>
+    <a href="/Home/BackUpDatabase" onclick="return Check(this, '', 'هل متاكد من عمل نسخة احتياطية؟');" class="btn btn-success">BackUp</a>
     @*<a href="/Home/DeleteAllFromDatabase" class="btn btn-danger" onclick ="return deleteCheck(this)">Delete All</a>*@
 </div>

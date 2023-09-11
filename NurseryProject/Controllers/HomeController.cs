@@ -12,6 +12,9 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Microsoft.Data.SqlClient;
 using System.IO;
+using ExcelDataReader;
+using System.Data;
+using NurseryProject.Models;
 
 namespace NurseryProject.Controllers
 {
@@ -34,14 +37,17 @@ namespace NurseryProject.Controllers
                 if (userPages.Contains(screenId))
                 {
                     var page = settingsServices.GetPage(item.PageId.Value);
-
-                    homePages.Add(new HomePagesDro
+                    if(page!=null)
                     {
-                        Id = page.Id,
-                        Name = page.Name,
-                        Icon = page.Icone,
-                        Link = page.Link
-                    });
+                        homePages.Add(new HomePagesDro
+                        {
+                            Id = page.Id,
+                            Name = page.Name,
+                            Icon = page.Icone,
+                            Link = page.Link
+                        });
+                    }
+                   
 
                 }
             }
@@ -66,7 +72,8 @@ namespace NurseryProject.Controllers
         {
             var dbPath = Server.MapPath(@"~\DataBackUp\DBBackup.bak");
             settingsServices.BackUp(dbPath);
-            return RedirectToAction("Index");
+            string fullPath = Path.Combine(Server.MapPath("~/DataBackUp"), "DBBackup.bak");
+            return File(fullPath, "application/octet-stream", "DBBackup.bak");
 
         }
 
@@ -80,9 +87,108 @@ namespace NurseryProject.Controllers
         public ActionResult DeleteAllFromDatabase()
         {
             var dbPath = Server.MapPath(@"~\DataBackUp\DBBackup.bak");
-            settingsServices.DeleteAll(dbPath);
-            return RedirectToAction("Index");
+            settingsServices.BackUp(dbPath);
 
+            settingsServices.DeleteAll();
+            string fullPath = Path.Combine(Server.MapPath("~/Pages"), "PagesExcel.xlsx");
+
+            HttpPostedFileBase upload = Request.Files[0];
+
+            if (upload != null && upload.ContentLength > 0)
+            {
+                // ExcelDataReader works with the binary Excel file, so it needs a FileStream
+                // to get started. This is how we avoid dependencies on ACE or Interop:
+                Stream stream = upload.InputStream;
+
+                IExcelDataReader reader = null;
+
+
+                if (upload.FileName.EndsWith(".xls"))
+                {
+                    reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                }
+                else if (upload.FileName.EndsWith(".xlsx"))
+                {
+                    reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                }
+                else
+                {
+                    TempData["warning"] = "البيانات المدخلة غير صحيحة";
+                    return RedirectToAction("Index");
+                }
+                int fieldcount = reader.FieldCount;
+                int rowcount = reader.RowCount;
+                DataTable model = new DataTable();
+                DataRow row;
+                DataTable dt_ = new DataTable();
+                try
+                {
+                    dt_ = reader.AsDataSet().Tables[0];
+                    for (int i = 0; i < dt_.Columns.Count; i++)
+                    {
+                        var ss = dt_.Rows[0][i].ToString();
+                        model.Columns.Add(dt_.Rows[0][i].ToString());
+                    }
+                    int rowcounter = 0;
+                    for (int row_ = 1; row_ < rowcount; row_++)
+                    {
+                        row = model.NewRow();
+                        for (int col = 0; col < fieldcount; col++)
+                        {
+                            row[col] = dt_.Rows[row_][col].ToString();
+                            var sss = dt_.Rows[row_][col].ToString();
+
+                            rowcounter++;
+                        }
+                        model.Rows.Add(row);
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    TempData["warning"] = "البيانات المدخلة غير صحيحة";
+                    return RedirectToAction("Index");
+                }
+
+                reader.Close();
+                reader.Dispose();
+                for (int i = 0; i < model.Rows.Count; i++)
+                {
+                    var userId = Guid.Parse("7C9E6679-7425-40DE-944B-E07FC1F90AE7");
+
+                    Page page = new Page();
+
+                    page.Name = model.Rows[i][1].ToString();
+                    page.Icone = model.Rows[i][2].ToString();
+                    page.Link = model.Rows[i][3].ToString();
+                    if (model.Rows[i][4].ToString() != "NULL")
+                        page.ParentId = int.Parse(model.Rows[i][4].ToString());
+                    page.DisplayOrder = int.Parse(model.Rows[i][5].ToString());
+
+                    page.CreatedOn = DateTime.Now;
+                    page.CreatedBy = userId;
+                    settingsServices.AddNewPage(page, (Guid)TempData["UserId"]);
+
+                }
+                TempData["success"] = "تم حفظ البيانات بنجاح";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["warning"] = "البيانات المدخلة غير صحيحة";
+                return RedirectToAction("Index");
+            }
         }
+
+        #region Import MCQ Question Excel
+
+        public ActionResult ImportExcel(HttpPostedFileBase upload)
+        {
+
+            return View();
+        }
+
+        #endregion
     }
 }

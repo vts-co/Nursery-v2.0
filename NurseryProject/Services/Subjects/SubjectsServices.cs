@@ -39,7 +39,7 @@ namespace NurseryProject.Services.Subjects
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Subject>();
-                var Oldmodel = dbContext.Subjects.Where(x => x.Name == model.Name && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.Subjects.Where(x => x.Name == model.Name&&x.LevelId==model.LevelId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.Result = model;
@@ -62,11 +62,19 @@ namespace NurseryProject.Services.Subjects
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Subject>();
+                var Oldmodel1 = dbContext.Subjects.Where(x => x.Name == model.Name &&x.Id!= model.Id && x.LevelId == model.LevelId && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel1 != null)
+                {
+                    result.Result = model;
+                    result.IsSuccess = false;
+                    result.Message = "هذه المادة موجودة بالفعل";
+                    return result;
+                }
                 var Oldmodel = dbContext.Subjects.Find(model.Id);
                 if (Oldmodel == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "هذه المادة موجودة بالفعل";
+                    result.Message = "هذه المادة غير موجودة ";
                     return result;
                 }
                 Oldmodel.ModifiedOn = DateTime.UtcNow;

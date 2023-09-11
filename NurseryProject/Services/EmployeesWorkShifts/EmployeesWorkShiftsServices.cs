@@ -15,7 +15,7 @@ namespace NurseryProject.Services.EmployeesWorkShifts
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesWorkShifts.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeeId == EmployeeId || x.Employee.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new EmployeesWorkShiftsDto
+                var model = dbContext.EmployeesWorkShifts.Where(x => x.IsDeleted == false && !x.Employee.EmployeesVacations.Any(y => !y.IsDeleted && y.DateFrom <= DateTime.Now && y.DateTo <= DateTime.Now) && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeeId == EmployeeId || x.Employee.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new EmployeesWorkShiftsDto
                 {
                     Id = x.Id,
                     StudyYearId = x.StudyYearId.Value,
