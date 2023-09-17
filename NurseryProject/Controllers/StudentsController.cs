@@ -411,6 +411,8 @@ namespace NurseryProject.Controllers
             return View();
         }
 
+
+
         public ActionResult getDestricts(Guid Id)
         {
             if (Id == null)
@@ -418,6 +420,28 @@ namespace NurseryProject.Controllers
                 return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
             }
             var model = destrictsServices.GetAll().Where(x => x.CityId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getPaidDetails(Guid StudentId, Guid StudyYearId,string Type)
+        {
+            if (StudentId == null)
+            {
+                return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
+            }
+            var students = studentsServices.GetAllReport(StudyYearId, (Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            var model = students.Where(x => x.Id == StudentId).FirstOrDefault().PaidDetails.Where(x=>x.Paided== Type).ToList();
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getAttendanceDetails(Guid StudentId, Guid StudyYearId, bool Type)
+        {
+            if (StudentId == null)
+            {
+                return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
+            }
+            var students = studentsServices.GetAllReport(StudyYearId, (Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            var model = students.Where(x => x.Id == StudentId).FirstOrDefault().AttendanceDetails.Where(x => x.IsAttend == Type).ToList();
+
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         List<ListItem> Genders()

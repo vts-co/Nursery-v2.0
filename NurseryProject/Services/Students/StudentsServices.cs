@@ -1,5 +1,6 @@
 ﻿using NurseryProject.Dtos.EmployeeClasses;
 using NurseryProject.Dtos.Students;
+using NurseryProject.Dtos.StudentsClass;
 using NurseryProject.Dtos.StudentsClassesTransfer;
 using NurseryProject.Enums;
 using NurseryProject.Models;
@@ -16,10 +17,10 @@ namespace NurseryProject.Services.Students
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.StudentsClasses.Any(y => y.Class.EmployeeClasses.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(i => i.Class.ClassesLeaders.Any(l => l.IsDeleted == false && l.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(p=>p.IsDeleted==false&&p.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.StudentsClasses.Any(y => y.Class.EmployeeClasses.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(i => i.Class.ClassesLeaders.Any(l => l.IsDeleted == false && l.EmployeeId == EmployeeId)) || x.StudentsClasses.Any(p => p.IsDeleted == false && p.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId)))).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
                 {
                     Id = x.Id,
-                    StudyTypeId=x.StudentsClasses.Where(y=>!y.IsDeleted&&y.IsCurrent==true).Select(y=>y.Subscription.Level.StudyTypeId).FirstOrDefault(),
+                    StudyTypeId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.Subscription.Level.StudyTypeId).FirstOrDefault(),
                     StudyYearId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.StudyYearId).FirstOrDefault(),
                     LevelId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.Subscription.LevelId).FirstOrDefault(),
                     ClassId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.ClassId).FirstOrDefault(),
@@ -30,16 +31,16 @@ namespace NurseryProject.Services.Students
                     Address = x.Address,
                     Image = x.Image,
                     BirthDate = x.BirthDate.ToString(),
-                    GenderId = x.GenderId!=null?(int)x.GenderId:0,
-                    GenderName = x.GenderId != null?((Gender)x.GenderId).ToString():"",
+                    GenderId = x.GenderId != null ? (int)x.GenderId : 0,
+                    GenderName = x.GenderId != null ? ((Gender)x.GenderId).ToString() : "",
                     MotherName = x.MotherName,
                     RegistrationTypeId = x.RegistrationTypeId.Value,
                     RegistrationTypeName = x.RegistrationType.Name,
                     JoiningDate = x.JoiningDate,
-                    CityId = x.DestrictId != null ? x.Destrict.CityId.Value:Guid.Empty,
-                    CityName = x.DestrictId != null ? x.Destrict.City.Name:"",
-                    DestrictId =x.DestrictId!=null? x.DestrictId.Value:Guid.Empty,
-                    DestrictName = x.DestrictId != null ? x.Destrict.Name:"",
+                    CityId = x.DestrictId != null ? x.Destrict.CityId.Value : Guid.Empty,
+                    CityName = x.DestrictId != null ? x.Destrict.City.Name : "",
+                    DestrictId = x.DestrictId != null ? x.DestrictId.Value : Guid.Empty,
+                    DestrictName = x.DestrictId != null ? x.Destrict.Name : "",
                     Notes = x.Notes
                 }).ToList();
 
@@ -68,9 +69,18 @@ namespace NurseryProject.Services.Students
                     CountOfNormal = "",
                     CountOfPart = "",
                     CountOfPaidNoTime = "",
-                    ClassName=x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false&&y.IsCurrent==true).Select(y=>y.Class.Name).FirstOrDefault(),
+                    StudentClassId = x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Id).FirstOrDefault(),
+                    LevelId= (Guid)x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Class.LevelId).FirstOrDefault(),
+                    ClassId = (Guid)x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.ClassId).FirstOrDefault(),
+                    ClassName = x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Class.Name).FirstOrDefault(),
                     AttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == true).ToList().Count().ToString(),
                     NoAttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == false).ToList().Count().ToString(),
+                    AttendanceDetails = x.StudentsAttendances.Where(c => c.IsDeleted == false).Select(c => new Dtos.StudentsAttendance.StudentsAttendanceDaysDto
+                    {
+                        Date = c.Date.Value.ToString(),
+                        IsAttend = c.IsAttend.Value
+
+                    }).ToList(),
                     CountOfTransferClasses = dbContext.StudentsClassesTransfers.Where(i => i.IsDeleted == false && i.StudentsClass.IsDeleted == false && i.StudentsClass.StudentId == x.Id).ToList().Count().ToString(),
                     TransferClasses = dbContext.StudentsClassesTransfers.Where(i => i.IsDeleted == false && i.StudentsClass.StudyYearId == StudyYearId && i.StudentsClass.IsDeleted == false && i.StudentsClass.StudentId == x.Id).OrderBy(i => i.CreatedOn).Select(i => new StudentsClassesTransferDto
                     {
@@ -104,7 +114,7 @@ namespace NurseryProject.Services.Students
                         Notes = i.Notes
 
                     }).ToList(),
-                    
+
                     ExamsRate = ((x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.Degree)) / (x.StudentsExamDegrees.Where(a => a.IsDeleted == false).Sum(a => a.ClassExam.Exam.TotalDegree)) * 100).ToString(),
                     Employees = x.StudentsClasses.Where(b => b.IsDeleted == false).FirstOrDefault().Class.EmployeeClasses.Where(e => e.IsDeleted == false).Select(e => new EmployeeClassesDto
                     {
@@ -125,11 +135,21 @@ namespace NurseryProject.Services.Students
                     var SubscriptionMethods = StudentsClasses[0].SubscriptionMethods.Where(u => u.IsPaid == false).ToList();
                     var SubscriptionMethods2 = StudentsClasses[0].SubscriptionMethods.Where(u => u.IsPaid == true).ToList();
 
+                    List<SubscriptionMethodDto> subscriptionMethodDto = new List<SubscriptionMethodDto>();
+
                     foreach (var item2 in SubscriptionMethods)
                     {
                         if (item2.Date.Value.Date.AddDays(15) < DateTime.Now.Date)
                         {
                             count1 += 1;
+                            subscriptionMethodDto.Add(new SubscriptionMethodDto
+                            {
+                                Id = item2.Id,
+                                Amount = item2.Amount,
+                                PaidAmount = item2.PaidAmount,
+                                Date = item2.Date.Value.ToString(),
+                                Paided = InstallmentTypes.الاقساط_المتاخرة.ToString()
+                            });
                         }
                     }
                     foreach (var item3 in SubscriptionMethods2)
@@ -137,20 +157,48 @@ namespace NurseryProject.Services.Students
                         if (item3.Date.Value.Date.AddDays(15) >= item3.PaidDate.Value.Date)
                         {
                             count2 += 1;
+                            subscriptionMethodDto.Add(new SubscriptionMethodDto
+                            {
+                                Id = item3.Id,
+                                Amount = item3.Amount,
+                                PaidAmount = item3.PaidAmount,
+                                PaidDate = item3.PaidDate.Value.ToString(),
+                                Date = item3.Date.Value.ToString(),
+                                Paided = InstallmentTypes.الاقساط_الطبيعية.ToString()
+                            });
                         }
                         if (float.Parse(item3.Amount) > float.Parse(item3.PaidAmount))
                         {
                             count3 += 1;
+                            subscriptionMethodDto.Add(new SubscriptionMethodDto
+                            {
+                                Id = item3.Id,
+                                Amount = item3.Amount,
+                                PaidAmount = item3.PaidAmount,
+                                PaidDate = item3.PaidDate.Value.ToString(),
+                                Date = item3.Date.Value.ToString(),
+                                Paided = InstallmentTypes.الاقساط_االمدفوعة_جزئيا.ToString()
+                            });
                         }
                         if (item3.Date.Value.Date.AddDays(15) <= item3.PaidDate.Value.Date)
                         {
                             count4 += 1;
+                            subscriptionMethodDto.Add(new SubscriptionMethodDto
+                            {
+                                Id = item3.Id,
+                                Amount = item3.Amount,
+                                PaidAmount = item3.PaidAmount,
+                                PaidDate = item3.PaidDate.Value.ToString(),
+                                Date = item3.Date.Value.ToString(),
+                                Paided = InstallmentTypes.الاقساط_المدفوعة_متاخر.ToString()
+                            });
                         }
                     }
                     item.CountOfLatecomers = count1.ToString();
                     item.CountOfNormal = count2.ToString();
                     item.CountOfPart = count3.ToString();
                     item.CountOfPaidNoTime = count4.ToString();
+                    item.PaidDetails = subscriptionMethodDto;
                 }
                 return model;
             }
@@ -163,7 +211,7 @@ namespace NurseryProject.Services.Students
                 {
                     Id = x.Id,
                     Code = x.Code,
-                    OName= x.Name,
+                    OName = x.Name,
                     Name = x.Code + "|" + x.Name + "|" + x.Phone,
                     Phone = x.Phone,
                     Address = x.Address,
@@ -192,11 +240,11 @@ namespace NurseryProject.Services.Students
                 return model;
             }
         }
-        public Student GetByCode(string code,string name)
+        public Student GetByCode(string code, string name)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Code == code&&x.Name==name).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.Code == code && x.Name == name).OrderBy(x => x.CreatedOn).FirstOrDefault();
                 return model;
             }
         }
@@ -255,7 +303,7 @@ namespace NurseryProject.Services.Students
                     result.Message = "هذا الطالب غير موجود ";
                     return result;
                 }
-                var Oldmodel2 = dbContext.Students.Where(x => x.Code == model.Code && x.IsDeleted == false&&x.Id!=model.Id).FirstOrDefault();
+                var Oldmodel2 = dbContext.Students.Where(x => x.Code == model.Code && x.IsDeleted == false && x.Id != model.Id).FirstOrDefault();
                 if (Oldmodel2 != null)
                 {
                     result.Result = model;
@@ -274,12 +322,12 @@ namespace NurseryProject.Services.Students
                 Oldmodel.BirthDate = model.BirthDate;
                 Oldmodel.GenderId = model.GenderId;
                 Oldmodel.MotherName = model.MotherName;
-                if(model.RegistrationTypeId!=Guid.Empty&& model.RegistrationTypeId !=null)
+                if (model.RegistrationTypeId != Guid.Empty && model.RegistrationTypeId != null)
                     Oldmodel.RegistrationTypeId = model.RegistrationTypeId.Value;
 
                 Oldmodel.JoiningDate = model.JoiningDate;
 
-                if(model.DestrictId!=null&& model.RegistrationTypeId != Guid.Empty)
+                if (model.DestrictId != null && model.RegistrationTypeId != Guid.Empty)
                     Oldmodel.DestrictId = model.DestrictId.Value;
 
                 Oldmodel.Notes = model.Notes;
@@ -312,7 +360,7 @@ namespace NurseryProject.Services.Students
                     result.Message = "هذا الطالب لديه اشتراك لم يمكن حذفه ";
                     return result;
                 }
-                if (Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false&&y.IsCurrent==true) || Oldmodel.StudentsExamDegrees.Any(y => y.IsDeleted == false))
+                if (Oldmodel.StudentsAttendances.Any(y => y.IsDeleted == false) || Oldmodel.StudentsClasses.Any(y => y.IsDeleted == false && y.IsCurrent == true) || Oldmodel.StudentsExamDegrees.Any(y => y.IsDeleted == false))
                 {
                     result.IsSuccess = false;
                     result.Message = "هذا الطالب لا يمكن حذفه ";

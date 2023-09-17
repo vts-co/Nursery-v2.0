@@ -1,5 +1,6 @@
 ﻿@model NurseryProject.Dtos.Students.StudentsReportDto
 @using NurseryProject.Utilities
+@using NurseryProject.Enums
 @{
     ViewBag.Title = "تقرير شامل للطلاب";
     ViewBag.MainPage = "تقارير الطلاب";
@@ -17,7 +18,6 @@
             </div>
         </div>
         <div class="card-body">
-            @Html.HiddenFor(model => model.Id)
             <div class="row">
 
                 <div class="form-group mb-3 col-sm-6">
@@ -46,6 +46,19 @@
     </div>
 
 }
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" id="Divbody">
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 @if (ViewBag.Students != null)
 {
     if (ViewBag.Count > 1)
@@ -118,7 +131,7 @@
                                     @item.Name
                                 </td>
                                 <td>
-                                    @item.Phone
+                                    <a href="tel:@item.Phone">@item.Phone</a>
                                 </td>
 
                                 <td>
@@ -180,29 +193,29 @@
                                             <tbody>
                                                 @foreach (var item2 in item.TransferClasses)
                                                 {
-                                                <tr>
-                                                    <td>
-                                                        @item2.StudyPlaceName
-                                                    </td>
-                                                    <td>
-                                                        @item2.StudyTypeName
-                                                    </td>
-                                                    <td>
-                                                        @item2.LevelName
-                                                    </td>
-                                                    <td>
-                                                        @item2.ClassFromName
-                                                    </td>
-                                                    <td>
-                                                        @item2.ClassToName
-                                                    </td>
-                                                    <td>
-                                                        @item2.Date
-                                                    </td>
-                                                    <td>
-                                                        @item2.Notes
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>
+                                                            @item2.StudyPlaceName
+                                                        </td>
+                                                        <td>
+                                                            @item2.StudyTypeName
+                                                        </td>
+                                                        <td>
+                                                            @item2.LevelName
+                                                        </td>
+                                                        <td>
+                                                            @item2.ClassFromName
+                                                        </td>
+                                                        <td>
+                                                            @item2.ClassToName
+                                                        </td>
+                                                        <td>
+                                                            @item2.Date
+                                                        </td>
+                                                        <td>
+                                                            @item2.Notes
+                                                        </td>
+                                                    </tr>
                                                 }
 
                                             </tbody>
@@ -228,7 +241,7 @@
                                                             م.  @item2.EmployeeName
                                                         </td>
                                                         <td>
-                                                            |  @item2.EmployeePhone
+                                                            | <a href="tel:@item2.EmployeePhone">@item2.EmployeePhone</a>
                                                         </td>
                                                     </tr>
                                                 }
@@ -290,7 +303,7 @@
                                     @item.Name
                                 </td>
                                 <td>
-                                    @item.Phone
+                                    <a href="tel:@item.Phone">@item.Phone</a>
                                 </td>
 
                                 <td>
@@ -327,17 +340,17 @@
 
                             <tr>
                                 <td>
-                                    @item.CountOfLatecomers
+                                    <a class="text-primary" onclick="PaidDetails('@item.Id','@InstallmentTypes.الاقساط_المتاخرة.ToString()')">@item.CountOfLatecomers</a>
                                 </td>
                                 <td>
-                                    @item.CountOfNormal
+                                    <a class="text-primary" onclick="PaidDetails('@item.Id','@InstallmentTypes.الاقساط_الطبيعية.ToString()')">@item.CountOfNormal</a>
                                 </td>
                                 <td>
-                                    @item.CountOfPart
+                                    <a class="text-primary" onclick="PaidDetails('@item.Id','@InstallmentTypes.الاقساط_االمدفوعة_جزئيا.ToString()')">@item.CountOfPart</a>
                                 </td>
 
                                 <td>
-                                    @item.CountOfPaidNoTime
+                                    <a class="text-primary" onclick="PaidDetails('@item.Id','@InstallmentTypes.الاقساط_المدفوعة_متاخر.ToString()')">@item.CountOfPaidNoTime</a>
                                 </td>
 
                             </tr>
@@ -366,20 +379,29 @@
                         <tbody>
 
                             <tr>
+
                                 <td>
-                                    @item.AttendanceNum
+                                    <a class="text-primary" onclick="AttendDetails('@item.Id', true)">@item.AttendanceNum</a>
                                 </td>
                                 <td>
-                                    @item.NoAttendanceNum
+                                    <a class="text-primary" onclick="AttendDetails('@item.Id',false)">@item.NoAttendanceNum</a>
                                 </td>
                                 <td>
-                                    @item.CountOfTransferClasses
+                                    <a href="/StudentsClassesTransfer/Index?StudentClassId=@item.StudentClassId" target="_blank">@item.CountOfTransferClasses</a>
                                 </td>
 
                                 <td>
                                     @if (@item.ExamsRate != "")
                                     {
-                                        @item.ExamsRate @num
+                                        using (Html.BeginForm("Reports", "StudentsExamDegrees", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            <input type="hidden" id="StudentId" name="StudentId" value="@item.Id" />
+                                            <input type="hidden" id="ClassId" name="ClassId" value="@item.ClassId" />
+                                            <input type="hidden" id="LevelId" name="LevelId" value="@item.LevelId" />
+                                            <button type="submit" formtarget="_blank" style="border:none">
+                                                @item.ExamsRate @num
+                                            </button>
+                                        }
                                     }
                                     else
                                     {
@@ -396,23 +418,23 @@
 
                         <div class="col-lg-12">
                             التحويل بين الفصول :
-                           
-                                <table id="" class="table table-striped dt-responsive  nowrap w-100">
-                                    <thead class="bg-soft-primary">
-                                        <tr>
-                                            <th>الفرع </th>
-                                            <th>نوع الدراسة </th>
-                                            <th>الصف </th>
-                                            <th>من فصل </th>
-                                            <th>الي فصل </th>
-                                            <th>بتاريخ </th>
-                                            <th>ملاحظات </th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item2 in item.TransferClasses)
-                                        {
+                            <table id="" class="table table-striped dt-responsive  nowrap w-100">
+                                <thead class="bg-soft-primary">
+                                    <tr>
+                                        <th>الفرع </th>
+                                        <th>نوع الدراسة </th>
+                                        <th>الصف </th>
+                                        <th>من فصل </th>
+                                        <th>الي فصل </th>
+                                        <th>بتاريخ </th>
+                                        <th>ملاحظات </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item2 in item.TransferClasses)
+                                    {
                                         <tr>
                                             <td>
                                                 @item2.StudyPlaceName
@@ -436,40 +458,40 @@
                                                 @item2.Notes
                                             </td>
                                         </tr>
-                                        }
+                                    }
 
-                                    </tbody>
-                                </table>
-                            
+                                </tbody>
+                            </table>
+
 
                         </div>
 
                         <div class="col-lg-12">
                             معلمي فصله :
-                           
-                                <table id="" class="table table-striped dt-responsive  nowrap w-100">
-                                    <thead class="bg-soft-primary">
-                                        <tr>
-                                            <th>الاسم </th>
-                                            <th>رقم التليفون </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item2 in item.Employees)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    م.  @item2.EmployeeName
-                                                </td>
-                                                <td>
-                                                    @item2.EmployeePhone
-                                                </td>
-                                            </tr>
-                                        }
 
-                                    </tbody>
-                                </table>
-                            
+                            <table id="" class="table table-striped dt-responsive  nowrap w-100">
+                                <thead class="bg-soft-primary">
+                                    <tr>
+                                        <th>الاسم </th>
+                                        <th>رقم التليفون </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item2 in item.Employees)
+                                    {
+                                        <tr>
+                                            <td>
+                                                م.  @item2.EmployeeName
+                                            </td>
+                                            <td>
+                                                <a href="tel:@item2.EmployeePhone">@item2.EmployeePhone</a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
 
                         </div>
                     </div>
@@ -502,5 +524,40 @@
             document.getElementById('JoiningDate').value = now.toISOString().slice(0, 10);
         }
 
+
+        function PaidDetails(StudentId, type) {
+            console.log(type)
+            $.get('/Students/getPaidDetails', { StudentId: StudentId, StudyYearId: $("#StudyYearId").val(), Type: type }, function (data) {
+                $("#Divbody").empty();
+                $("#Divbody").append("<div class='row'>" + type + " : <hr></div>")
+                $.each(data, function (key, value) {
+                    $("#Divbody").append(
+                        "<div class='row'><div class='col-lg-6'>قيمة القسط : " + value["Amount"] + "</div>" +
+                        "<div class='col-lg-6'>تاريخ القسط : " + value["Date"] + "</div>" +
+                        "</div><div class='col-lg-6'>القيمة المدفوعة : " + value["PaidAmount"] + "</div>" +
+                        "<div class='col-lg-6'>تاريخ الدفع : " + value["PaidDate"] + "</div></div><hr>")
+                });
+            });
+            $("#exampleModal").modal('show');
+
+        }
+        function AttendDetails(StudentId, type) {
+            console.log(type)
+            $.get('/Students/getAttendanceDetails', { StudentId: StudentId, StudyYearId: $("#StudyYearId").val(), Type: type }, function (data) {
+                $("#Divbody").empty();
+                if (type) {
+                    $("#Divbody").append("<div class='row'>الحضور : <hr></div>")
+                }
+                else {
+                    $("#Divbody").append("<div class='row'>الغياب : <hr></div>")
+                }
+                $.each(data, function (key, value) {
+                    $("#Divbody").append(
+                        "<div class='row'>التاريخ : " + value["Date"] + "</div>")
+                });
+            });
+            $("#exampleModal").modal('show');
+
+        }
     </script>
 }

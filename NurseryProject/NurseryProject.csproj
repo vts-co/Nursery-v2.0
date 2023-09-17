@@ -352,6 +352,7 @@
     <Compile Include="Dtos\HomePage\HomePagesDro.cs" />
     <Compile Include="Dtos\Jops\JopsDto.cs" />
     <Compile Include="Dtos\Levels\LevelsDto.cs" />
+    <Compile Include="Dtos\PaymentDetails\PaymentDetailsDto.cs" />
     <Compile Include="Dtos\RegistrationTypes\RegistrationTypesDto.cs" />
     <Compile Include="Dtos\RevenuesTypes\RevenuesTypesDto.cs" />
     <Compile Include="Dtos\Revenues\RevenuesDto.cs" />
@@ -367,6 +368,7 @@
     <Compile Include="Dtos\Subscriptions\SubscriptionsDto.cs" />
     <Compile Include="Dtos\Users\UsersDto.cs" />
     <Compile Include="Dtos\WorkShifts\WorkShiftsDto.cs" />
+    <Compile Include="Enums\InstallmentTypes.cs" />
     <Compile Include="Enums\WeekDays.cs" />
     <Compile Include="Models\BuildingSupervisor.cs">
       <DependentUpon>Model1.tt</DependentUpon>

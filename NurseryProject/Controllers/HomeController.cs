@@ -84,15 +84,14 @@ namespace NurseryProject.Controllers
             return RedirectToAction("Index");
 
         }
-        public ActionResult DeleteAllFromDatabase()
+        [HttpPost]
+        public ActionResult DeleteAllFromDatabase(HttpPostedFileBase upload)
         {
             var dbPath = Server.MapPath(@"~\DataBackUp\DBBackup.bak");
             settingsServices.BackUp(dbPath);
 
             settingsServices.DeleteAll();
             string fullPath = Path.Combine(Server.MapPath("~/Pages"), "PagesExcel.xlsx");
-
-            HttpPostedFileBase upload = Request.Files[0];
 
             if (upload != null && upload.ContentLength > 0)
             {
