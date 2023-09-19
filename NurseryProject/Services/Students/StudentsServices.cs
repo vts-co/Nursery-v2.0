@@ -47,9 +47,9 @@ namespace NurseryProject.Services.Students
                 foreach (var item in model)
                 {
                     if (item.BirthDate != null && item.BirthDate.Trim() != "")
-                        item.BirthDate = DateTime.Parse(item.BirthDate).ToString("yyyy-MM-dd");
+                        item.BirthDate = item.BirthDate;
                     if (item.JoiningDate != null && item.JoiningDate != string.Empty && item.JoiningDate != "")
-                        item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
+                        item.JoiningDate = item.JoiningDate;
                 }
                 return model;
             }
