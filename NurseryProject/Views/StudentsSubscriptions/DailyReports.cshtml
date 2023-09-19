@@ -50,148 +50,164 @@
 }
 @if (ViewBag.Reports != null)
 {
-    <div class="card">
-        <div class="card-header">
-            تقرير التحصيل اليومي للطلاب
-        </div>
-        <div class="card-body">
-            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100 table-bordered">
-                <thead class="bg-soft-primary">
-                    <tr>
-                        <th>
-                            @Html.DisplayName("كود الطالب ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الطالب ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("التليفون ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("العام الدراسي ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الفرع ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("نوع الدراسة ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الصف ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الفصل")
-                        </th>
-                        <th>
-                            @Html.DisplayName("طريقة الاشتراك ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("المبلغ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("عدد الاقساط")
-                        </th>
-                        <th>
-                            @Html.DisplayName("المبلغ المدفوع ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("التاريخ")
-                        </th>
+<div class="card">
+    <div class="card-header">
+        تقرير التحصيل اليومي للطلاب
+    </div>
+    <div class="card-body">
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+            <thead class="bg-soft-primary">
+                <tr>
+                    <th>
+                        @Html.DisplayName("كود الطالب ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الطالب ")
+                    </th>
+                    @*<th>
+                        @Html.DisplayName("التليفون ")
+                    </th>*@
+                    <th>
+                        @Html.DisplayName("العام الدراسي ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الفرع ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("نوع الدراسة ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الصف ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الفصل")
+                    </th>
+                    <th>
+                        @Html.DisplayName("طريقة الاشتراك ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("المبلغ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عدد الاقساط")
+                    </th>
+                    <th>
+                        @Html.DisplayName("المبلغ المدفوع ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("المحصل  ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("التاريخ")
+                    </th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.Reports)
-                    {
-                    <tr>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.Reports)
+                {
+                <tr>
 
-                        <td>
-                            @item.Code
-                        </td>
-                        <td>
-                            @item.StudentName
-                        </td>
-                        <td>
-                            @item.StudentPhone
-                        </td>
-                        <td>
-                            @item.StudyYearName
-                        </td>
-                        <td>
-                            @item.StudyPlaceName
-                        </td>
-                        <td>
-                            @item.StudyTypeName
-                        </td>
-                        <td>
-                            @item.LevelName
-                        </td>
-                        <td>
-                            @item.ClassName
-                        </td>
-                        <td>
-                            @item.SubscriptionName
-                        </td>
+                    <td>
+                        @item.Code
+                    </td>
+                    <td>
+                        @item.StudentName
+                    </td>
+                    @*<td>
+                        @item.StudentPhone
+                    </td>*@
+                    <td>
+                        @item.StudyYearName
+                    </td>
+                    <td>
+                        @item.StudyPlaceName
+                    </td>
+                    <td>
+                        @item.StudyTypeName
+                    </td>
+                    <td>
+                        @item.LevelName
+                    </td>
+                    <td>
+                        @item.ClassName
+                    </td>
+                    <td>
+                        @item.SubscriptionName
+                    </td>
 
-                        <td>
-                            @item.Amount جنيه
-                        </td>
-                        <td>
-                            @item.Number
-                        </td>
-                        <td>
-                            @item.Paid جنيه
-                        </td>
-                        <td>
-                            @item.Date 
-                        </td>
+                    <td>
+                        @item.Amount جنيه
+                    </td>
+                    <td>
+                        @item.Number
+                    </td>
+                    <td>
+                        @item.Paid جنيه
+                    </td>
+                    <td>
+                        @item.Collector
+                    </td>
+                    <td>
+                        @item.Number
+                    </td>
+                    <td>
+                        @item.Date
+                    </td>
 
-                    </tr>
-                    }
-                </tbody>
-            </table>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="card-footer">
+        <div class="row justify-content-center">
+            الاجمالي : @ViewBag.Total جنيه
 
         </div>
     </div>
-}
+
+</div>
+    }
 
 
-@section scripts{
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        var now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+            var now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
 
-        if (document.getElementById('Date').value == "") {
-            document.getElementById('Date').value = now.toISOString().slice(0, 10);
-        }
-        if (document.getElementById('Date2').value == "") {
-            document.getElementById('Date2').value = now.toISOString().slice(0, 10);
-        }
-        $("#StudyTypeId").change(function () {
-            $.get('/StudentsSubscriptions/getLevelsDailyReport', { Id: $("#StudyTypeId").val() }, function (data) {
-                $("#LevelId").empty();
-                $("#LevelId").append("<option value=''>--اختر--</option>")
-                $.each(data, function (key, value) {
-                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+            if (document.getElementById('Date').value == "") {
+                document.getElementById('Date').value = now.toISOString().slice(0, 10);
+            }
+            if (document.getElementById('Date2').value == "") {
+                document.getElementById('Date2').value = now.toISOString().slice(0, 10);
+            }
+            $("#StudyTypeId").change(function () {
+                $.get('/StudentsSubscriptions/getLevelsDailyReport', { Id: $("#StudyTypeId").val() }, function (data) {
+                    $("#LevelId").empty();
+                    $("#LevelId").append("<option value=''>--اختر--</option>")
+                    $.each(data, function (key, value) {
+                        $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                    });
                 });
             });
-        });
-        $("#LevelId").change(function () {
-            $.get('/StudentsSubscriptions/getClassesDailyReport', { Id: $("#LevelId").val() }, function (data) {
-                $("#ClassId").empty();
-                $("#ClassId").append("<option value=''>--اختر--</option>")
-                $.each(data, function (key, value) {
-                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+            $("#LevelId").change(function () {
+                $.get('/StudentsSubscriptions/getClassesDailyReport', { Id: $("#LevelId").val() }, function (data) {
+                    $("#ClassId").empty();
+                    $("#ClassId").append("<option value=''>--اختر--</option>")
+                    $.each(data, function (key, value) {
+                        $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                    });
+                });
+                $.get('/StudentsSubscriptions/getSubjectsDailyReport', { Id: $("#LevelId").val() }, function (data) {
+                    $("#SubjectId").empty();
+                    $("#SubjectId").append("<option value=''>--اختر--</option>")
+                    $.each(data, function (key, value) {
+                        $("#SubjectId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                    });
                 });
             });
-            $.get('/StudentsSubscriptions/getSubjectsDailyReport', { Id: $("#LevelId").val() }, function (data) {
-                $("#SubjectId").empty();
-                $("#SubjectId").append("<option value=''>--اختر--</option>")
-                $.each(data, function (key, value) {
-                    $("#SubjectId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
-                });
-            });
-        });
-    </script>
-}
+        </script>
+    }
