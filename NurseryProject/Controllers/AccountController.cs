@@ -50,7 +50,6 @@ namespace NurseryProject.Controllers
                 return View(userInfo);
             }
         }
-        [Authorized]
         public ActionResult SignOut()
         {
             VTSAuth auth = new VTSAuth();

@@ -15,7 +15,7 @@ namespace NurseryProject.Services.EmployeesWorkShifts
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesWorkShifts.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeeId == EmployeeId || x.Employee.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new EmployeesWorkShiftsDto
+                var model = dbContext.EmployeesWorkShifts.Where(x => x.IsDeleted == false && !x.Employee.EmployeesVacations.Any(y => !y.IsDeleted && y.DateFrom <= DateTime.Now && y.DateTo <= DateTime.Now) && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.EmployeeId == EmployeeId || x.Employee.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new EmployeesWorkShiftsDto
                 {
                     Id = x.Id,
                     StudyYearId = x.StudyYearId.Value,
@@ -30,6 +30,30 @@ namespace NurseryProject.Services.EmployeesWorkShifts
                     Notes = x.Notes,
 
                 }).ToList();
+                foreach (var item in model)
+                {
+                    var emp = dbContext.EmployeeClasses.Where(y => !y.IsDeleted && y.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if(emp!=null)
+                    {
+                        var class1=dbContext.Classes.Where(y => !y.IsDeleted && y.Id == emp.ClassId).FirstOrDefault();
+                        item.StudyPlaceId = (Guid)class1.StudyPlaceId;
+                        item.StudyPlaceName = class1.StudyPlace.Name;
+                    }
+                    var emp2 = dbContext.BuildingSupervisors.Where(y => !y.IsDeleted && y.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if (emp2 != null)
+                    {
+                        item.StudyPlaceId = (Guid)emp2.StudyPlaceId;
+                        item.StudyPlaceName = emp2.StudyPlace.Name;
+                    }
+                    var emp3 = dbContext.ClassesLeaders.Where(y => !y.IsDeleted && y.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if (emp3 != null)
+                    {
+                        var class1 = dbContext.Classes.Where(y => !y.IsDeleted && y.Id == emp3.ClassId).FirstOrDefault();
+                        item.StudyPlaceId = (Guid)class1.StudyPlaceId;
+                        item.StudyPlaceName = class1.StudyPlace.Name;
+                    }
+                }
+
                 return model;
             }
         }

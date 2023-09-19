@@ -32,11 +32,17 @@ namespace NurseryProject.Services.Employees
                     JopName = x.Jop.Name,
                     Qualification=x.Qualification,
                     WorkDayCost = x.WorkDayCost.Value.ToString(),
-                    MaritalStateId = x.MaritalStateId.Value,
+                    //MaritalStateId = (int)x.MaritalStateId,
                     Notes = x.Notes
                 }).ToList();
+                
                 foreach (var item in model)
                 {
+                    if (item.BirthDate != null && item.BirthDate.Trim() != "")
+                        item.BirthDate = DateTime.Parse(item.BirthDate).ToString("yyyy-MM-dd");
+                    if (item.JoiningDate != null && item.JoiningDate != string.Empty && item.JoiningDate != "")
+                        item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
+
                     if (item.MaritalStateId == 1)
                         item.MaritalStateName = "اعزب";
                     if (item.MaritalStateId == 2)
@@ -45,6 +51,16 @@ namespace NurseryProject.Services.Employees
                         item.MaritalStateName = "مطلق";
                     if (item.MaritalStateId == 4)
                         item.MaritalStateName = "ارمل";
+
+                    var gg = dbContext.EmployeesWorkShifts.Where(x => !x.IsDeleted && x.EmployeeId == item.Id && x.StudyYear.IsCurrentYear == true).ToList();
+                    for (int i = 0; i < gg.Count(); i++)
+                    {
+                        if (i == 0)
+                            item.WorkShifts = gg[i].WorkShift.Name;
+                        else
+                            item.WorkShifts += ","+gg[i].WorkShift.Name;
+
+                    }
                 }
                 return model;
             }
@@ -57,7 +73,17 @@ namespace NurseryProject.Services.Employees
                 return model;
             }
         }
-       
+        public bool CodeExist(string code)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Employees.Where(x => x.IsDeleted == false && x.Code == code).OrderBy(x => x.CreatedOn).FirstOrDefault();
+                if (model != null)
+                    return true;
+                return false;
+                        
+            }
+        }
         public ResultDto<Employee> Create(Employee model, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -115,13 +141,14 @@ namespace NurseryProject.Services.Employees
                     Oldmodel.Code = model.Code;
 
                 Oldmodel.Name = model.Name;
+                Oldmodel.RegistrationTypeId = model.RegistrationTypeId;
                 Oldmodel.Phone = model.Phone;
                 Oldmodel.Address = model.Address;
                 Oldmodel.BirthDate = model.BirthDate;
                 Oldmodel.GenderId = model.GenderId;
                 Oldmodel.MaritalStateId = model.MaritalStateId;
                 Oldmodel.WorkDayCost = model.WorkDayCost.Value;
-                Oldmodel.JoiningDate = model.JoiningDate.Value;
+                Oldmodel.JoiningDate = model.JoiningDate;
                 Oldmodel.JopId = model.JopId.Value;
                 Oldmodel.Notes = model.Notes;
                 Oldmodel.Qualification = model.Qualification;

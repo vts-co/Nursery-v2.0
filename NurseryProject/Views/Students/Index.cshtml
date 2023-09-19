@@ -13,10 +13,49 @@
                 <a href='/Students/Create' class='btn btn-soft-primary  waves-effect waves-light px-4'><i class="fas fa-plus me-3"></i> اضافة طالب جديد</a>
             </p>
             <p class="col-auto">
-                <button  onclick="excel()" class='btn btn-soft-primary  waves-effect waves-light px-4'><i class="fas fa-list-alt me-3"></i> استيراد البيانات</button>
+                <button onclick="excel()" class='btn btn-soft-primary  waves-effect waves-light px-4'><i class="fas fa-list-alt me-3"></i> استيراد البيانات</button>
             </p>
         </div>
     </div>
+    @using (Html.BeginForm("Index", "Students", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="card-body">
+            <div class="row mt-3">
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control" })
+                        @*@Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control" })
+                        @*@Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control" })
+                        @*@Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control" })
+                        @*@Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+
+    }
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -51,6 +90,12 @@
                     <th>
                         @Html.DisplayName("الاسم")
                     </th>
+                    <th>
+                        @Html.DisplayName("رقم التليفون")
+                    </th>
+                    <th>
+                        @Html.DisplayName("العنوان")
+                    </th>
                     @*<th>
                             @Html.DisplayName("الصورة الشخصية")
                         </th>*@
@@ -60,18 +105,14 @@
                     <th>
                         @Html.DisplayName("النوع")
                     </th>
-                    <th>
-                        @Html.DisplayName("حالة الطالب")
-                    </th>
+
                     <th>
                         @Html.DisplayName("اسم الأم")
                     </th>
                     <th>
-                        @Html.DisplayName("العنوان")
+                        @Html.DisplayName("تاريخ الالتحاق ")
                     </th>
-                    <th>
-                        @Html.DisplayName("رقم التليفون")
-                    </th>
+
                     <th>
                         @Html.DisplayName("ملاحظات")
                     </th>
@@ -90,6 +131,12 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
                         @*<td>
                                 <img src="@item.Image" width="50" />
                             </td>*@
@@ -99,17 +146,12 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.GenderName)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RegistrationTypeName)
-                        </td>
+
                         <td>
                             @Html.DisplayFor(modelItem => item.MotherName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
+                            @Html.DisplayFor(modelItem => item.JoiningDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Notes)
@@ -128,9 +170,27 @@
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        $("#StudyTypeId").change(function () {
+            $.get('/Students/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/Students/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
         function excel() {
             $("#exampleModal").modal('show');
         }
-        
+
     </script>
-    }
+}

@@ -17,6 +17,7 @@ namespace NurseryProject.Dtos.EmployeesAttendance
         public string DepartmentName { get; set; }
         public Guid EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string EmployeePhone { get; set; }
         public string Code { get; set; }
 
         public Guid WorkShiftId { get; set; }

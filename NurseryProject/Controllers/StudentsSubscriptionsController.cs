@@ -228,7 +228,7 @@ namespace NurseryProject.Views
         [Authorized(ScreenId = "56")]
         public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null)
         {
-            var result = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0);
+            var result = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0).ToList();
 
             var StudyYear = studyYearsServices.GetAll();
             var studyTypes = studyTypesServices.GetAll();
@@ -238,7 +238,7 @@ namespace NurseryProject.Views
 
             if (StudyYearId != null && StudyYearId != Guid.Empty)
             {
-                result = result.Where(x => x.StudyYearId == StudyYearId);
+                result = result.Where(x => x.StudyYearId == StudyYearId).ToList();
                 ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", StudyYearId);
             }
             else
@@ -247,7 +247,7 @@ namespace NurseryProject.Views
             }
             if (StudyTypeId != null && StudyTypeId != Guid.Empty)
             {
-                result = result.Where(x => x.StudyTypeId == StudyTypeId);
+                result = result.Where(x => x.StudyTypeId == StudyTypeId).ToList();
                 ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", StudyTypeId);
             }
             else
@@ -256,7 +256,7 @@ namespace NurseryProject.Views
             }
             if (LevelId != null && LevelId != Guid.Empty)
             {
-                result = result.Where(x => x.LevelId == LevelId);
+                result = result.Where(x => x.LevelId == LevelId).ToList();
                 ViewBag.LevelId = new SelectList(levels.Where(x => x.StudyTypeId == StudyTypeId).ToList(), "Id", "Name", LevelId);
             }
             else
@@ -265,7 +265,7 @@ namespace NurseryProject.Views
             }
             if (ClassId != null && ClassId != Guid.Empty)
             {
-                result = result.Where(x => x.ClassId == ClassId);
+                result = result.Where(x => x.ClassId == ClassId).ToList();
                 ViewBag.ClassId = new SelectList(classes.Where(x => x.LevelId == LevelId).ToList(), "Id", "Name", ClassId);
             }
             else
@@ -379,7 +379,6 @@ namespace NurseryProject.Views
         {
             var Students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudentId = new SelectList(Students, "Id", "Name");
-
             return View();
         }
         [HttpPost]
@@ -406,6 +405,8 @@ namespace NurseryProject.Views
             }
 
             ViewBag.Reports = result;
+            ViewBag.Total = result.Sum(x =>float.Parse(x.Paid));
+
             return View();
         }
         [Authorized(ScreenId = "59")]

@@ -72,6 +72,22 @@
                         @Html.ValidationMessageFor(model => model.Qualification, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الوظيفة", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.JopId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.JopId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الحالة الاجتماعية ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
@@ -80,24 +96,10 @@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("حالة الموظف ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("DepartmentId", null, "--اختر--", new { @class = "form-control", required = "required" })
-                        @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
-                    </div>
-                </div>
-                <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("الوظيفة", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.DropDownListFor(model => model.JopId, null, "--اختر--", new { @class = "form-control", required = "required" })
-                        @Html.ValidationMessageFor(model => model.JopId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group mb-3 col-sm-12">
-                    @Html.Label("العنوان ", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", required = "required" } })
-                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.RegistrationTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.RegistrationTypeId, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
@@ -107,6 +109,14 @@
                         @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("العنوان ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
 
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("تاريخ التعيين ", htmlAttributes: new { @class = "control-label" })
@@ -118,7 +128,7 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("قيمة الاجر اليومي ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.TextBoxFor(model => model.WorkDayCost, new { @class = "form-control", required = "required" })
+                        @Html.TextBoxFor(model => model.WorkDayCost, new { @class = "form-control", type = "number", required = "required" })
                         @Html.ValidationMessageFor(model => model.WorkDayCost, "", new { @class = "text-danger" })
                     </div>
                 </div>

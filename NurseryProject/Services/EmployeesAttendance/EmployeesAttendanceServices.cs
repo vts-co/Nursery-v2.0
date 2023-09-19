@@ -14,7 +14,7 @@ namespace NurseryProject.Services.EmployeesAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
+                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false && !x.EmployeesWorkShift.Employee.EmployeesVacations.Any(y => !y.IsDeleted && y.DateFrom <= DateTime.Now && y.DateTo <= DateTime.Now)).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
                 {
                     Id = x.Id,
                     EmployeeWorkShiftId = x.EmployeeWorkShiftId.Value,
@@ -98,16 +98,18 @@ namespace NurseryProject.Services.EmployeesAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
+                var model = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false && !x.EmployeesWorkShift.Employee.EmployeesVacations.Any(y => !y.IsDeleted && y.DateFrom <= DateTime.Now && y.DateTo <= DateTime.Now)).OrderBy(x => x.CreatedOn).Select(x => new EmployeesAttendanceDto
                 {
                     Id = x.Id,
                     EmployeeWorkShiftId = x.EmployeeWorkShiftId.Value,
                     StudyYearId = x.EmployeesWorkShift.StudyYearId.Value,
                     StudyYearName = x.EmployeesWorkShift.StudyYear.Name,
+                    
                     DepartmentId = x.EmployeesWorkShift.Employee.Jop.DepartmentId.Value,
                     DepartmentName = x.EmployeesWorkShift.Employee.Jop.Department.Name,
                     EmployeeId = x.EmployeesWorkShift.Employee.Id,
                     EmployeeName = x.EmployeesWorkShift.Employee.Name,
+                    EmployeePhone=x.EmployeesWorkShift.Employee.Phone,
                     WorkShiftId = x.EmployeesWorkShift.WorkShift.Id,
                     WorkShiftName = x.EmployeesWorkShift.WorkShift.Name,
                     IsAttend = x.IsAttend.Value,

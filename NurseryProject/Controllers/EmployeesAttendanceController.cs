@@ -32,12 +32,16 @@ namespace NurseryProject.Controllers
         // GET: Destricts
         public ActionResult Index()
         {
-            var model = employeesAttendanceServices.GetAll();
-            return View(model);
+            
+            var model2 = employeesAttendanceServices.GetAll();
+            return View(model2);
         }
 
         public ActionResult Create()
         {
+            var model = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.StudyPlaceId = new SelectList(model, "Id", "Name");
+
             var Years = studyYearsServices.GetAll();
             ViewBag.StudyYearId = new SelectList(Years, "Id", "Name");
 
@@ -65,6 +69,9 @@ namespace NurseryProject.Controllers
                 var Years = studyYearsServices.GetAll();
                 ViewBag.StudyYearId = new SelectList(Years, "Id", "Name");
 
+                var model = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+                ViewBag.StudyPlaceId = new SelectList(model, "Id", "Name");
+
                 //var Departments = departmentsServices.GetAll();
                 //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name");
 
@@ -82,6 +89,10 @@ namespace NurseryProject.Controllers
 
             var Years = studyYearsServices.GetAll();
             ViewBag.StudyYearId = new SelectList(Years, "Id", "Name", employeesWorkShift.StudyYearId);
+
+            var model = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.StudyPlaceId = new SelectList(model, "Id", "Name", employeesWorkShift.StudyPlaceId);
+
 
             //var Departments = departmentsServices.GetAll();
             //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name", jop.DepartmentId);
@@ -109,6 +120,9 @@ namespace NurseryProject.Controllers
 
                 var Years = studyYearsServices.GetAll();
                 ViewBag.StudyYearId = new SelectList(Years, "Id", "Name", employeesWorkShift.StudyYearId);
+
+                var model = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+                ViewBag.StudyPlaceId = new SelectList(model, "Id", "Name");
 
                 //var Departments = departmentsServices.GetAll();
                 //ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name", jop.DepartmentId);
@@ -138,14 +152,17 @@ namespace NurseryProject.Controllers
             var model = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).Select(x => new { x.Id, x.Name, x.Code }).FirstOrDefault();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult getEmployeesWorkShifts(Guid StudyYearId,Guid WorkShiftId)
+        public ActionResult getEmployeesWorkShifts(Guid StudyYearId,Guid WorkShiftId,Guid StudyPlaceId)
         {
-            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x =>x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).Select(x=>new {x.Id,x.Code,x.EmployeeId,x.EmployeeName }).ToList();
+            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"])
+                .Where(x =>x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId&&x.StudyPlaceId== StudyPlaceId)
+                .Select(x=>new {x.Id,x.Code,x.EmployeeId,x.EmployeeName }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult getEmployeesWorkShiftsBysearch(Guid StudyYearId, Guid WorkShiftId,string search)
+        public ActionResult getEmployeesWorkShiftsBysearch(Guid StudyYearId, Guid WorkShiftId, Guid StudyPlaceId, string search)
         {
-            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId).ToList();
+            var model = employeesWorkShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"])
+                .Where(x => x.WorkShiftId == WorkShiftId && x.StudyYearId == StudyYearId && x.StudyPlaceId == StudyPlaceId).ToList();
             if (search != null)
             {
                 model = model.Where(x => x.Code.Contains(search) || x.EmployeeName.Contains(search)).ToList();
@@ -156,6 +173,61 @@ namespace NurseryProject.Controllers
         {
             var model = employeesAttendanceServices.GetByEmployeeWorkShift().Where(x => x.EmployeeWorkShiftId == Id && x.Date == Date&&x.IsAttend==true).Select(x => new { x.Id,x.Code, x.EmployeeId, x.EmployeeName,x.EmployeeWorkShiftId }).ToList().Count();
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [Authorized(ScreenId = "76")]
+
+        public ActionResult Reports()
+        {
+            
+            var Years = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(Years, "Id", "Name");
+
+            
+            var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name");
+
+            return View();
+        }
+        [Authorized(ScreenId = "76")]
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Reports(Guid StudyYearId,Guid WorkShiftId, string Date, string Date2)
+        {
+            var Years = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(Years, "Id", "Name");
+
+           
+            var workshift = workShiftsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            ViewBag.WorkShiftId = new SelectList(workshift, "Id", "Name");
+
+            var model = employeesAttendanceServices.GetByEmployeeWorkShift();
+            if (StudyYearId != Guid.Empty && StudyYearId != null)
+            {
+                model = model.Where(x => x.StudyYearId == StudyYearId).ToList();
+            }
+            
+            if (WorkShiftId != Guid.Empty && WorkShiftId != null)
+            {
+                model = model.Where(x => x.WorkShiftId == WorkShiftId).ToList();
+            }
+            if (Date != null && Date2 != null)
+            {
+                var date = DateTime.Parse(Date);
+                var date2 = DateTime.Parse(Date2);
+
+                foreach (var item in model)
+                {
+                    if (DateTime.Parse(item.Date).AddDays(1) >= date && DateTime.Parse(item.Date) <= date2)
+                    {
+                        model.Remove(item);
+                    }
+                }
+            }
+            ViewBag.Attend = model;
+            return View();
+            
         }
     }
     public class Attend1

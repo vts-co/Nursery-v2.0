@@ -12,6 +12,8 @@ namespace NurseryProject.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class almohandes_DbEntities : DbContext
     {
@@ -34,6 +36,7 @@ namespace NurseryProject.Models
         public virtual DbSet<Destrict> Destricts { get; set; }
         public virtual DbSet<DiscountsType> DiscountsTypes { get; set; }
         public virtual DbSet<EmployeeClass> EmployeeClasses { get; set; }
+        public virtual DbSet<EmployeeRegistrationType> EmployeeRegistrationTypes { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeesAttendance> EmployeesAttendances { get; set; }
         public virtual DbSet<EmployeesDelay> EmployeesDelays { get; set; }
@@ -74,5 +77,15 @@ namespace NurseryProject.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<VacationsType> VacationsTypes { get; set; }
         public virtual DbSet<WorkShift> WorkShifts { get; set; }
+    
+        public virtual int DeleteAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteAll");
+        }
+    
+        public virtual int GenerateSchema()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GenerateSchema");
+        }
     }
 }

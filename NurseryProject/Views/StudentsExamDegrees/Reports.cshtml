@@ -1,0 +1,168 @@
+﻿@model NurseryProject.Dtos.StudentExamDegrees.StudentExamDegreesDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير درجات اختبارات طالب";
+    ViewBag.MainPage = "الطلاب";
+    var count = " لم يمتحن بعد  ";
+    var num = "%";
+}
+@using (Html.BeginForm("Reports", "StudentsExamDegrees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("الطالب ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable" })
+                        @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+
+}
+@if (ViewBag.Degrees != null)
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">
+                    تقرير درجات اختبارات طالب
+                </h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                <thead class="bg-soft-primary">
+                    <tr>
+                        <th>
+                            @Html.DisplayName("الكود")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاسم")
+                        </th>
+                        <th>
+                            @Html.DisplayName("رقم التليفون")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("الفرع ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("نوع الدراسة ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الصف ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الصف ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الفصل")
+                        </th>
+                        <th>
+                            @Html.DisplayName("الاختبار ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("درجة الاختبار ")
+                        </th>
+                        <th>
+                            @Html.DisplayName("درجة الطالب ")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Degrees)
+                    {
+                        <tr>
+                            <td>
+                                @item.Code
+                            </td>
+                            <td>
+                                @item.StudentName
+                            </td>
+                            <td>
+                                @item.StudentPhone
+                            </td>
+
+                            <td>
+                                @item.StudyPlaceName
+                            </td>
+                            <td>
+                                @item.StudyTypeName
+                            </td>
+                            <td>
+                                @item.LevelName
+                            </td>
+
+                            <td>
+                                @item.ClassName
+                            </td>
+                            <td>
+                                @item.ExamName
+                            </td>
+                            <td>
+                                @item.ExamDegree
+                            </td>
+                            <td>
+                                @item.TotalDegree
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $("#LevelId").change(function () {
+            $.get('/StudentsExamDegrees/getClassesReport', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option value=''>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+
+      
+    </script>
+}

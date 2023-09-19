@@ -21,11 +21,13 @@ namespace NurseryProject.Dtos.StudentsClass
         public string StudyYearName { get; set; }
         public Guid StudentId { get; set; }
         public string StudentName { get; set; }
+        public string StudentCode { get; set; }
         public string StudentPhone { get; set; }
 
         public Guid? SubscriptionId { get; set; }
         public string SubscriptionName { get; set; }
         public string Regular { get; set; }
+        public string Collector { get; set; }
 
         public List<SubscriptionMethodDto> SubscriptionMethod { get; set; }
         public bool IsCurrent { get; set; }
@@ -51,6 +53,7 @@ namespace NurseryProject.Dtos.StudentsClass
         public string Amount { get; set; }
         public string Date { get; set; }
         public string PaidAmount { get; set; }
+        public string Collector { get; set; }
         
         public bool IsPaid { get; set; }
         public string Paided { get; set; }

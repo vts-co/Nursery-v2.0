@@ -55,9 +55,9 @@ namespace NurseryProject.Controllers
                 var StudyTypeId = level1.StudyTypeId;
 
                 var studyTypes = studyTypesServices.GetAll();
-                var levels = levelsServices.GetAll().Where(x => x.StudyTypeId == subject.Level.StudyTypeId).ToList();
+                var levels = levelsServices.GetAll().Where(x => x.StudyTypeId == level1.StudyTypeId).ToList();
 
-                ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", subject.Level.StudyTypeId);
+                ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level1.StudyTypeId);
                 ViewBag.LevelId = new SelectList(levels, "Id", "Name", subject.LevelId);
 
                 

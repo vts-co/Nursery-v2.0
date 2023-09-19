@@ -11,6 +11,8 @@ namespace NurseryProject.Dtos.StudentExamDegrees
         public Guid Id { get; set; }
         public Guid StudyPlaceId { get; set; }
         public string StudyPlaceName { get; set; }
+        public Guid StudyYearId { get; set; }
+        public string StudyYearName { get; set; }
         public Guid StudyTypeId { get; set; }
         public string StudyTypeName { get; set; }
         public Guid LevelId { get; set; }
@@ -24,6 +26,12 @@ namespace NurseryProject.Dtos.StudentExamDegrees
         public bool IsOneQuestion { get; set; }
         public string Date { get; set; }
         public string Count { get; set; }
+        public string Code { get; set; }
+        public Guid StudentId { get; set; }
+        public string StudentName { get; set; }
+        public string StudentPhone { get; set; }
+        public string TotalDegree { get; set; }
+
 
         public List<StudentExamDegreesDetailsDto> Students { get; set; }
 
@@ -35,6 +43,7 @@ namespace NurseryProject.Dtos.StudentExamDegrees
         public string Count { get; set; }
         public Guid StudentId { get; set; }
         public string StudentName { get; set; }
+        public string StudentPhone { get; set; }
         public Guid ExamDegreeId { get; set; }
         public string TotalDegree { get; set; }
         public string Date { get; set; }

@@ -136,6 +136,9 @@
                                             المدفوع
                                         </th>
                                         <th>
+                                            المحصل
+                                        </th>
+                                        <th>
                                             تم الدفع
                                         </th>
 
@@ -154,7 +157,7 @@
                                         <td>
                                             @item2.Date
                                         </td>
-                                        @if (@item2.PaidAmount == null|| @item2.PaidAmount == "0")
+                                        @if (@item2.PaidAmount == null || @item2.PaidAmount == "0")
                                         {
                                             <td>
                                             </td>
@@ -165,7 +168,9 @@
                                                 @item2.PaidAmount جنيه
                                             </td>
                                         }
-
+                                        <td>
+                                            @item2.Collector
+                                        </td>
                                         <td>
                                             @item2.Paided
                                         </td>

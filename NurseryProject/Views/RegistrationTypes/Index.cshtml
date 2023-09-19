@@ -39,7 +39,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Notes)
                         </td>
-                        @if (item.Id == Guid.Parse("E31AC343-47DA-4DFE-8970-E1719DEEC869") || item.Id == Guid.Parse("5cf58b9e-d1eb-41d8-9b11-4ccc120648a3"))
+                        @if (item.Id == Guid.Parse("E31AC343-47DA-4DFE-8970-E1719DEEC869") || item.Id == Guid.Parse("5cf58b9e-d1eb-41d8-9b11-4ccc120648a3")|| item.Id == Guid.Parse("B8650DC5-A83D-4A48-B99F-B75196A1DF8C"))
                         {
                             <td>
                                 @Url.Edit(routeValues: new { id = item.Id })

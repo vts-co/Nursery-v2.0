@@ -2,11 +2,14 @@
 using NurseryProject.Authorization;
 using NurseryProject.Dtos.Students;
 using NurseryProject.Enums;
+using NurseryProject.Levels.Services;
 using NurseryProject.Models;
 using NurseryProject.Services.Cities;
+using NurseryProject.Services.Classes;
 using NurseryProject.Services.Destricts;
 using NurseryProject.Services.RegistrationTypes;
 using NurseryProject.Services.Students;
+using NurseryProject.Services.StudyTypes;
 using NurseryProject.Services.StudyYears;
 using NurseryProject.Utilities;
 using System;
@@ -30,11 +33,65 @@ namespace NurseryProject.Controllers
         RegistrationTypesServices registrationTypes = new RegistrationTypesServices();
         CitiesServices citiesServices = new CitiesServices();
         DestrictsServices destrictsServices = new DestrictsServices();
-
+        StudyTypesServices studyTypesServices = new StudyTypesServices();
+        LevelsServices levelsServices = new LevelsServices();
+        ClassesServices classesServices = new ClassesServices();
         // GET: Cities
         public ActionResult Index()
         {
+            var studyTypes = studyTypesServices.GetAll();
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
+
+            var StudyYear = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
+
+            ViewBag.LevelId = new SelectList("");
+            ViewBag.ClassId = new SelectList("");
+
             var model = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            return View(model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Index(Guid? StudyTypeId, Guid? StudyYearId, Guid? LevelId, Guid? ClassId)
+        {
+            var studyTypes = studyTypesServices.GetAll();
+            ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", StudyTypeId);
+
+            var StudyYear = studyYearsServices.GetAll();
+            ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name", StudyYearId);
+
+            var model = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+
+            if (StudyYearId != null && StudyYearId != Guid.Empty)
+            {
+                model = model.Where(x => x.StudyYearId == StudyYearId).ToList();
+            }
+            if (StudyTypeId != null && StudyTypeId != Guid.Empty)
+            {
+                ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.StudyTypeId == StudyTypeId).ToList(), "Id", "Name", LevelId);
+                if (LevelId != null && LevelId != Guid.Empty)
+                {
+                    ViewBag.ClassId = new SelectList(classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == LevelId).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name", ClassId);
+                }
+                else
+                {
+                    ViewBag.ClassId = new SelectList("");
+                }
+                model = model.Where(x => x.StudyTypeId == StudyTypeId).ToList();
+            }
+            else
+            {
+                ViewBag.LevelId = new SelectList("");
+                ViewBag.ClassId = new SelectList("");
+            }
+            if (LevelId != null && LevelId != Guid.Empty)
+            {
+                model = model.Where(x => x.LevelId == LevelId).ToList();
+            }
+            if (ClassId != null && ClassId != Guid.Empty)
+            {
+                model = model.Where(x => x.ClassId == ClassId).ToList();
+            }
             return View(model);
         }
         public ActionResult Create()
@@ -72,9 +129,9 @@ namespace NurseryProject.Controllers
                 student.Id = Guid.Empty;
 
                 if (student.BirthDate != null)
-                    ViewBag.BirthDate = student.BirthDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.BirthDate = student.BirthDate;
                 if (student.JoiningDate != null)
-                    ViewBag.JoiningDate = student.JoiningDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.JoiningDate = student.JoiningDate;
 
                 ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", student.GenderId);
                 ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", student.RegistrationTypeId);
@@ -99,10 +156,10 @@ namespace NurseryProject.Controllers
         {
             var student = studentsServices.Get(Id);
 
-            if (student.BirthDate != null)
-                ViewBag.BirthDate = student.BirthDate.Value.ToString("yyyy-MM-dd");
-            if (student.JoiningDate != null)
-                ViewBag.JoiningDate = student.JoiningDate.Value.ToString("yyyy-MM-dd");
+            if (student.BirthDate != null && student.BirthDate != string.Empty && student.BirthDate != "")
+                ViewBag.BirthDate = DateTime.Parse(student.BirthDate).ToString("yyyy-MM-dd");
+            if (student.JoiningDate != null && student.JoiningDate != string.Empty && student.JoiningDate != "")
+                ViewBag.JoiningDate = DateTime.Parse(student.JoiningDate).ToString("yyyy-MM-dd");
 
             ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", student.GenderId);
             ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name", student.RegistrationTypeId);
@@ -141,9 +198,9 @@ namespace NurseryProject.Controllers
             else
             {
                 if (student.BirthDate != null)
-                    ViewBag.BirthDate = student.BirthDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.BirthDate = student.BirthDate.ToString();
                 if (student.JoiningDate != null)
-                    ViewBag.JoiningDate = student.JoiningDate.Value.ToString("yyyy-MM-dd");
+                    ViewBag.JoiningDate = student.JoiningDate;
 
 
                 ViewBag.GenderId = new SelectList(Genders(), "Value", "Text", student.GenderId);
@@ -177,6 +234,17 @@ namespace NurseryProject.Controllers
                 TempData["warning"] = result.Message;
                 return RedirectToAction("Index");
             }
+        }
+
+        public ActionResult getLevels(Guid Id)
+        {
+            var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getClasses(Guid Id)
+        {
+            var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         [Authorized(ScreenId = "52")]
@@ -279,11 +347,11 @@ namespace NurseryProject.Controllers
             {
                 if (students.Count() == 0)
                 {
-                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.JoiningDate == student.JoiningDate.Value.ToString()).ToList();
+                    students = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.JoiningDate == student.JoiningDate).ToList();
                 }
                 else
                 {
-                    students = students.Where(x => x.JoiningDate == student.JoiningDate.Value.ToString()).ToList();
+                    students = students.Where(x => x.JoiningDate == student.JoiningDate).ToList();
                 }
             }
             ViewBag.Students = students;
@@ -343,6 +411,8 @@ namespace NurseryProject.Controllers
             return View();
         }
 
+
+
         public ActionResult getDestricts(Guid Id)
         {
             if (Id == null)
@@ -350,6 +420,28 @@ namespace NurseryProject.Controllers
                 return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
             }
             var model = destrictsServices.GetAll().Where(x => x.CityId == Id).Select(x => new { x.Id, x.Name }).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getPaidDetails(Guid StudentId, Guid StudyYearId,string Type)
+        {
+            if (StudentId == null)
+            {
+                return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
+            }
+            var students = studentsServices.GetAllReport(StudyYearId, (Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            var model = students.Where(x => x.Id == StudentId).FirstOrDefault().PaidDetails.Where(x=>x.Paided== Type).ToList();
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getAttendanceDetails(Guid StudentId, Guid StudyYearId, bool Type)
+        {
+            if (StudentId == null)
+            {
+                return Json(new SelectList(""), JsonRequestBehavior.AllowGet);
+            }
+            var students = studentsServices.GetAllReport(StudyYearId, (Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            var model = students.Where(x => x.Id == StudentId).FirstOrDefault().AttendanceDetails.Where(x => x.IsAttend == Type).ToList();
+
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         List<ListItem> Genders()
@@ -439,7 +531,7 @@ namespace NurseryProject.Controllers
                     {
                         Student student = new Student();
                         student.Id = Guid.NewGuid();
-                        if (model.Rows[i][0].ToString() == ""|| model.Rows[i][0].ToString() == null)
+                        if (model.Rows[i][0].ToString() == "" || model.Rows[i][0].ToString() == null)
                             student.Code = randomCode.GenerateStudentCodeRandom();
                         else if (studentsServices.CodeExist(model.Rows[i][0].ToString()))
                             student.Code = randomCode.GenerateStudentCodeRandom();
@@ -449,18 +541,18 @@ namespace NurseryProject.Controllers
                         student.Name = model.Rows[i][1].ToString();
                         student.Phone = model.Rows[i][2].ToString();
                         student.Address = model.Rows[i][3].ToString();
-                        student.BirthDate = DateTime.Parse(model.Rows[i][4].ToString()).Date;
+                        student.BirthDate = model.Rows[i][4].ToString();
                         if (model.Rows[i][5].ToString() == "ذكر")
                             student.GenderId = (int)Gender.ذكر;
-                        else
+                        else if (model.Rows[i][5].ToString() == "انثي")
                             student.GenderId = (int)Gender.انثي;
 
                         student.MotherName = model.Rows[i][6].ToString();
-                        student.JoiningDate = DateTime.Parse(model.Rows[i][7].ToString()).Date;
+                        student.JoiningDate = model.Rows[i][7].ToString();
                         student.Notes = model.Rows[i][8].ToString();
 
                         studentsServices.Create(student, (Guid)TempData["UserId"]);
-                        
+
                     }
                     TempData["success"] = "تم حفظ البيانات بنجاح";
                     return RedirectToAction("Index");

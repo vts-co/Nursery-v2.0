@@ -24,5 +24,19 @@
     }
 </div>
 <div class="text-center">
-        <img src="@TempData["SettingLogo"]" height="500" />
-    </div>
+    <img src="@TempData["SettingLogo"]" height="500" />
+</div>
+<div class="text-center mt-3 mb-3">
+
+    <a href="/Home/BackUpDatabase" onclick="return Check(this, '', 'هل متاكد من عمل نسخة احتياطية؟');" class="btn btn-success">BackUp</a>
+    @*@using (Html.BeginForm("DeleteAllFromDatabase", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="file" id="upload" name="upload" f="/Pages/PagesExcel.xlsx" hidden />
+        <button type="submit" class="btn btn-danger">Delete All</button>
+    }*@
+</div>
+@section Scripts{
+    <script>
+        console.log($("#upload").prop("files")[0])
+    </script>
+}

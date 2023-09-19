@@ -37,13 +37,14 @@ namespace NurseryProject.Models
         public string Code { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
+        public string BirthDate { get; set; }
         public string Qualification { get; set; }
         public Nullable<int> GenderId { get; set; }
         public Nullable<int> MaritalStateId { get; set; }
+        public Nullable<System.Guid> RegistrationTypeId { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-        public Nullable<System.DateTime> JoiningDate { get; set; }
+        public string JoiningDate { get; set; }
         public Nullable<double> WorkDayCost { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
@@ -60,6 +61,7 @@ namespace NurseryProject.Models
         public virtual ICollection<ClassesLeader> ClassesLeaders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeClass> EmployeeClasses { get; set; }
+        public virtual EmployeeRegistrationType EmployeeRegistrationType { get; set; }
         public virtual Jop Jop { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeesDelay> EmployeesDelays { get; set; }

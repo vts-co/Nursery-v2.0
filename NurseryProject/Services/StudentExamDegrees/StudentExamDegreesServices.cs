@@ -20,6 +20,7 @@ namespace NurseryProject.Services.StudentExamDegrees
                     Id = x.Id,
                     StudyPlaceId = x.Class.StudyPlaceId.Value,
                     StudyPlaceName = x.Class.StudyPlace.Name,
+                    
                     StudyTypeId = x.Class.Level.StudyTypeId.Value,
                     StudyTypeName = x.Class.Level.StudyType.Name,
                     LevelId = x.Class.LevelId.Value,
@@ -41,6 +42,64 @@ namespace NurseryProject.Services.StudentExamDegrees
                         Date = y.Date.Value.ToString(),
 
                     }).ToList()
+                }).ToList();
+
+                foreach (var item in model)
+                {
+                    if (item.Students.Count() > 1)
+                    {
+                        var student = item.Students[0].StudentId;
+                        var count = item.Students.Count();
+                        for (int i = 1; i < count; i++)
+                        {
+                            if (item.Students[i].StudentId == student)
+                            {
+                                item.Students.Remove(item.Students[i]);
+                                i--;
+                                count -= 1;
+                            }
+                            else
+                            {
+                                student = item.Students[i].StudentId;
+                            }
+                        }
+
+                    }
+                    item.Count = item.Students.Count().ToString();
+                }
+                return model;
+            }
+        }
+
+
+        public List<StudentExamDegreesDto> GetAll2(Guid UserId, Guid EmployeeId, Role RoleId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.StudentsExamDegrees.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.ClassExam.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.ClassExam.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentExamDegreesDto
+                {
+                    Id = x.Id,
+                    StudyPlaceId = x.ClassExam.Class.StudyPlaceId.Value,
+                    StudyPlaceName = x.ClassExam.Class.StudyPlace.Name,
+                    StudentPhone=x.Student.Phone,
+                    
+                    StudyTypeId = x.ClassExam.Class.Level.StudyTypeId.Value,
+                    StudyTypeName = x.ClassExam.Class.Level.StudyType.Name,
+                    LevelId = x.ClassExam.Class.LevelId.Value,
+                    LevelName = x.ClassExam.Class.Level.Name,
+                    ClassId = x.ClassExam.ClassId.Value,
+                    ClassName = x.ClassExam.Class.Name,
+                    ExamId = x.ClassExam.ExamId.Value,
+                    ExamName = x.ClassExam.Exam.IsOneQuestion == true ? x.ClassExam.Exam.Subject.Name + "/" + x.ClassExam.Exam.ExamsType.Name + "/" + "سؤال" + "/" + x.ClassExam.Exam.TotalDegree : x.ClassExam.Exam.Subject.Name + "/" + x.ClassExam.Exam.ExamsType.Name + "/" + "عدة اسئلة" + "/" + x.ClassExam.Exam.TotalDegree,
+                    ExamDegree = x.ClassExam.Exam.TotalDegree.ToString(),
+                    IsOneQuestion = x.ClassExam.Exam.IsOneQuestion.Value,
+                    Code = x.Student.Code,
+                    StudentId = x.StudentId.Value,
+                    StudentName = x.Student.Name,
+                    TotalDegree=x.Degree.ToString(),
+                    
+                    Date = x.Date.Value.ToString(),
+                    
                 }).ToList();
 
                 foreach (var item in model)

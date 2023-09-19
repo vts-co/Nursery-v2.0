@@ -14,7 +14,7 @@ namespace NurseryProject.Services.BuildingSupervisors
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false && (x.CreatedBy== UserId || RoleId== Role.SystemAdmin || x.EmployeeId== EmployeeId)).OrderBy(x => x.CreatedOn).Select(x => new BuildingSupervisorsDto
+                var model = dbContext.BuildingSupervisors.Where(x => x.IsDeleted == false && !x.Employee.EmployeesVacations.Any(y => !y.IsDeleted && y.DateFrom <= DateTime.Now && y.DateTo <= DateTime.Now) && (x.CreatedBy== UserId || RoleId== Role.SystemAdmin || x.EmployeeId== EmployeeId)).OrderBy(x => x.CreatedOn).Select(x => new BuildingSupervisorsDto
                 {
                     Id = x.Id,
                     StudyPlaceId = x.StudyPlaceId != null ? x.StudyPlaceId.Value : Guid.Empty,
