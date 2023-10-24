@@ -56,18 +56,19 @@ namespace NurseryProject.Services.StudentsClass
                     Notes = x.Notes
 
                 }).ToList();
-                var total = 0.0;
                 foreach (var item in model)
                 {
+                    var total = 0.0;
+
                     if (item.IsAnother)
                     {
                         if (item.SubscriptionMethod.Where(y => y.IsPaid == true).Count() > 0)
                         {
-                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
+                            total = float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
                         }
                         if (item.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
                         {
-                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                            total = float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
                         }
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
