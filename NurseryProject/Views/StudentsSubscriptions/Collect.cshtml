@@ -85,7 +85,7 @@
                 <div class="form-group mb-3 col-sm-4">
                     @Html.Label("المبلغ المتبقي : ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.Editor("Total2", new { htmlAttributes = new { @class = "form-control bg-soft-success", @disabled = "true" } })
+                        @Html.Editor("Total2", new { htmlAttributes = new { @class = "form-control bg-soft-danger", @disabled = "true" } })
                     </div>
                 </div>
                 @*@if (Model.IsAnother==true)
@@ -284,11 +284,11 @@
             var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
             var j = i + 1;
             var Date3 = "";
-            if (num < j) {
+            if (num > j) {
                 Date3 = document.getElementById("SubscriptionMethod[" + j + "].Date").value;
             }
             else {
-                Date3 ="تم انتهاء الاقساط"
+                Date3 = "تم انتهاء الاقساط"
             }
             if (Amount1 == Amount) {
                 $.get('/StudentsSubscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
@@ -298,20 +298,47 @@
                             //Reset the page's HTML with div's HTML only
                             var d = $("#StudentName").val().split("|");
                             var da = new Date(Date1);
+                            var dd = "AM";
+                            var year = da.getFullYear();
+                            var mon = da.getMonth() + 1;
+                            var day = da.getDate();
+                            var h = da.getHours();
+                            var m = da.getMinutes();
+                            var s = da.getSeconds();
+                            if (h >= 12) {
+                                h = h - 12;
+                                dd = "PM";
+                            }
+                            if (h == 0) {
+                                h = 12;
+                            }
+                            h = h < 10 ? "0" + h : h;
+                            m = m < 10 ? "0" + m : m;
+                            s = s < 10 ? "0" + s : s;
+
+                            var pattern = h + ":" + m + " " + dd;
 
                             document.body.innerHTML =
-                                "<div size='A6'>" + data.ReportHeader + "<hr>" +
-                                "<div class='row'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "</div><div class='col-12 mb-2'>اسم الطالب : " + d[1] + "</div>" +
-                                "<div class='col-12 mb-2'>تاريخ القسط : " + Date2 + "</div>" + "<div class='col-12 mb-2'>قيمة القسط : " + Amount1 + " جنيه</div>" +
-                                "<div class='col-12 mb-2'> قيمة المدفوع : " + Amount + " جنيه</div>" +
-                                " <div class='col-12 mb-2'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + " | " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
-                                "<div class='col-12 mb-2'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
-                                " <div class='col-12 mb-2'> تاريخ القسط القادم : " + Date3 + "  </div>" +
+                                "<div style='border-style:solid;border-width:1px'><div size='A6' style='background-color:#fadfad'  class='row text-center'><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.Title + "</div><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.ReportHeader + "</div><div class='col-2 col-lg-2 col-md-2 mb-2'>تاريخ الدفع : <br/>" + year + " -  " + String(parseInt(mon)).padStart(2, '0') + " -  " + String(parseInt(day)).padStart(2, '0') + "</div> <div class='col-2 col-lg-2 col-md-2 mb-2'> وقت الحركة : " + pattern + "</div></div>" +
+                                "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>اسم الطالب : " + d[1] + "</div>" +
+                                "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>الصف : " + document.getElementById('LevelName').value + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>الفصل : " + document.getElementById('ClassName').value + "</div>" +
 
-                                "<div class='col-12 mb-2'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>تاريخ القسط : " + Date2 + "</div>" +
+                                " <div class='col-6 mb-2'> تاريخ القسط التالي : " + Date3 + "  </div>" +
 
-                                "</div>"
-                                + "<hr>" + data.ReportFooter + "</div>";
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالارقام : " + Amount1 + " جنيه</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالحروف : " + Amount1 + " جنيه</div>" +
+
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالارقام : " + Amount + " جنيه</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيه</div>" +
+
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالارقام : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+
+                                "<hr><div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>ملاحظة : " + document.getElementById('Notes').value + "</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>"
+
+                                + "<hr>" + data.ReportFooter + "</div></div>";
 
                             //Print Page
                             window.print();
@@ -370,18 +397,50 @@
                         var d = $("#StudentName").val().split("|");
                         var da = new Date(Date1);
 
+                        var dd = "AM";
+                        var year = da.getFullYear();
+                        var mon = da.getMonth() + 1;
+                        var day = da.getDate();
+                        var h = da.getHours();
+                        var m = da.getMinutes();
+                        var s = da.getSeconds();
+                        if (h >= 12) {
+                            h = h - 12;
+                            dd = "PM";
+                        }
+                        if (h == 0) {
+                            h = 12;
+                        }
+                        h = h < 10 ? "0" + h : h;
+                        m = m < 10 ? "0" + m : m;
+                        s = s < 10 ? "0" + s : s;
+
+                        var pattern = h + ":" + m + " " + dd;
+
                         document.body.innerHTML =
-                            "<div size='A6'>" + data.ReportHeader + "<hr>" +
-                            "<div class='row'>" + "<div class='col-12'>كود الطالب : " + $("#Code").val() + "<div class='col-12 mb-2'>اسم الطالب : " + d[1] + "</div>" +
-                            "<div class='col-12 mb-2'>تاريخ القسط : " + Date2 + "</div><div class='col-12 mb-2'>قيمة القسط : " + Amount1 + " جنيه</div>" +
-                            "<div class='col-12 mb-2'> قيمة المدفوع : " + Amount + " جنيه</div> <div class='col-12 mb-2'> تاريخ الدفع : " + da.getFullYear() + " -  " + (da.getMonth() + 1) + " -  " + da.getDate() + " | " + da.getHours() + ":" + da.getMinutes() + "  </div>" +
-                            "<div class='col-12 mb-2'>قيمة المتبقي : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
-                            " <div class='col-12 mb-2'> تاريخ القسط القادم : " + Date3 + "  </div>" +
+                            "<div style='border-style:solid;border-width:1px'><div size='A6' style='background-color:#fadfad'  class='row text-center'><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.Title + "</div><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.ReportHeader + "</div><div class='col-2 col-lg-2 col-md-2 mb-2'>تاريخ الدفع : <br/>" + year + " -  " + String(parseInt(mon)).padStart(2, '0') + " -  " + String(parseInt(day)).padStart(2, '0') + "</div> <div class='col-2 col-lg-2 col-md-2 mb-2'> وقت الحركة : " + pattern + "</div></div>" +
 
-                            "<div class='col-12 mb-2'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>" +
+                            "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>اسم الطالب : " + d[1] + "</div>" +
 
-                            "</div>"
-                            + "<hr>" + data.ReportFooter + "</div>";
+                            "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>الصف : " + document.getElementById('LevelName').value + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>الفصل : " + document.getElementById('ClassName').value + "</div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>تاريخ القسط : " + Date2 + "</div>" +
+                            " <div class='col-6 col-lg-6 col-md-6 mb-2'> تاريخ القسط التالي : " + Date3 + "  </div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالارقام : " + Amount1 + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة القسط بالحروف : " + Amount1 + " جنيه</div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالارقام : " + Amount + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيه</div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالارقام : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+
+
+                            "<hr><div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>ملاحظة : " + document.getElementById('Notes').value + "</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>"
+
+                            + "<hr>" + data.ReportFooter + "</div></div>";
 
                         //Print Page
                         window.print();
@@ -403,7 +462,7 @@
                 if (data != "Faild")
                     savedSL('/StudentsSubscriptions/Collect/' + $("#Id").val());
                 else {
-                    savedF("لم يتم دفع القسط المسبق بعد")
+                    savedF("تم دفع جزء من القسط وليس مبلغ القسط كاملا لا يمكن حذفه")
                 }
             });
 

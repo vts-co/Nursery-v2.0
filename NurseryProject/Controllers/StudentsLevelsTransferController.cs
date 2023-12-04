@@ -166,6 +166,12 @@ namespace NurseryProject.Controllers
             }
         }
 
+        public FileResult DownloadExcel()
+        {
+            string path = "/Uploads/Excel/StudentsLevelsTransferFormat.xlsx";
+            return File(path, "application/vnd.ms-excel", "StudentsLevelsTransferFormat.xlsx");
+        }
+
         #region Import MCQ Question Excel
 
         public ActionResult ImportExcel(HttpPostedFileBase upload, StudentsClassDto Class)

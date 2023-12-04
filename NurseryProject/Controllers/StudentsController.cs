@@ -235,7 +235,11 @@ namespace NurseryProject.Controllers
                 return RedirectToAction("Index");
             }
         }
-
+        public FileResult DownloadExcel()
+        {
+            string path = "/Uploads/Excel/StudentsFormat.xlsx";
+            return File(path, "application/vnd.ms-excel", "StudentsFormat.xlsx");
+        }
         public ActionResult getLevels(Guid Id)
         {
             var model = levelsServices.GetAll().Where(x => x.StudyTypeId == Id).Select(x => new { x.Id, x.Name }).ToList();

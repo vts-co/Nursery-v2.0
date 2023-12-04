@@ -47,9 +47,22 @@ namespace NurseryProject.Services.Students
                 foreach (var item in model)
                 {
                     if (item.BirthDate != null && item.BirthDate.Trim() != "")
-                        item.BirthDate = DateTime.Parse(item.BirthDate).ToString("yyyy-MM-dd");
-                    if (item.JoiningDate != null && item.JoiningDate != string.Empty && item.JoiningDate != "")
-                        item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
+                    {
+                        var date = DateTime.Now;
+                        if (DateTime.TryParse(item.BirthDate, out date))
+                        {
+                            item.BirthDate = DateTime.Parse(item.BirthDate).ToString("yyyy-MM-dd");
+                        }
+                    }
+                    if (item.JoiningDate != null && item.JoiningDate.Trim() != "")
+                    {
+                        var date = DateTime.Now;
+                        if (DateTime.TryParse(item.JoiningDate, out date))
+                        {
+                            item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
+                        }
+                    }
+                   
                 }
                 return model;
             }
@@ -70,7 +83,7 @@ namespace NurseryProject.Services.Students
                     CountOfPart = "",
                     CountOfPaidNoTime = "",
                     StudentClassId = x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Id).FirstOrDefault(),
-                    LevelId= (Guid)x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Class.LevelId).FirstOrDefault(),
+                    LevelId = (Guid)x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Class.LevelId).FirstOrDefault(),
                     ClassId = (Guid)x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.ClassId).FirstOrDefault(),
                     ClassName = x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Class.Name).FirstOrDefault(),
                     AttendanceNum = x.StudentsAttendances.Where(c => c.IsDeleted == false && c.IsAttend == true).ToList().Count().ToString(),

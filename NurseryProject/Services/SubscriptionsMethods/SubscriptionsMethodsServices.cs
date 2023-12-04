@@ -80,7 +80,11 @@ namespace NurseryProject.Services.SubscriptionsMethods
             using (var dbContext = new almohandes_DbEntities())
             {
                 var model = dbContext.SubscriptionMethods.Find(Id);
-                model.PaidAmount = null;
+                if (float.Parse(model.PaidAmount)< float.Parse(model.Amount))
+                {
+                    return false;
+                }
+                    model.PaidAmount = null;
                 model.PaidDate = null;
                 model.IsPaid = false;
 
