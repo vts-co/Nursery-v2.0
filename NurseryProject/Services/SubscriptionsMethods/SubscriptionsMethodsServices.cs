@@ -53,15 +53,17 @@ namespace NurseryProject.Services.SubscriptionsMethods
                     model.ModifiedBy = UserId;
                     dbContext.SaveChanges();
 
-                    var Revenue = new Revenue {
+                    var Revenue = new Revenue
+                    {
                         Id = Guid.NewGuid(),
                         StudyYearId = model.StudentsClass.StudyYearId,
                         StudyPlaceId = model.StudentsClass.Class.StudyPlaceId,
                         RevenueTypeId = Guid.Parse("0F54C94D-B010-4360-8EB1-B93E05615065"),
-                        RevenueValue = Amount, RevenueDate = model.PaidDate,
+                        RevenueValue = Amount,
+                        RevenueDate = model.PaidDate,
                         Notes = "تحصيل اشتراك الطالب " + model.StudentsClass.Student.Name,
                         EmployeeId = null,
-                        SubscriptionMethodId= Id
+                        SubscriptionMethodId = Id
                     };
                     revenuesServices.Create(Revenue, UserId);
 
@@ -75,16 +77,17 @@ namespace NurseryProject.Services.SubscriptionsMethods
             }
         }
 
-        public bool Cancel(Guid Id,Guid UserId)
+        public bool Cancel(Guid Id, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
                 var model = dbContext.SubscriptionMethods.Find(Id);
-                if (float.Parse(model.PaidAmount)< float.Parse(model.Amount))
-                {
-                    return false;
-                }
-                    model.PaidAmount = null;
+                //if (float.Parse(model.PaidAmount) < float.Parse(model.Amount))
+                //{
+                //    return false;
+                //}
+                model.Amount = model.PaidAmount;
+                model.PaidAmount = null;
                 model.PaidDate = null;
                 model.IsPaid = false;
 
@@ -92,11 +95,11 @@ namespace NurseryProject.Services.SubscriptionsMethods
                 model.ModifiedBy = UserId;
                 dbContext.SaveChanges();
 
-                var rev = revenuesServices.GetAll().Where(x=>x.SubscriptionMethodId==Id).FirstOrDefault();
+                var rev = revenuesServices.GetAll().Where(x => x.SubscriptionMethodId == Id).FirstOrDefault();
                 revenuesServices.Delete(rev.Id, UserId);
 
                 return true;
-                
+
             }
         }
 
