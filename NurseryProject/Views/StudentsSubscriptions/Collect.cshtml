@@ -273,6 +273,52 @@
             $("#SubscriptionDiv2").append('<hr>');
 
         });
+
+        function triConvert(num) {
+            var ones = new Array('', ' واحد', ' اثنان', ' ثلاثة', ' اربعة', ' خمسة', ' ستة', ' سبعة', ' ثمانية', ' تسعة', ' عشرة', ' احد عشر', ' اثني عشر', ' ثلاثة عشر', ' اربعة عشر', ' خمسة عشر', ' ستة عشر', ' سبعة عشر', ' ثمانية عشر', ' تسعة عشر');
+            var tens = new Array('', '', ' عشرون', ' ثلاثون', ' اربعون', ' خمسون', ' ستون', ' سبعون', ' ثمانون', ' تسعون');
+
+            var hundred = ' مئة';
+
+            var output = '';
+            var numString = num.toString();
+
+            if (num == 0) {
+                return 'صفر';
+            }
+            //the case of 10, 11, 12 ,13, .... 19
+            if (num < 20) {
+                output = ones[parseInt(numString)];
+                return output;
+            }
+
+            //100 and more
+            if (numString.length == 3) {
+                output = hundred;
+                if (parseInt(numString.charAt(1)) >= 2) {
+                    if (ones[parseInt(numString.charAt(0))] != '') {
+                        output += " و " + ones[parseInt(numString.charAt(0))];
+                    }
+                    if (tens[parseInt(numString.charAt(1))] != '') {
+                        output += " و " + tens[parseInt(numString.charAt(1))];
+                    }
+                }
+                else {
+                    if (ones[parseInt(numString)] != '') {
+                        output += " و " + ones[parseInt(numString.charAt(0))];
+                    }
+                }
+                output += tens[parseInt(numString.charAt(1))];
+                return output;
+            }
+            
+            output += tens[parseInt(numString.charAt(0))] + " و ";
+            output += ones[parseInt(numString.charAt(1))];
+
+            return output;
+        }
+
+
         function Collect(i, num) {
             var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
 
@@ -327,13 +373,13 @@
                                 " <div class='col-6 mb-2'> تاريخ القسط التالي : " + Date3 + "  </div>" +
 
                                 "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالارقام : " + Amount1 + " جنيه</div>" +
-                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالحروف : " + Amount1 + " جنيه</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالحروف : " + triConvert(Amount1) + " جنيها</div>" +
 
                                 "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالارقام : " + Amount + " جنيه</div>" +
-                                "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيه</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيها</div>" +
 
                                 "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالارقام : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
-                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                                "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيها</div>" +
 
                                 "<hr><div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>ملاحظة : " + document.getElementById('Notes').value + "</div>" +
                                 "<div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>"
@@ -428,13 +474,13 @@
                             " <div class='col-6 col-lg-6 col-md-6 mb-2'> تاريخ القسط التالي : " + Date3 + "  </div>" +
 
                             "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالارقام : " + Amount1 + " جنيه</div>" +
-                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة القسط بالحروف : " + Amount1 + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة القسط بالحروف : " + triConvert(Amount1) + " جنيها</div>" +
 
                             "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالارقام : " + Amount + " جنيه</div>" +
-                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيها</div>" +
 
                             "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالارقام : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
-                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيها</div>" +
 
 
                             "<hr><div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>ملاحظة : " + document.getElementById('Notes').value + "</div>" +
@@ -466,6 +512,8 @@
                 }
             });
 
+
+            //simple function to convert from numbers to words from 1 to 999
         };
 
     </script>
