@@ -32,8 +32,12 @@ namespace NurseryProject.Services.WorkShifts
                 {
                     foreach (var item2 in item.ShiftTimes)
                     {
-                        item2.TimeFrom = DateTime.Parse(item2.TimeFrom).ToString("hh:mm tt");
-                        item2.TimeTo = DateTime.Parse(item2.TimeTo).ToString("hh:mm tt");
+                        if(item2!=null)
+                        {
+                            item2.TimeFrom = DateTime.Parse(item2.TimeFrom).ToString("hh:mm tt");
+                            item2.TimeTo = DateTime.Parse(item2.TimeTo).ToString("hh:mm tt");
+                        }
+                       
                     }
                 }
                 return model;

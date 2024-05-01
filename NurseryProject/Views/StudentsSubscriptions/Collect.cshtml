@@ -104,14 +104,14 @@
                     </div>
                 }
                 @*@if (Model.IsAnother==true)
-        {
-            <div class="form-group mb-3 col-sm-3">
-                @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
-                <div class="col-12">
-                    @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
-                </div>
-            </div>
-        }*@
+                    {
+                        <div class="form-group mb-3 col-sm-3">
+                            @Html.Label("أخري", htmlAttributes: new { @class = "control-label" })
+                            <div class="col-12">
+                                @Html.CheckBoxFor(model => model.IsAnother, new { @class = "form-check-input", @disabled = "true" })
+                            </div>
+                        </div>
+                    }*@
 
             </div>
             @Html.HiddenFor(model => model.Code)
@@ -244,6 +244,7 @@
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ الدفع </label><div class="col-12"><input class="form-control" value="' + value["PaidDate"] + '" id="SubscriptionMethod[' + i + '].PaidDate" name="SubscriptionMethod[' + i + '].PaidDate" disabled = "true" type="datetime-local" /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mt-4 p-2 mb-3 col-sm-1 rounded-4 text-white bg-warning text-center"><i class="fa fa-check p-1"></i>تم الدفع <div class="col-12"><input class="form-check-input" id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid" readonly checked hidden  type="checkbox" /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid"  onclick="Cancel(' + i + ',' + data.Num + ')" type="button" >إلغاء الدفع</button></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].RePrint" name="SubscriptionMethod[' + i + '].RePrint"  onclick="RePrint(' + i + ',' + data.Num + ')" type="button" >اعادة طباعة </button></div></div>');
 
                         total += parseFloat(value["PaidAmount"]);
                     }
@@ -273,6 +274,7 @@
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ الدفع </label><div class="col-12"><input class="form-control" value="' + value["PaidDate"] + '" id="SubscriptionMethod[' + i + '].PaidDate" name="SubscriptionMethod[' + i + '].PaidDate" disabled = "true" type="datetime-local" /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-2 mb-3 col-sm-1 rounded-4 text-white bg-warning text-center"><i class="fa fa-check p-1"></i>تم الدفع <div class="col-12"><input class="form-check-input"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid" readonly checked hidden  type="checkbox" /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid"  onclick="Cancel(' + i + ',' + data.Num + ')" type="button" >إلغاء الدفع</button></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].RePrint" name="SubscriptionMethod[' + i + '].RePrint"  onclick="RePrint(' + i + ',' + data.Num + ')" type="button" >اعادة طباعة </button></div></div>');
 
                         total += parseFloat(value["PaidAmount"]);
 
@@ -326,7 +328,7 @@
                 output += tens[parseInt(numString.charAt(1))];
                 return output;
             }
-            
+
             output += tens[parseInt(numString.charAt(0))] + " و ";
             output += ones[parseInt(numString.charAt(1))];
 
@@ -514,6 +516,80 @@
                     savedF("لم يتم دفع القسط المسبق بعد")
                 }
             });
+        };
+        function RePrint(i, num) {
+            var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
+
+            var Amount = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value);
+
+            var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
+
+            var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value);
+            var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
+            var j = i + 1;
+            var Date3 = "";
+            if (num > j) {
+                Date3 = document.getElementById("SubscriptionMethod[" + j + "].Date").value;
+            }
+            else {
+                Date3 = "تم انتهاء الاقساط"
+            }
+
+            $.get('/Subscriptions/getReportDesign', function (data) {
+                var old = document.body.innerHTML;
+                //Reset the page's HTML with div's HTML only
+                var d = $("#StudentName").val().split("|");
+                var da = new Date(Date1);
+                var dd = "AM";
+                var year = da.getFullYear();
+                var mon = da.getMonth() + 1;
+                var day = da.getDate();
+                var h = da.getHours();
+                var m = da.getMinutes();
+                var s = da.getSeconds();
+                if (h >= 12) {
+                    h = h - 12;
+                    dd = "PM";
+                }
+                if (h == 0) {
+                    h = 12;
+                }
+                h = h < 10 ? "0" + h : h;
+                m = m < 10 ? "0" + m : m;
+                s = s < 10 ? "0" + s : s;
+
+                var pattern = h + ":" + m + " " + dd;
+
+                document.body.innerHTML =
+                    "<div style='border-style:solid;border-width:1px'><div size='A6' style='background-color:#fadfad'  class='row text-center'><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.Title + "</div><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.ReportHeader + "</div><div class='col-2 col-lg-2 col-md-2 mb-2'>تاريخ الدفع : <br/>" + year + " -  " + String(parseInt(mon)).padStart(2, '0') + " -  " + String(parseInt(day)).padStart(2, '0') + "</div> <div class='col-2 col-lg-2 col-md-2 mb-2'> وقت الحركة : " + pattern + "</div></div>" +
+                    "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>اسم الطالب : " + d[1] + "</div>" +
+                    "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>الصف : " + document.getElementById('LevelName').value + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>الفصل : " + document.getElementById('ClassName').value + "</div>" +
+
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'>تاريخ القسط : " + Date2 + "</div>" +
+                    " <div class='col-6 mb-2'> تاريخ القسط التالي : " + Date3 + "  </div>" +
+
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالارقام : " + Amount1 + " جنيه</div>" +
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالحروف : " + triConvert(Amount1) + " جنيها</div>" +
+
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالارقام : " + Amount + " جنيه</div>" +
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيها</div>" +
+
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالارقام : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيها</div>" +
+
+                    "<hr><div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>ملاحظة : " + document.getElementById('Notes').value + "</div>" +
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>"
+
+                    + "<hr>" + data.ReportFooter + "</div></div>";
+
+                //Print Page
+                window.print();
+                document.body.innerHTML = old;
+                savedSL('/StudentsSubscriptions/Collect/' + $("#Id").val());
+
+            });
+
+
         };
 
         function Cancel(i, num) {

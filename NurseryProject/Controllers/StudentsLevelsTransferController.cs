@@ -102,10 +102,10 @@ namespace NurseryProject.Controllers
 
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name", level.StudyTypeId);
 
-            var StudyYear = studyYearsServices.GetAll().Where(x => x.DisplayOrder > studyYear1.DisplayOrder).ToList();
+            var StudyYear = studyYearsServices.GetAll().Where(x => x.Id != studyYear1.Id).ToList();
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
 
-            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.DisplayOrder > level.DisplayOrder && x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name");
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll().Where(x => x.Id != level.Id && x.StudyTypeId == level.StudyTypeId).ToList(), "Id", "Name");
             ViewBag.ClassId = new SelectList("");
 
             var Students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);

@@ -91,6 +91,30 @@ namespace NurseryProject.Services.EmployeesAttendance
                     All = "",
                     Attend = ""
                 }).FirstOrDefault();
+
+                if (model != null)
+                {
+                    var emp = dbContext.EmployeeClasses.Where(y => !y.IsDeleted && y.EmployeeId == model.EmployeeId).FirstOrDefault();
+                    if (emp != null)
+                    {
+                        var class1 = dbContext.Classes.Where(y => !y.IsDeleted && y.Id == emp.ClassId).FirstOrDefault();
+                        model.StudyPlaceId = (Guid)class1.StudyPlaceId;
+                        model.StudyPlaceName = class1.StudyPlace.Name;
+                    }
+                    var emp2 = dbContext.BuildingSupervisors.Where(y => !y.IsDeleted && y.EmployeeId == model.EmployeeId).FirstOrDefault();
+                    if (emp2 != null)
+                    {
+                        model.StudyPlaceId = (Guid)emp2.StudyPlaceId;
+                        model.StudyPlaceName = emp2.StudyPlace.Name;
+                    }
+                    var emp3 = dbContext.ClassesLeaders.Where(y => !y.IsDeleted && y.EmployeeId == model.EmployeeId).FirstOrDefault();
+                    if (emp3 != null)
+                    {
+                        var class1 = dbContext.Classes.Where(y => !y.IsDeleted && y.Id == emp3.ClassId).FirstOrDefault();
+                        model.StudyPlaceId = (Guid)class1.StudyPlaceId;
+                        model.StudyPlaceName = class1.StudyPlace.Name;
+                    }
+                }
                 return model;
             }
         }
@@ -104,12 +128,12 @@ namespace NurseryProject.Services.EmployeesAttendance
                     EmployeeWorkShiftId = x.EmployeeWorkShiftId.Value,
                     StudyYearId = x.EmployeesWorkShift.StudyYearId.Value,
                     StudyYearName = x.EmployeesWorkShift.StudyYear.Name,
-                    
+
                     DepartmentId = x.EmployeesWorkShift.Employee.Jop.DepartmentId.Value,
                     DepartmentName = x.EmployeesWorkShift.Employee.Jop.Department.Name,
                     EmployeeId = x.EmployeesWorkShift.Employee.Id,
                     EmployeeName = x.EmployeesWorkShift.Employee.Name,
-                    EmployeePhone=x.EmployeesWorkShift.Employee.Phone,
+                    EmployeePhone = x.EmployeesWorkShift.Employee.Phone,
                     WorkShiftId = x.EmployeesWorkShift.WorkShift.Id,
                     WorkShiftName = x.EmployeesWorkShift.WorkShift.Name,
                     IsAttend = x.IsAttend.Value,
@@ -125,7 +149,7 @@ namespace NurseryProject.Services.EmployeesAttendance
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Models.EmployeesAttendance>();
-                
+
                 foreach (var item in emp)
                 {
                     var Oldmodel = dbContext.EmployeesAttendances.Where(x => x.IsDeleted == false && x.EmployeeWorkShiftId == item.Id && x.Date == model.Date).OrderBy(x => x.CreatedOn).FirstOrDefault();
@@ -136,7 +160,7 @@ namespace NurseryProject.Services.EmployeesAttendance
                         return result;
                     }
                 }
-               
+
                 foreach (var item in emp)
                 {
                     Models.EmployeesAttendance employeesWorkShiftAttendance = new Models.EmployeesAttendance();
