@@ -229,8 +229,8 @@
 
                 $.each(data.result, function (key, value) {
 
-                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" disabled = "true" required /></div></div>');
-                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date"  disabled = "true" required /></div></div>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" disabled = "true" required /></div></div>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date"  disabled = "true" required /></div></div>');
                     if (value["IsPaid"] == false) {
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + value["Amount"] + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount" /></div></div>');
@@ -239,12 +239,12 @@
                         total2 += parseFloat(value["Amount"]);
                     }
                     else {
-                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + value["PaidAmount"] + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount" disabled = "true" required /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ الدفع </label><div class="col-12"><input class="form-control" value="' + value["PaidDate"] + '" id="SubscriptionMethod[' + i + '].PaidDate" name="SubscriptionMethod[' + i + '].PaidDate" disabled = "true" type="datetime-local" /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mt-4 p-2 mb-3 col-sm-1 rounded-4 text-white bg-warning text-center"><i class="fa fa-check p-1"></i>تم الدفع <div class="col-12"><input class="form-check-input" id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid" readonly checked hidden  type="checkbox" /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid"  onclick="Cancel(' + i + ',' + data.Num + ')" type="button" >إلغاء الدفع</button></div></div>');
-                        $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].RePrint" name="SubscriptionMethod[' + i + '].RePrint"  onclick="RePrint(' + i + ',' + data.Num + ')" type="button" >اعادة طباعة </button></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success"  id="SubscriptionMethod[' + i + '].RePrint" name="SubscriptionMethod[' + i + '].RePrint"  onclick="RePrint(' + i + ',' + data.Num + ')" type="button" ><i class="fa fa-print p-1"> اعادة طباعة </button></div></div>');
 
                         total += parseFloat(value["PaidAmount"]);
                     }
@@ -269,12 +269,12 @@
 
                     }
                     else {
-                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-2" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + value["PaidAmount"] + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount" disabled = "true" required /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ الدفع </label><div class="col-12"><input class="form-control" value="' + value["PaidDate"] + '" id="SubscriptionMethod[' + i + '].PaidDate" name="SubscriptionMethod[' + i + '].PaidDate" disabled = "true" type="datetime-local" /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-2 mb-3 col-sm-1 rounded-4 text-white bg-warning text-center"><i class="fa fa-check p-1"></i>تم الدفع <div class="col-12"><input class="form-check-input"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid" readonly checked hidden  type="checkbox" /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].IsPaid" name="SubscriptionMethod[' + i + '].IsPaid"  onclick="Cancel(' + i + ',' + data.Num + ')" type="button" >إلغاء الدفع</button></div></div>');
-                        $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-danger"  id="SubscriptionMethod[' + i + '].RePrint" name="SubscriptionMethod[' + i + '].RePrint"  onclick="RePrint(' + i + ',' + data.Num + ')" type="button" >اعادة طباعة </button></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success"  id="SubscriptionMethod[' + i + '].RePrint" name="SubscriptionMethod[' + i + '].RePrint"  onclick="RePrint(' + i + ',' + data.Num + ')" type="button" ><i class="fa fa-print p-1"> اعادة طباعة </button></div></div>');
 
                         total += parseFloat(value["PaidAmount"]);
 
@@ -294,8 +294,10 @@
         function triConvert(num) {
             var ones = new Array('', ' واحد', ' اثنان', ' ثلاثة', ' اربعة', ' خمسة', ' ستة', ' سبعة', ' ثمانية', ' تسعة', ' عشرة', ' احد عشر', ' اثني عشر', ' ثلاثة عشر', ' اربعة عشر', ' خمسة عشر', ' ستة عشر', ' سبعة عشر', ' ثمانية عشر', ' تسعة عشر');
             var tens = new Array('', '', ' عشرون', ' ثلاثون', ' اربعون', ' خمسون', ' ستون', ' سبعون', ' ثمانون', ' تسعون');
+            var hund = new Array('', ' مئة', ' مئتين', ' ثلاث مئة', ' اربع مئة', ' خمسة مئة', ' ست مئة', ' سبع مئة', ' ثمانية مئة', ' تسع مئة');
 
             var hundred = ' مئة';
+            var thu = ' الف';
 
             var output = '';
             var numString = num.toString();
@@ -311,24 +313,37 @@
 
             //100 and more
             if (numString.length == 3) {
-                output = hundred;
-                if (parseInt(numString.charAt(1)) >= 2) {
-                    if (ones[parseInt(numString.charAt(0))] != '') {
-                        output += " و " + ones[parseInt(numString.charAt(0))];
-                    }
-                    if (tens[parseInt(numString.charAt(1))] != '') {
-                        output += " و " + tens[parseInt(numString.charAt(1))];
-                    }
+                output = hund[parseInt(numString.charAt(0))];
+
+                //if (hund[parseInt(numString.charAt(2))] != '') {
+                //    output += " و " + hund[parseInt(numString.charAt(2))];
+                //}
+                if (ones[parseInt(numString.charAt(2))] != '') {
+                    output += " و " + ones[parseInt(numString.charAt(0))];
                 }
-                else {
-                    if (ones[parseInt(numString)] != '') {
-                        output += " و " + ones[parseInt(numString.charAt(0))];
-                    }
+                if (tens[parseInt(numString.charAt(1))] != '') {
+                    output += " و " + tens[parseInt(numString.charAt(1))];
                 }
-                output += tens[parseInt(numString.charAt(1))];
+                
+                //output += tens[parseInt(numString.charAt(1))];
                 return output;
             }
+            //1000 and more
+            if (numString.length == 4) {
+                output = thu;
+                if (hund[parseInt(numString.charAt(1))] != '') {
+                    output += " و " + hund[parseInt(numString.charAt(1))];
+                }
+                if (ones[parseInt(numString.charAt(3))] != '') {
+                    output += " و " + ones[parseInt(numString.charAt(3))];
+                }
+                if (tens[parseInt(numString.charAt(2))] != '') {
+                    output += " و " + tens[parseInt(numString.charAt(2))];
+                }
 
+                //output += tens[parseInt(numString.charAt(1))];
+                return output;
+            }
             output += tens[parseInt(numString.charAt(0))] + " و ";
             output += ones[parseInt(numString.charAt(1))];
 
@@ -572,10 +587,10 @@
                     "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالحروف : " + triConvert(Amount1) + " جنيها</div>" +
 
                     "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالارقام : " + Amount + " جنيه</div>" +
-                    "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيها</div>" +
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + triConvert(Amount) + " جنيها</div>" +
 
                     "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالارقام : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
-                    "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيها</div>" +
+                    "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + triConvert(parseFloat(document.getElementById('Total2').value - Amount)) + " جنيها</div>" +
 
                     "<hr><div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>ملاحظة : " + document.getElementById('Notes').value + "</div>" +
                     "<div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>"

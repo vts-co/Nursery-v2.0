@@ -230,21 +230,28 @@ namespace NurseryProject.Controllers
             ViewBag.Students = students;
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
             ViewBag.StudyClassId = new SelectList("");
+            ViewBag.ClassId = new SelectList(classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name");
+
             return View();
         }
         [HttpPost]
         [Authorized(ScreenId = "62")]
-        public ActionResult Reports(string StudentId, string StudyYearId, string StudyClassId, string Month, string Date, string Date2, string By)
+        public ActionResult Reports(string StudentId,string ClassId, string StudyYearId, string StudyClassId, string Month, string Date, string Date2, string By)
         {
             var students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Students = students;
 
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
             ViewBag.StudyClassId = new SelectList("");
+            ViewBag.ClassId = new SelectList(classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name");
 
             var model = studentsAttendanceServices.GetAllByStudent((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             //var model2 = studentsAttendanceServices.GetAllNoAttendance();
-
+            if (ClassId != "" && ClassId != null)
+            {
+                var classId = Guid.Parse(ClassId);
+                model = model.Where(x => x.ClassId == classId).ToList();
+            }
             if (StudentId != "" && StudentId != null)
             {
                 ViewBag.student = "1";
@@ -332,7 +339,7 @@ namespace NurseryProject.Controllers
             ViewBag.StudyYearId = new SelectList(studyYearsServices.GetAll(), "Id", "Name");
             ViewBag.ClassId = new SelectList(classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Select(x => new { x.Id, Name = x.Name + " (" + x.StudyPlaceName + ")" }).ToList(), "Id", "Name");
 
-            var model = studentsAttendanceServices.GetAllByStudent((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            var model = studentsAttendanceServices.GetAllByStudent2((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             //var model2 = studentsAttendanceServices.GetAllNoAttendance();
 
             if (StudentId != "" && StudentId != null)

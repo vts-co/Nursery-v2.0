@@ -577,6 +577,19 @@ namespace NurseryProject.Services.StudentsClass
                     return result;
                 }
 
+               
+
+                var subscriptionMethod1 = dbContext.SubscriptionMethods.Where(x => x.StudentClassId == model.Id && x.IsDeleted == false).ToList();
+                if (subscriptionMethod1.Count() > 0)
+                {
+                    if (subscriptionMethod1.Any(x => x.IsPaid.Value))
+                    {
+                        result.IsSuccess = false;
+                        result.Message = "لا يمكن تعديل الاشتراك لان تم دفع اقساط منه ";
+                        return result;
+                    }
+                }
+
                 var Oldmodel = dbContext.StudentsClasses.Find(model.Id);
 
                 Oldmodel.ModifiedOn = DateTime.UtcNow;
@@ -591,22 +604,12 @@ namespace NurseryProject.Services.StudentsClass
                 Oldmodel.Student.RegistrationTypeId = RegistrationTypeId;
                 Oldmodel.IsCurrent = model.IsCurrent;
 
-                var subscriptionMethod1 = dbContext.SubscriptionMethods.Where(x => x.StudentClassId == model.Id && x.IsDeleted == false).ToList();
-                if (subscriptionMethod1.Count() > 0)
+                foreach (var item in subscriptionMethod1)
                 {
-                    if (subscriptionMethod1.Any(x => x.IsPaid.Value))
-                    {
-                        result.IsSuccess = false;
-                        result.Message = "لا يمكن تعديل الاشتراك لان تم دفع اقساط منه ";
-                        return result;
-                    }
-                    foreach (var item in subscriptionMethod1)
-                    {
-                        item.IsDeleted = true;
-                        item.DeletedBy = UserId;
-                        item.DeletedOn = DateTime.UtcNow;
-                        dbContext.SaveChanges();
-                    }
+                    item.IsDeleted = true;
+                    item.DeletedBy = UserId;
+                    item.DeletedOn = DateTime.UtcNow;
+                    dbContext.SaveChanges();
                 }
                 var i = 1;
 

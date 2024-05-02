@@ -16,7 +16,16 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="form-group mb-3 col-sm-12">
+               
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الفصل", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الطالب", htmlAttributes: new { @class = "control-label text-center mb-2" })
 
                     <div class="col-12">

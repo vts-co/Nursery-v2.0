@@ -55,7 +55,7 @@ namespace NurseryProject.Services.StudentsAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId))).OrderBy(x => x.CreatedOn).ToList();
+                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId) || x.Class.StudyPlace.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).ToList();
                 var model1 = date1.Count();
                 List<StudentsAttendanceDto> mod = new List<StudentsAttendanceDto>();
 
@@ -111,6 +111,50 @@ namespace NurseryProject.Services.StudentsAttendance
                 return mod;
             }
         }
+
+        public List<StudentsAttendanceDto> GetAllByStudent2(Guid UserId, Guid EmployeeId, Role RoleId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var date1 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId) || x.Class.StudyPlace.BuildingSupervisors.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).ToList();
+                var model1 = date1.Count();
+                List<StudentsAttendanceDto> mod = new List<StudentsAttendanceDto>();
+
+                if (date1.Count() > 0)
+                {
+                    foreach (var item in date1)
+                    {
+                        var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == item.StudentId && x.ClassId == item.ClassId && x.IsAttend == false).ToList();
+                        var model2 = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == item.StudentId && x.ClassId == item.ClassId && x.IsAttend == true).ToList();
+                        var model3 = new StudentsAttendanceDto
+                        {
+                            Id = item.Id,
+                            StudentId = item.StudentId != null ? item.Student.Id : Guid.Empty,
+                            StudentName = item.StudentId != null ? item.Student.Name : "",
+                            Code = item.StudentId != null ? item.Student.Code : "",
+                            StudyPlaceName = item.ClassId != null ? item.Class.StudyPlace.Name : "",
+                            StudyTypeName = item.ClassId != null ? item.Class.Level.StudyType.Name : "",
+                            LevelName = item.ClassId != null ? item.Class.Level.Name : "",
+                            StudyYearName = item.StudyClassId != null ? item.StudyClass.StudyYear.Name : "",
+                            StudyYearId = item.StudyClassId != null ? item.StudyClass.StudyYear.Id : Guid.Empty,
+                            StudyClassName = item.StudyClassId != null ? item.StudyClass.Name : "",
+                            StudyClassId = item.StudyClassId != null ? item.StudyClass.Id : Guid.Empty,
+                            NumAllAttend = model.Count().ToString(),
+                            NumAttend = model2.Count().ToString(),
+                            ClassName = item.ClassId != null ? item.Class.Name : "",
+                            IsAttend = item.IsAttend != null ? item.IsAttend.Value : false,
+                            Date = item.Date != null ? item.Date.Value.ToString("yyyy-MM-dd") : "",
+                            Days = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && x.StudentId == item.StudentId && x.ClassId == item.ClassId).Select(y => new StudentsAttendanceDaysDto { Date = y.Date.Value.ToString(), IsAttend = y.IsAttend.Value }).ToList(),
+
+                        };
+                        mod.Add(model3);
+                    };
+                }
+
+                return mod;
+            }
+        }
+
         public Models.StudentsAttendance Get(Guid Id)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -123,7 +167,7 @@ namespace NurseryProject.Services.StudentsAttendance
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
+                var model = dbContext.StudentsAttendances.Where(x => x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.EmployeeId == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsAttendanceDto
                 {
                     Id = x.Id,
                     StudentId = x.Student.Id,
