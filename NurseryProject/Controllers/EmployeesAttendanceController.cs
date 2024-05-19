@@ -216,16 +216,17 @@ namespace NurseryProject.Controllers
             {
                 var date = DateTime.Parse(Date);
                 var date2 = DateTime.Parse(Date2);
-
-                foreach (var item in model)
+                for (int i = 0; i < model.Count(); i++)
                 {
-                    if (DateTime.Parse(item.Date).AddDays(1) >= date && DateTime.Parse(item.Date) <= date2)
+                    if (DateTime.Parse(model[i].Date).AddDays(1) >= date && DateTime.Parse(model[i].Date) <= date2)
                     {
-                        model.Remove(item);
+                        model.Remove(model[i]);
+                        i--;
                     }
                 }
+               
             }
-            ViewBag.Attend = model;
+            ViewBag.Attend = model.OrderBy(x=>DateTime.Parse(x.Date));
             return View();
             
         }

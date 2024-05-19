@@ -279,27 +279,29 @@ namespace NurseryProject.Controllers
             else if (Month != null)
             {
                 var month = DateTime.Parse(Month).ToString("yyyy-MM");
-                foreach (var item in model)
+                for (int i = 0; i < model.Count(); i++)
                 {
-                    if (!item.Days.Any(y => y.Date.Contains(month)))
+                    if (!model[i].Days.Any(y => y.Date.Contains(month)))
                     {
-                        model.Remove(item);
+                        model.Remove(model[i]);
+                        i--;
                     }
-
                 }
+                
             }
             else if (Date != null && Date2 != null)
             {
                 var date = DateTime.Parse(Date);
                 var date2 = DateTime.Parse(Date2);
-
-                foreach (var item in model)
+                for (int i = 0; i < model.Count(); i++)
                 {
-                    if (!item.Days.Any(y => DateTime.Parse(y.Date).AddDays(1) >= date && DateTime.Parse(y.Date) <= date2))
+                    if (!model[i].Days.Any(y => DateTime.Parse(y.Date).AddDays(1) >= date && DateTime.Parse(y.Date) <= date2))
                     {
-                        model.Remove(item);
+                        model.Remove(model[i]);
+                        i--;
                     }
                 }
+                
             }
 
             ViewBag.Count = model.Where(x => x.IsAttend == false).ToList().Count();
@@ -375,14 +377,15 @@ namespace NurseryProject.Controllers
             {
                 var date = DateTime.Parse(Date);
                 var date2 = DateTime.Parse(Date2);
-
-                foreach (var item in model)
+                for (int i = 0; i < model.Count(); i++)
                 {
-                    if (!item.Days.Any(y => DateTime.Parse(y.Date).AddDays(1) >= date && DateTime.Parse(y.Date) <= date2))
+                    if (!model[i].Days.Any(y => DateTime.Parse(y.Date).AddDays(1) >= date && DateTime.Parse(y.Date) <= date2))
                     {
-                        model.Remove(item);
+                        model.Remove(model[i]);
+                        i--;
                     }
                 }
+                
             }
 
             ViewBag.Count = model.Where(x => x.IsAttend == false).ToList().Count();
