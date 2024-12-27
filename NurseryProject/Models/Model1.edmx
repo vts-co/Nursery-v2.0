@@ -775,6 +775,8 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
+          <Property Name="PaperNumber1" Type="nvarchar(max)" />
+          <Property Name="PaperNumber2" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Subscriptions">
           <Key>
@@ -1684,8 +1686,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="DeleteAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GenerateSchema" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="almohandes_DbModelStoreContainer">
           <EntitySet Name="BuildingSupervisors" EntityType="Self.BuildingSupervisors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
@@ -3246,6 +3246,8 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <Property Name="PaperNumber1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PaperNumber2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_SubscriptionMethod" FromRole="SubscriptionMethod" ToRole="Revenue" />
           <NavigationProperty Name="StudentsClass" Relationship="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod" FromRole="SubscriptionMethod" ToRole="StudentsClass" />
         </EntityType>
@@ -4171,8 +4173,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="almohandes_DbModelStoreContainer" CdmEntityContainer="almohandes_DbEntities">
-          <FunctionImportMapping FunctionImportName="DeleteAll" FunctionName="almohandes_DbModel.Store.DeleteAll" />
-          <FunctionImportMapping FunctionImportName="GenerateSchema" FunctionName="almohandes_DbModel.Store.GenerateSchema" />
           <EntitySetMapping Name="BuildingSupervisors">
             <EntityTypeMapping TypeName="almohandes_DbModel.BuildingSupervisor">
               <MappingFragment StoreEntitySet="BuildingSupervisors">
@@ -4971,6 +4971,8 @@
           <EntitySetMapping Name="SubscriptionMethods">
             <EntityTypeMapping TypeName="almohandes_DbModel.SubscriptionMethod">
               <MappingFragment StoreEntitySet="SubscriptionMethod">
+                <ScalarProperty Name="PaperNumber2" ColumnName="PaperNumber2" />
+                <ScalarProperty Name="PaperNumber1" ColumnName="PaperNumber1" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -5074,7 +5076,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

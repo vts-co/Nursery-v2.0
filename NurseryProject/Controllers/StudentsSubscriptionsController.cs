@@ -89,12 +89,12 @@ namespace NurseryProject.Views
         }
 
 
-        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0)
+        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0,string PaperNumber1="",string PaperNumber2="")
         {
-            var model = subscriptionsMethodsServices.Update(Id, Amount, Date, Id2, Sub, (Guid)TempData["UserId"]);
+            var model = subscriptionsMethodsServices.Update(Id, Amount, Date, Id2, Sub, PaperNumber1, PaperNumber2, (Guid)TempData["UserId"]);
             if (model)
             {
-
+                 
                 return Json("Done", JsonRequestBehavior.AllowGet);
             }
             else
@@ -127,7 +127,7 @@ namespace NurseryProject.Views
         }
         public ActionResult getSubscriptionsMethods(Guid Id)
         {
-            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd HH:mm:ss.fff") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount }).ToList();
+            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd HH:mm:ss.fff") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount,x.PaperNumber1,x.PaperNumber2 }).ToList();
             var model2 = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
 
             var IsAnother = false;
