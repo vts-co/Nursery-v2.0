@@ -3,6 +3,7 @@ using NurseryProject.Dtos.Account;
 using NurseryProject.Enums;
 using NurseryProject.Services;
 using NurseryProject.Services.Settings;
+using NurseryProject.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace NurseryProject.Controllers
             var model = settingsServices.GetAll();
             TempData["SettingLogo"] = model.Logo;
             TempData["SettingTitle"] = model.Title;
+            var pass = Security.Encrypt("darsalah@123");
+
             return View(new SignInDto());
         }
         [HttpPost]
