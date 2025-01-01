@@ -19,6 +19,8 @@ namespace NurseryProject.Controllers
         // GET: Account
         public ActionResult SignIn()
         {
+            var pass = Security.Decrypt("Q+0BSEUa0qVOJFYz3wEI6w==");
+
             var model = settingsServices.GetAll();
             TempData["SettingLogo"] = model.Logo;
             TempData["SettingTitle"] = model.Title;

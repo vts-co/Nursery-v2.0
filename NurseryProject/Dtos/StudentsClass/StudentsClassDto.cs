@@ -59,5 +59,7 @@ namespace NurseryProject.Dtos.StudentsClass
         public string Paided { get; set; }
 
         public string PaidDate { get; set; }
+        public string PaperNumber1 { get; set; }
+        public string PaperNumber2 { get; set; }
     }
 }

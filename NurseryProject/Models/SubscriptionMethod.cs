@@ -35,6 +35,8 @@ namespace NurseryProject.Models
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
+        public string PaperNumber1 { get; set; }
+        public string PaperNumber2 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Revenue> Revenues { get; set; }

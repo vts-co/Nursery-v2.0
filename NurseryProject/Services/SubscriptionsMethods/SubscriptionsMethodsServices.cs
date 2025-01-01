@@ -20,7 +20,7 @@ namespace NurseryProject.Services.SubscriptionsMethods
             }
         }
 
-        public bool Update(Guid Id, string Amount, string Date, string Id2, float Sub, Guid UserId)
+        public bool Update(Guid Id, string Amount, string Date, string Id2, float Sub, string PaperNumber1, string PaperNumber2, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -42,6 +42,9 @@ namespace NurseryProject.Services.SubscriptionsMethods
 
                     }
 
+                    model.IsPaid = true;
+                    model.PaperNumber1 = PaperNumber1;
+                    model.PaperNumber2 = PaperNumber2;
                     model.IsPaid = true;
                     if (Date != null)
                     {
