@@ -62,4 +62,10 @@ namespace NurseryProject.Dtos.StudentsClass
         public string PaperNumber1 { get; set; }
         public string PaperNumber2 { get; set; }
     }
+public  class DailySubscriptionMethod
+    {
+        public string Name { get; set; }
+        public double Amount { get; set; }
+    }
+
 }

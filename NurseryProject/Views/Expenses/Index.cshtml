@@ -33,10 +33,16 @@
                         @Html.DisplayName("البيان")
                     </th>
                     <th>
-                        @Html.DisplayName("قيمة المصروف")
+                        @Html.DisplayName("المبلغ ")
                     </th>
                     <th>
-                        @Html.DisplayName("بيد")
+                        @Html.DisplayName("الضريبة ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الصافي ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الموظف")
                     </th>
                     <th>
                         @Html.DisplayName("التاريخ")
@@ -72,13 +78,20 @@
                         @Html.DisplayFor(modelItem => item.Value)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.Taxes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.EmployeeName)
                     </td>
                     <td>
                         @item.Date.Date.ToString("yyyy-MM-dd")
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
+                        @item.Notes
+
                     </td>
                     <td>
                         @Url.Edit(routeValues: new { id = item.Id })

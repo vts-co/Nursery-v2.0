@@ -478,6 +478,47 @@ namespace NurseryProject.Views
             var model = subjectsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, x.Name }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        [Authorized(ScreenId = "59")]
+        public ActionResult CollectedDailyReports()
+        {
+            var Students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            //ViewBag.StudentId = new SelectList(Students, "Id", "Name");
+            return View();
+        }
+        [HttpPost]
+        [Authorized(ScreenId = "59")]
+        public ActionResult CollectedDailyReports(string Date, string Date2, Guid? StudentId = null)
+        {
+            var StudyYear = studyYearsServices.GetAll();
+            var Students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            var date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+            var date2 = DateTime.Parse(Date2).ToString("yyyy-MM-dd");
+
+            var result = studentsClassServices.GetCollectedDayMoney(date, date2);
+
+
+            
+
+            ViewBag.Reports = result;
+            ViewBag.Total = result.Select(x => x.Amount).DefaultIfEmpty(0).Sum();
+            return View();
+        }
+
     }
 
 

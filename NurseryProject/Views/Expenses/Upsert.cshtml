@@ -36,19 +36,19 @@
                 <div class="form-group mb-3 col-sm-4">
                     @Html.Label("الفصل ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownListFor(model => model.ClassId, null, "--اختر--", new { @class = "form-control"})
+                        @Html.DropDownListFor(model => model.ClassId, null, "--اختر--", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group mb-3 col-sm-4">
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("نوع المصروف ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownList("ExpenseTypeParentId", null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessage("ExpenseTypeParentId", "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-4">
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("البيان", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownListFor(model => model.ExpenseTypeId, null, "--اختر--", new { @class = "form-control", required = "required" })
@@ -58,14 +58,28 @@
                 <div class="form-group mb-3 col-sm-4">
                     @Html.Label("قيمة المصروف", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.EditorFor(model => model.ExpenseValue, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.EditorFor(model => model.ExpenseValue, new { htmlAttributes = new { @class = "form-control text-center", required = "required", @type = "number", @onkeyup = "GetTotal()"} })
                         @Html.ValidationMessageFor(model => model.ExpenseValue, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("بيد ", htmlAttributes: new { @class = "control-label" })
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("الضريبة ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownListFor(model => model.EmployeeId, new SelectList(ViewBag.Employees, "Id", "Name"), "--اختر--", new { @class = "form-control searchable", required = "required" })
+                        @Html.EditorFor(model => model.Taxes, new { htmlAttributes = new { @class = "form-control text-center", required = "required", @type = "number", @onkeyup = "GetTotal()" } })
+                        @Html.ValidationMessageFor(model => model.Taxes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("الاجمالي ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control text-center", required = "required", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الموظف ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.EmployeeId, new SelectList(ViewBag.Employees, "Id", "Name"), "--اختر--", new { @class = "form-control searchable" })
                         @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -127,5 +141,16 @@
                 });
             });
         });
+
+
+
+        function GetTotal() {
+
+            var safy = (Number.parseFloat($("#ExpenseValue").val()) - Number.parseFloat($("#Taxes").val())).toFixed(2);
+            console.log(safy)
+
+            $("#Total").val(safy);
+
+        };
     </script>
 }

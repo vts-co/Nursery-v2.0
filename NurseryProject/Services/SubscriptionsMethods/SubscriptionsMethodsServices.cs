@@ -62,7 +62,7 @@ namespace NurseryProject.Services.SubscriptionsMethods
                         StudyYearId = model.StudentsClass.StudyYearId,
                         StudyPlaceId = model.StudentsClass.Class.StudyPlaceId,
                         RevenueTypeId = Guid.Parse("0F54C94D-B010-4360-8EB1-B93E05615065"),
-                        RevenueValue = Amount,
+                        RevenueValue =double.Parse( Amount),
                         RevenueDate = model.PaidDate,
                         Notes = "تحصيل اشتراك الطالب " + model.StudentsClass.Student.Name,
                         EmployeeId = null,

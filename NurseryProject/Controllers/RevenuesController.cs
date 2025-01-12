@@ -227,15 +227,98 @@ namespace NurseryProject.Controllers
             {
                 ViewBag.RevenueTypeId = new SelectList("");
             }
-            foreach (var item in model)
-            {
-                total += float.Parse(item.Value);
-            }
+            //foreach (var item in model)
+            //{
+            //    total += float.Parse(item.Value);
+            //}
+            ViewBag.Total = model.Select(x =>x.Value).DefaultIfEmpty(0).Sum();
+
             ViewBag.Total = total;
             ViewBag.Revenues = model;
             return View();
            
         }
+
+
+
+        [Authorized(ScreenId = "67")]
+
+        public ActionResult CollectedReports()
+        {
+            var revenuesTypesParentModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+            ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name");
+
+            ViewBag.RevenueTypeId = new SelectList("");
+            ViewBag.StudyPlaceId = new SelectList(studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
+            ViewBag.ClassId = new SelectList("");
+            return View();
+        }
+        [HttpPost]
+        [Authorized(ScreenId = "67")]
+
+        public ActionResult CollectedReports(string date, string date2, Guid? RevenueTypeParentId = null, Guid? RevenueTypeId = null, Guid? StudyPlaceId = null, Guid? ClassId = null)
+        {
+            var model = revenuesServices.GetAllCollected( date,  date2, RevenueTypeParentId , RevenueTypeId , StudyPlaceId , ClassId);
+        
+            
+            if (StudyPlaceId != null)
+            {
+
+                var StudyPlaceModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+                ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name", StudyPlaceId);
+            }
+            else
+            {
+                var StudyPlaceModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+                ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name");
+            }
+            if (ClassId != null)
+            {
+
+                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
+            }
+            else if (StudyPlaceId != null)
+            {
+                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
+            }
+            else
+            {
+                ViewBag.ClassId = new SelectList("");
+            }
+            if (RevenueTypeParentId != null)
+            {
+                var revenuesTypesParentModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name", RevenueTypeParentId);
+            }
+            else
+            {
+                var revenuesTypesParentModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.RevenueTypeParentId = new SelectList(revenuesTypesParentModel, "Id", "Name");
+            }
+            if (RevenueTypeId != null)
+            {
+                var revenuesTypesModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == RevenueTypeParentId).ToList();
+                ViewBag.RevenueTypeId = new SelectList(revenuesTypesModel, "Id", "Name", RevenueTypeId);
+            }
+            else if (RevenueTypeParentId != null)
+            {
+                var revenuesTypesModel = revenuesTypesServices.GetAll().Where(x => x.ParentId == RevenueTypeParentId).ToList();
+                ViewBag.RevenueTypeId = new SelectList(revenuesTypesModel, "Id", "Name");
+            }
+            else
+            {
+                ViewBag.RevenueTypeId = new SelectList("");
+            }
+           
+            ViewBag.Total = model.Select(x=>x.Amount).DefaultIfEmpty(0).Sum();
+            ViewBag.Revenues = model;
+            return View();
+
+        }
+
+
         [Authorized(ScreenId = "67")]
         public ActionResult getRevenuesTypesReport(Guid Id)
         {

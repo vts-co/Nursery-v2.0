@@ -59,12 +59,12 @@
                 <div class="form-group mb-3 col-sm-4">
                     @Html.Label("قيمة الايراد", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.EditorFor(model => model.RevenueValue, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.EditorFor(model => model.RevenueValue, new { htmlAttributes = new { @class = "form-control", required = "required" ,@type="number"} })
                         @Html.ValidationMessageFor(model => model.RevenueValue, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("بيد ", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("الموظف ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.DropDownListFor(model => model.EmployeeId, new SelectList(ViewBag.Employees, "Id", "Name"), "--اختر--", new { @class = "form-control searchable", required = "required" })
                         @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })

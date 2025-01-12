@@ -22,7 +22,7 @@ namespace NurseryProject.Dtos.Revenues
         public string EmployeeName { get; set; }
         public Guid SubscriptionMethodId { get; set; }
         
-        public string Value { get; set; }
+        public double? Value { get; set; }
         public DateTime Date { get; set; }
 
         public string Notes { get; set; }

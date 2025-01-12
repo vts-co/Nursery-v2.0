@@ -21,10 +21,24 @@ namespace NurseryProject.Dtos.Expenses
         public Guid EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string Value { get; set; }
+        public double? Taxes { get; set; }
+        public double? Total { get; set; }
         public DateTime Date { get; set; }
         public string Notes { get; set; }
         public Guid EmployeesReceiptId { get; set; }
 
         
     }
+
+    public class ExpensesCollectedDto
+    {
+        public string ExpenseName { get; set; }
+        public string NoteName { get; set; }
+        public double? Amount { get; set; }
+        public double? Taxes { get; set; }
+        public double? Total { get; set; }
+
+
+    }
+
 }

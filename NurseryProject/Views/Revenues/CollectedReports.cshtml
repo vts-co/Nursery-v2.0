@@ -1,10 +1,10 @@
 ﻿@using NurseryProject.Utilities
 @{
-    ViewBag.Title = "تقرير المصروفات";
-    ViewBag.MainPage = "المصروفات";
+    ViewBag.Title = "تقرير الايرادات";
+    ViewBag.MainPage = "الايرادات";
 
 }
-@using (Html.BeginForm("Reports", "Expenses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CollectedReports", "Revenues", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="card">
@@ -16,7 +16,6 @@
         </div>
         <div class="card-body">
             <div class="row">
-
                 <div class="form-group mb-3 col-sm-6">
 
                     @Html.Label("الفرع ", htmlAttributes: new { @class = "control-label" })
@@ -31,31 +30,31 @@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("نوع المصروف ", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("نوع الايراد ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("ExpenseTypeParentId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.DropDownList("RevenueTypeParentId", null, "--اختر--", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("البيان ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("ExpenseTypeId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.DropDownList("RevenueTypeId", null, "--اختر--", new { @class = "form-control" })
                     </div>
                 </div>
                 @*<div class="form-group mb-3 col-sm-6">
-                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month" } })
-                        @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
+                        @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month" } })
+                            @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group mb-3 col-sm-6 mt-2">
-                    @Html.Label("طوال العام ", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.CheckBox("AllYear", new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>*@
+                    <div class="form-group mb-3 col-sm-6 mt-2">
+                        @Html.Label("طوال العام ", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-12">
+                            @Html.CheckBox("AllYear", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>*@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("من تاريخ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
@@ -79,84 +78,45 @@
     </div>
 }
 
-@if (ViewBag.Expenses != null)
+@if (ViewBag.Revenues != null)
 {
     <div class="card">
         <div class="card-header">
-            تقرير المصروفات
+            تقرير الايرادات
         </div>
         <div class="card-body">
             <table id="datatable" class="table table-striped dt-responsive  nowrap w-100 table-bordered">
                 <thead class="bg-soft-primary">
                     <tr>
                         <th>
-                            @Html.DisplayName(" نوع المصروف الرئيسي")
+                            @Html.DisplayName("نوع الايراد الرئيسي")
                         </th>
                         <th>
-                            @Html.DisplayName("نوع المصروف")
+                            @Html.DisplayName("نوع الايراد")
                         </th>
                         <th>
-                            @Html.DisplayName("المبلغ ")
+                            @Html.DisplayName("قيمة الايراد")
                         </th>
-                        <th>
-                            @Html.DisplayName("الضريبة ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الصافي ")
-                        </th>
-
-                        <th>
-                            @Html.DisplayName("الموظف")
-                        </th>
-                        <th>
-                            @Html.DisplayName("التاريخ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("ملاحظات")
-                        </th>
-                        <th>
-                            @Html.DisplayName("عمليات")
-                        </th>
+                  
                     </tr>
                 </thead>
-
                 <tbody>
-                    @foreach (var item in ViewBag.Expenses)
+                    @foreach (var item in ViewBag.Revenues)
                     {
-                    <tr>
-                        <td>
-                            @item.ExpenseTypePatentName
-                        </td>
-                        <td>
-                            @item.ExpenseTypeName
-                        </td>
-                        <td>
-                            @item.Value
-                        </td>
-                        <td>
-                            @item.Taxes
-                        </td>
-                        <td>
-                            @item.Total
-                        </td>
-
-                        <td>
-                            @item.EmployeeName
-                        </td>
-                        <td>
-                            @item.Date.Date.ToString("yyyy-MM-dd")
-                        </td>
-                        <td>
-                            @item.Notes
-                        </td>
-                        <td>
-                            @Url.Edit(routeValues: new { id = item.Id })
-                            @Url.Delete(routeValues: new { id = item.Id })
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @item.ExpenseName
+                            </td>
+                            <td>
+                                @item.NoteName
+                            </td>
+                            <td>
+                                @item.Amount
+                            </td>
+                          
+                        </tr>
                     }
                 </tbody>
-
                 <tfoot class="text-center">
                     <tr>
                         <td>
@@ -169,22 +129,20 @@
 
         </div>
     </div>
-
 }
 @section scripts{
     <script>
-       
-        $("#ExpenseTypeParentId").change(function () {
-            $.get('/Expenses/getExpensesTypesReport', { Id: $("#ExpenseTypeParentId").val() }, function (data) {
-                $("#ExpenseTypeId").empty();
-                $("#ExpenseTypeId").append("<option value=''>--اختر--</option>")
+        $("#RevenueTypeParentId").change(function () {
+            $.get('/Revenues/getRevenuesTypesReport', { Id: $("#RevenueTypeParentId").val() }, function (data) {
+                $("#RevenueTypeId").empty();
+                $("#RevenueTypeId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {
-                    $("#ExpenseTypeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                    $("#RevenueTypeId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
                 });
             });
         });
         $("#StudyPlaceId").change(function () {
-            $.get('/Expenses/getClassesReport', { Id: $("#StudyPlaceId").val() }, function (data) {
+            $.get('/Revenues/getClassesReport', { Id: $("#StudyPlaceId").val() }, function (data) {
                 $("#ClassId").empty();
                 $("#ClassId").append("<option value=''>--اختر--</option>")
                 $.each(data, function (key, value) {

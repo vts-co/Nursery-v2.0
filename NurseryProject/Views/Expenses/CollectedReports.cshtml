@@ -4,7 +4,7 @@
     ViewBag.MainPage = "المصروفات";
 
 }
-@using (Html.BeginForm("Reports", "Expenses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CollectedReports", "Expenses", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="card">
@@ -42,20 +42,7 @@
                         @Html.DropDownList("ExpenseTypeId", null, "--اختر--", new { @class = "form-control" })
                     </div>
                 </div>
-                @*<div class="form-group mb-3 col-sm-6">
-                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.Editor("Month", new { htmlAttributes = new { @class = "form-control", type = "month" } })
-                        @Html.ValidationMessage("Month", "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group mb-3 col-sm-6 mt-2">
-                    @Html.Label("طوال العام ", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.CheckBox("AllYear", new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>*@
+             
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("من تاريخ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
@@ -105,64 +92,47 @@
                             @Html.DisplayName("الصافي ")
                         </th>
 
-                        <th>
-                            @Html.DisplayName("الموظف")
-                        </th>
-                        <th>
-                            @Html.DisplayName("التاريخ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("ملاحظات")
-                        </th>
-                        <th>
-                            @Html.DisplayName("عمليات")
-                        </th>
+                        <
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach (var item in ViewBag.Expenses)
                     {
-                    <tr>
-                        <td>
-                            @item.ExpenseTypePatentName
-                        </td>
-                        <td>
-                            @item.ExpenseTypeName
-                        </td>
-                        <td>
-                            @item.Value
-                        </td>
-                        <td>
-                            @item.Taxes
-                        </td>
-                        <td>
-                            @item.Total
-                        </td>
-
-                        <td>
-                            @item.EmployeeName
-                        </td>
-                        <td>
-                            @item.Date.Date.ToString("yyyy-MM-dd")
-                        </td>
-                        <td>
-                            @item.Notes
-                        </td>
-                        <td>
-                            @Url.Edit(routeValues: new { id = item.Id })
-                            @Url.Delete(routeValues: new { id = item.Id })
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @item.ExpenseName
+                            </td>
+                            <td>
+                                @item.NoteName
+                            </td>
+                            <td>
+                                @item.Amount
+                            </td>
+                            <td>
+                                @item.Taxes
+                            </td>
+                            <td>
+                                @item.Total
+                            </td>
+                        </tr>
                     }
                 </tbody>
 
                 <tfoot class="text-center">
                     <tr>
                         <td>
-                            الاجمالي : @ViewBag.Total جنيه
+                            الاجمالي : @ViewBag.Amount  جنيه
 
-                        </td>
+                        </td>  
+                        <td>
+    اجمالي الضريبة : @ViewBag.Taxes جنيه
+
+</td>  
+                        <td>
+    الصافي : @ViewBag.Total جنيه
+
+</td>
                     </tr>
                 </tfoot>
             </table>
@@ -173,7 +143,7 @@
 }
 @section scripts{
     <script>
-       
+
         $("#ExpenseTypeParentId").change(function () {
             $.get('/Expenses/getExpensesTypesReport', { Id: $("#ExpenseTypeParentId").val() }, function (data) {
                 $("#ExpenseTypeId").empty();

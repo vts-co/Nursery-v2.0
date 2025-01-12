@@ -398,6 +398,8 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
+          <Property Name="Total" Type="float" />
+          <Property Name="Taxes" Type="float" />
         </EntityType>
         <EntityType Name="ExpensesTypes">
           <Key>
@@ -514,7 +516,7 @@
           <Property Name="ClassId" Type="uniqueidentifier" />
           <Property Name="RevenueTypeId" Type="uniqueidentifier" />
           <Property Name="EmployeeId" Type="uniqueidentifier" />
-          <Property Name="RevenueValue" Type="nvarchar(max)" />
+          <Property Name="RevenueValue" Type="float" />
           <Property Name="RevenueDate" Type="date" />
           <Property Name="SubscriptionMethodId" Type="uniqueidentifier" />
           <Property Name="Notes" Type="nvarchar(max)" />
@@ -1686,6 +1688,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="DeleteAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GenerateSchema" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="almohandes_DbModelStoreContainer">
           <EntitySet Name="BuildingSupervisors" EntityType="Self.BuildingSupervisors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
@@ -2021,6 +2025,8 @@
         <EntityContainer Name="almohandes_DbEntities" annotation:LazyLoadingEnabled="true">
           <FunctionImport Name="DeleteAll" />
           <FunctionImport Name="GenerateSchema" />
+          <FunctionImport Name="DeleteAll1" />
+          <FunctionImport Name="GenerateSchema1" />
           <EntitySet Name="BuildingSupervisors" EntityType="almohandes_DbModel.BuildingSupervisor" />
           <EntitySet Name="Cities" EntityType="almohandes_DbModel.City" />
           <EntitySet Name="Classes" EntityType="almohandes_DbModel.Class" />
@@ -2805,6 +2811,8 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <Property Name="Total" Type="Double" />
+          <Property Name="Taxes" Type="Double" />
           <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_Expenses_Classes" FromRole="Expens" ToRole="Class" />
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_Expenses_Employees" FromRole="Expens" ToRole="Employee" />
           <NavigationProperty Name="ExpensesType" Relationship="almohandes_DbModel.FK_Expenses_ExpensesTypes" FromRole="Expens" ToRole="ExpensesType" />
@@ -2939,7 +2947,7 @@
           <Property Name="ClassId" Type="Guid" />
           <Property Name="RevenueTypeId" Type="Guid" />
           <Property Name="EmployeeId" Type="Guid" />
-          <Property Name="RevenueValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RevenueValue" Type="Double" />
           <Property Name="RevenueDate" Type="DateTime" Precision="0" />
           <Property Name="SubscriptionMethodId" Type="Guid" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -4173,6 +4181,8 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="almohandes_DbModelStoreContainer" CdmEntityContainer="almohandes_DbEntities">
+          <FunctionImportMapping FunctionImportName="DeleteAll1" FunctionName="almohandes_DbModel.Store.DeleteAll" />
+          <FunctionImportMapping FunctionImportName="GenerateSchema1" FunctionName="almohandes_DbModel.Store.GenerateSchema" />
           <EntitySetMapping Name="BuildingSupervisors">
             <EntityTypeMapping TypeName="almohandes_DbModel.BuildingSupervisor">
               <MappingFragment StoreEntitySet="BuildingSupervisors">
@@ -4570,6 +4580,8 @@
           <EntitySetMapping Name="Expenses">
             <EntityTypeMapping TypeName="almohandes_DbModel.Expens">
               <MappingFragment StoreEntitySet="Expenses">
+                <ScalarProperty Name="Taxes" ColumnName="Taxes" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />

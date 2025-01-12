@@ -406,6 +406,84 @@ namespace NurseryProject.Services.StudentsClass
             }
         }
 
+        public List<DailySubscriptionMethod> GetCollectedDayMoney(string Date, string Date2)
+        {
+            var date = int.Parse(DateTime.Parse(Date).ToString("yyyy"));
+            var date2 = int.Parse(DateTime.Parse(Date).ToString("MM"));
+            var date3 = int.Parse(DateTime.Parse(Date).ToString("dd"));
+
+            var date4 = int.Parse(DateTime.Parse(Date2).ToString("yyyy"));
+            var date5 = int.Parse(DateTime.Parse(Date2).ToString("MM"));
+            var date6 = int.Parse(DateTime.Parse(Date2).ToString("dd"));
+
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.SubscriptionMethods.Where(x => x.IsDeleted == false && x.IsPaid == true && x.PaidDate.Value != null && x.PaidDate.Value.Year >= date && x.PaidDate.Value.Month >= date2 && x.PaidDate.Value.Day >= date3 && x.PaidDate.Value.Year <= date4 && x.PaidDate.Value.Month <= date5 && x.PaidDate.Value.Day <= date6).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                {
+                    Id = x.Id,
+                    Code = x.StudentsClass.Student.Code,
+
+                    StudyPlaceId = x.StudentsClass.Class.StudyPlaceId.Value,
+                    StudyPlaceName = x.StudentsClass.Class.StudyPlace.Name,
+                    StudyTypeId = x.StudentsClass.Class.Level.StudyTypeId.Value,
+
+                    StudyTypeName = x.StudentsClass.Class.Level.StudyType.Name,
+                    LevelId = x.StudentsClass.Class.LevelId.Value,
+                    LevelName = x.StudentsClass.Class.Level.Name,
+                    ClassId = x.StudentsClass.ClassId.Value,
+                    ClassName = x.StudentsClass.Class.Name,
+                    StudyYearId = x.StudentsClass.StudyYearId.Value,
+                    StudyYearName = x.StudentsClass.StudyYear.Name,
+                    StudentId = x.StudentsClass.Student.Id,
+                    StudentName = x.StudentsClass.Student.Name,
+                    StudentPhone = x.StudentsClass.Student.Phone,
+                    IsCurrent = x.StudentsClass.IsCurrent.Value,
+                    IsAnother = x.StudentsClass.IsAnother.Value,
+
+                    SubscriptionId = x.StudentsClass.SubscriptionId.Value,
+                    SubscriptionName = x.StudentsClass.IsAnother == true ? "أخري" : x.StudentsClass.Subscription.SubscriptionsType.Name,
+                    Amount = x.StudentsClass.IsAnother != true ? x.StudentsClass.Subscription.Amount : "",
+                    Number = x.StudentsClass.IsAnother != true ? x.StudentsClass.Subscription.InstallmentsNumber : "",
+                    Paid = x.PaidAmount,
+                    Collector = x.ModifiedBy != null ? x.ModifiedBy.ToString() : "",
+                    Date = x.PaidDate.Value.ToString()
+
+                }).ToList();
+                var total = 0.0;
+                foreach (var item in model)
+                {
+                    if (item.IsAnother)
+                    {
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == true).Count() > 0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
+                        }
+                        if (item.SubscriptionMethod.Where(y => y.IsPaid == false).Count() > 0)
+                        {
+                            total += float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
+                        }
+                        item.Amount = total.ToString();
+                        item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
+                    }
+                    if (item.Collector != "")
+                    {
+                        var id = Guid.Parse(item.Collector);
+                        var ff = dbContext.Users.Where(x => x.Id == id && !x.IsDeleted).FirstOrDefault();
+                        item.Collector = ff.Username;
+                    }
+                }
+                var groupedData = model.GroupBy(x => x.SubscriptionId);
+                var dailySubscriptionMethods = groupedData.Select(group => new DailySubscriptionMethod
+                {
+                    Name = group.First().SubscriptionName,
+                    Amount = group.Sum(x => double.Parse(x.Paid)),
+                  
+                }).ToList();
+
+                return dailySubscriptionMethods;
+            }
+        }
+
         public ResultDto<StudentsClassDto> UpateClassId(Guid Id, Guid ClassId, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())

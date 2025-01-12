@@ -531,6 +531,7 @@
                                     @if (ViewBag.userscreens.ToString().Contains(",59,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("DailyReports", "StudentsSubscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير التحصيل اليومي للطلاب </a></li>
+                                        <li class="Stund2"><a href="@Url.Action("CollectedDailyReports", "StudentsSubscriptions")"><i class="fas fa-credit-card p-1"></i> تقرير التحصيل اليومي للطلاب مجمع </a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",60,"))
                                     {
@@ -571,10 +572,12 @@
                                     @if (ViewBag.userscreens.ToString().Contains(",66,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Reports", "Expenses")"><i class="fas fa-coins p-1"></i> تقارير المصروفات</a></li>
+                                        <li class="Stund2"><a href="@Url.Action("CollectedReports", "Expenses")"><i class="fas fa-coins p-1"></i> تقرير المصروفات مجمع </a></li>
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",67,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Reports", "Revenues")"><i class="fas fa-coins p-1"></i> تقارير الايرادات</a></li>
+                                        <li class="Stund2"><a href="@Url.Action("CollectedReports", "Revenues")"><i class="fas fa-coins p-1"></i> تقارير الايرادات مجمع</a></li>
                                     }
 
 

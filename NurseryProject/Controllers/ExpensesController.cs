@@ -52,7 +52,7 @@ namespace NurseryProject.Controllers
             var employeesModel = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.Employees = employeesModel;
 
-            return View("Upsert", new Expens());
+            return View("Upsert", new Expens() { Taxes = 0, Total = 0, ExpenseValue = "0" });
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult Create(Expens expens)
@@ -142,9 +142,8 @@ namespace NurseryProject.Controllers
         }
         [HttpPost]
         [Authorized(ScreenId = "66")]
-        public ActionResult Reports(string date, string date2, Guid? ExpenseTypeParentId=null, Guid? ExpenseTypeId=null,Guid? StudyPlaceId=null,Guid? ClassId=null)
+        public ActionResult Reports(string date, string date2, Guid? ExpenseTypeParentId = null, Guid? ExpenseTypeId = null, Guid? StudyPlaceId = null, Guid? ClassId = null)
         {
-            var total = 0.0;
             var model = expensesServices.GetAll();
             //if (AllYear)
             //{
@@ -189,7 +188,7 @@ namespace NurseryProject.Controllers
             {
                 model = model.Where(x => x.ClassId == ClassId).ToList();
 
-                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x=>x.StudyPlaceId== StudyPlaceId).ToList();
+                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
                 ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
             }
             else if (StudyPlaceId != null)
@@ -204,7 +203,7 @@ namespace NurseryProject.Controllers
 
             if (ExpenseTypeParentId != null)
             {
-                model=model.Where(x => x.ExpenseTypePatentId== ExpenseTypeParentId).ToList();
+                model = model.Where(x => x.ExpenseTypePatentId == ExpenseTypeParentId).ToList();
                 var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
                 ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name", ExpenseTypeParentId);
             }
@@ -216,7 +215,7 @@ namespace NurseryProject.Controllers
 
             if (ExpenseTypeId != null)
             {
-                model=model.Where(x => x.ExpenseTypeId == ExpenseTypeId).ToList();
+                model = model.Where(x => x.ExpenseTypeId == ExpenseTypeId).ToList();
 
                 var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == ExpenseTypeParentId).ToList();
                 ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel, "Id", "Name", ExpenseTypeId);
@@ -230,14 +229,96 @@ namespace NurseryProject.Controllers
             {
                 ViewBag.ExpenseTypeId = new SelectList("");
             }
-            foreach (var item in model)
-            {
-                total += float.Parse(item.Value);
-            }
-            ViewBag.Total = total;
+            //foreach (var item in model)
+            //{
+            //    total += float.Parse(item.Value);
+            //}
+            ViewBag.Total = model.Select(x => x.Total).DefaultIfEmpty(0).Sum();
             ViewBag.Expenses = model;
             return View();
         }
+
+
+
+        [Authorized(ScreenId = "66")]
+        public ActionResult CollectedReports()
+        {
+            var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+            ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name");
+            ViewBag.StudyPlaceId = new SelectList(studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]), "Id", "Name");
+            ViewBag.ClassId = new SelectList("");
+
+            ViewBag.ExpenseTypeId = new SelectList("");
+            return View();
+        }
+        [HttpPost]
+        [Authorized(ScreenId = "66")]
+        public ActionResult CollectedReports(string date, string date2, Guid? ExpenseTypeParentId = null, Guid? ExpenseTypeId = null, Guid? StudyPlaceId = null, Guid? ClassId = null)
+        {
+            var model = expensesServices.GetAllCollected( date,  date2, ExpenseTypeParentId ,ExpenseTypeId ,  StudyPlaceId , ClassId  );
+
+            if (StudyPlaceId != null)
+            {
+
+                var StudyPlaceModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+                ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name", StudyPlaceId);
+            }
+            else
+            {
+                var StudyPlaceModel = studyPlacesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+                ViewBag.StudyPlaceId = new SelectList(StudyPlaceModel, "Id", "Name");
+            }
+            if (ClassId != null)
+            {
+
+                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
+            }
+            else if (StudyPlaceId != null)
+            {
+                var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.StudyPlaceId == StudyPlaceId).ToList();
+                ViewBag.ClassId = new SelectList(classes, "Id", "Name", StudyPlaceId);
+            }
+            else
+            {
+                ViewBag.ClassId = new SelectList("");
+            }
+
+            if (ExpenseTypeParentId != null)
+            {
+                var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name", ExpenseTypeParentId);
+            }
+            else
+            {
+                var expensesTypesParentModel = expensesTypesServices.GetAll().Where(x => x.ParentId == Guid.Empty).ToList();
+                ViewBag.ExpenseTypeParentId = new SelectList(expensesTypesParentModel, "Id", "Name");
+            }
+
+            if (ExpenseTypeId != null)
+            {
+
+                var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == ExpenseTypeParentId).ToList();
+                ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel, "Id", "Name", ExpenseTypeId);
+            }
+            else if (ExpenseTypeParentId != null)
+            {
+                var expensesTypesModel = expensesTypesServices.GetAll().Where(x => x.ParentId == ExpenseTypeParentId).ToList();
+                ViewBag.ExpenseTypeId = new SelectList(expensesTypesModel, "Id", "Name");
+            }
+            else
+            {
+                ViewBag.ExpenseTypeId = new SelectList("");
+            }
+
+            ViewBag.Total = model.Select(x => x.Total).DefaultIfEmpty(0).Sum();
+            ViewBag.Taxes = model.Select(x => x.Taxes).DefaultIfEmpty(0).Sum();
+            ViewBag.Amount = model.Select(x => x.Amount).DefaultIfEmpty(0).Sum();
+            ViewBag.Expenses = model;
+            return View();
+        }
+
+
         [Authorized(ScreenId = "66")]
         public ActionResult getExpensesTypesReport(Guid Id)
         {
