@@ -233,7 +233,7 @@ namespace NurseryProject.Controllers
             //}
             ViewBag.Total = model.Select(x =>x.Value).DefaultIfEmpty(0).Sum();
 
-            ViewBag.Total = total;
+            //ViewBag.Total = total;
             ViewBag.Revenues = model;
             return View();
            

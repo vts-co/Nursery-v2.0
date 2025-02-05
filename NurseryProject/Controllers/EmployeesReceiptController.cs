@@ -214,6 +214,7 @@ namespace NurseryProject.Controllers
             var employeesModel = employeesReceiptServices.GetAllEmployeesReceipts().Where(x => x.Month == date1).ToList();
 
             ViewBag.EmployeesReceipt = employeesModel;
+            ViewBag.Total = employeesModel.Select(x=>(float)x.FinalTotalCost).DefaultIfEmpty(0).Sum();
 
             return View();
         }

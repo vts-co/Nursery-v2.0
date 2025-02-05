@@ -86,6 +86,7 @@ namespace NurseryProject.Controllers
         public ActionResult Edit(Guid Id)
         {
             var class1 = classesLeadersServices.Get(Id);
+            var sasa = classesLeadersServices.GetDepartmentIdByClass(Id);
             var studyTypes = studyTypesServices.GetAll();
 
             var class2 = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == class1.ClassId).FirstOrDefault();
@@ -100,8 +101,10 @@ namespace NurseryProject.Controllers
             var Employees = employeesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.EmployeeId = new SelectList(Employees, "Id", "Name", class1.EmployeeId);
 
+         
+
             var Departments = departmentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
-            ViewBag.DepartmentId = new SelectList(Departments, "Id", "Name", class1.Employee.Jop.DepartmentId);
+            ViewBag.DepartmentId = new SelectList(Departments.ToList(), "Id", "Name", sasa);
 
             return View("Upsert", class1);
         }

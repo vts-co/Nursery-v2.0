@@ -28,7 +28,7 @@ namespace NurseryProject.Dtos.EmployeesReceipt
         public List<EmployeesIncreases> EmployeesIncreases { get; set; }
         public string TotalDiscountCost { get; set; }
         public string TotalIncreasesCost { get; set; }
-        public string FinalTotalCost { get; set; }
+        public double? FinalTotalCost { get; set; }
         public string Reciept { get; set; }
         public string Paid { get; set; }
         public string Date { get; set; }

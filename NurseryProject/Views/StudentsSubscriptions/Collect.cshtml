@@ -452,12 +452,24 @@
             }
             else if (Amount1 > Amount) {
                 var t = '';
-
                 if (num == i + 1) {
-                    t += '<div class="form-group mt-2 p-1 col-sm-12"><label class="control-label text-danger">هذا القسط الاخير لابد ان يدفع كاملا</label></div>';
+                    var NextAmount = parseFloat(Amount1) - parseFloat(Amount);
+
+                    t += '<div class="form-group mt-2 p-1 col-sm-12"><form  class="mt-3 border p-3 rounded">\
+                        <div class="mb-3"><h4 class="text-center">موعد القسط التالي</h4>\
+                            <label for="paymentDate" class="form-label">تاريخ الدفع</label>\
+                            <input type="date" class="form-control text-center" id="NewpaymentDate" required>\
+                        </div>\
+                        <div class="mb-3">\
+                            <label for="amount" class="form-label">المبلغ</label>\
+                            <input type="number" class="form-control text-center" id="NewAmount" readonly value="'+ NextAmount+'"  required>\
+                        </div>\
+    <button type="button" class="btn btn-success d-flex justify-content-center w-100" onclick="CollecttAndMakeInsgtallment(' + i + ')">حفظ</button>\
+                    </form></div>';
 
                 }
                 else {
+
                     t += '<div class="form-group mt-2 p-1 col-sm-12"><label class="control-label text-danger">قيمة المدفوع اقل من قيمة القسط برجاء اختيار قسط لرفع باقي المبلغ عليه</label></div>';
                     t += '<div class="form-group mt-2 p-1 col-sm-12"><label class="control-label text-danger">القيمة المرحلة : ' + parseFloat(Amount1 - Amount) + ' جنيه</label></div>';
 
@@ -489,6 +501,87 @@
             var sub = Amount1 - Amount;
 
             $.get('/StudentsSubscriptions/UpdateSubscriptionsMethods', { Id: Id, Amount: Amount, Date: Date1, Id2: $("#Date2").val(), Sub: sub, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val() }, function (data) {
+                if (data != "Faild") {
+                    $.get('/Subscriptions/getReportDesign', function (data) {
+                        var old = document.body.innerHTML;
+                        //Reset the page's HTML with div's HTML only
+                        var d = $("#StudentName").val().split("|");
+                        var da = new Date(Date1);
+
+                        var dd = "AM";
+                        var year = da.getFullYear();
+                        var mon = da.getMonth() + 1;
+                        var day = da.getDate();
+                        var h = da.getHours();
+                        var m = da.getMinutes();
+                        var s = da.getSeconds();
+                        if (h >= 12) {
+                            h = h - 12;
+                            dd = "PM";
+                        }
+                        if (h == 0) {
+                            h = 12;
+                        }
+                        h = h < 10 ? "0" + h : h;
+                        m = m < 10 ? "0" + m : m;
+                        s = s < 10 ? "0" + s : s;
+
+                        var pattern = h + ":" + m + " " + dd;
+
+                        document.body.innerHTML =
+                            "<div style='border-style:solid;border-width:1px'><div size='A6' style='background-color:#fadfad'  class='row text-center'><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.Title + "</div><div class='col-4 col-lg-4 col-md-4 mb-2'>" + data.ReportHeader + "</div><div class='col-2 col-lg-2 col-md-2 mb-2'>تاريخ الدفع : <br/>" + year + " -  " + String(parseInt(mon)).padStart(2, '0') + " -  " + String(parseInt(day)).padStart(2, '0') + "</div> <div class='col-2 col-lg-2 col-md-2 mb-2'> وقت الحركة : " + pattern + "</div></div>" +
+
+                            "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>كود الطالب : " + $("#Code").val() + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>اسم الطالب : " + d[1] + "</div>" +
+
+                            "<div class='row mt-2 ms-2 me-2'>" + "<div class='col-6 col-lg-6 col-md-6 mb-2'>الصف : " + document.getElementById('LevelName').value + "</div><div class='col-6 col-lg-6 col-md-6 mb-2'>الفصل : " + document.getElementById('ClassName').value + "</div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>تاريخ القسط : " + Date2 + "</div>" +
+                            " <div class='col-6 col-lg-6 col-md-6 mb-2'> تاريخ القسط التالي : " + Date3 + "  </div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة القسط بالارقام : " + Amount1 + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة القسط بالحروف : " + triConvert(Amount1) + " جنيها</div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالارقام : " + Amount + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'> قيمة المدفوع بالحروف : " + Amount + " جنيها</div>" +
+
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالارقام : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيه</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2'>قيمة المتبقي بالحروف : " + parseFloat(document.getElementById('Total2').value - Amount) + " جنيها</div>" +
+
+
+                            "<hr><div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>ملاحظة : " + document.getElementById('Notes').value + "</div>" +
+                            "<div class='col-6 col-lg-6 col-md-6 mb-2 text-center'>الموظف المختص : " + document.getElementById('EmpName').value + "</div>"
+
+                            + "<hr>" + data.ReportFooter + "</div></div>";
+
+                        //Print Page
+                        window.print();
+                        document.body.innerHTML = old;
+                        savedSL('/StudentsSubscriptions/Collect/' + $("#Id").val());
+                    });
+
+                }
+                else {
+                    savedF("لم يتم دفع القسط المسبق بعد")
+                }
+            });
+        };
+
+
+        function CollecttAndMakeInsgtallment(i) {
+            console.log(i);
+            var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
+
+            var Amount = document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value;
+            var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
+            var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
+
+            var Amount1 = document.getElementById("SubscriptionMethod[" + i + "].Amount").value;
+            var Date3 = document.getElementById("SubscriptionMethod[" + i  + "].Date").value;
+            var NewpaymentDate = document.getElementById("NewpaymentDate").value;
+
+            var sub = Amount1 - Amount;
+
+            $.get('/StudentsSubscriptions/UpdateSubscriptionsMethods2', { Id: Id, Amount: Amount, Date: Date1, Id2: $("#Date2").val(), Sub: sub, StudentId: $("#StudentId").val(), StudyYearId: $("#StudyYearId").val(), NewpaymentDate: NewpaymentDate }, function (data) {
                 if (data != "Faild") {
                     $.get('/Subscriptions/getReportDesign', function (data) {
                         var old = document.body.innerHTML;

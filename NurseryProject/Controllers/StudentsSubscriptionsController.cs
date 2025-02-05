@@ -84,17 +84,29 @@ namespace NurseryProject.Views
                 if (item.PaidDate == null)
                     item.PaidDate = item.Date;
             }
-            
+
             return View(class1);
         }
 
 
-        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0,string PaperNumber1="",string PaperNumber2="")
+        public ActionResult UpdateSubscriptionsMethods(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0, string PaperNumber1 = "", string PaperNumber2 = "")
         {
             var model = subscriptionsMethodsServices.Update(Id, Amount, Date, Id2, Sub, PaperNumber1, PaperNumber2, (Guid)TempData["UserId"]);
             if (model)
             {
-                 
+
+                return Json("Done", JsonRequestBehavior.AllowGet);
+            }
+            else
+                return Json("Faild", JsonRequestBehavior.AllowGet);
+
+        }
+        public ActionResult UpdateSubscriptionsMethods2(Guid Id, string Amount, string Date, Guid StudentId, Guid StudyYearId, string Id2 = null, float Sub = 0, string PaperNumber1 = "", string PaperNumber2 = "", string NewpaymentDate = "")
+        {
+            var model = subscriptionsMethodsServices.Update2(Id, Amount, Date, Id2, Sub, PaperNumber1, PaperNumber2, NewpaymentDate, (Guid)TempData["UserId"]);
+            if (model)
+            {
+
                 return Json("Done", JsonRequestBehavior.AllowGet);
             }
             else
@@ -127,7 +139,7 @@ namespace NurseryProject.Views
         }
         public ActionResult getSubscriptionsMethods(Guid Id)
         {
-            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd HH:mm:ss.fff") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount,x.PaperNumber1,x.PaperNumber2 }).ToList();
+            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd HH:mm:ss.fff") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount, x.PaperNumber1, x.PaperNumber2 }).ToList();
             var model2 = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
 
             var IsAnother = false;
@@ -138,8 +150,16 @@ namespace NurseryProject.Views
                     IsAnother = true;
                 }
             }
+            var amount = 0.0;
+            foreach (var item in model)
+            {
+                if (item.IsPaid ==true)
+                    amount += double.Parse(item.PaidAmount);
+                else
+                    amount +=double.Parse( item.Amount);
 
-            var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = model.Sum(x => float.Parse(x.Amount)) };
+            }
+            var data = new { result = model, IsAnother = IsAnother, Num = model.Count(), Amoun = amount };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
@@ -405,7 +425,7 @@ namespace NurseryProject.Views
             }
 
             ViewBag.Reports = result;
-            ViewBag.Total = result.Sum(x =>float.Parse(x.Paid));
+            ViewBag.Total = result.Sum(x => float.Parse(x.Paid));
 
             return View();
         }
@@ -512,7 +532,7 @@ namespace NurseryProject.Views
             var result = studentsClassServices.GetCollectedDayMoney(date, date2);
 
 
-            
+
 
             ViewBag.Reports = result;
             ViewBag.Total = result.Select(x => x.Amount).DefaultIfEmpty(0).Sum();

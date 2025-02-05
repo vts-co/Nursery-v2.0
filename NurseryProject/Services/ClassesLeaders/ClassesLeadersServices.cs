@@ -43,6 +43,14 @@ namespace NurseryProject.Services.ClassesLeaders
                 return model;
             }
         }
+        public Guid? GetDepartmentIdByClass(Guid Id)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.ClassesLeaders.Where(x => x.Id == Id).FirstOrDefault().Employee.Jop.DepartmentId;
+                return model;
+            }
+        }
         public ResultDto<ClassesLeader> Create(ClassesLeader model, Guid UserId)
         {
             using (var dbContext = new almohandes_DbEntities())

@@ -33,6 +33,8 @@ namespace NurseryProject.Dtos.StudentsClass
         public bool IsCurrent { get; set; }
 
         public string Amount { get; set; }
+        public double PaiedAmount { get; set; }
+        public string RemainAmount { get; set; }
         public string Number { get; set; }
         public bool IsAnother { get; set; }
         public string JoiningDate { get; set; }

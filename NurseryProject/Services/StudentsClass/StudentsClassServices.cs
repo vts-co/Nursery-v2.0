@@ -38,6 +38,7 @@ namespace NurseryProject.Services.StudentsClass
                     SubscriptionId = x.SubscriptionId.Value,
                     SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
                     Amount = x.IsAnother != true ? x.Subscription.Amount : "",
+                    
                     Number = x.IsAnother != true ? x.Subscription.InstallmentsNumber : "",
                     Regular = "منتظم",
                     SubscriptionMethod = x.SubscriptionMethods.Where(y => y.IsDeleted == false && y.StudentClassId == x.Id).OrderBy(y => y.OrderDisplay).Select(y => new SubscriptionMethodDto
@@ -70,7 +71,8 @@ namespace NurseryProject.Services.StudentsClass
                         {
                             total = float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == false).Sum(y => float.Parse(y.Amount)).ToString());
                         }
-                        item.Amount = total.ToString();
+                        item.Amount = item.SubscriptionMethod.Sum(y => float.Parse(y.Amount)).ToString();
+                        item.PaiedAmount = float.Parse(item.SubscriptionMethod.Where(y => y.IsPaid == true).Sum(y => float.Parse(y.PaidAmount)).ToString());
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
                     item.StudentsClassPrevious = GetAllPrevious(item.StudentId, item.StudyTypeId);

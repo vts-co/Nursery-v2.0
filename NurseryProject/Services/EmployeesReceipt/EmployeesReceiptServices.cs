@@ -45,7 +45,7 @@ namespace NurseryProject.Services.EmployeesReceipt
                     TotalCost = x.TotalAmount.Value.ToString(),
                     TotalDiscountCost=x.TotalDiscount.Value.ToString(),
                     TotalIncreasesCost=x.TotalAdds.Value.ToString(),
-                    FinalTotalCost=x.FinalTotalAmount.ToString()
+                    FinalTotalCost=x.FinalTotalAmount
                 }).ToList();
 
                 foreach (var item in model)
@@ -180,7 +180,7 @@ namespace NurseryProject.Services.EmployeesReceipt
                     TotalIncreasesCost = dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date) && z.EmployeeId == x.Id).Sum(b => b.IncreaseValue.Value).ToString(),
                     FinalTotalCost = ((totalCostCount * x.WorkDayCost) +
                     dbContext.EmployeesIncreases.Where(z => z.IncreaseDate.Value.ToString().Contains(date)&&z.IsDeleted==false && z.EmployeeId == x.Id).Sum(c => c.IncreaseValue) -
-                    dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.IsDeleted == false && y.EmployeeId == x.Id).Sum(d => d.DiscountValue)).ToString(),
+                    dbContext.EmployeesDiscounts.Where(y => y.DiscountDate.Value.ToString().Contains(date) && y.IsDeleted == false && y.EmployeeId == x.Id).Sum(d => d.DiscountValue)),
                     Reciept = RecieptCount.ToString(),
                     Date = Date,
                     Paid = Paid,
@@ -197,13 +197,13 @@ namespace NurseryProject.Services.EmployeesReceipt
                 }
                 if(model.Reciept != "0")
                 {
-                    model.FinalTotalCost = model.Paid;
+                    model.FinalTotalCost = model.Paid!=null?double.Parse( model.Paid):0;
                 }
                 else
                 {
                     model.FinalTotalCost = ((totalCostCount * float.Parse(model.WorkDayCost)) -
                    float.Parse(model.TotalDiscountCost) +
-                   float.Parse(model.TotalIncreasesCost)).ToString();
+                   float.Parse(model.TotalIncreasesCost));
                 }
                
 
