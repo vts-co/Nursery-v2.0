@@ -287,6 +287,7 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Controllers\ClassesLeadersController.cs" />
+    <Compile Include="Controllers\ClassStudentsResultsController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\DestrictsController.cs" />
     <Compile Include="Controllers\DiscountsTypesController.cs" />
@@ -357,6 +358,7 @@
     <Compile Include="Dtos\RevenuesTypes\RevenuesTypesDto.cs" />
     <Compile Include="Dtos\Revenues\RevenuesDto.cs" />
     <Compile Include="Dtos\ShiftsTimes\ShiftsTimesDto.cs" />
+    <Compile Include="Dtos\StudentExamDegrees\ClassStudentsResultDto.cs" />
     <Compile Include="Dtos\StudentExamDegrees\StudentExamDegreesDto.cs" />
     <Compile Include="Dtos\StudentsAttendance\StudentsAttendanceDto.cs" />
     <Compile Include="Dtos\StudentsClassesTransfer\StudentsClassesTransferDto.cs" />
@@ -2348,6 +2350,7 @@
     <Content Include="Views\StudentsSubscriptions\CollectedDailyReports.cshtml" />
     <Content Include="Views\Expenses\CollectedReports.cshtml" />
     <Content Include="Views\Revenues\CollectedReports.cshtml" />
+    <Content Include="Views\ClassStudentsResults\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

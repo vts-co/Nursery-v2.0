@@ -236,6 +236,7 @@ namespace NurseryProject.Controllers
         [Authorized(ScreenId = "75")]
         public ActionResult Reports(string StudentId, string ClassId, string LevelId, string Date, string Date2)
         {
+            List<StudentExamDegreesDto> list = new List<StudentExamDegreesDto>();
             var students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             ViewBag.StudentId = new SelectList(students, "Id", "Name");
 
@@ -248,11 +249,16 @@ namespace NurseryProject.Controllers
             {
                 ViewBag.student = "1";
                 var studentId = Guid.Parse(StudentId);
-                model = model.Where(x => x.StudentId == studentId).ToList();
+                foreach (var item in model)
+                {
+                    var data = item.Students.Where(x => x.StudentId == studentId).ToList();
+                    item.Students = data;
+                }
             }
             else
             {
                 ViewBag.student = "2";
+
             }
 
             //if (StudyYearId != null && ClassId != null && StudyYearId != "" && ClassId != "")
@@ -296,7 +302,9 @@ namespace NurseryProject.Controllers
 
             //ViewBag.Count = model.Where(x => x.IsAttend == false).ToList().Count();
             //ViewBag.Count2 = model.Where(x => x.IsAttend == true).ToList().Count();
-
+            if (string.IsNullOrEmpty(StudentId))
+                ViewBag.Degrees = list;
+            else
             ViewBag.Degrees = model;
             //ViewBag.By = By;
             return View();

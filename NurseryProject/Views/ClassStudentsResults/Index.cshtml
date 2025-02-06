@@ -6,7 +6,7 @@
     var count = " لم يمتحن بعد  ";
     var num = "%";
 }
-@using (Html.BeginForm("Reports", "StudentsExamDegrees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Index", "ClassStudentsResults", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
     <div class="card">
@@ -36,14 +36,7 @@
 
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-12">
-                    @Html.Label("الطالب ", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.DropDownList("StudentId", null, "--اختر--", new { @class = "form-control searchable" })
-                        @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
-
-                    </div>
-                </div>
+              
             </div>
         </div>
         <div class="card-footer">
@@ -54,7 +47,7 @@
     </div>
 
 }
-@if (ViewBag.Degrees != null)
+@if (ViewBag.Data != null)
 {
 
     <div class="card">
@@ -70,76 +63,48 @@
                 <thead class="bg-soft-primary">
                     <tr>
                         <th>
-                            @Html.DisplayName("الكود")
+                            @Html.DisplayName("الطالب")
                         </th>
+                        @foreach (var item in ViewBag.Exams)
+                        {
+                            <th>
+                                @item.Name
+                            </th>
+                        }
+                    <th>
+                        @Html.DisplayName("الاجمالي") | @ViewBag.Total
+                    </th>
                         <th>
-                            @Html.DisplayName("الاسم")
-                        </th>
-                        <th>
-                            @Html.DisplayName("رقم التليفون")
+                            @Html.DisplayName("النسبة ")
                         </th>
 
-                      
-                        <th>
-                            @Html.DisplayName("نوع الدراسة ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الصف ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الصف ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الفصل")
-                        </th>
-                        <th>
-                            @Html.DisplayName("الاختبار ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("درجة الاختبار ")
-                        </th>
-                        <th>
-                            @Html.DisplayName("درجة الطالب ")
-                        </th>
+
+
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < ViewBag.Degrees.Count; i++)
+                    @foreach (var item in ViewBag.Data)
                     {
-                        <tr>
-                            <td>
-                                @ViewBag.Degrees[i].Code
-                            </td>
-                            <td>
-                                @ViewBag.Degrees[i].Students[0].StudentName
-                            </td>
-                            <td>
-                                @ViewBag.Degrees[i].StudentPhone
-                            </td>
+                    <tr>
+                        <td>
+                            @item.StudentName
+                        </td>
 
+                        @foreach (var item2 in item.Details)
+                        {
                             <td>
-                                @ViewBag.Degrees[i].StudyPlaceName
+                                @item2.Degree
                             </td>
-                            <td>
-                                @ViewBag.Degrees[i].StudyTypeName
-                            </td>
-                            <td>
-                                @ViewBag.Degrees[i].LevelName
-                            </td>
+                        }
+                        <td>
+                            @item.Total
+                        </td>
+                        <td>
+                            @item.Percentage
+                        </td>
 
-                            <td>
-                                @ViewBag.Degrees[i].ClassName
-                            </td>
-                            <td>
-                                @ViewBag.Degrees[i].ExamName
-                            </td>
-                            <td>
-                                @ViewBag.Degrees[i].ExamDegree
-                            </td>
-                            <td>
-                                @ViewBag.Degrees[i].Students[0].TotalDegree
-                            </td>
-                        </tr>
+
+                    </tr>
                     }
 
 
@@ -164,6 +129,6 @@
             });
         });
 
-      
+
     </script>
 }
