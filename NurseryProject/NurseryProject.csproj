@@ -305,6 +305,7 @@
     <Compile Include="Controllers\ExamsTypesController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\ExpensesTypesController.cs" />
+    <Compile Include="Controllers\FinancialReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncreasesTypesController.cs" />
     <Compile Include="Controllers\JopsController.cs" />
@@ -356,6 +357,7 @@
     <Compile Include="Dtos\PaymentDetails\PaymentDetailsDto.cs" />
     <Compile Include="Dtos\RegistrationTypes\RegistrationTypesDto.cs" />
     <Compile Include="Dtos\RevenuesTypes\RevenuesTypesDto.cs" />
+    <Compile Include="Dtos\Revenues\FinancialReportDto.cs" />
     <Compile Include="Dtos\Revenues\RevenuesDto.cs" />
     <Compile Include="Dtos\ShiftsTimes\ShiftsTimesDto.cs" />
     <Compile Include="Dtos\StudentExamDegrees\ClassStudentsResultDto.cs" />
@@ -549,6 +551,7 @@
     <Compile Include="Services\EmployeesTransferAllowance\EmployeesTransferAllowanceServices.cs" />
     <Compile Include="Services\ExamsTypes\ExamsTypesServices.cs" />
     <Compile Include="Services\EmployeesRegistrationTypes\RegistrationTypesServices.cs" />
+    <Compile Include="Services\Revenues\FinancialReportServices.cs" />
     <Compile Include="Services\Settings\SettingsServices.cs" />
     <Compile Include="Services\StudentExamDegrees\StudentExamDegreesServices.cs" />
     <Compile Include="Services\StudentsAttendance\StudentsAttendanceServices.cs" />
@@ -2351,6 +2354,8 @@
     <Content Include="Views\Expenses\CollectedReports.cshtml" />
     <Content Include="Views\Revenues\CollectedReports.cshtml" />
     <Content Include="Views\ClassStudentsResults\Index.cshtml" />
+    <Content Include="Views\FinancialReport\Index.cshtml" />
+    <Content Include="Views\ClassStudentsResults\ClassYearResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

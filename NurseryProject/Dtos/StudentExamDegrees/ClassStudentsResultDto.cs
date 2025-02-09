@@ -21,4 +21,14 @@ namespace NurseryProject.Dtos.StudentExamDegrees
         public string StudentDegree { get; set; }
 
     }
+
+
+
+    public class YearClassResultDto
+    {
+        public string ClassName { get; set; }
+        public double? Persntage { get; set; }
+       
+
+    }
 }

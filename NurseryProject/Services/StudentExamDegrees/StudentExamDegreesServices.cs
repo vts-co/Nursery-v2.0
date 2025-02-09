@@ -88,11 +88,11 @@ namespace NurseryProject.Services.StudentExamDegrees
                     foreach (var item2 in Exams)
                     {
                         ClassStudentsSubjectsResultDto classStudents = new ClassStudentsSubjectsResultDto();
-                        var ss = dbContext.StudentsExamDegrees.Where(x => !x.IsDeleted && x.StudentId == item.StudentId && x.ClassExamId == item2.Id).FirstOrDefault();
-                        if (ss!=null)
+                        var StudentExamDegree = dbContext.StudentsExamDegrees.Where(x => !x.IsDeleted && x.StudentId == item.StudentId && x.ClassExamId == item2.Id).ToList();
+                        if (StudentExamDegree.Count() > 0)
                         {
-                            classStudents.Degree = ss.Degree;
-                            classStudents.ExamDegree =item2.Exam.TotalDegree;
+                            classStudents.Degree = StudentExamDegree.Select(x => x.Degree).DefaultIfEmpty(0).Sum();
+                            classStudents.ExamDegree = item2.Exam.TotalDegree;
                             dto.Details.Add(classStudents);
                         }
                         else
@@ -104,23 +104,77 @@ namespace NurseryProject.Services.StudentExamDegrees
 
                     }
                     dto.Total = dto.Details.Select(x => x.Degree).DefaultIfEmpty(0).Sum();
-                    dto.Percentage =Math.Round((double)((dto.Total * 100)/ dto.Details.Select(x => x.ExamDegree).DefaultIfEmpty(0).Sum()), 2);
+                    dto.Percentage = Math.Round((double)((dto.Total * 100) / dto.Details.Select(x => x.ExamDegree).DefaultIfEmpty(0).Sum()), 2);
                     list.Add(dto);
                 }
 
                 return list;
             }
         }
-          public List<Data> GetAllClassExams(Guid UserId, Guid EmployeeId, Role RoleId, Guid ClassId)
+        public List<YearClassResultDto> GetYearClasssResultAll(Guid YearId)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+
+                List<YearClassResultDto> list = new List<YearClassResultDto>();
+
+                var classes = dbContext.Classes.Where(x => !x.IsDeleted && x.LevelId == YearId).ToList();
+                var total = 0.0;
+                double totalclassdegree=0.0;
+                double ExamDegree=0.0;
+                var Count = 0;
+
+                foreach (var item3 in classes)
+                {
+                    var studentclass = dbContext.StudentsClasses.Where(x => !x.IsDeleted&&x.ClassId==item3.Id).ToList();
+                    YearClassResultDto dto1 = new YearClassResultDto();
+                    dto1.ClassName = item3.Name;
+                    foreach (var item in studentclass)
+                    {
+                        var Exams = dbContext.ClassExams.Where(x => x.IsDeleted == false && x.ClassId == item3.Id).OrderBy(x => x.CreatedOn).ToList();
+                  
+                        foreach (var item2 in Exams)
+                        {
+                            ClassStudentsSubjectsResultDto classStudents = new ClassStudentsSubjectsResultDto();
+                            var StudentExamDegree = dbContext.StudentsExamDegrees.Where(x => !x.IsDeleted && x.StudentId == item.StudentId && x.ClassExamId == item2.Id).ToList();
+                            if (StudentExamDegree.Count() > 0)
+                            {
+                                totalclassdegree+=(double)StudentExamDegree.Select(x => x.Degree).DefaultIfEmpty(0).Sum();
+                            }
+                            ExamDegree += (double)item2.Exam.TotalDegree;
+
+
+                        }
+                 
+                        total += Math.Round(((totalclassdegree * 100) / ExamDegree), 2);
+                        ExamDegree = 0;
+                        totalclassdegree = 0;
+                        Count += 1;
+
+                    }
+                    dto1.Persntage =Math.Round( total/ Count,2);
+                    ExamDegree = 0;
+                    total = 0;
+                    Count = 0;
+                    list.Add(dto1);
+                }
+
+
+
+
+                return list;
+            }
+        }
+        public List<Data> GetAllClassExams(Guid UserId, Guid EmployeeId, Role RoleId, Guid ClassId)
         {
             using (var dbContext = new almohandes_DbEntities())
             {
 
                 var Exams = dbContext.ClassExams.Where(x => x.ClassId == ClassId && x.IsDeleted == false && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(y => y.IsDeleted == false && y.Id == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.Id == EmployeeId))).OrderBy(x => x.CreatedOn)
-                    
-                    .Select(x=> new Data { Name= x.Exam.Subject.Name+" | " +x.Exam.TotalDegree , Degree= x.Exam.TotalDegree }).ToList();
 
-               
+                    .Select(x => new Data { Name = x.Exam.Subject.Name + " | " + x.Exam.TotalDegree, Degree = x.Exam.TotalDegree }).ToList();
+
+
                 return Exams;
             }
         }

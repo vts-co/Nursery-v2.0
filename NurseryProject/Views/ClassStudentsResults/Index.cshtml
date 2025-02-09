@@ -1,10 +1,9 @@
 ﻿@model NurseryProject.Dtos.StudentExamDegrees.StudentExamDegreesDto
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = "تقرير درجات اختبارات طالب";
+    ViewBag.Title = "تقرير درجات اختبارات فصل";
     ViewBag.MainPage = "الطلاب";
-    var count = " لم يمتحن بعد  ";
-    var num = "%";
+
 }
 @using (Html.BeginForm("Index", "ClassStudentsResults", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

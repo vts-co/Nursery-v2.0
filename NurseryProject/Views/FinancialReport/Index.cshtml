@@ -1,0 +1,67 @@
+﻿@model NurseryProject.Dtos.Revenues.FinancialReportDto
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير مالي شامل ";
+    ViewBag.MainPage = "تقرير مالي شامل ";
+
+}
+@using (Html.BeginForm("Index", "FinancialReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+
+
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الشهر", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("date", new { htmlAttributes = new { @class = "form-control", type = "month", required = "required" } })
+                        @Html.ValidationMessage("date", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model != null)
+{
+    <div class="card ">
+        <div class="card-header">
+            تقرير مالي شامل 
+        </div>
+        <div class="card-body">
+          
+            <div class="row d-flex justify-content-center text-center mt-3">
+                <div class="col-6">
+                    <h4 class=" p-2"> المصروفات : @Model.Expences</h4>
+                    <h4 class=" p-2"> المرتبات : @Model.Salaries</h4>
+                    <h4 class=" p-2"> الايرادات : @Model.Income</h4>
+
+
+                </div>
+               
+                <div class="mt-4   col-6 d-flex justify-content-start text-right">
+                    <h4 class=" bg-success p-3" style="height: fit-content !important"> الصافي : @Model.Safy</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section scripts{
+}

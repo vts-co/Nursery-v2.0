@@ -1,0 +1,87 @@
+﻿@model  IEnumerable< NurseryProject.Dtos.StudentExamDegrees.YearClassResultDto>
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "تقرير نتائج  الفصول مجمع";
+    ViewBag.MainPage = "التقارير";
+
+}
+@using (Html.BeginForm("ClassYearResults", "ClassStudentsResults", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الصف", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <button type='submit' class='btn btn-primary  waves-effect waves-light px-3 m-1 col-12 col-md-auto'><i class='fas fa-search me-1'></i>عرض</button>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header mb-3">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">
+                    تقرير نتائج  الفصول مجمع
+                </h4>
+            </div>
+        </div>
+        <div class="card-body">
+            @foreach (var item in Model)
+            {
+                <table id="datatable" class="table table-striped dt-responsive  nowrap w-100">
+                    <thead class="bg-soft-primary">
+                        <tr>
+                            <th>
+                                @Html.DisplayName("الفصل")
+                            </th>
+                            <th>
+                                @Html.DisplayName("النسبة")
+                            </th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                @item.ClassName
+                            </td>
+                            <td>
+                                @item.Persntage
+                            </td>
+                     
+                        </tr>
+
+                    </tbody>
+                </table>
+
+             
+            }
+
+        </div>
+    </div>
+}
+
+
+@section scripts{
+
+}

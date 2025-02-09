@@ -56,5 +56,24 @@ namespace NurseryProject.Controllers
 
             return View();
         }
+
+
+
+        public ActionResult ClassYearResults()
+        {
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll(), "Id", "Name");
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ClassYearResults(string LevelId)
+        {
+            ViewBag.LevelId = new SelectList(levelsServices.GetAll(), "Id", "Name", LevelId);
+
+            var model = studentExamDegreesServices.GetYearClasssResultAll(Guid.Parse( LevelId));
+
+            return View(model);
+        }
+
+
     }
 }

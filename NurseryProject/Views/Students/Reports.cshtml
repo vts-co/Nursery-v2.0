@@ -117,6 +117,9 @@
                             <th>@Html.DisplayName("التحويل بين الفصول")</th>
                             <th>
                                 @Html.DisplayName("معلمي فصله")
+                            </th> 
+                            <th>
+                                @Html.DisplayName("تحويل الي صف اخر ")
                             </th>
                         </tr>
                     </thead>
@@ -251,6 +254,9 @@
                                     }
 
                                 </td>
+                                <td>
+                                    <a href="/StudentsLevelsTransfer/Search" title="تحويل الي صف اخر"><i class="fas fa-exchange-alt"></i></a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -290,7 +296,9 @@
                                 <th>
                                     @Html.DisplayName("الفصل")
                                 </th>
-
+                                <th>
+                                    @Html.DisplayName("تحويل الي صف اخر ")
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -312,7 +320,9 @@
                                 <td>
                                     @item.ClassName
                                 </td>
-
+                                <td>
+                                    <a href="/StudentsLevelsTransfer/Search" title="تحويل الي صف اخر"><i class="fas fa-exchange-alt"></i></a>
+                                </td>
                             </tr>
 
                         </tbody>
