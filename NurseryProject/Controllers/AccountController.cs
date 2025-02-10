@@ -22,7 +22,7 @@ namespace NurseryProject.Controllers
 
             var model = settingsServices.GetAll();
             TempData["SettingLogo"] = model.Logo;
-            TempData["SettingTitle"] = model.Title;
+            TempData["SettingTitle"] =model.Title;
             var pass = Security.Decrypt("Q+0BSEUa0qVOJFYz3wEI6w==");
 
             return View(new SignInDto());

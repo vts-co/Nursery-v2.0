@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(ScreenId = "30")]
+    [Authorized(ScreenId = "79")]
 
     public class ClassStudentsResultsController : Controller
     {
@@ -67,6 +67,7 @@ namespace NurseryProject.Controllers
         [HttpPost]
         public ActionResult ClassYearResults(string LevelId)
         {
+
             ViewBag.LevelId = new SelectList(levelsServices.GetAll(), "Id", "Name", LevelId);
 
             var model = studentExamDegreesServices.GetYearClasssResultAll(Guid.Parse( LevelId));

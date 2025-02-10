@@ -553,10 +553,14 @@
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Reports", "StudentsExamDegrees")"><i class="fas fa-layer-group p-1"></i> تقرير درجات اختبارات طالب</a></li>
                                     }
-                                    @if (ViewBag.userscreens.ToString().Contains(",75,"))
+                                    @if (ViewBag.userscreens.ToString().Contains(",79,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index","ClassStudentsResults" )"><i class="fas fa-layer-group p-1"></i> تقرير درجات اختبارات فصل</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",78,"))
+                                    {
                                         <li class="Stund2"><a href="@Url.Action("ClassYearResults","ClassStudentsResults" )"><i class="fas fa-layer-group p-1"></i> تقرير نتائج  الفصول مجمع</a></li>
+
                                     }
                                     @if (ViewBag.userscreens.ToString().Contains(",76,"))
                                     {
@@ -586,7 +590,7 @@
                                     }
 
 
-                                    @if (ViewBag.userscreens.ToString().Contains(",30,"))
+                                    @if (ViewBag.userscreens.ToString().Contains(",77,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index", "FinancialReport")"><i class="fas fa-coins p-1"></i> تقرير مالي شامل  </a></li>
 

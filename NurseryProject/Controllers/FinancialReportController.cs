@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace NurseryProject.Controllers
 {
-    [Authorized(ScreenId = "30")]
+    [Authorized(ScreenId = "77")]
 
     public class FinancialReportController : Controller
     {
