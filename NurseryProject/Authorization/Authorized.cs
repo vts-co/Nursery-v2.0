@@ -1,6 +1,8 @@
 ﻿using NurseryProject.Enums;
+using NurseryProject.Models;
 using NurseryProject.Services.Settings;
 using NurseryProject.Services.Users;
+using NurseryProject.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +70,30 @@ namespace NurseryProject.Authorization
 
                 filterContext.Controller.TempData["SettingLogo"] = setting.Logo;
                 filterContext.Controller.TempData["SettingTitle"] = setting.Title;
+                using (var dbContext = new almohandes_DbEntities())
+                {
+                    var IsOffline = dbContext.Settings.Where(x => !x.IsDeleted).FirstOrDefault().IsOffline;
+                    if (IsOffline )
+                    {
+                        string pcSerial = MachineDataService.getSerialID();
+                        string serialEncrypted = Security.Encrypt(pcSerial);
+                        var EntityDataSecurity = dbContext.Settings.Where(x => !x.IsDeleted).FirstOrDefault().ActivationKey;
+
+                        if (EntityDataSecurity != serialEncrypted)
+                            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
+
+                    }
+                    else
+                    {
+                        //model1.SValue = VTSAuth.Encrypt("@vts-co@online");
+
+                        string serialEncrypted = MachineDataService.CreateMD5("@vts-co@online");
+                        var EntityDataSecurity = dbContext.Settings.Where(x => !x.IsDeleted).FirstOrDefault().ActivationKey;
+
+                        if (EntityDataSecurity != serialEncrypted)
+                            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "SignIn", returnUrl = filterContext.HttpContext.Request.Url.ToString() }));
+                    }
+                }
                 if (auth.CookieValues.UserScreens != null)
                 {
                     string[] strArray = auth.CookieValues.UserScreens.Split(',');
@@ -75,6 +101,9 @@ namespace NurseryProject.Authorization
 
                 }
                 
+
+
+
             }
             else
             {

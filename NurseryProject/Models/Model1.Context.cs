@@ -97,5 +97,15 @@ namespace NurseryProject.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GenerateSchema1");
         }
+    
+        public virtual int DeleteAll2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteAll2");
+        }
+    
+        public virtual int GenerateSchema2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GenerateSchema2");
+        }
     }
 }

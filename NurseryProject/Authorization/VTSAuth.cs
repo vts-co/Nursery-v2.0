@@ -1,5 +1,8 @@
 ﻿using NurseryProject.Utilities;
 using System;
+using System.Management;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace NurseryProject.Authorization
@@ -137,5 +140,30 @@ namespace NurseryProject.Authorization
             public Guid Id { get; set; }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -1,7 +1,18 @@
 ﻿
 @{
     Layout = null;
-
+    var isLogin = "block";
+    var isActive = "none";
+    if (ViewBag.isactive == false)
+    {
+        isLogin = "none";
+        isActive = "block";
+    }
+    else
+    {
+        isLogin = "block";
+        isActive = "none";
+    }
 }
 
 <!doctype html>
@@ -61,10 +72,10 @@
     <div class="auth-page">
         <div class="container-fluid auth-bg p-0">
             <div class="bg-overlay bg-primary"></div>
-          
+
             <div class="row g-0">
                 <div class="col-xxl-4 col-lg-4">
-                   
+
                 </div>
                 <div class="col-xxl-4 col-lg-4">
                     <div class="d-flex p-sm-5 p-4">
@@ -82,30 +93,46 @@
                                         @*<p class="text-muted mt-2 din-med">أدخل التفاصيل الخاصة بك لتسجيل الدخول إلى حسابك</p>*@
 
                                     </div>
-                                    @using (Html.BeginForm("SignIn", "Account", FormMethod.Post, new { id = "kt_login_signin_form", @class = "mt-4 pt-2", style = "padding-left:20px; padding-right:20px;" }))
-                                    {<div class="mb-3">
-                                            <label class="form-label din-bold">اسم المستخدم</label>
-                                            <input type="text" class="form-control din-med" id="Username" name="Username" placeholder="اسم المستخدم" style="text-align:right;">
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-start">
-                                                <div class="flex-grow-1">
-                                                    <label class="form-label din-bold">كلمة المرور</label>
+
+
+
+                                    <div id="loginForgot" style="display:@isActive">
+                                        <form class="form" id="kt_login_forgot_form" runat="server" action="/Account/Activation" method="post">
+                                            <div class="form-group mb-10">
+                                                <input class="form-control form-control-solid h-auto py-4 px-8 din-bold" type="password" placeholder="ادخل رقم التفعيل" id="activePass" name="activePass" autocomplete="off" />
+                                            </div>
+                                            <div class="form-group d-none flex-wrap flex-center mt-10">
+                                                <button id="btnActive" type="submit" class="btn btn-primary font-weight-bold my-3 mx-2 din-bold">تفعيل</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="auth-content my-auto" id="loginDiv" style="display:@isLogin">
+
+                                        @using (Html.BeginForm("SignIn", "Account", FormMethod.Post, new { id = "kt_login_signin_form", @class = "mt-4 pt-2", style = "padding-left:20px; padding-right:20px;" }))
+                                        {<div class="mb-3">
+                                                <label class="form-label din-bold">اسم المستخدم</label>
+                                                <input type="text" class="form-control din-med" id="Username" name="Username" placeholder="اسم المستخدم" style="text-align:right;">
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <label class="form-label din-bold">كلمة المرور</label>
+                                                    </div>
+
                                                 </div>
 
+                                                <div class="input-group auth-pass-inputgroup">
+                                                    <input type="password" class="form-control din-med" placeholder="كلمة المرور" aria-label="Pass" id="Password" name="Password" aria-describedby="password-addon" style="text-align:right;">
+                                                    <button class="btn btn-light shadow-none ms-0" type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
+                                                </div>
                                             </div>
 
-                                            <div class="input-group auth-pass-inputgroup">
-                                                <input type="password" class="form-control din-med" placeholder="كلمة المرور" aria-label="Pass" id="Password" name="Password" aria-describedby="password-addon" style="text-align:right;">
-                                                <button class="btn btn-light shadow-none ms-0" type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
+                                            <div class="mb-3">
+                                                <button class="btn btn-primary w-100 waves-effect waves-light din-bold" id="btnLogin" type="submit">تسجيل دخول</button>
                                             </div>
-                                        </div>
+                                        }
 
-                                        <div class="mb-3">
-                                            <button class="btn btn-primary w-100 waves-effect waves-light din-bold" id="btnLogin" type="submit">تسجيل دخول</button>
-                                        </div>
-                                    }
-
+                                    </div>
                                 </div>
                                 <br />
                                 <br />
@@ -118,10 +145,10 @@
                 <!-- end col -->
                 <!-- end col -->
             </div>
-                        <!-- end row -->
-                    </div>
-                    <!-- end container fluid -->
-                </div>
+            <!-- end row -->
+        </div>
+        <!-- end container fluid -->
+    </div>
 
 
     <!-- JAVASCRIPT -->

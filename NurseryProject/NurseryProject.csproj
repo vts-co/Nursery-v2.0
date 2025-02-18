@@ -135,6 +135,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -281,8 +282,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Authorization\Authorized.cs" />
+    <Compile Include="Authorization\MachineDataService.cs" />
     <Compile Include="Authorization\VTSAuth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BackUpRestoreDataController.cs" />
     <Compile Include="Controllers\BuildingSupervisorsController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
@@ -2356,6 +2359,8 @@
     <Content Include="Views\ClassStudentsResults\Index.cshtml" />
     <Content Include="Views\FinancialReport\Index.cshtml" />
     <Content Include="Views\ClassStudentsResults\ClassYearResults.cshtml" />
+    <Content Include="Views\BackUpRestoreData\BackUp.cshtml" />
+    <Content Include="Views\BackUpRestoreData\Restore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

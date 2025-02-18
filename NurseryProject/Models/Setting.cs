@@ -26,5 +26,7 @@ namespace NurseryProject.Models
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
+        public bool IsOffline { get; set; }
+        public string ActivationKey { get; set; }
     }
 }

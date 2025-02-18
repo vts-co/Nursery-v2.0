@@ -560,6 +560,8 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
+          <Property Name="IsOffline" Type="bit" Nullable="false" />
+          <Property Name="ActivationKey" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ShiftsTimes">
           <Key>
@@ -2353,6 +2355,8 @@
             <End Role="SubscriptionsType" EntitySet="SubscriptionsTypes" />
             <End Role="Subscription" EntitySet="Subscriptions" />
           </AssociationSet>
+          <FunctionImport Name="DeleteAll2" />
+          <FunctionImport Name="GenerateSchema2" />
           </EntityContainer>
         <EntityType Name="BuildingSupervisor">
           <Key>
@@ -3000,6 +3004,8 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <Property Name="IsOffline" Type="Boolean" Nullable="false" />
+          <Property Name="ActivationKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ShiftsTime">
           <Key>
@@ -4181,8 +4187,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="almohandes_DbModelStoreContainer" CdmEntityContainer="almohandes_DbEntities">
-          <FunctionImportMapping FunctionImportName="DeleteAll1" FunctionName="almohandes_DbModel.Store.DeleteAll" />
-          <FunctionImportMapping FunctionImportName="GenerateSchema1" FunctionName="almohandes_DbModel.Store.GenerateSchema" />
           <EntitySetMapping Name="BuildingSupervisors">
             <EntityTypeMapping TypeName="almohandes_DbModel.BuildingSupervisor">
               <MappingFragment StoreEntitySet="BuildingSupervisors">
@@ -4757,6 +4761,8 @@
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="almohandes_DbModel.Setting">
               <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="ActivationKey" ColumnName="ActivationKey" />
+                <ScalarProperty Name="IsOffline" ColumnName="IsOffline" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -5088,6 +5094,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteAll2" FunctionName="almohandes_DbModel.Store.DeleteAll" />
+          <FunctionImportMapping FunctionImportName="GenerateSchema2" FunctionName="almohandes_DbModel.Store.GenerateSchema" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
