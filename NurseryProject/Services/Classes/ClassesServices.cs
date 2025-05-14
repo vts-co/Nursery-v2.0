@@ -43,7 +43,7 @@ namespace NurseryProject.Services.Classes
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Class>();
-                var Oldmodel = dbContext.Classes.Where(x => x.Name == model.Name && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.Classes.Where(x => x.Name == model.Name&&x.LevelId==model.LevelId&&x.StudyPlaceId==model.StudyPlaceId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.Result = Oldmodel;
@@ -66,6 +66,14 @@ namespace NurseryProject.Services.Classes
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Class>();
+                var Oldmodel1 = dbContext.Classes.Where(x => x.Name == model.Name && x.LevelId == model.LevelId && x.StudyPlaceId == model.StudyPlaceId && x.Id!=model.Id&& x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel1 != null)
+                {
+                    result.Result = model;
+                    result.IsSuccess = false;
+                    result.Message = "هذا الفصل موجود بالفعل";
+                    return result;
+                }
                 var Oldmodel = dbContext.Classes.Find(model.Id);
                 if (Oldmodel == null)
                 {

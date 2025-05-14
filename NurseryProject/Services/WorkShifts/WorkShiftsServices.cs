@@ -34,8 +34,10 @@ namespace NurseryProject.Services.WorkShifts
                     {
                         if(item2!=null)
                         {
+                            if(item2.TimeFrom!=null)
                             item2.TimeFrom = DateTime.Parse(item2.TimeFrom).ToString("hh:mm tt");
-                            item2.TimeTo = DateTime.Parse(item2.TimeTo).ToString("hh:mm tt");
+                            if (item2.TimeTo != null)
+                                item2.TimeTo = DateTime.Parse(item2.TimeTo).ToString("hh:mm tt");
                         }
                        
                     }
