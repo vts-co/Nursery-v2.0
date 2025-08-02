@@ -20,6 +20,8 @@ namespace NurseryProject.Dtos.Revenues
         public string RevenueTypeName { get; set; }
         public Guid EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string PaperNumber1 { get; set; }
+        public string PaperNumber2 { get; set; }
         public Guid SubscriptionMethodId { get; set; }
         
         public double? Value { get; set; }
