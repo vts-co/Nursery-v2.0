@@ -16,6 +16,14 @@ namespace NurseryProject.Services.StudyYears
                 return model;
             }
         }
+           public List<StudyPlace> GetAllStudyPlaces()
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.StudyPlaces.Where(x => x.IsDeleted == false).ToList();
+                return model;
+            }
+        }
 
         public ResultDto<StudyYear> Create(StudyYear model, Guid UserId)
         {

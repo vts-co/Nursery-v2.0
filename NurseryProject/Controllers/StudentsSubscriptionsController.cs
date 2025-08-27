@@ -236,6 +236,10 @@ namespace NurseryProject.Views
             var StudyYear = studyYearsServices.GetAll();
             ViewBag.StudyYearId = new SelectList(StudyYear, "Id", "Name");
 
+            var StudyPlaces = studyYearsServices.GetAllStudyPlaces();
+            ViewBag.BranchId = new SelectList(StudyPlaces, "Id", "Name");
+
+
             var studyTypes = studyTypesServices.GetAll();
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
 
@@ -246,15 +250,26 @@ namespace NurseryProject.Views
         }
         [HttpPost]
         [Authorized(ScreenId = "56")]
-        public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null)
+        public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null,Guid? BranchId=null)
         {
             var result = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0).ToList();
 
             var StudyYear = studyYearsServices.GetAll();
+            var StudyPlaces = studyYearsServices.GetAllStudyPlaces();
             var studyTypes = studyTypesServices.GetAll();
             var levels = levelsServices.GetAll();
             var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
 
+
+            if (BranchId != null && BranchId != Guid.Empty)
+            {
+                result = result.Where(x => x.StudyPlaceId == BranchId).ToList();
+                ViewBag.BranchId = new SelectList(StudyPlaces, "Id", "Name", BranchId);
+            }
+            else
+            {
+                ViewBag.BranchId = new SelectList(StudyPlaces, "Id", "Name", BranchId);
+            }
 
             if (StudyYearId != null && StudyYearId != Guid.Empty)
             {
