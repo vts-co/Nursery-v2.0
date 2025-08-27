@@ -22,10 +22,10 @@ namespace NurseryProject.Models
             this.ClassExams = new HashSet<ClassExam>();
             this.EmployeeClasses = new HashSet<EmployeeClass>();
             this.Expenses = new HashSet<Expens>();
-            this.Revenues = new HashSet<Revenue>();
             this.StudentsClasses = new HashSet<StudentsClass>();
             this.StudentsClassesTransfers = new HashSet<StudentsClassesTransfer>();
             this.StudentsClassesTransfers1 = new HashSet<StudentsClassesTransfer>();
+            this.Revenues = new HashSet<Revenue>();
         }
     
         public System.Guid Id { get; set; }
@@ -54,12 +54,12 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Expens> Expenses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Revenue> Revenues { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsClass> StudentsClasses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsClassesTransfer> StudentsClassesTransfers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsClassesTransfer> StudentsClassesTransfers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Revenue> Revenues { get; set; }
     }
 }

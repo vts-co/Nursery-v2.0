@@ -42,6 +42,11 @@
                         @Html.DisplayName("التاريخ")
                     </th>
                     <th>
+                        @Html.DisplayName("رقم مرجعي 1")
+                    </th><th>
+                        @Html.DisplayName("رقم مرجعي 2")
+                    </th>
+                    <th>
                         @Html.DisplayName("ملاحظات")
                     </th>
                     <th>
@@ -77,6 +82,11 @@
                     </td>
                     <td>
                         @item.Date.Date.ToString("yyyy-MM-dd")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaperNumber1)
+                    </td> <td>
+                        @Html.DisplayFor(modelItem => item.PaperNumber2)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Notes)

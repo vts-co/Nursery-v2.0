@@ -35,9 +35,7 @@
         <EntityTypeShape EntityType="almohandes_DbModel.Level" Width="1.5" PointX="6" PointY="21.875" />
         <EntityTypeShape EntityType="almohandes_DbModel.Page" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="almohandes_DbModel.RegistrationType" Width="1.5" PointX="4.5" PointY="8.125" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Revenue" Width="1.5" PointX="13.5" PointY="26" />
         <EntityTypeShape EntityType="almohandes_DbModel.RevenuesType" Width="1.5" PointX="11.25" PointY="47.875" />
-        <EntityTypeShape EntityType="almohandes_DbModel.Setting" Width="1.5" PointX="13.75" PointY="0.75" />
         <EntityTypeShape EntityType="almohandes_DbModel.ShiftsTime" Width="1.5" PointX="10.5" PointY="58" />
         <EntityTypeShape EntityType="almohandes_DbModel.Student" Width="1.5" PointX="6.75" PointY="4.625" />
         <EntityTypeShape EntityType="almohandes_DbModel.StudentsAttendance" Width="1.5" PointX="13.5" PointY="12.5" />
@@ -65,7 +63,6 @@
         <AssociationConnector Association="almohandes_DbModel.FK_ClassExams_Classes" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses" />
         <AssociationConnector Association="almohandes_DbModel.FK_Expenses_Classes" />
-        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_Classes" />
         <AssociationConnector Association="almohandes_DbModel.FK_StudentsClass_Classes" />
         <AssociationConnector Association="almohandes_DbModel.FK_StudentsClassesTransfer_Classes" />
         <AssociationConnector Association="almohandes_DbModel.FK_StudentsClassesTransfer_Classes1" />
@@ -88,7 +85,6 @@
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesVacation_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesWorkShifts_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_Expenses_Employees" />
-        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_Users_Employees" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesAttendance_EmployeesWorkShifts" />
         <AssociationConnector Association="almohandes_DbModel.FK_EmployeesIncreases_IncreasesTypes" />
@@ -108,10 +104,6 @@
         <AssociationConnector Association="almohandes_DbModel.FK_Subscriptions_Subscriptions" />
         <AssociationConnector Association="almohandes_DbModel.FK_Pages_Pages" />
         <AssociationConnector Association="almohandes_DbModel.FK_Students_RegistrationTypes" />
-        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_RevenuesTypes" />
-        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_StudyPlaces" />
-        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_StudyYears" />
-        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_SubscriptionMethod" />
         <AssociationConnector Association="almohandes_DbModel.FK_RevenuesTypes_RevenuesTypes" />
         <AssociationConnector Association="almohandes_DbModel.FK_ShiftsTimes_WorkShifts" />
         <AssociationConnector Association="almohandes_DbModel.FK_StudentsAttendance_Students" />
@@ -124,6 +116,14 @@
         <AssociationConnector Association="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod" />
         <AssociationConnector Association="almohandes_DbModel.FK_StudyClasses_StudyClasses" />
         <AssociationConnector Association="almohandes_DbModel.FK_Subscriptions_SubscriptionsTypes" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Revenue" Width="1.5" PointX="13.5" PointY="25.625" />
+        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_Classes" />
+        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_Employees" />
+        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_RevenuesTypes" />
+        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_StudyPlaces" />
+        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_StudyYears" />
+        <AssociationConnector Association="almohandes_DbModel.FK_Revenues_SubscriptionMethod" />
+        <EntityTypeShape EntityType="almohandes_DbModel.Setting" Width="1.5" PointX="13.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
