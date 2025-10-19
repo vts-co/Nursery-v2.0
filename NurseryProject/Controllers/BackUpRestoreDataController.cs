@@ -43,7 +43,7 @@ namespace NurseryProject.Controllers
             // Define the backup file path
             var dbPath = Server.MapPath(@"~\DataBackUp\DBBackup.bak");
 
-            string backupFilePath = Path.Combine(Server.MapPath("~/App_Data/Backups"), backupFile.FileName);
+            string backupFilePath = Path.Combine(@"C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup", backupFile.FileName);
 
             // Save the file temporarily on the server
             backupFile.SaveAs(backupFilePath);

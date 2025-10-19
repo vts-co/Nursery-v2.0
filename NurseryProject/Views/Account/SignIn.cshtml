@@ -166,6 +166,38 @@
 
     <!-- Sweet alert init js-->
     <script src="~/assets/js/pages/sweetalert.init.js"></script>
+    <script src="~/assets/Custome/popupfunctions.js"></script>
+
+    @if (TempData["warning"] != null)
+    {
+        <script>
+
+        invokeAlert('@TempData["warning"]', '', 'warning', 2000);
+        </script>
+        TempData["warning"] = null;
+    }
+    @if (TempData["success"] != null)
+    {
+        <script>
+
+            invokeAlert('@TempData["success"]','', 'success', 2000);
+        </script>
+        TempData["success"] = null;
+    }
+    @if (TempData["danger"] != null)
+    {
+        <script>
+        invokeAlert('@TempData["danger"]', '', 'danger', 2000);
+        </script>
+        TempData["danger"] = null;
+    }
+    @if (TempData["info"] != null)
+    {
+        <script>
+        invokeAlert('@TempData["info"]', '', 'info', 2000);
+        </script>
+        TempData["info"] = null;
+    }
     <script>
         function savedSL(link) {
             return invokeAlertWithLink("تم تسجيل الدخول بنجاح!", '', 'success', 1400, link);

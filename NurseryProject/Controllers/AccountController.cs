@@ -28,7 +28,7 @@ namespace NurseryProject.Controllers
             var model = settingsServices.GetAll();
             TempData["SettingLogo"] = model.Logo;
             TempData["SettingTitle"] = model.Title;
-            var pass = Security.Decrypt("Q+0BSEUa0qVOJFYz3wEI6w==");
+            var pass = Security.Encrypt("futureacademy@123");
 
             using (var dbContext = new almohandes_DbEntities())
             {
@@ -49,8 +49,12 @@ namespace NurseryProject.Controllers
         public ActionResult SignIn(SignInDto userInfo)
         {
             var model = settingsServices.GetAll();
-            TempData["SettingLogo"] = model.Logo;
-            TempData["SettingTitle"] = model.Title;
+            if(model!=null)
+            {
+                TempData["SettingLogo"] = model.Logo;
+                TempData["SettingTitle"] = model.Title;
+
+            }
 
             var result = accountService.Login(userInfo.UserName, userInfo.Password);
             if (result.IsSuccess)

@@ -31,7 +31,7 @@ namespace NurseryProject.Services
                     return result;
                 }
 
-                result.Message = "تم تسجيل الدخور بنجاح";
+                result.Message = "تم تسجيل الدخول بنجاح";
                 result.IsSuccess = true;
                 result.Result = new UserInfo()
                 {

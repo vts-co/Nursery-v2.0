@@ -29,7 +29,6 @@
 <div class="text-center mt-3 mb-3">
 
     <a href="/Home/BackUpDatabase" onclick="return Check(this, '', 'هل متاكد من عمل نسخة احتياطية؟');" class="btn btn-success">BackUp</a>
-    <a href="/Home/RestorDatabase" onclick="return Check(this, '', 'هل متاكد من استعادة نسخة احتياطية؟');" class="btn btn-success">Restore</a>
     @*@using (Html.BeginForm("DeleteAllFromDatabase", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <input type="file" id="upload" name="upload" f="/Pages/PagesExcel.xlsx" hidden />
