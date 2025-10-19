@@ -57,9 +57,7 @@ namespace NurseryProject.Models
         public virtual DbSet<Level> Levels { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<RegistrationType> RegistrationTypes { get; set; }
-        public virtual DbSet<Revenue> Revenues { get; set; }
         public virtual DbSet<RevenuesType> RevenuesTypes { get; set; }
-        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<ShiftsTime> ShiftsTimes { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentsAttendance> StudentsAttendances { get; set; }
@@ -77,6 +75,8 @@ namespace NurseryProject.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<VacationsType> VacationsTypes { get; set; }
         public virtual DbSet<WorkShift> WorkShifts { get; set; }
+        public virtual DbSet<Revenue> Revenues { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
     
         public virtual int DeleteAll()
         {

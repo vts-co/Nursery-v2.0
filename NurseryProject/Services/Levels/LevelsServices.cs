@@ -39,7 +39,7 @@ namespace NurseryProject.Levels.Services
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Level>();
-                var Oldmodel = dbContext.Levels.Where(x => x.Name == model.Name && x.IsDeleted == false).FirstOrDefault();
+                var Oldmodel = dbContext.Levels.Where(x => x.Name == model.Name&&x.StudyTypeId==model.StudyTypeId && x.IsDeleted == false).FirstOrDefault();
                 if (Oldmodel != null)
                 {
                     result.Result = Oldmodel;
@@ -62,6 +62,14 @@ namespace NurseryProject.Levels.Services
             using (var dbContext = new almohandes_DbEntities())
             {
                 var result = new ResultDto<Level>();
+                var Oldmodel1 = dbContext.Levels.Where(x => x.Name == model.Name && x.StudyTypeId == model.StudyTypeId&&x.Id!=model.Id && x.IsDeleted == false).FirstOrDefault();
+                if (Oldmodel1 != null)
+                {
+                    result.Result = model;
+                    result.IsSuccess = false;
+                    result.Message = "هذا الصف موجود بالفعل";
+                    return result;
+                }
                 var Oldmodel = dbContext.Levels.Find(model.Id);
                 if (Oldmodel == null)
                 {

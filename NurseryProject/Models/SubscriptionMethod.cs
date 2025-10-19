@@ -38,8 +38,8 @@ namespace NurseryProject.Models
         public string PaperNumber1 { get; set; }
         public string PaperNumber2 { get; set; }
     
+        public virtual StudentsClass StudentsClass { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Revenue> Revenues { get; set; }
-        public virtual StudentsClass StudentsClass { get; set; }
     }
 }

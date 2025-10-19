@@ -32,7 +32,9 @@ namespace NurseryProject.Services.Revenues
                     Value = x.RevenueValue,
                     Date=x.RevenueDate.Value,
                     Notes = x.Notes,
-                    SubscriptionMethodId= x.SubscriptionMethodId==null?Guid.Empty:x.SubscriptionMethodId.Value
+                    PaperNumber1= x.PaperNumber1,
+                    PaperNumber2=x.PaperNumber2,
+                    SubscriptionMethodId = x.SubscriptionMethodId==null?Guid.Empty:x.SubscriptionMethodId.Value
                 }).ToList();
                 return model;
             }
@@ -158,6 +160,8 @@ namespace NurseryProject.Services.Revenues
                 Oldmodel.RevenueDate = model.RevenueDate;
                 Oldmodel.Notes = model.Notes;
                 Oldmodel.ClassId = model.ClassId;
+                Oldmodel.PaperNumber1 = model.PaperNumber1;
+                Oldmodel.PaperNumber2 = model.PaperNumber2;
                 dbContext.SaveChanges();
                 result.IsSuccess = true;
                 result.Message = "تم تعديل البيانات بنجاح";

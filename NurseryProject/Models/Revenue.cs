@@ -31,6 +31,8 @@ namespace NurseryProject.Models
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<System.Guid> DeletedBy { get; set; }
+        public string PaperNumber1 { get; set; }
+        public string PaperNumber2 { get; set; }
     
         public virtual Class Class { get; set; }
         public virtual Employee Employee { get; set; }

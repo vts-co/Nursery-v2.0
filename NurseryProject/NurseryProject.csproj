@@ -2368,8 +2368,6 @@
     <Content Include="Views\ClassStudentsResults\Index.cshtml" />
     <Content Include="Views\FinancialReport\Index.cshtml" />
     <Content Include="Views\ClassStudentsResults\ClassYearResults.cshtml" />
-    <Content Include="Views\BackUpRestoreData\BackUp.cshtml" />
-    <Content Include="Views\BackUpRestoreData\Restore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2403,6 +2401,7 @@
     <Folder Include="assets\libs\swiper\vue\" />
     <Folder Include="assets\libs\table-edits\src\" />
     <Folder Include="assets\libs\twitter-bootstrap-wizard\examples\" />
+    <Folder Include="Views\BackUpRestoreData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
