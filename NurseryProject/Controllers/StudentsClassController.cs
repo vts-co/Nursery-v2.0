@@ -527,18 +527,18 @@ namespace NurseryProject.Controllers
         }
         public ActionResult getSubscriptions(Guid Id)
         {
-            var model = subscriptionsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + " جنيه/ عدد الاقساط : " + x.InstallmentsNumber) });
+            var model = subscriptionsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + " جنيه/ عدد الاقساط : " + x.InstallmentsNumber), Discount = x.Discount != null ? x.Discount : "0", DiscountReason = x.DiscountReason != null ? x.DiscountReason : "" });
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getSubscriptionsById(Guid Id)
         {
-            var model = subscriptionsServices.GetAll().Where(x => x.Id == Id).Select(x => new { x.Id, x.Amount, x.InstallmentsNumber, x.IsAnother, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber) }).ToList();
+            var model = subscriptionsServices.GetAll().Where(x => x.Id == Id).Select(x => new { x.Id, x.Amount, x.InstallmentsNumber, x.IsAnother, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + "جنيه / عدد الاقساط : " + x.InstallmentsNumber), Discount = x.Discount != null ? x.Discount : "0", DiscountReason = x.DiscountReason != null ? x.DiscountReason : "" }).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getSubscriptionsMethods(Guid Id)
         {
 
-            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd") : "", x.PaidAmount }).ToList();
+            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd") : "", x.PaidAmount, Discount=x.Discount!=null? x.Discount:"0", DiscountReason= x.DiscountReason != null ? x.DiscountReason : "" }).ToList();
             var model2 = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
 
             var IsAnother = false;

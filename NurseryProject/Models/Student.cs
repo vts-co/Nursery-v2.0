@@ -17,6 +17,8 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Student()
         {
+            this.StudentFiles = new HashSet<StudentFile>();
+            this.StudentReports = new HashSet<StudentReport>();
             this.StudentsAttendances = new HashSet<StudentsAttendance>();
             this.StudentsClasses = new HashSet<StudentsClass>();
             this.StudentsExamDegrees = new HashSet<StudentsExamDegree>();
@@ -25,6 +27,7 @@ namespace NurseryProject.Models
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> DestrictId { get; set; }
         public Nullable<System.Guid> RegistrationTypeId { get; set; }
+        public string NumberId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
@@ -33,6 +36,13 @@ namespace NurseryProject.Models
         public string MotherName { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
+        public string PhoneMo { get; set; }
+        public string PhoneAth { get; set; }
+        public string PhoneOwner { get; set; }
+        public string FatherJob { get; set; }
+        public string MotherJob { get; set; }
+        public string FatherNumberId { get; set; }
+        public string MotherNumberId { get; set; }
         public string JoiningDate { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
@@ -45,6 +55,10 @@ namespace NurseryProject.Models
     
         public virtual Destrict Destrict { get; set; }
         public virtual RegistrationType RegistrationType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentFile> StudentFiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentReport> StudentReports { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentsAttendance> StudentsAttendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

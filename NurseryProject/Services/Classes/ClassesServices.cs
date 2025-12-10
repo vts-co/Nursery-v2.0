@@ -85,6 +85,7 @@ namespace NurseryProject.Services.Classes
                 Oldmodel.ModifiedBy = UserId;
                 Oldmodel.LevelId = model.LevelId;
                 Oldmodel.StudyPlaceId = model.StudyPlaceId;
+                Oldmodel.Capacity = model.Capacity;
 
                 Oldmodel.Name = model.Name;
                 Oldmodel.Notes = model.Notes;

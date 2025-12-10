@@ -21,6 +21,8 @@ namespace NurseryProject.Levels.Services
                     StudyTypeName = x.StudyType.Name,
                     DisplayOrder=x.DisplayOrder.Value,
                     Name = x.Name,
+                    FromAge=x.FromAge,
+                    ToAge=x.ToAge,
                     Notes = x.Notes
                 }).ToList();
                 return model;
@@ -81,6 +83,8 @@ namespace NurseryProject.Levels.Services
                 Oldmodel.ModifiedBy = UserId;
                 Oldmodel.StudyTypeId = model.StudyTypeId;
                 Oldmodel.Name = model.Name;
+                Oldmodel.FromAge = model.FromAge;
+                Oldmodel.ToAge = model.ToAge;
                 Oldmodel.Notes = model.Notes;
                 Oldmodel.DisplayOrder = model.DisplayOrder;
                 dbContext.SaveChanges();

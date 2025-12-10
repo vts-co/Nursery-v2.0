@@ -15,7 +15,7 @@ namespace NurseryProject.Services.StudentsClass
             using (var dbContext = new almohandes_DbEntities())
             {
                 var id1 = Guid.Parse("B8650DC5-A83D-4A48-B99F-B75196A1DF8C");
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == true&&x.Student.RegistrationTypeId!= id1 && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(i => i.IsDeleted == false && i.EmployeeId == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId) || x.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.IsCurrent == true && x.Student.RegistrationTypeId != id1 && (x.CreatedBy == UserId || RoleId == Role.SystemAdmin || x.Class.EmployeeClasses.Any(i => i.IsDeleted == false && i.EmployeeId == EmployeeId) || x.Class.ClassesLeaders.Any(z => z.IsDeleted == false && z.EmployeeId == EmployeeId) || x.Class.StudyPlace.BuildingSupervisors.Any(k => k.IsDeleted == false && k.EmployeeId == EmployeeId))).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -35,10 +35,13 @@ namespace NurseryProject.Services.StudentsClass
                     StudentCode = x.Student.Code,
                     StudentPhone = x.Student.Phone,
                     IsAnother = x.IsAnother.Value,
+                    SubscriptionTypeId = x.Subscription.SubscriptionTypeId,
+                    SubscriptionTypeName = x.Subscription.SubscriptionsType.Name,
+
                     SubscriptionId = x.SubscriptionId.Value,
                     SubscriptionName = x.IsAnother == true ? "أخري" : x.Subscription.SubscriptionsType.Name,
                     Amount = x.IsAnother != true ? x.Subscription.Amount : "",
-                    
+
                     Number = x.IsAnother != true ? x.Subscription.InstallmentsNumber : "",
                     Regular = "منتظم",
                     SubscriptionMethod = x.SubscriptionMethods.Where(y => y.IsDeleted == false && y.StudentClassId == x.Id).OrderBy(y => y.OrderDisplay).Select(y => new SubscriptionMethodDto
@@ -47,9 +50,11 @@ namespace NurseryProject.Services.StudentsClass
                         StudentClassId = x.Id,
                         Amount = y.Amount,
                         Date = y.Date.Value.ToString(),
+                        Discount = y.Discount,
+                        DiscountReason = y.DiscountReason,
                         PaidAmount = y.PaidAmount,
                         IsPaid = y.IsPaid.Value,
-                        Collector=y.ModifiedBy != null?y.ModifiedBy.ToString():"",
+                        Collector = y.ModifiedBy != null ? y.ModifiedBy.ToString() : "",
                         Paided = y.IsPaid.Value == true ? "تم الدفع" : "لم يتم الدفع بعد",
                         PaidDate = y.PaidDate.Value.ToString()
                     }).ToList(),
@@ -81,18 +86,18 @@ namespace NurseryProject.Services.StudentsClass
 
                     foreach (var item2 in item.SubscriptionMethod)
                     {
-                        if (DateTime.Parse(item2.Date).Date.AddDays(15) < DateTime.Now.Date)
+                        if (DateTime.Parse(item2.Date).Date.AddDays(15) < DateTime.Now.Date && !item2.IsPaid)
                         {
                             item.Regular = "غير منتظم";
                             break;
                         }
-                        if (item2.Collector != ""&& item2.IsPaid==true)
+                        if (item2.Collector != "" && item2.IsPaid == true)
                         {
                             var id = Guid.Parse(item2.Collector);
                             var ff = dbContext.Users.Where(x => x.Id == id && !x.IsDeleted).FirstOrDefault();
                             item2.Collector = ff.Username;
                         }
-                        else 
+                        else
                         {
                             item2.Collector = "";
                         }
@@ -238,7 +243,7 @@ namespace NurseryProject.Services.StudentsClass
         {
             using (var dbContext = new almohandes_DbEntities())
             {
-                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.StudentId == Id&&x.IsCurrent==true).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
+                var model = dbContext.StudentsClasses.Where(x => x.IsDeleted == false && x.StudentId == Id && x.IsCurrent == true).OrderBy(x => x.CreatedOn).Select(x => new StudentsClassDto
                 {
                     Id = x.Id,
                     Code = x.Student.Code,
@@ -265,7 +270,7 @@ namespace NurseryProject.Services.StudentsClass
                     Amount = x.IsAnother != true ? x.Subscription.Amount : "",
                     Number = x.IsAnother != true ? x.Subscription.InstallmentsNumber : "",
 
-                }).FirstOrDefault();                
+                }).FirstOrDefault();
                 return model;
             }
         }
@@ -376,7 +381,7 @@ namespace NurseryProject.Services.StudentsClass
                     Amount = x.StudentsClass.IsAnother != true ? x.StudentsClass.Subscription.Amount : "",
                     Number = x.StudentsClass.IsAnother != true ? x.StudentsClass.Subscription.InstallmentsNumber : "",
                     Paid = x.PaidAmount,
-                    Collector=x.ModifiedBy != null? x.ModifiedBy.ToString():"",
+                    Collector = x.ModifiedBy != null ? x.ModifiedBy.ToString() : "",
                     Date = x.PaidDate.Value.ToString()
 
                 }).ToList();
@@ -396,7 +401,7 @@ namespace NurseryProject.Services.StudentsClass
                         item.Amount = total.ToString();
                         item.Number = item.SubscriptionMethod.Where(y => y.StudentClassId == item.Id).ToList().Count().ToString();
                     }
-                    if(item.Collector!="")
+                    if (item.Collector != "")
                     {
                         var id = Guid.Parse(item.Collector);
                         var ff = dbContext.Users.Where(x => x.Id == id && !x.IsDeleted).FirstOrDefault();
@@ -479,7 +484,7 @@ namespace NurseryProject.Services.StudentsClass
                 {
                     Name = group.First().SubscriptionName,
                     Amount = group.Sum(x => double.Parse(x.Paid)),
-                  
+
                 }).ToList();
 
                 return dailySubscriptionMethods;
@@ -564,7 +569,10 @@ namespace NurseryProject.Services.StudentsClass
                             Id = Guid.NewGuid(),
                             StudentClassId = model.Id,
                             Amount = item.Amount,
+                            Discount = item.Discount,
+                            DiscountReason = item.DiscountReason,
                             Date = DateTime.Parse(item.Date),
+
                             OrderDisplay = i,
                             PaidAmount = item.PaidAmount,
                             IsPaid = false,
@@ -624,6 +632,8 @@ namespace NurseryProject.Services.StudentsClass
                             Id = Guid.NewGuid(),
                             StudentClassId = model.Id,
                             Amount = item.Amount,
+                            Discount = item.Discount,
+                            DiscountReason = item.DiscountReason,
                             Date = DateTime.Parse(item.Date),
                             OrderDisplay = i,
                             PaidAmount = item.PaidAmount,
@@ -657,7 +667,7 @@ namespace NurseryProject.Services.StudentsClass
                     return result;
                 }
 
-               
+
 
                 var subscriptionMethod1 = dbContext.SubscriptionMethods.Where(x => x.StudentClassId == model.Id && x.IsDeleted == false).ToList();
                 if (subscriptionMethod1.Count() > 0)
@@ -701,6 +711,8 @@ namespace NurseryProject.Services.StudentsClass
                         subscriptionMethod.StudentClassId = model.Id;
                         subscriptionMethod.OrderDisplay = i;
                         subscriptionMethod.Amount = item.Amount;
+                        subscriptionMethod.Discount = item.Discount;
+                        subscriptionMethod.DiscountReason = item.DiscountReason;
                         subscriptionMethod.PaidAmount = item.PaidAmount;
                         subscriptionMethod.IsPaid = item.IsPaid;
                         subscriptionMethod.Date = DateTime.Parse(item.Date);

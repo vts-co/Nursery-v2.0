@@ -21,28 +21,28 @@
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الفرع ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("BranchId", null, "--اختر--", new { @class = "form-control"})
+                        @Html.DropDownList("BranchId", null, "--اختر--", new { @class = "form-control" })
                         @Html.ValidationMessage("BranchId", "", new { @class = "text-danger" })
                     </div>
-                </div> 
+                </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("العام الدراسي", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control"})
+                        @Html.DropDownList("StudyYearId", null, "--اختر--", new { @class = "form-control" })
                         @Html.ValidationMessage("StudyYearId", "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("نوع الدراسة", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control"})
+                        @Html.DropDownList("StudyTypeId", null, "--اختر--", new { @class = "form-control" })
                         @Html.ValidationMessage("StudyTypeId", "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الصف ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
-                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control"})
+                        @Html.DropDownList("LevelId", null, "--اختر--", new { @class = "form-control" })
                         @Html.ValidationMessage("LevelId", "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -51,6 +51,13 @@
                     <div class="col-12">
                         @Html.DropDownList("ClassId", null, "--اختر--", new { @class = "form-control" })
                         @Html.ValidationMessage("ClassId", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("نوع الاشتراك", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownList("SubscriptionTypeId", null, "--اختر--", new { @class = "form-control" })
+                        @Html.ValidationMessage("SubscriptionTypeId", "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -178,6 +185,12 @@
                                         <th>
                                             تاريخ الاستحقاق
                                         </th>
+                                        <td>
+                                            قيمة الخصم
+                                        </td>
+                                        <td>
+                                            سبب الخصم
+                                        </td>
                                         <th>
                                             المدفوع
                                         </th>
@@ -195,69 +208,87 @@
                                     {
                                         if (DateTime.Parse(item2.Date).Date.AddDays(15) < DateTime.Now.Date && @item2.Paided != "تم الدفع")
                                         {
-                                            <tr class="text-danger">
-                                                <td>
-                                                    @item2.Amount جنيه
-                                                </td>
-                                                <td>
-                                                    @item2.Date
-                                                </td>
-                                                <td>
-                                                    0
-                                                    جنيه
-                                                </td>
-                                                <td>
-                                                    @item2.Paided
-                                                </td>
+                                    <tr class="text-danger">
+                                        <td>
+                                            @item2.Amount جنيه
+                                        </td>
+                                        <td>
+                                            @item2.Date
+                                        </td>
+                                        <td>
+                                            @item2.Discount
+                                        </td>
+                                        <td>
+                                            @item2.DiscountReason
+                                        </td>
+                                        <td>
+                                            0
+                                            جنيه
+                                        </td>
+                                        <td>
+                                            @item2.Paided
+                                        </td>
 
-                                                <td>
-                                                    @item2.PaidDate
-                                                </td>
-                                            </tr>
+                                        <td>
+                                            @item2.PaidDate
+                                        </td>
+                                    </tr>
                                         }
                                         else if (@item2.Paided == "تم الدفع")
                                         {
-                                            <tr class="text-success">
-                                                <td>
-                                                    @item2.Amount جنيه
-                                                </td>
-                                                <td>
-                                                    @item2.Date
-                                                </td>
-                                                <td>
-                                                    @item2.PaidAmount
-                                                    جنيه
-                                                </td>
-                                                <td>
-                                                    @item2.Paided
-                                                </td>
+                                <tr class="text-success">
+                                    <td>
+                                        @item2.Amount جنيه
+                                    </td>
+                                    <td>
+                                        @item2.Date
+                                    </td>
+                                    <td>
+                                        @item2.Discount
+                                    </td>
+                                    <td>
+                                        @item2.DiscountReason
+                                    </td>
+                                    <td>
+                                        @item2.PaidAmount
+                                        جنيه
+                                    </td>
+                                    <td>
+                                        @item2.Paided
+                                    </td>
 
-                                                <td>
-                                                    @item2.PaidDate
-                                                </td>
-                                            </tr>
+                                    <td>
+                                        @item2.PaidDate
+                                    </td>
+                                </tr>
                                         }
                                         else
                                         {
-                                            <tr>
-                                                <td>
-                                                    @item2.Amount جنيه
-                                                </td>
-                                                <td>
-                                                    @item2.Date
-                                                </td>
-                                                <td>
-                                                    0
-                                                    جنيه
-                                                </td>
-                                                <td>
-                                                    @item2.Paided
-                                                </td>
+                                <tr>
+                                    <td>
+                                        @item2.Amount جنيه
+                                    </td>
+                                    <td>
+                                        @item2.Date
+                                    </td>
+                                    <td>
+                                        @item2.Discount
+                                    </td>
+                                    <td>
+                                        @item2.DiscountReason
+                                    </td>
+                                    <td>
+                                        0
+                                        جنيه
+                                    </td>
+                                    <td>
+                                        @item2.Paided
+                                    </td>
 
-                                                <td>
-                                                    @item2.PaidDate
-                                                </td>
-                                            </tr>
+                                    <td>
+                                        @item2.PaidDate
+                                    </td>
+                                </tr>
                                         }
                                     }
 

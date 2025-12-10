@@ -26,6 +26,9 @@ namespace NurseryProject.Dtos.StudentsClass
 
         public Guid? SubscriptionId { get; set; }
         public string SubscriptionName { get; set; }
+
+        public Guid? SubscriptionTypeId { get; set; }
+        public string SubscriptionTypeName { get; set; }
         public string Regular { get; set; }
         public string Collector { get; set; }
 
@@ -53,6 +56,8 @@ namespace NurseryProject.Dtos.StudentsClass
         public Guid Id { get; set; }
         public Guid StudentClassId { get; set; }
         public string Amount { get; set; }
+        public string Discount { get; set; }
+        public string DiscountReason { get; set; }
         public string Date { get; set; }
         public string PaidAmount { get; set; }
         public string Collector { get; set; }

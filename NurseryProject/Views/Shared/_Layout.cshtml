@@ -178,11 +178,11 @@
                     <!-- Left Menu Start -->
                     <ul class="metismenu list-unstyled" id="side-menu">
                         @*<li>
-                                <a href="/Home/Index">
-                                    <i class="bx bxs-dashboard"></i>
-                                    <span data-key="t-dashboard">Admin Dashboard</span>
-                                </a>
-                            </li>*@
+            <a href="/Home/Index">
+                <i class="bx bxs-dashboard"></i>
+                <span data-key="t-dashboard">Admin Dashboard</span>
+            </a>
+        </li>*@
 
                         @*//0-1 =>1*@
                         @if (ViewBag.userscreens.ToString().Contains(",2,"))
@@ -375,6 +375,32 @@
                                 </ul>
                             </li>
                         }
+
+                        @if (ViewBag.userscreens.ToString().Contains(",81,") || ViewBag.userscreens.ToString().Contains(",83,") || ViewBag.userscreens.ToString().Contains(",84,"))
+                        {
+                            <li class="Stund">
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-users p-1"></i>
+                                    <span data-key="t-apps">تقارير الطلاب</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false" id="side-menu7">
+                                    @if (ViewBag.userscreens.ToString().Contains(",81,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index", "StudentReportTypes")"><i class="fas fa-users p-1"></i> انواع تقارير الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",83,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index", "StudentReportTools")"><i class="fas fa-user-edit p-1"></i> محتوي تقارير الطلاب</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",84,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index", "StudentReports")"><i class="fas fa-coins p-1"></i> ادارة تقارير الطلاب</a></li>
+                                    }
+
+                                </ul>
+                            </li>
+                        }
+
                         @*//33-39 =>8*@
                         @if (ViewBag.userscreens.ToString().Contains(",32,") || ViewBag.userscreens.ToString().Contains(",33,") || ViewBag.userscreens.ToString().Contains(",34,") || ViewBag.userscreens.ToString().Contains(",35,") || ViewBag.userscreens.ToString().Contains(",36,") || ViewBag.userscreens.ToString().Contains(",37,"))
                         {
@@ -412,6 +438,34 @@
                                 </ul>
                             </li>
                         }
+                       
+                        @if (ViewBag.userscreens.ToString().Contains(",80,") || ViewBag.userscreens.ToString().Contains(",82,") || ViewBag.userscreens.ToString().Contains(",85,"))
+                        {
+                            <li class="Stund">
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fas fa-users p-1"></i>
+                                    <span data-key="t-apps">تقارير الموظفين</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false" id="side-menu7">
+                                    @if (ViewBag.userscreens.ToString().Contains(",80,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index", "EmployeeReportTypes")"><i class="fas fa-users p-1"></i> انواع تقارير الموظفين</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",82,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index", "EmployeeReportTools")"><i class="fas fa-user-edit p-1"></i> محتوي تقارير الموظفين</a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",85,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index", "EmployeeReports")"><i class="fas fa-coins p-1"></i> ادارة تقارير الموظفين</a></li>
+                                    }
+
+                                </ul>
+                            </li>
+                        }
+
+
+
                         @*//40-42 =>9*@
                         @if (ViewBag.userscreens.ToString().Contains(",39,") || ViewBag.userscreens.ToString().Contains(",40,"))
                         {
@@ -746,7 +800,7 @@
                     extend: 'excel',
                     text: '<i class="fa fa-list-alt p-1"></i>نسخة اكسيل',
                     className: 'btn btn-default',
-
+                    title: "",
                 },
                 {
                     extend: 'print',

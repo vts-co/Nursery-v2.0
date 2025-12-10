@@ -1,0 +1,70 @@
+﻿@model IEnumerable<NurseryProject.Dtos.StudentReports.StudentReportsDto>
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "ادارة تقارير الطلاب ";
+
+}
+<div class="card">
+    <div class="card-header">
+
+        <div class="row">
+            <h2 class="col">  </h2>
+            <p class="col-auto">
+                @Url.Create()
+            </p>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100 table-bordered">
+            <thead class="bg-soft-primary">
+                <tr>
+                    <th>
+                        @Html.DisplayName("نوع التقرير")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الطالب")
+                    </th>
+                    <th>
+                        @Html.DisplayName("من تاريخ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الي تاريخ")
+                    </th>
+                    <th>
+                        @Html.DisplayName("ملاحظات")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عمليات")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudentReportTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportDateFrom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportDateTo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @Url.Edit(routeValues: new { id = item.Id })
+                        @Url.Delete(routeValues: new { id = item.Id })
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

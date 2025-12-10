@@ -44,6 +44,7 @@
           <Property Name="LevelId" Type="uniqueidentifier" />
           <Property Name="StudyPlaceId" Type="uniqueidentifier" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Capacity" Type="nvarchar" MaxLength="50" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -148,7 +149,89 @@
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="EmployeeFiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeId" Type="uniqueidentifier" />
+          <Property Name="File" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
         <EntityType Name="EmployeeRegistrationTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="EmployeeReportItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeReportId" Type="uniqueidentifier" />
+          <Property Name="EmployeeToolId" Type="uniqueidentifier" />
+          <Property Name="ToolValue" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="EmployeeReports">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeReportTypeId" Type="uniqueidentifier" />
+          <Property Name="EmployeeId" Type="uniqueidentifier" />
+          <Property Name="ReportDateFrom" Type="datetime" />
+          <Property Name="ReportDateTo" Type="datetime" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="EmployeeReportTools">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeReportTypeId" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="EmployeeReportTypes">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -171,6 +254,7 @@
           <Property Name="JopId" Type="uniqueidentifier" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="NumberId" Type="nvarchar(max)" />
           <Property Name="Image" Type="nvarchar(max)" />
           <Property Name="BirthDate" Type="nvarchar(max)" />
           <Property Name="Qualification" Type="nvarchar(max)" />
@@ -181,6 +265,7 @@
           <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="JoiningDate" Type="nvarchar(max)" />
           <Property Name="WorkDayCost" Type="float" />
+          <Property Name="ContractOrNo" Type="bit" Nullable="false" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -463,6 +548,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StudyTypeId" Type="uniqueidentifier" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="FromAge" Type="nvarchar" MaxLength="50" />
+          <Property Name="ToAge" Type="nvarchar" MaxLength="50" />
           <Property Name="DisplayOrder" Type="int" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
@@ -519,6 +606,8 @@
           <Property Name="RevenueValue" Type="float" />
           <Property Name="RevenueDate" Type="date" />
           <Property Name="SubscriptionMethodId" Type="uniqueidentifier" />
+          <Property Name="PaperNumber1" Type="nvarchar(max)" />
+          <Property Name="PaperNumber2" Type="nvarchar(max)" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
@@ -527,8 +616,6 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
-          <Property Name="PaperNumber1" Type="nvarchar(max)" />
-          <Property Name="PaperNumber2" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RevenuesTypes">
           <Key>
@@ -582,6 +669,88 @@
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="StudentFiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudentId" Type="uniqueidentifier" />
+          <Property Name="File" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="StudentReportItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudentReportId" Type="uniqueidentifier" />
+          <Property Name="StudentToolId" Type="uniqueidentifier" />
+          <Property Name="ToolValue" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="StudentReports">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudentReportTypeId" Type="uniqueidentifier" />
+          <Property Name="StudentId" Type="uniqueidentifier" />
+          <Property Name="ReportDateFrom" Type="datetime" />
+          <Property Name="ReportDateTo" Type="datetime" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="StudentReportTools">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudentReportTypeId" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="StudentReportTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
         <EntityType Name="Students">
           <Key>
             <PropertyRef Name="Id" />
@@ -589,6 +758,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DestrictId" Type="uniqueidentifier" />
           <Property Name="RegistrationTypeId" Type="uniqueidentifier" />
+          <Property Name="NumberId" Type="nvarchar(max)" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Image" Type="nvarchar(max)" />
@@ -597,6 +767,13 @@
           <Property Name="MotherName" Type="nvarchar(max)" />
           <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneMo" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneAth" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneOwner" Type="nvarchar(max)" />
+          <Property Name="FatherJob" Type="nvarchar(max)" />
+          <Property Name="MotherJob" Type="nvarchar(max)" />
+          <Property Name="FatherNumberId" Type="nvarchar(max)" />
+          <Property Name="MotherNumberId" Type="nvarchar(max)" />
           <Property Name="JoiningDate" Type="nvarchar(max)" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedOn" Type="datetime" />
@@ -771,9 +948,12 @@
           <Property Name="OrderDisplay" Type="int" />
           <Property Name="Amount" Type="nvarchar" MaxLength="50" />
           <Property Name="Date" Type="date" />
+          <Property Name="Discount" Type="nvarchar" MaxLength="50" />
+          <Property Name="DiscountReason" Type="nvarchar(max)" />
           <Property Name="IsPaid" Type="bit" />
           <Property Name="PaidAmount" Type="nvarchar" MaxLength="50" />
           <Property Name="PaidDate" Type="datetime" />
+          <Property Name="PaymentTypeId" Type="uniqueidentifier" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="uniqueidentifier" />
           <Property Name="ModifiedOn" Type="datetime" />
@@ -784,6 +964,21 @@
           <Property Name="PaperNumber1" Type="nvarchar(max)" />
           <Property Name="PaperNumber2" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="SubscriptionPaymentTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="uniqueidentifier" />
+        </EntityType>
         <EntityType Name="Subscriptions">
           <Key>
             <PropertyRef Name="Id" />
@@ -791,6 +986,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LevelId" Type="uniqueidentifier" />
           <Property Name="SubscriptionTypeId" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Amount" Type="nvarchar" MaxLength="50" />
           <Property Name="InstallmentsNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedOn" Type="datetime" />
@@ -1029,6 +1225,78 @@
             </Principal>
             <Dependent Role="EmployeeClasses">
               <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeFiles_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="EmployeeFiles" Type="Self.EmployeeFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeFiles">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReportItems_EmployeeReports">
+          <End Role="EmployeeReports" Type="Self.EmployeeReports" Multiplicity="0..1" />
+          <End Role="EmployeeReportItems" Type="Self.EmployeeReportItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReports">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReportItems">
+              <PropertyRef Name="EmployeeReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReportItems_EmployeeReportTools">
+          <End Role="EmployeeReportTools" Type="Self.EmployeeReportTools" Multiplicity="0..1" />
+          <End Role="EmployeeReportItems" Type="Self.EmployeeReportItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReportTools">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReportItems">
+              <PropertyRef Name="EmployeeToolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReports_EmployeeReportTypes">
+          <End Role="EmployeeReportTypes" Type="Self.EmployeeReportTypes" Multiplicity="0..1" />
+          <End Role="EmployeeReports" Type="Self.EmployeeReports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReportTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReports">
+              <PropertyRef Name="EmployeeReportTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReports_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="EmployeeReports" Type="Self.EmployeeReports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReports">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReportTools_EmployeeReportTypes">
+          <End Role="EmployeeReportTypes" Type="Self.EmployeeReportTypes" Multiplicity="0..1" />
+          <End Role="EmployeeReportTools" Type="Self.EmployeeReportTools" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReportTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReportTools">
+              <PropertyRef Name="EmployeeReportTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1452,6 +1720,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentFiles_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
+          <End Role="StudentFiles" Type="Self.StudentFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentFiles">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReportItems_StudentReports">
+          <End Role="StudentReports" Type="Self.StudentReports" Multiplicity="0..1" />
+          <End Role="StudentReportItems" Type="Self.StudentReportItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReports">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReportItems">
+              <PropertyRef Name="StudentReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReportItems_StudentReportTools">
+          <End Role="StudentReportTools" Type="Self.StudentReportTools" Multiplicity="0..1" />
+          <End Role="StudentReportItems" Type="Self.StudentReportItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReportTools">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReportItems">
+              <PropertyRef Name="StudentToolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReports_StudentReportTypes">
+          <End Role="StudentReportTypes" Type="Self.StudentReportTypes" Multiplicity="0..1" />
+          <End Role="StudentReports" Type="Self.StudentReports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReportTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReports">
+              <PropertyRef Name="StudentReportTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReports_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
+          <End Role="StudentReports" Type="Self.StudentReports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReports">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReportTools_StudentReportTypes">
+          <End Role="StudentReportTypes" Type="Self.StudentReportTypes" Multiplicity="0..1" />
+          <End Role="StudentReportTools" Type="Self.StudentReportTools" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReportTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReportTools">
+              <PropertyRef Name="StudentReportTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Students_Destricts">
           <End Role="Destricts" Type="Self.Destricts" Multiplicity="0..1" />
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
@@ -1656,6 +1996,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SubscriptionMethod_SubscriptionMethod1">
+          <End Role="SubscriptionPaymentTypes" Type="Self.SubscriptionPaymentTypes" Multiplicity="0..1" />
+          <End Role="SubscriptionMethod" Type="Self.SubscriptionMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriptionPaymentTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SubscriptionMethod">
+              <PropertyRef Name="PaymentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Subscriptions_Subscriptions">
           <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
           <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
@@ -1704,7 +2056,12 @@
           <EntitySet Name="Destricts" EntityType="Self.Destricts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiscountsTypes" EntityType="Self.DiscountsTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeClasses" EntityType="Self.EmployeeClasses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeFiles" EntityType="Self.EmployeeFiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="Self.EmployeeRegistrationTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeReportItems" EntityType="Self.EmployeeReportItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeReports" EntityType="Self.EmployeeReports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeReportTools" EntityType="Self.EmployeeReportTools" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeReportTypes" EntityType="Self.EmployeeReportTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesAttendance" EntityType="Self.EmployeesAttendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeesDelay" EntityType="Self.EmployeesDelay" Schema="dbo" store:Type="Tables" />
@@ -1729,6 +2086,11 @@
           <EntitySet Name="RevenuesTypes" EntityType="Self.RevenuesTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShiftsTimes" EntityType="Self.ShiftsTimes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentFiles" EntityType="Self.StudentFiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentReportItems" EntityType="Self.StudentReportItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentReports" EntityType="Self.StudentReports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentReportTools" EntityType="Self.StudentReportTools" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentReportTypes" EntityType="Self.StudentReportTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentsAttendance" EntityType="Self.StudentsAttendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentsClass" EntityType="Self.StudentsClass" Schema="dbo" store:Type="Tables" />
@@ -1740,6 +2102,7 @@
           <EntitySet Name="StudyYears" EntityType="Self.StudyYears" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionMethod" EntityType="Self.SubscriptionMethod" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriptionPaymentTypes" EntityType="Self.SubscriptionPaymentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subscriptions" EntityType="Self.Subscriptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionsTypes" EntityType="Self.SubscriptionsTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -1800,6 +2163,30 @@
           <AssociationSet Name="FK_EmployeeClasses_Subjects" Association="Self.FK_EmployeeClasses_Subjects">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="EmployeeClasses" EntitySet="EmployeeClasses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeFiles_Employees" Association="Self.FK_EmployeeFiles_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="EmployeeFiles" EntitySet="EmployeeFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReportItems_EmployeeReports" Association="Self.FK_EmployeeReportItems_EmployeeReports">
+            <End Role="EmployeeReports" EntitySet="EmployeeReports" />
+            <End Role="EmployeeReportItems" EntitySet="EmployeeReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReportItems_EmployeeReportTools" Association="Self.FK_EmployeeReportItems_EmployeeReportTools">
+            <End Role="EmployeeReportTools" EntitySet="EmployeeReportTools" />
+            <End Role="EmployeeReportItems" EntitySet="EmployeeReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReports_EmployeeReportTypes" Association="Self.FK_EmployeeReports_EmployeeReportTypes">
+            <End Role="EmployeeReportTypes" EntitySet="EmployeeReportTypes" />
+            <End Role="EmployeeReports" EntitySet="EmployeeReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReports_Employees" Association="Self.FK_EmployeeReports_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="EmployeeReports" EntitySet="EmployeeReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReportTools_EmployeeReportTypes" Association="Self.FK_EmployeeReportTools_EmployeeReportTypes">
+            <End Role="EmployeeReportTypes" EntitySet="EmployeeReportTypes" />
+            <End Role="EmployeeReportTools" EntitySet="EmployeeReportTools" />
           </AssociationSet>
           <AssociationSet Name="FK_Employees_EmployeeRegistrationTypes" Association="Self.FK_Employees_EmployeeRegistrationTypes">
             <End Role="EmployeeRegistrationTypes" EntitySet="EmployeeRegistrationTypes" />
@@ -1941,6 +2328,30 @@
             <End Role="WorkShifts" EntitySet="WorkShifts" />
             <End Role="ShiftsTimes" EntitySet="ShiftsTimes" />
           </AssociationSet>
+          <AssociationSet Name="FK_StudentFiles_Students" Association="Self.FK_StudentFiles_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentFiles" EntitySet="StudentFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReportItems_StudentReports" Association="Self.FK_StudentReportItems_StudentReports">
+            <End Role="StudentReports" EntitySet="StudentReports" />
+            <End Role="StudentReportItems" EntitySet="StudentReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReportItems_StudentReportTools" Association="Self.FK_StudentReportItems_StudentReportTools">
+            <End Role="StudentReportTools" EntitySet="StudentReportTools" />
+            <End Role="StudentReportItems" EntitySet="StudentReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReports_StudentReportTypes" Association="Self.FK_StudentReports_StudentReportTypes">
+            <End Role="StudentReportTypes" EntitySet="StudentReportTypes" />
+            <End Role="StudentReports" EntitySet="StudentReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReports_Students" Association="Self.FK_StudentReports_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentReports" EntitySet="StudentReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReportTools_StudentReportTypes" Association="Self.FK_StudentReportTools_StudentReportTypes">
+            <End Role="StudentReportTypes" EntitySet="StudentReportTypes" />
+            <End Role="StudentReportTools" EntitySet="StudentReportTools" />
+          </AssociationSet>
           <AssociationSet Name="FK_Students_Destricts" Association="Self.FK_Students_Destricts">
             <End Role="Destricts" EntitySet="Destricts" />
             <End Role="Students" EntitySet="Students" />
@@ -2009,6 +2420,10 @@
             <End Role="StudentsClass" EntitySet="StudentsClass" />
             <End Role="SubscriptionMethod" EntitySet="SubscriptionMethod" />
           </AssociationSet>
+          <AssociationSet Name="FK_SubscriptionMethod_SubscriptionMethod1" Association="Self.FK_SubscriptionMethod_SubscriptionMethod1">
+            <End Role="SubscriptionPaymentTypes" EntitySet="SubscriptionPaymentTypes" />
+            <End Role="SubscriptionMethod" EntitySet="SubscriptionMethod" />
+          </AssociationSet>
           <AssociationSet Name="FK_Subscriptions_Subscriptions" Association="Self.FK_Subscriptions_Subscriptions">
             <End Role="Levels" EntitySet="Levels" />
             <End Role="Subscriptions" EntitySet="Subscriptions" />
@@ -2031,6 +2446,8 @@
           <FunctionImport Name="GenerateSchema" />
           <FunctionImport Name="DeleteAll1" />
           <FunctionImport Name="GenerateSchema1" />
+          <FunctionImport Name="DeleteAll2" />
+          <FunctionImport Name="GenerateSchema2" />
           <EntitySet Name="BuildingSupervisors" EntityType="almohandes_DbModel.BuildingSupervisor" />
           <EntitySet Name="Cities" EntityType="almohandes_DbModel.City" />
           <EntitySet Name="Classes" EntityType="almohandes_DbModel.Class" />
@@ -2040,7 +2457,12 @@
           <EntitySet Name="Destricts" EntityType="almohandes_DbModel.Destrict" />
           <EntitySet Name="DiscountsTypes" EntityType="almohandes_DbModel.DiscountsType" />
           <EntitySet Name="EmployeeClasses" EntityType="almohandes_DbModel.EmployeeClass" />
+          <EntitySet Name="EmployeeFiles" EntityType="almohandes_DbModel.EmployeeFile" />
           <EntitySet Name="EmployeeRegistrationTypes" EntityType="almohandes_DbModel.EmployeeRegistrationType" />
+          <EntitySet Name="EmployeeReportItems" EntityType="almohandes_DbModel.EmployeeReportItem" />
+          <EntitySet Name="EmployeeReports" EntityType="almohandes_DbModel.EmployeeReport" />
+          <EntitySet Name="EmployeeReportTools" EntityType="almohandes_DbModel.EmployeeReportTool" />
+          <EntitySet Name="EmployeeReportTypes" EntityType="almohandes_DbModel.EmployeeReportType" />
           <EntitySet Name="Employees" EntityType="almohandes_DbModel.Employee" />
           <EntitySet Name="EmployeesAttendances" EntityType="almohandes_DbModel.EmployeesAttendance" />
           <EntitySet Name="EmployeesDelays" EntityType="almohandes_DbModel.EmployeesDelay" />
@@ -2061,8 +2483,15 @@
           <EntitySet Name="Levels" EntityType="almohandes_DbModel.Level" />
           <EntitySet Name="Pages" EntityType="almohandes_DbModel.Page" />
           <EntitySet Name="RegistrationTypes" EntityType="almohandes_DbModel.RegistrationType" />
+          <EntitySet Name="Revenues" EntityType="almohandes_DbModel.Revenue" />
           <EntitySet Name="RevenuesTypes" EntityType="almohandes_DbModel.RevenuesType" />
+          <EntitySet Name="Settings" EntityType="almohandes_DbModel.Setting" />
           <EntitySet Name="ShiftsTimes" EntityType="almohandes_DbModel.ShiftsTime" />
+          <EntitySet Name="StudentFiles" EntityType="almohandes_DbModel.StudentFile" />
+          <EntitySet Name="StudentReportItems" EntityType="almohandes_DbModel.StudentReportItem" />
+          <EntitySet Name="StudentReports" EntityType="almohandes_DbModel.StudentReport" />
+          <EntitySet Name="StudentReportTools" EntityType="almohandes_DbModel.StudentReportTool" />
+          <EntitySet Name="StudentReportTypes" EntityType="almohandes_DbModel.StudentReportType" />
           <EntitySet Name="Students" EntityType="almohandes_DbModel.Student" />
           <EntitySet Name="StudentsAttendances" EntityType="almohandes_DbModel.StudentsAttendance" />
           <EntitySet Name="StudentsClasses" EntityType="almohandes_DbModel.StudentsClass" />
@@ -2074,6 +2503,7 @@
           <EntitySet Name="StudyYears" EntityType="almohandes_DbModel.StudyYear" />
           <EntitySet Name="Subjects" EntityType="almohandes_DbModel.Subject" />
           <EntitySet Name="SubscriptionMethods" EntityType="almohandes_DbModel.SubscriptionMethod" />
+          <EntitySet Name="SubscriptionPaymentTypes" EntityType="almohandes_DbModel.SubscriptionPaymentType" />
           <EntitySet Name="Subscriptions" EntityType="almohandes_DbModel.Subscription" />
           <EntitySet Name="SubscriptionsTypes" EntityType="almohandes_DbModel.SubscriptionsType" />
           <EntitySet Name="Users" EntityType="almohandes_DbModel.User" />
@@ -2118,6 +2548,10 @@
           <AssociationSet Name="FK_Expenses_Classes" Association="almohandes_DbModel.FK_Expenses_Classes">
             <End Role="Class" EntitySet="Classes" />
             <End Role="Expens" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Revenues_Classes" Association="almohandes_DbModel.FK_Revenues_Classes">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Revenue" EntitySet="Revenues" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentsClass_Classes" Association="almohandes_DbModel.FK_StudentsClass_Classes">
             <End Role="Class" EntitySet="Classes" />
@@ -2167,9 +2601,33 @@
             <End Role="Subject" EntitySet="Subjects" />
             <End Role="EmployeeClass" EntitySet="EmployeeClasses" />
           </AssociationSet>
+          <AssociationSet Name="FK_EmployeeFiles_Employees" Association="almohandes_DbModel.FK_EmployeeFiles_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeFile" EntitySet="EmployeeFiles" />
+          </AssociationSet>
           <AssociationSet Name="FK_Employees_EmployeeRegistrationTypes" Association="almohandes_DbModel.FK_Employees_EmployeeRegistrationTypes">
             <End Role="EmployeeRegistrationType" EntitySet="EmployeeRegistrationTypes" />
             <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReportItems_EmployeeReports" Association="almohandes_DbModel.FK_EmployeeReportItems_EmployeeReports">
+            <End Role="EmployeeReport" EntitySet="EmployeeReports" />
+            <End Role="EmployeeReportItem" EntitySet="EmployeeReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReportItems_EmployeeReportTools" Association="almohandes_DbModel.FK_EmployeeReportItems_EmployeeReportTools">
+            <End Role="EmployeeReportTool" EntitySet="EmployeeReportTools" />
+            <End Role="EmployeeReportItem" EntitySet="EmployeeReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReports_EmployeeReportTypes" Association="almohandes_DbModel.FK_EmployeeReports_EmployeeReportTypes">
+            <End Role="EmployeeReportType" EntitySet="EmployeeReportTypes" />
+            <End Role="EmployeeReport" EntitySet="EmployeeReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReports_Employees" Association="almohandes_DbModel.FK_EmployeeReports_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeReport" EntitySet="EmployeeReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeReportTools_EmployeeReportTypes" Association="almohandes_DbModel.FK_EmployeeReportTools_EmployeeReportTypes">
+            <End Role="EmployeeReportType" EntitySet="EmployeeReportTypes" />
+            <End Role="EmployeeReportTool" EntitySet="EmployeeReportTools" />
           </AssociationSet>
           <AssociationSet Name="FK_Employees_Jops" Association="almohandes_DbModel.FK_Employees_Jops">
             <End Role="Jop" EntitySet="Jops" />
@@ -2206,6 +2664,10 @@
           <AssociationSet Name="FK_Expenses_Employees" Association="almohandes_DbModel.FK_Expenses_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Expens" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Revenues_Employees" Association="almohandes_DbModel.FK_Revenues_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Revenue" EntitySet="Revenues" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Employees" Association="almohandes_DbModel.FK_Users_Employees">
             <End Role="Employee" EntitySet="Employees" />
@@ -2283,6 +2745,22 @@
             <End Role="RegistrationType" EntitySet="RegistrationTypes" />
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
+          <AssociationSet Name="FK_Revenues_RevenuesTypes" Association="almohandes_DbModel.FK_Revenues_RevenuesTypes">
+            <End Role="RevenuesType" EntitySet="RevenuesTypes" />
+            <End Role="Revenue" EntitySet="Revenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Revenues_StudyPlaces" Association="almohandes_DbModel.FK_Revenues_StudyPlaces">
+            <End Role="StudyPlace" EntitySet="StudyPlaces" />
+            <End Role="Revenue" EntitySet="Revenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Revenues_StudyYears" Association="almohandes_DbModel.FK_Revenues_StudyYears">
+            <End Role="StudyYear" EntitySet="StudyYears" />
+            <End Role="Revenue" EntitySet="Revenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Revenues_SubscriptionMethod" Association="almohandes_DbModel.FK_Revenues_SubscriptionMethod">
+            <End Role="SubscriptionMethod" EntitySet="SubscriptionMethods" />
+            <End Role="Revenue" EntitySet="Revenues" />
+          </AssociationSet>
           <AssociationSet Name="FK_RevenuesTypes_RevenuesTypes" Association="almohandes_DbModel.FK_RevenuesTypes_RevenuesTypes">
             <End Role="RevenuesType" EntitySet="RevenuesTypes" />
             <End Role="RevenuesType1" EntitySet="RevenuesTypes" />
@@ -2290,6 +2768,30 @@
           <AssociationSet Name="FK_ShiftsTimes_WorkShifts" Association="almohandes_DbModel.FK_ShiftsTimes_WorkShifts">
             <End Role="WorkShift" EntitySet="WorkShifts" />
             <End Role="ShiftsTime" EntitySet="ShiftsTimes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentFiles_Students" Association="almohandes_DbModel.FK_StudentFiles_Students">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="StudentFile" EntitySet="StudentFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReportItems_StudentReports" Association="almohandes_DbModel.FK_StudentReportItems_StudentReports">
+            <End Role="StudentReport" EntitySet="StudentReports" />
+            <End Role="StudentReportItem" EntitySet="StudentReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReportItems_StudentReportTools" Association="almohandes_DbModel.FK_StudentReportItems_StudentReportTools">
+            <End Role="StudentReportTool" EntitySet="StudentReportTools" />
+            <End Role="StudentReportItem" EntitySet="StudentReportItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReports_StudentReportTypes" Association="almohandes_DbModel.FK_StudentReports_StudentReportTypes">
+            <End Role="StudentReportType" EntitySet="StudentReportTypes" />
+            <End Role="StudentReport" EntitySet="StudentReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReports_Students" Association="almohandes_DbModel.FK_StudentReports_Students">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="StudentReport" EntitySet="StudentReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentReportTools_StudentReportTypes" Association="almohandes_DbModel.FK_StudentReportTools_StudentReportTypes">
+            <End Role="StudentReportType" EntitySet="StudentReportTypes" />
+            <End Role="StudentReportTool" EntitySet="StudentReportTools" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentsAttendance_Students" Association="almohandes_DbModel.FK_StudentsAttendance_Students">
             <End Role="Student" EntitySet="Students" />
@@ -2327,38 +2829,14 @@
             <End Role="StudyYear" EntitySet="StudyYears" />
             <End Role="StudyClass" EntitySet="StudyClasses" />
           </AssociationSet>
+          <AssociationSet Name="FK_SubscriptionMethod_SubscriptionMethod1" Association="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod1">
+            <End Role="SubscriptionPaymentType" EntitySet="SubscriptionPaymentTypes" />
+            <End Role="SubscriptionMethod" EntitySet="SubscriptionMethods" />
+          </AssociationSet>
           <AssociationSet Name="FK_Subscriptions_SubscriptionsTypes" Association="almohandes_DbModel.FK_Subscriptions_SubscriptionsTypes">
             <End Role="SubscriptionsType" EntitySet="SubscriptionsTypes" />
             <End Role="Subscription" EntitySet="Subscriptions" />
           </AssociationSet>
-          <FunctionImport Name="DeleteAll2" />
-          <FunctionImport Name="GenerateSchema2" />
-          <EntitySet Name="Revenues" EntityType="almohandes_DbModel.Revenue" />
-          <AssociationSet Name="FK_Revenues_Classes" Association="almohandes_DbModel.FK_Revenues_Classes">
-            <End Role="Class" EntitySet="Classes" />
-            <End Role="Revenue" EntitySet="Revenues" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Revenues_Employees" Association="almohandes_DbModel.FK_Revenues_Employees">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Revenue" EntitySet="Revenues" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Revenues_RevenuesTypes" Association="almohandes_DbModel.FK_Revenues_RevenuesTypes">
-            <End Role="RevenuesType" EntitySet="RevenuesTypes" />
-            <End Role="Revenue" EntitySet="Revenues" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Revenues_StudyPlaces" Association="almohandes_DbModel.FK_Revenues_StudyPlaces">
-            <End Role="StudyPlace" EntitySet="StudyPlaces" />
-            <End Role="Revenue" EntitySet="Revenues" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Revenues_StudyYears" Association="almohandes_DbModel.FK_Revenues_StudyYears">
-            <End Role="StudyYear" EntitySet="StudyYears" />
-            <End Role="Revenue" EntitySet="Revenues" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Revenues_SubscriptionMethod" Association="almohandes_DbModel.FK_Revenues_SubscriptionMethod">
-            <End Role="SubscriptionMethod" EntitySet="SubscriptionMethods" />
-            <End Role="Revenue" EntitySet="Revenues" />
-          </AssociationSet>
-          <EntitySet Name="Settings" EntityType="almohandes_DbModel.Setting" />
           </EntityContainer>
         <EntityType Name="BuildingSupervisor">
           <Key>
@@ -2402,6 +2880,7 @@
           <Property Name="LevelId" Type="Guid" />
           <Property Name="StudyPlaceId" Type="Guid" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -2417,10 +2896,10 @@
           <NavigationProperty Name="ClassExams" Relationship="almohandes_DbModel.FK_ClassExams_Classes" FromRole="Class" ToRole="ClassExam" />
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses" FromRole="Class" ToRole="EmployeeClass" />
           <NavigationProperty Name="Expenses" Relationship="almohandes_DbModel.FK_Expenses_Classes" FromRole="Class" ToRole="Expens" />
+          <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_Classes" FromRole="Class" ToRole="Revenue" />
           <NavigationProperty Name="StudentsClasses" Relationship="almohandes_DbModel.FK_StudentsClass_Classes" FromRole="Class" ToRole="StudentsClass" />
           <NavigationProperty Name="StudentsClassesTransfers" Relationship="almohandes_DbModel.FK_StudentsClassesTransfer_Classes" FromRole="Class" ToRole="StudentsClassesTransfer" />
           <NavigationProperty Name="StudentsClassesTransfers1" Relationship="almohandes_DbModel.FK_StudentsClassesTransfer_Classes1" FromRole="Class" ToRole="StudentsClassesTransfer" />
-          <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_Classes" FromRole="Class" ToRole="Revenue" />
         </EntityType>
         <EntityType Name="ClassesLeader">
           <Key>
@@ -2530,6 +3009,23 @@
           <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeeClasses_Employees" FromRole="EmployeeClass" ToRole="Employee" />
           <NavigationProperty Name="Subject" Relationship="almohandes_DbModel.FK_EmployeeClasses_Subjects" FromRole="EmployeeClass" ToRole="Subject" />
         </EntityType>
+        <EntityType Name="EmployeeFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeId" Type="Guid" />
+          <Property Name="File" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeeFiles_Employees" FromRole="EmployeeFile" ToRole="Employee" />
+        </EntityType>
         <EntityType Name="EmployeeRegistrationType">
           <Key>
             <PropertyRef Name="Id" />
@@ -2546,6 +3042,81 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Employees" Relationship="almohandes_DbModel.FK_Employees_EmployeeRegistrationTypes" FromRole="EmployeeRegistrationType" ToRole="Employee" />
         </EntityType>
+        <EntityType Name="EmployeeReportItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeReportId" Type="Guid" />
+          <Property Name="EmployeeToolId" Type="Guid" />
+          <Property Name="ToolValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="EmployeeReport" Relationship="almohandes_DbModel.FK_EmployeeReportItems_EmployeeReports" FromRole="EmployeeReportItem" ToRole="EmployeeReport" />
+          <NavigationProperty Name="EmployeeReportTool" Relationship="almohandes_DbModel.FK_EmployeeReportItems_EmployeeReportTools" FromRole="EmployeeReportItem" ToRole="EmployeeReportTool" />
+        </EntityType>
+        <EntityType Name="EmployeeReport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeReportTypeId" Type="Guid" />
+          <Property Name="EmployeeId" Type="Guid" />
+          <Property Name="ReportDateFrom" Type="DateTime" Precision="3" />
+          <Property Name="ReportDateTo" Type="DateTime" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="EmployeeReportItems" Relationship="almohandes_DbModel.FK_EmployeeReportItems_EmployeeReports" FromRole="EmployeeReport" ToRole="EmployeeReportItem" />
+          <NavigationProperty Name="EmployeeReportType" Relationship="almohandes_DbModel.FK_EmployeeReports_EmployeeReportTypes" FromRole="EmployeeReport" ToRole="EmployeeReportType" />
+          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_EmployeeReports_Employees" FromRole="EmployeeReport" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmployeeReportTool">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeReportTypeId" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="EmployeeReportItems" Relationship="almohandes_DbModel.FK_EmployeeReportItems_EmployeeReportTools" FromRole="EmployeeReportTool" ToRole="EmployeeReportItem" />
+          <NavigationProperty Name="EmployeeReportType" Relationship="almohandes_DbModel.FK_EmployeeReportTools_EmployeeReportTypes" FromRole="EmployeeReportTool" ToRole="EmployeeReportType" />
+        </EntityType>
+        <EntityType Name="EmployeeReportType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="EmployeeReports" Relationship="almohandes_DbModel.FK_EmployeeReports_EmployeeReportTypes" FromRole="EmployeeReportType" ToRole="EmployeeReport" />
+          <NavigationProperty Name="EmployeeReportTools" Relationship="almohandes_DbModel.FK_EmployeeReportTools_EmployeeReportTypes" FromRole="EmployeeReportType" ToRole="EmployeeReportTool" />
+        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Id" />
@@ -2554,6 +3125,7 @@
           <Property Name="JopId" Type="Guid" />
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NumberId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BirthDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Qualification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -2564,6 +3136,7 @@
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="JoiningDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WorkDayCost" Type="Double" />
+          <Property Name="ContractOrNo" Type="Boolean" Nullable="false" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
@@ -2575,7 +3148,9 @@
           <NavigationProperty Name="BuildingSupervisors" Relationship="almohandes_DbModel.FK_BuildingSupervisors_Employees" FromRole="Employee" ToRole="BuildingSupervisor" />
           <NavigationProperty Name="ClassesLeaders" Relationship="almohandes_DbModel.FK_ClassesLeaders_Employees" FromRole="Employee" ToRole="ClassesLeader" />
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_Employees" FromRole="Employee" ToRole="EmployeeClass" />
+          <NavigationProperty Name="EmployeeFiles" Relationship="almohandes_DbModel.FK_EmployeeFiles_Employees" FromRole="Employee" ToRole="EmployeeFile" />
           <NavigationProperty Name="EmployeeRegistrationType" Relationship="almohandes_DbModel.FK_Employees_EmployeeRegistrationTypes" FromRole="Employee" ToRole="EmployeeRegistrationType" />
+          <NavigationProperty Name="EmployeeReports" Relationship="almohandes_DbModel.FK_EmployeeReports_Employees" FromRole="Employee" ToRole="EmployeeReport" />
           <NavigationProperty Name="Jop" Relationship="almohandes_DbModel.FK_Employees_Jops" FromRole="Employee" ToRole="Jop" />
           <NavigationProperty Name="EmployeesDelays" Relationship="almohandes_DbModel.FK_EmployeesDelay_Employees" FromRole="Employee" ToRole="EmployeesDelay" />
           <NavigationProperty Name="EmployeesDiscounts" Relationship="almohandes_DbModel.FK_EmployeesDiscounts_Employees" FromRole="Employee" ToRole="EmployeesDiscount" />
@@ -2585,8 +3160,8 @@
           <NavigationProperty Name="EmployeesVacations" Relationship="almohandes_DbModel.FK_EmployeesVacation_Employees" FromRole="Employee" ToRole="EmployeesVacation" />
           <NavigationProperty Name="EmployeesWorkShifts" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_Employees" FromRole="Employee" ToRole="EmployeesWorkShift" />
           <NavigationProperty Name="Expenses" Relationship="almohandes_DbModel.FK_Expenses_Employees" FromRole="Employee" ToRole="Expens" />
-          <NavigationProperty Name="Users" Relationship="almohandes_DbModel.FK_Users_Employees" FromRole="Employee" ToRole="User" />
           <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_Employees" FromRole="Employee" ToRole="Revenue" />
+          <NavigationProperty Name="Users" Relationship="almohandes_DbModel.FK_Users_Employees" FromRole="Employee" ToRole="User" />
         </EntityType>
         <EntityType Name="EmployeesAttendance">
           <Key>
@@ -2893,6 +3468,8 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="StudyTypeId" Type="Guid" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FromAge" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ToAge" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DisplayOrder" Type="Int32" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
@@ -2943,6 +3520,36 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Students" Relationship="almohandes_DbModel.FK_Students_RegistrationTypes" FromRole="RegistrationType" ToRole="Student" />
         </EntityType>
+        <EntityType Name="Revenue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="StudyYearId" Type="Guid" />
+          <Property Name="StudyPlaceId" Type="Guid" />
+          <Property Name="ClassId" Type="Guid" />
+          <Property Name="RevenueTypeId" Type="Guid" />
+          <Property Name="EmployeeId" Type="Guid" />
+          <Property Name="RevenueValue" Type="Double" />
+          <Property Name="RevenueDate" Type="DateTime" Precision="0" />
+          <Property Name="SubscriptionMethodId" Type="Guid" />
+          <Property Name="PaperNumber1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PaperNumber2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_Revenues_Classes" FromRole="Revenue" ToRole="Class" />
+          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_Revenues_Employees" FromRole="Revenue" ToRole="Employee" />
+          <NavigationProperty Name="RevenuesType" Relationship="almohandes_DbModel.FK_Revenues_RevenuesTypes" FromRole="Revenue" ToRole="RevenuesType" />
+          <NavigationProperty Name="StudyPlace" Relationship="almohandes_DbModel.FK_Revenues_StudyPlaces" FromRole="Revenue" ToRole="StudyPlace" />
+          <NavigationProperty Name="StudyYear" Relationship="almohandes_DbModel.FK_Revenues_StudyYears" FromRole="Revenue" ToRole="StudyYear" />
+          <NavigationProperty Name="SubscriptionMethod" Relationship="almohandes_DbModel.FK_Revenues_SubscriptionMethod" FromRole="Revenue" ToRole="SubscriptionMethod" />
+        </EntityType>
         <EntityType Name="RevenuesType">
           <Key>
             <PropertyRef Name="Id" />
@@ -2958,9 +3565,28 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_RevenuesTypes" FromRole="RevenuesType" ToRole="Revenue" />
           <NavigationProperty Name="RevenuesTypes1" Relationship="almohandes_DbModel.FK_RevenuesTypes_RevenuesTypes" FromRole="RevenuesType" ToRole="RevenuesType1" />
           <NavigationProperty Name="RevenuesType1" Relationship="almohandes_DbModel.FK_RevenuesTypes_RevenuesTypes" FromRole="RevenuesType1" ToRole="RevenuesType" />
-          <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_RevenuesTypes" FromRole="RevenuesType" ToRole="Revenue" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReportHeader" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReportFooter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <Property Name="IsOffline" Type="Boolean" Nullable="false" />
+          <Property Name="ActivationKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ShiftsTime">
           <Key>
@@ -2980,6 +3606,98 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="WorkShift" Relationship="almohandes_DbModel.FK_ShiftsTimes_WorkShifts" FromRole="ShiftsTime" ToRole="WorkShift" />
         </EntityType>
+        <EntityType Name="StudentFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="StudentId" Type="Guid" />
+          <Property Name="File" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="Student" Relationship="almohandes_DbModel.FK_StudentFiles_Students" FromRole="StudentFile" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="StudentReportItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="StudentReportId" Type="Guid" />
+          <Property Name="StudentToolId" Type="Guid" />
+          <Property Name="ToolValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="StudentReport" Relationship="almohandes_DbModel.FK_StudentReportItems_StudentReports" FromRole="StudentReportItem" ToRole="StudentReport" />
+          <NavigationProperty Name="StudentReportTool" Relationship="almohandes_DbModel.FK_StudentReportItems_StudentReportTools" FromRole="StudentReportItem" ToRole="StudentReportTool" />
+        </EntityType>
+        <EntityType Name="StudentReport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="StudentReportTypeId" Type="Guid" />
+          <Property Name="StudentId" Type="Guid" />
+          <Property Name="ReportDateFrom" Type="DateTime" Precision="3" />
+          <Property Name="ReportDateTo" Type="DateTime" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="StudentReportItems" Relationship="almohandes_DbModel.FK_StudentReportItems_StudentReports" FromRole="StudentReport" ToRole="StudentReportItem" />
+          <NavigationProperty Name="StudentReportType" Relationship="almohandes_DbModel.FK_StudentReports_StudentReportTypes" FromRole="StudentReport" ToRole="StudentReportType" />
+          <NavigationProperty Name="Student" Relationship="almohandes_DbModel.FK_StudentReports_Students" FromRole="StudentReport" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="StudentReportTool">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="StudentReportTypeId" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="StudentReportItems" Relationship="almohandes_DbModel.FK_StudentReportItems_StudentReportTools" FromRole="StudentReportTool" ToRole="StudentReportItem" />
+          <NavigationProperty Name="StudentReportType" Relationship="almohandes_DbModel.FK_StudentReportTools_StudentReportTypes" FromRole="StudentReportTool" ToRole="StudentReportType" />
+        </EntityType>
+        <EntityType Name="StudentReportType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="StudentReports" Relationship="almohandes_DbModel.FK_StudentReports_StudentReportTypes" FromRole="StudentReportType" ToRole="StudentReport" />
+          <NavigationProperty Name="StudentReportTools" Relationship="almohandes_DbModel.FK_StudentReportTools_StudentReportTypes" FromRole="StudentReportType" ToRole="StudentReportTool" />
+        </EntityType>
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="Id" />
@@ -2987,6 +3705,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="DestrictId" Type="Guid" />
           <Property Name="RegistrationTypeId" Type="Guid" />
+          <Property Name="NumberId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -2995,6 +3714,13 @@
           <Property Name="MotherName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneMo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneAth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneOwner" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FatherJob" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MotherJob" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FatherNumberId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MotherNumberId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="JoiningDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
@@ -3006,6 +3732,8 @@
           <Property Name="DeletedBy" Type="Guid" />
           <NavigationProperty Name="Destrict" Relationship="almohandes_DbModel.FK_Students_Destricts" FromRole="Student" ToRole="Destrict" />
           <NavigationProperty Name="RegistrationType" Relationship="almohandes_DbModel.FK_Students_RegistrationTypes" FromRole="Student" ToRole="RegistrationType" />
+          <NavigationProperty Name="StudentFiles" Relationship="almohandes_DbModel.FK_StudentFiles_Students" FromRole="Student" ToRole="StudentFile" />
+          <NavigationProperty Name="StudentReports" Relationship="almohandes_DbModel.FK_StudentReports_Students" FromRole="Student" ToRole="StudentReport" />
           <NavigationProperty Name="StudentsAttendances" Relationship="almohandes_DbModel.FK_StudentsAttendance_Students" FromRole="Student" ToRole="StudentsAttendance" />
           <NavigationProperty Name="StudentsClasses" Relationship="almohandes_DbModel.FK_StudentsClass_Students" FromRole="Student" ToRole="StudentsClass" />
           <NavigationProperty Name="StudentsExamDegrees" Relationship="almohandes_DbModel.FK_StudentsExamDegrees_Students" FromRole="Student" ToRole="StudentsExamDegree" />
@@ -3173,9 +3901,9 @@
           <NavigationProperty Name="EmployeeClasses" Relationship="almohandes_DbModel.FK_EmployeeClasses_EmployeeClasses1" FromRole="StudyYear" ToRole="EmployeeClass" />
           <NavigationProperty Name="EmployeesWorkShifts" Relationship="almohandes_DbModel.FK_EmployeesWorkShifts_StudyYears" FromRole="StudyYear" ToRole="EmployeesWorkShift" />
           <NavigationProperty Name="Expenses" Relationship="almohandes_DbModel.FK_Expenses_StudyYears" FromRole="StudyYear" ToRole="Expens" />
+          <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_StudyYears" FromRole="StudyYear" ToRole="Revenue" />
           <NavigationProperty Name="StudentsClasses" Relationship="almohandes_DbModel.FK_StudentsClass_StudentsClass" FromRole="StudyYear" ToRole="StudentsClass" />
           <NavigationProperty Name="StudyClasses" Relationship="almohandes_DbModel.FK_StudyClasses_StudyClasses" FromRole="StudyYear" ToRole="StudyClass" />
-          <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_StudyYears" FromRole="StudyYear" ToRole="Revenue" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -3205,9 +3933,12 @@
           <Property Name="OrderDisplay" Type="Int32" />
           <Property Name="Amount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Discount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsPaid" Type="Boolean" />
           <Property Name="PaidAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PaidDate" Type="DateTime" Precision="3" />
+          <Property Name="PaymentTypeId" Type="Guid" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Guid" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
@@ -3217,8 +3948,25 @@
           <Property Name="DeletedBy" Type="Guid" />
           <Property Name="PaperNumber1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PaperNumber2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="StudentsClass" Relationship="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod" FromRole="SubscriptionMethod" ToRole="StudentsClass" />
           <NavigationProperty Name="Revenues" Relationship="almohandes_DbModel.FK_Revenues_SubscriptionMethod" FromRole="SubscriptionMethod" ToRole="Revenue" />
+          <NavigationProperty Name="StudentsClass" Relationship="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod" FromRole="SubscriptionMethod" ToRole="StudentsClass" />
+          <NavigationProperty Name="SubscriptionPaymentType" Relationship="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod1" FromRole="SubscriptionMethod" ToRole="SubscriptionPaymentType" />
+        </EntityType>
+        <EntityType Name="SubscriptionPaymentType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Guid" />
+          <NavigationProperty Name="SubscriptionMethods" Relationship="almohandes_DbModel.FK_SubscriptionMethod_SubscriptionMethod1" FromRole="SubscriptionPaymentType" ToRole="SubscriptionMethod" />
         </EntityType>
         <EntityType Name="Subscription">
           <Key>
@@ -3227,6 +3975,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="LevelId" Type="Guid" />
           <Property Name="SubscriptionTypeId" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Amount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InstallmentsNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
@@ -3428,6 +4177,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Revenues_Classes">
+          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenue">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_StudentsClass_Classes">
           <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.StudentsClass" Role="StudentsClass" Multiplicity="*" />
@@ -3572,6 +4333,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EmployeeFiles_Employees">
+          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeeFile" Role="EmployeeFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeFile">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Employees_EmployeeRegistrationTypes">
           <End Type="almohandes_DbModel.EmployeeRegistrationType" Role="EmployeeRegistrationType" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="*" />
@@ -3581,6 +4354,66 @@
             </Principal>
             <Dependent Role="Employee">
               <PropertyRef Name="RegistrationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReportItems_EmployeeReports">
+          <End Type="almohandes_DbModel.EmployeeReport" Role="EmployeeReport" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeeReportItem" Role="EmployeeReportItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReport">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReportItem">
+              <PropertyRef Name="EmployeeReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReportItems_EmployeeReportTools">
+          <End Type="almohandes_DbModel.EmployeeReportTool" Role="EmployeeReportTool" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeeReportItem" Role="EmployeeReportItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReportTool">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReportItem">
+              <PropertyRef Name="EmployeeToolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReports_EmployeeReportTypes">
+          <End Type="almohandes_DbModel.EmployeeReportType" Role="EmployeeReportType" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeeReport" Role="EmployeeReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReportType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReport">
+              <PropertyRef Name="EmployeeReportTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReports_Employees">
+          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeeReport" Role="EmployeeReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReport">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeReportTools_EmployeeReportTypes">
+          <End Type="almohandes_DbModel.EmployeeReportType" Role="EmployeeReportType" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.EmployeeReportTool" Role="EmployeeReportTool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeReportType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeReportTool">
+              <PropertyRef Name="EmployeeReportTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3688,6 +4521,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Expens">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Revenues_Employees">
+          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenue">
               <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3920,6 +4765,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Revenues_RevenuesTypes">
+          <End Type="almohandes_DbModel.RevenuesType" Role="RevenuesType" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RevenuesType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenue">
+              <PropertyRef Name="RevenueTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Revenues_StudyPlaces">
+          <End Type="almohandes_DbModel.StudyPlace" Role="StudyPlace" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudyPlace">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenue">
+              <PropertyRef Name="StudyPlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Revenues_StudyYears">
+          <End Type="almohandes_DbModel.StudyYear" Role="StudyYear" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudyYear">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenue">
+              <PropertyRef Name="StudyYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Revenues_SubscriptionMethod">
+          <End Type="almohandes_DbModel.SubscriptionMethod" Role="SubscriptionMethod" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriptionMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Revenue">
+              <PropertyRef Name="SubscriptionMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RevenuesTypes_RevenuesTypes">
           <End Type="almohandes_DbModel.RevenuesType" Role="RevenuesType" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.RevenuesType" Role="RevenuesType1" Multiplicity="*" />
@@ -3941,6 +4834,78 @@
             </Principal>
             <Dependent Role="ShiftsTime">
               <PropertyRef Name="WorkShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentFiles_Students">
+          <End Type="almohandes_DbModel.Student" Role="Student" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentFile" Role="StudentFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentFile">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReportItems_StudentReports">
+          <End Type="almohandes_DbModel.StudentReport" Role="StudentReport" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentReportItem" Role="StudentReportItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReport">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReportItem">
+              <PropertyRef Name="StudentReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReportItems_StudentReportTools">
+          <End Type="almohandes_DbModel.StudentReportTool" Role="StudentReportTool" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentReportItem" Role="StudentReportItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReportTool">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReportItem">
+              <PropertyRef Name="StudentToolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReports_StudentReportTypes">
+          <End Type="almohandes_DbModel.StudentReportType" Role="StudentReportType" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentReport" Role="StudentReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReportType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReport">
+              <PropertyRef Name="StudentReportTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReports_Students">
+          <End Type="almohandes_DbModel.Student" Role="Student" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentReport" Role="StudentReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReport">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentReportTools_StudentReportTypes">
+          <End Type="almohandes_DbModel.StudentReportType" Role="StudentReportType" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.StudentReportTool" Role="StudentReportTool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentReportType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentReportTool">
+              <PropertyRef Name="StudentReportTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4052,6 +5017,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SubscriptionMethod_SubscriptionMethod1">
+          <End Type="almohandes_DbModel.SubscriptionPaymentType" Role="SubscriptionPaymentType" Multiplicity="0..1" />
+          <End Type="almohandes_DbModel.SubscriptionMethod" Role="SubscriptionMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriptionPaymentType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SubscriptionMethod">
+              <PropertyRef Name="PaymentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Subscriptions_SubscriptionsTypes">
           <End Type="almohandes_DbModel.SubscriptionsType" Role="SubscriptionsType" Multiplicity="0..1" />
           <End Type="almohandes_DbModel.Subscription" Role="Subscription" Multiplicity="*" />
@@ -4064,133 +5041,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Revenue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="StudyYearId" Type="Guid" />
-          <Property Name="StudyPlaceId" Type="Guid" />
-          <Property Name="ClassId" Type="Guid" />
-          <Property Name="RevenueTypeId" Type="Guid" />
-          <Property Name="EmployeeId" Type="Guid" />
-          <Property Name="RevenueValue" Type="Double" />
-          <Property Name="RevenueDate" Type="DateTime" Precision="0" />
-          <Property Name="SubscriptionMethodId" Type="Guid" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Guid" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="DeletedBy" Type="Guid" />
-          <Property Name="PaperNumber1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PaperNumber2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Class" Relationship="almohandes_DbModel.FK_Revenues_Classes" FromRole="Revenue" ToRole="Class" />
-          <NavigationProperty Name="Employee" Relationship="almohandes_DbModel.FK_Revenues_Employees" FromRole="Revenue" ToRole="Employee" />
-          <NavigationProperty Name="RevenuesType" Relationship="almohandes_DbModel.FK_Revenues_RevenuesTypes" FromRole="Revenue" ToRole="RevenuesType" />
-          <NavigationProperty Name="StudyPlace" Relationship="almohandes_DbModel.FK_Revenues_StudyPlaces" FromRole="Revenue" ToRole="StudyPlace" />
-          <NavigationProperty Name="StudyYear" Relationship="almohandes_DbModel.FK_Revenues_StudyYears" FromRole="Revenue" ToRole="StudyYear" />
-          <NavigationProperty Name="SubscriptionMethod" Relationship="almohandes_DbModel.FK_Revenues_SubscriptionMethod" FromRole="Revenue" ToRole="SubscriptionMethod" />
-        </EntityType>
-        <Association Name="FK_Revenues_Classes">
-          <End Type="almohandes_DbModel.Class" Role="Class" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Class">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Revenue">
-              <PropertyRef Name="ClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Revenues_Employees">
-          <End Type="almohandes_DbModel.Employee" Role="Employee" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Revenue">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Revenues_RevenuesTypes">
-          <End Type="almohandes_DbModel.RevenuesType" Role="RevenuesType" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RevenuesType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Revenue">
-              <PropertyRef Name="RevenueTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Revenues_StudyPlaces">
-          <End Type="almohandes_DbModel.StudyPlace" Role="StudyPlace" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StudyPlace">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Revenue">
-              <PropertyRef Name="StudyPlaceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Revenues_StudyYears">
-          <End Type="almohandes_DbModel.StudyYear" Role="StudyYear" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StudyYear">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Revenue">
-              <PropertyRef Name="StudyYearId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Revenues_SubscriptionMethod">
-          <End Type="almohandes_DbModel.SubscriptionMethod" Role="SubscriptionMethod" Multiplicity="0..1" />
-          <End Type="almohandes_DbModel.Revenue" Role="Revenue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubscriptionMethod">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Revenue">
-              <PropertyRef Name="SubscriptionMethodId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Setting">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ReportHeader" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ReportFooter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Guid" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Guid" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="DeletedBy" Type="Guid" />
-          <Property Name="IsOffline" Type="Boolean" Nullable="false" />
-          <Property Name="ActivationKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="almohandes_DbModelStoreContainer" CdmEntityContainer="almohandes_DbEntities">
+          <FunctionImportMapping FunctionImportName="DeleteAll2" FunctionName="almohandes_DbModel.Store.DeleteAll" />
+          <FunctionImportMapping FunctionImportName="GenerateSchema2" FunctionName="almohandes_DbModel.Store.GenerateSchema" />
           <EntitySetMapping Name="BuildingSupervisors">
             <EntityTypeMapping TypeName="almohandes_DbModel.BuildingSupervisor">
               <MappingFragment StoreEntitySet="BuildingSupervisors">
@@ -4235,6 +5093,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StudyPlaceId" ColumnName="StudyPlaceId" />
                 <ScalarProperty Name="LevelId" ColumnName="LevelId" />
@@ -4343,9 +5202,96 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeFiles">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeeFile">
+              <MappingFragment StoreEntitySet="EmployeeFiles">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="File" ColumnName="File" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="EmployeeRegistrationTypes">
             <EntityTypeMapping TypeName="almohandes_DbModel.EmployeeRegistrationType">
               <MappingFragment StoreEntitySet="EmployeeRegistrationTypes">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeReportItems">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeeReportItem">
+              <MappingFragment StoreEntitySet="EmployeeReportItems">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ToolValue" ColumnName="ToolValue" />
+                <ScalarProperty Name="EmployeeToolId" ColumnName="EmployeeToolId" />
+                <ScalarProperty Name="EmployeeReportId" ColumnName="EmployeeReportId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeReports">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeeReport">
+              <MappingFragment StoreEntitySet="EmployeeReports">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ReportDateTo" ColumnName="ReportDateTo" />
+                <ScalarProperty Name="ReportDateFrom" ColumnName="ReportDateFrom" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeReportTypeId" ColumnName="EmployeeReportTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeReportTools">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeeReportTool">
+              <MappingFragment StoreEntitySet="EmployeeReportTools">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmployeeReportTypeId" ColumnName="EmployeeReportTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeReportTypes">
+            <EntityTypeMapping TypeName="almohandes_DbModel.EmployeeReportType">
+              <MappingFragment StoreEntitySet="EmployeeReportTypes">
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -4370,6 +5316,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ContractOrNo" ColumnName="ContractOrNo" />
                 <ScalarProperty Name="WorkDayCost" ColumnName="WorkDayCost" />
                 <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
@@ -4380,6 +5327,7 @@
                 <ScalarProperty Name="Qualification" ColumnName="Qualification" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="NumberId" ColumnName="NumberId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="JopId" ColumnName="JopId" />
@@ -4681,6 +5629,8 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="ToAge" ColumnName="ToAge" />
+                <ScalarProperty Name="FromAge" ColumnName="FromAge" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StudyTypeId" ColumnName="StudyTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -4722,6 +5672,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Revenues">
+            <EntityTypeMapping TypeName="almohandes_DbModel.Revenue">
+              <MappingFragment StoreEntitySet="Revenues">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="PaperNumber2" ColumnName="PaperNumber2" />
+                <ScalarProperty Name="PaperNumber1" ColumnName="PaperNumber1" />
+                <ScalarProperty Name="SubscriptionMethodId" ColumnName="SubscriptionMethodId" />
+                <ScalarProperty Name="RevenueDate" ColumnName="RevenueDate" />
+                <ScalarProperty Name="RevenueValue" ColumnName="RevenueValue" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="RevenueTypeId" ColumnName="RevenueTypeId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="StudyPlaceId" ColumnName="StudyPlaceId" />
+                <ScalarProperty Name="StudyYearId" ColumnName="StudyYearId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RevenuesTypes">
             <EntityTypeMapping TypeName="almohandes_DbModel.RevenuesType">
               <MappingFragment StoreEntitySet="RevenuesTypes">
@@ -4735,6 +5710,26 @@
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="almohandes_DbModel.Setting">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="ActivationKey" ColumnName="ActivationKey" />
+                <ScalarProperty Name="IsOffline" ColumnName="IsOffline" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ReportFooter" ColumnName="ReportFooter" />
+                <ScalarProperty Name="ReportHeader" ColumnName="ReportHeader" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4757,6 +5752,93 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="StudentFiles">
+            <EntityTypeMapping TypeName="almohandes_DbModel.StudentFile">
+              <MappingFragment StoreEntitySet="StudentFiles">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="File" ColumnName="File" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentReportItems">
+            <EntityTypeMapping TypeName="almohandes_DbModel.StudentReportItem">
+              <MappingFragment StoreEntitySet="StudentReportItems">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ToolValue" ColumnName="ToolValue" />
+                <ScalarProperty Name="StudentToolId" ColumnName="StudentToolId" />
+                <ScalarProperty Name="StudentReportId" ColumnName="StudentReportId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentReports">
+            <EntityTypeMapping TypeName="almohandes_DbModel.StudentReport">
+              <MappingFragment StoreEntitySet="StudentReports">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ReportDateTo" ColumnName="ReportDateTo" />
+                <ScalarProperty Name="ReportDateFrom" ColumnName="ReportDateFrom" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="StudentReportTypeId" ColumnName="StudentReportTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentReportTools">
+            <EntityTypeMapping TypeName="almohandes_DbModel.StudentReportTool">
+              <MappingFragment StoreEntitySet="StudentReportTools">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StudentReportTypeId" ColumnName="StudentReportTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentReportTypes">
+            <EntityTypeMapping TypeName="almohandes_DbModel.StudentReportType">
+              <MappingFragment StoreEntitySet="StudentReportTypes">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="almohandes_DbModel.Student">
               <MappingFragment StoreEntitySet="Students">
@@ -4769,6 +5851,13 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="MotherNumberId" ColumnName="MotherNumberId" />
+                <ScalarProperty Name="FatherNumberId" ColumnName="FatherNumberId" />
+                <ScalarProperty Name="MotherJob" ColumnName="MotherJob" />
+                <ScalarProperty Name="FatherJob" ColumnName="FatherJob" />
+                <ScalarProperty Name="PhoneOwner" ColumnName="PhoneOwner" />
+                <ScalarProperty Name="PhoneAth" ColumnName="PhoneAth" />
+                <ScalarProperty Name="PhoneMo" ColumnName="PhoneMo" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="MotherName" ColumnName="MotherName" />
@@ -4777,6 +5866,7 @@
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="NumberId" ColumnName="NumberId" />
                 <ScalarProperty Name="RegistrationTypeId" ColumnName="RegistrationTypeId" />
                 <ScalarProperty Name="DestrictId" ColumnName="DestrictId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -4959,13 +6049,32 @@
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="PaymentTypeId" ColumnName="PaymentTypeId" />
                 <ScalarProperty Name="PaidDate" ColumnName="PaidDate" />
                 <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
                 <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+                <ScalarProperty Name="DiscountReason" ColumnName="DiscountReason" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="OrderDisplay" ColumnName="OrderDisplay" />
                 <ScalarProperty Name="StudentClassId" ColumnName="StudentClassId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriptionPaymentTypes">
+            <EntityTypeMapping TypeName="almohandes_DbModel.SubscriptionPaymentType">
+              <MappingFragment StoreEntitySet="SubscriptionPaymentTypes">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4982,6 +6091,7 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="InstallmentsNumber" ColumnName="InstallmentsNumber" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="SubscriptionTypeId" ColumnName="SubscriptionTypeId" />
                 <ScalarProperty Name="LevelId" ColumnName="LevelId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -5055,54 +6165,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="DeleteAll2" FunctionName="almohandes_DbModel.Store.DeleteAll" />
-          <FunctionImportMapping FunctionImportName="GenerateSchema2" FunctionName="almohandes_DbModel.Store.GenerateSchema" />
-          <EntitySetMapping Name="Revenues">
-            <EntityTypeMapping TypeName="almohandes_DbModel.Revenue">
-              <MappingFragment StoreEntitySet="Revenues">
-                <ScalarProperty Name="PaperNumber2" ColumnName="PaperNumber2" />
-                <ScalarProperty Name="PaperNumber1" ColumnName="PaperNumber1" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="SubscriptionMethodId" ColumnName="SubscriptionMethodId" />
-                <ScalarProperty Name="RevenueDate" ColumnName="RevenueDate" />
-                <ScalarProperty Name="RevenueValue" ColumnName="RevenueValue" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="RevenueTypeId" ColumnName="RevenueTypeId" />
-                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
-                <ScalarProperty Name="StudyPlaceId" ColumnName="StudyPlaceId" />
-                <ScalarProperty Name="StudyYearId" ColumnName="StudyYearId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Settings">
-            <EntityTypeMapping TypeName="almohandes_DbModel.Setting">
-              <MappingFragment StoreEntitySet="Settings">
-                <ScalarProperty Name="ActivationKey" ColumnName="ActivationKey" />
-                <ScalarProperty Name="IsOffline" ColumnName="IsOffline" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="ReportFooter" ColumnName="ReportFooter" />
-                <ScalarProperty Name="ReportHeader" ColumnName="ReportHeader" />
-                <ScalarProperty Name="Logo" ColumnName="Logo" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

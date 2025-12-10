@@ -304,6 +304,9 @@
     <Compile Include="Controllers\DestrictsController.cs" />
     <Compile Include="Controllers\DiscountsTypesController.cs" />
     <Compile Include="Controllers\EmployeeClassesController.cs" />
+    <Compile Include="Controllers\EmployeeReportsController.cs" />
+    <Compile Include="Controllers\EmployeeReportToolsController.cs" />
+    <Compile Include="Controllers\EmployeeReportTypesController.cs" />
     <Compile Include="Controllers\EmployeesAttendanceController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\EmployeesDelayController.cs" />
@@ -327,6 +330,9 @@
     <Compile Include="Controllers\RevenuesController.cs" />
     <Compile Include="Controllers\RevenuesTypesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\StudentReportsController.cs" />
+    <Compile Include="Controllers\StudentReportToolsController.cs" />
+    <Compile Include="Controllers\StudentReportTypesController.cs" />
     <Compile Include="Controllers\StudentsAttendanceController.cs" />
     <Compile Include="Controllers\StudentsClassController.cs" />
     <Compile Include="Controllers\StudentsClassesTransferController.cs" />
@@ -351,6 +357,10 @@
     <Compile Include="Dtos\Departments\DepartmentsDto.cs" />
     <Compile Include="Dtos\Destricts\DestrictsDto.cs" />
     <Compile Include="Dtos\EmployeeClasses\EmployeeClassesDto.cs" />
+    <Compile Include="Dtos\EmployeeReports\EmployeeReportsDto.cs" />
+    <Compile Include="Dtos\StudentReports\StudentReportsDto.cs" />
+    <Compile Include="Dtos\StudentReportTools\StudentReportToolsDto.cs" />
+    <Compile Include="Dtos\EmployeeReportTools\EmployeeReportToolsDto.cs" />
     <Compile Include="Dtos\EmployeesAttendance\EmployeesAttendanceDto.cs" />
     <Compile Include="Dtos\EmployeesDelay\EmployeesDelayDto.cs" />
     <Compile Include="Dtos\EmployeesDiscounts\EmployeesDiscountsDto.cs" />
@@ -416,7 +426,22 @@
     <Compile Include="Models\EmployeeClass.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeFile.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmployeeRegistrationType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeReport.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeReportItem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeReportTool.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeReportType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmployeesAttendance.cs">
@@ -506,6 +531,21 @@
     <Compile Include="Models\Student.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentFile.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentReport.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentReportItem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentReportTool.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentReportType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\StudentsAttendance.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -539,6 +579,9 @@
     <Compile Include="Models\SubscriptionMethod.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SubscriptionPaymentType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SubscriptionsType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -555,6 +598,12 @@
     <Compile Include="Services\ClassesLeaders\ClassesLeadersServices.cs" />
     <Compile Include="Services\EmployeeClasses\EmployeeClassesServices.cs" />
     <Compile Include="Services\DiscountsTypes\DiscountsTypesServices.cs" />
+    <Compile Include="Services\EmployeeReports\EmployeeReportsServices.cs" />
+    <Compile Include="Services\StudentReports\StudentReportsServices.cs" />
+    <Compile Include="Services\StudentReportTools\StudentReportToolsServices.cs" />
+    <Compile Include="Services\EmployeeReportTools\EmployeeReportToolsServices.cs" />
+    <Compile Include="Services\StudentReportTypes\StudentReportTypesServices.cs" />
+    <Compile Include="Services\EmployeeReportTypes\EmployeeReportTypesServices.cs" />
     <Compile Include="Services\EmployeesAttendance\EmployeesAttendanceServices.cs" />
     <Compile Include="Services\EmployeesReceipt\EmployeesReceiptServices.cs" />
     <Compile Include="Services\EmployeesWorkShifts\EmployeesWorkShiftsServices.cs" />
@@ -2368,6 +2417,19 @@
     <Content Include="Views\ClassStudentsResults\Index.cshtml" />
     <Content Include="Views\FinancialReport\Index.cshtml" />
     <Content Include="Views\ClassStudentsResults\ClassYearResults.cshtml" />
+    <Content Include="Views\EmployeeReportTypes\Index.cshtml" />
+    <Content Include="Views\EmployeeReportTypes\Upsert.cshtml" />
+    <Content Include="Views\StudentReportTypes\Index.cshtml" />
+    <Content Include="Views\StudentReportTypes\Upsert.cshtml" />
+    <Content Include="Views\EmployeeReportTools\Index.cshtml" />
+    <Content Include="Views\EmployeeReportTools\Upsert.cshtml" />
+    <Content Include="Views\StudentReportTools\Index.cshtml" />
+    <Content Include="Views\StudentReportTools\Upsert.cshtml" />
+    <Content Include="Views\StudentReports\Index.cshtml" />
+    <Content Include="Views\StudentReports\Upsert.cshtml" />
+    <Content Include="Views\EmployeeReports\Index.cshtml" />
+    <Content Include="Views\EmployeeReports\Upsert.cshtml" />
+    <Content Include="Views\Classes\ClassStudents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

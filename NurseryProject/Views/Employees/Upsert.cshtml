@@ -35,6 +35,13 @@
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الرقم القومي", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.NumberId, new { htmlAttributes = new { @class = "form-control ", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.NumberId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("تاريخ الميلاد", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.TextBoxFor(model => model.BirthDate, new { @class = "form-control", @Value = @ViewBag.BirthDate, type = "date", required = "required" })
@@ -65,13 +72,7 @@
                         @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("المؤهل ", htmlAttributes: new { @class = "control-label" })
-                    <div class="col-12">
-                        @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @class = "form-control", required = "required" } })
-                        @Html.ValidationMessageFor(model => model.Qualification, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+
 
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الادارة ", htmlAttributes: new { @class = "control-label" })
@@ -86,6 +87,13 @@
                     <div class="col-12">
                         @Html.DropDownListFor(model => model.JopId, null, "--اختر--", new { @class = "form-control", required = "required" })
                         @Html.ValidationMessageFor(model => model.JopId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("المؤهل ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Qualification, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">
@@ -117,12 +125,25 @@
                     </div>
                 </div>
 
-
                 <div class="form-group mb-3 col-sm-6">
                     @Html.Label("تاريخ التعيين ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" })
                         @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("هل موظف بعقد؟ ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.CheckBoxFor(model => model.ContractOrNo, new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ContractOrNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("اوراق الموظف", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.Editor("EmployeeFiles1", new { htmlAttributes = new { @class = "form-control", @type = "File", @multiple = "multiple" } })
+                        @Html.ValidationMessage("EmployeeFiles1", "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group mb-3 col-sm-6">

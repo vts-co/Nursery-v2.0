@@ -3,6 +3,7 @@ using NurseryProject.Enums;
 using NurseryProject.Levels.Services;
 using NurseryProject.Models;
 using NurseryProject.Services.Classes;
+using NurseryProject.Services.Students;
 using NurseryProject.Services.StudyPlaces;
 using NurseryProject.Services.StudyTypes;
 using System;
@@ -18,13 +19,13 @@ namespace NurseryProject.Controllers
     public class ClassesController : Controller
     {
         StudyTypesServices studyTypesServices = new StudyTypesServices();
+        StudentsServices studentsServices = new StudentsServices();
         LevelsServices levelsServices = new LevelsServices();
         ClassesServices classesServices = new ClassesServices();
         StudyPlacesServices studyPlacesServices = new StudyPlacesServices();
         // GET: Destricts
         public ActionResult Index()
         {
-
             var model = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
             return View(model);
         }
@@ -131,6 +132,14 @@ namespace NurseryProject.Controllers
                 TempData["warning"] = result.Message;
                 return RedirectToAction("Index");
             }
+        }
+
+        public ActionResult ClassStudents(Guid id)
+        {
+            var model = studentsServices.GetAllByClass(id);
+            var class1 = classesServices.Get(id);
+            ViewBag.Class = class1.Name;
+            return View(model);
         }
         public ActionResult getLevels(Guid Id)
         {

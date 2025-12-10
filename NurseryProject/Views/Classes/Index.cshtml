@@ -43,30 +43,31 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StudyTypeName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LevelName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StudyPlaceName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StudentsNum)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
-                    </td>
-                    <td>
-                        @Url.Edit(routeValues: new { id = item.Id })
-                        @Url.Delete(routeValues: new { id = item.Id })
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudyTypeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LevelName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudyPlaceName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentsNum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td>
+                            <a href='/Classes/ClassStudents?id=@item.Id ' title='طلاب الفصل' class='btn btn-soft-warning  waves-effect waves-light p-2'><i class="fas fa-users"></i></a>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

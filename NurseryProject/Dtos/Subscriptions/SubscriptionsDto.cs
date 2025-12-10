@@ -16,6 +16,8 @@ namespace NurseryProject.Dtos.Subscriptions
         public string SubscriptionTypeName { get; set; }
         public string Name { get; set; }
         public string Amount { get; set; }
+        public string Discount { get; set; }
+        public string DiscountReason { get; set; }
         public string InstallmentsNumber { get; set; }
         public string InstallmentAmount { get; set; }
         public bool IsAnother { get; set; }

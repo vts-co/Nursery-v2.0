@@ -48,13 +48,13 @@
                         @Html.ValidationMessageFor(model => model.IsAnother, "", new { @class = "text-danger" })
                     </div>
                 </div>*@
-                @*<div class="form-group mb-3 col-sm-6" id="nam">
-                    @Html.Label("المسمي ", htmlAttributes: new { @class = "control-label" })
+                <div class="form-group mb-3 col-sm-6" id="nam">
+                    @Html.Label("اسم الاشتراك ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required"} })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
-                </div>*@
+                </div>
                 <div class="form-group mb-3 col-sm-6" id="amo">
                     @Html.Label("المبلغ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">

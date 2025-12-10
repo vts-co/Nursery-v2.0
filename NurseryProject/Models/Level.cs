@@ -25,6 +25,8 @@ namespace NurseryProject.Models
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> StudyTypeId { get; set; }
         public string Name { get; set; }
+        public string FromAge { get; set; }
+        public string ToAge { get; set; }
         public Nullable<int> DisplayOrder { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }

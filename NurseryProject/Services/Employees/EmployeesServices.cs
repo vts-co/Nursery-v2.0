@@ -142,6 +142,8 @@ namespace NurseryProject.Services.Employees
 
                 Oldmodel.Name = model.Name;
                 Oldmodel.RegistrationTypeId = model.RegistrationTypeId;
+                Oldmodel.NumberId = model.NumberId;
+                Oldmodel.ContractOrNo = model.ContractOrNo;
                 Oldmodel.Phone = model.Phone;
                 Oldmodel.Address = model.Address;
                 Oldmodel.BirthDate = model.BirthDate;
@@ -152,6 +154,15 @@ namespace NurseryProject.Services.Employees
                 Oldmodel.JopId = model.JopId.Value;
                 Oldmodel.Notes = model.Notes;
                 Oldmodel.Qualification = model.Qualification;
+
+                var files = dbContext.EmployeeFiles.Where(x => !x.IsDeleted && x.EmployeeId == model.Id).ToList();
+                foreach (var item in files)
+                {
+                    item.IsDeleted = true;
+                }
+
+                dbContext.EmployeeFiles.AddRange(model.EmployeeFiles);
+
 
                 if (model.Image != null)
                 {
@@ -181,6 +192,7 @@ namespace NurseryProject.Services.Employees
                     result.Message = "هذا الموظف لا يمكن حذفه  ";
                     return result;
                 }
+                
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;
                 Oldmodel.DeletedBy = UserId;

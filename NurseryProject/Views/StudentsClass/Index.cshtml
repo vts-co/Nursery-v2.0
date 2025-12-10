@@ -71,7 +71,7 @@
                             </div>
                             <hr />
                             <div class="form-group mb-3 col-sm-6">
-                                @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("تاريخ الالتحاق /الاشتراك ", htmlAttributes: new { @class = "control-label" })
                                 <div class="col-12">
                                     @Html.Editor("JoiningDate", new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" } })
                                     @Html.ValidationMessage("JoiningDate", "", new { @class = "text-danger" })
@@ -186,7 +186,7 @@
                         @Html.DisplayName("العام الدراسي")
                     </th>
                     <th>
-                        @Html.DisplayName("تاريخ الالتحاق ")
+                        @Html.DisplayName("تاريخ الالتحاق /الاشتراك ")
                     </th>
                     <th>
                         @Html.DisplayName("ملاحظات ")

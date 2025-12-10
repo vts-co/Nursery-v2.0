@@ -92,6 +92,7 @@ namespace NurseryProject.Services.Subscriptions
                 Oldmodel.LevelId = model.LevelId;
                 Oldmodel.SubscriptionTypeId = model.SubscriptionTypeId;
 
+                Oldmodel.Name = model.Name;
                 Oldmodel.Amount = model.Amount;
                 Oldmodel.InstallmentsNumber = model.InstallmentsNumber;
                 

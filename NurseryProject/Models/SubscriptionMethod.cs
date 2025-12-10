@@ -25,9 +25,12 @@ namespace NurseryProject.Models
         public Nullable<int> OrderDisplay { get; set; }
         public string Amount { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
+        public string Discount { get; set; }
+        public string DiscountReason { get; set; }
         public Nullable<bool> IsPaid { get; set; }
         public string PaidAmount { get; set; }
         public Nullable<System.DateTime> PaidDate { get; set; }
+        public Nullable<System.Guid> PaymentTypeId { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
@@ -38,8 +41,9 @@ namespace NurseryProject.Models
         public string PaperNumber1 { get; set; }
         public string PaperNumber2 { get; set; }
     
-        public virtual StudentsClass StudentsClass { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Revenue> Revenues { get; set; }
+        public virtual StudentsClass StudentsClass { get; set; }
+        public virtual SubscriptionPaymentType SubscriptionPaymentType { get; set; }
     }
 }

@@ -51,6 +51,9 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Create(Employee employee, HttpPostedFileBase Image1)
         {
+            var employeeFiles = Request.Files;
+            var count = 0;
+
             if (employee != null&& Image1!=null)
             {
                 employee.Image = "/Uploads/Employees/";
@@ -59,7 +62,32 @@ namespace NurseryProject.Controllers
                     Directory.CreateDirectory(Server.MapPath("~" + employee.Image + employee.Id));
                 employee.Image = employee.Image + employee.Id + "/" + employee.Id + ".jpg";
                 Image1.SaveAs(Server.MapPath("~" + employee.Image));
+                count += 1;
             }
+            if ((Image1 != null && employeeFiles.Count > 1) || (Image1 == null && employeeFiles.Count >= 1))
+            {
+                var employeeFilesDto = new List<EmployeeFile>();
+                var j = 0;
+                for (int i = count; i < employeeFiles.Count; i++)
+                {
+                    employeeFilesDto[j].Id = Guid.NewGuid();
+                    employeeFilesDto[j].EmployeeId = employee.Id;
+
+                    employeeFilesDto[j].CreatedOn = DateTime.UtcNow;
+                    employeeFilesDto[j].CreatedBy = (Guid)TempData["UserId"];
+                    employeeFilesDto[j].IsDeleted = false;
+
+                    employeeFilesDto[j].File = "/Uploads/StudentFiles";
+
+                    if (!Directory.Exists(Server.MapPath("~" + employeeFilesDto[j].File + employee.Id)))
+                        Directory.CreateDirectory(Server.MapPath("~" + employeeFilesDto[j].File + employee.Id));
+                    employeeFilesDto[j].File = employeeFilesDto[j].File + employee.Id + "/" + employee.Id + ".jpg";
+                    Image1.SaveAs(Server.MapPath("~" + employeeFilesDto[j].File));
+                    j++;
+                }
+                employee.EmployeeFiles = employeeFilesDto;
+            }
+
             employee.Id = Guid.NewGuid();
             if (employee.Code == null)
                 employee.Code = randomCode.GenerateEmployeeCodeRandom();
@@ -133,6 +161,9 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(Employee employee, HttpPostedFileBase Image1)
         {
+            var employeeFiles = Request.Files;
+            var count = 0;
+
             if (employee != null && Image1 != null)
             {
                 employee.Image = "/Uploads/Employees/";
@@ -141,6 +172,30 @@ namespace NurseryProject.Controllers
                     Directory.CreateDirectory(Server.MapPath("~" + employee.Image + employee.Id));
                 employee.Image = employee.Image + employee.Id + "/" + employee.Id + ".jpg";
                 Image1.SaveAs(Server.MapPath("~" + employee.Image));
+                count += 1;
+            }
+            if ((Image1 != null && employeeFiles.Count > 1) || (Image1 == null && employeeFiles.Count >= 1))
+            {
+                var employeeFilesDto = new List<EmployeeFile>();
+                var j = 0;
+                for (int i = count; i < employeeFiles.Count; i++)
+                {
+                    employeeFilesDto[j].Id = Guid.NewGuid();
+                    employeeFilesDto[j].EmployeeId = employee.Id;
+
+                    employeeFilesDto[j].CreatedOn = DateTime.UtcNow;
+                    employeeFilesDto[j].CreatedBy = (Guid)TempData["UserId"];
+                    employeeFilesDto[j].IsDeleted = false;
+
+                    employeeFilesDto[j].File = "/Uploads/StudentFiles";
+
+                    if (!Directory.Exists(Server.MapPath("~" + employeeFilesDto[j].File + employee.Id)))
+                        Directory.CreateDirectory(Server.MapPath("~" + employeeFilesDto[j].File + employee.Id));
+                    employeeFilesDto[j].File = employeeFilesDto[j].File + employee.Id + "/" + employee.Id + ".jpg";
+                    Image1.SaveAs(Server.MapPath("~" + employeeFilesDto[j].File));
+                    j++;
+                }
+                employee.EmployeeFiles = employeeFilesDto;
             }
 
             var result = employeesServices.Edit(employee, (Guid)TempData["UserId"]);

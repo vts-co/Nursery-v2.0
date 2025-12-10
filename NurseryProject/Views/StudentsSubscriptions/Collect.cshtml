@@ -139,13 +139,13 @@
             </div>
             <div class="row">
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("تاريخ الالتحاق /الاشتراك ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required", @disabled = "true" })
                         @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
-             
+
                 <div class="form-group mb-3 col-sm-12">
                     @Html.Label("ملاحظات ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
@@ -234,9 +234,11 @@
 
                     $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" disabled = "true" required /></div></div>');
                     $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date"  disabled = "true" required /></div></div>');
+                    $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">خصم علي القسط </label><div class="col-12"><input class="form-control" value=' + value["Discount"] + '  id="SubscriptionMethod[' + i + '].Discount" name="SubscriptionMethod[' + i + '].Discount" disabled = "true" required /></div></div>');
+                    var paidval = parseFloat(value["Amount"]) - parseFloat(value["Discount"]);
                     if (value["IsPaid"] == false) {
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
-                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + value["Amount"] + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount" /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + paidval + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount" /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">الرقم الورقي 1 </label><div class="col-12"><input class="form-control" value="' + value["PaperNumber1"] + '" id="SubscriptionMethod[' + i + '].PaperNumber1" name="SubscriptionMethod[' + i + '].PaperNumber1"  required /></div></div>');
                         $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">الرقم الورقي 2 </label><div class="col-12"><input class="form-control" value="' + value["PaperNumber2"] + '" id="SubscriptionMethod[' + i + '].PaperNumber2" name="SubscriptionMethod[' + i + '].PaperNumber2"  required /></div></div>');
 
@@ -265,16 +267,19 @@
             }
             else if (data.IsAnother) {
 
-                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">المبلغ : </label><div class="col-12"><input class="form-control" value=' + data.Amoun + ' id="Amount1" name="Amount1" type="number" disabled = "true" required /></div></div>')
-                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">عدد الاقساط : </label><div class="col-12"><input class="form-control" value=' + data.Num + ' id="InstallmentsNumber1" name="InstallmentsNumber1" type="number" disabled = "true" required /></div></div>')
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-4"><label class="control-label">المبلغ : </label><div class="col-12"><input class="form-control" value=' + data.Amoun + ' id="Amount1" name="Amount1" type="number" disabled = "true" required /></div></div>')
+                $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-4"><label class="control-label">عدد الاقساط : </label><div class="col-12"><input class="form-control" value=' + data.Num + ' id="InstallmentsNumber1" name="InstallmentsNumber1" type="number" disabled = "true" required /></div></div>')
                 $("#SubscriptionDiv").append('<\hr>');
 
                 $.each(data.result, function (key, value) {
                     $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount"  disabled = "true" required /></div></div>');
                     $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date"  disabled = "true" required /></div></div>');
+                    $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">خصم علي القسط </label><div class="col-12"><input class="form-control" value=' + value["Discount"] + '  id="SubscriptionMethod[' + i + '].Discount" name="SubscriptionMethod[' + i + '].Discount" disabled = "true" required /></div></div>');
+                    var paidval = parseFloat(value["Amount"]) - parseFloat(value["Discount"]);
+
                     if (value["IsPaid"] == false) {
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3" hidden><label class="control-label">Id </label><div class="col-12"><input class="form-control" value="' + value["Id"] + '" id="SubscriptionMethod[' + i + '].Id" name="SubscriptionMethod[' + i + '].Id"  /></div></div>');
-                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + value["Amount"] + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount"  /></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">المدفوع </label><div class="col-12"><input class="form-control" value="' + paidval + '" id="SubscriptionMethod[' + i + '].PaidAmount" name="SubscriptionMethod[' + i + '].PaidAmount"  /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">الرقم الورقي 1 </label><div class="col-12"><input class="form-control" value="' + value["PaperNumber1"] + '" id="SubscriptionMethod[' + i + '].PaperNumber1" name="SubscriptionMethod[' + i + '].PaperNumber1" required /></div></div>');
                         $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-2"><label class="control-label">الرقم الورقي 2 </label><div class="col-12"><input class="form-control" value="' + value["PaperNumber2"] + '" id="SubscriptionMethod[' + i + '].PaperNumber2" name="SubscriptionMethod[' + i + '].PaperNumber2" required /></div></div>');
 
@@ -343,7 +348,7 @@
                 if (tens[parseInt(numString.charAt(1))] != '') {
                     output += " و " + tens[parseInt(numString.charAt(1))];
                 }
-                
+
                 //output += tens[parseInt(numString.charAt(1))];
                 return output;
             }
@@ -377,7 +382,7 @@
 
             var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
 
-            var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value);
+            var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value) - parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Discount").value);
             var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
             var PaperNumber1 = document.getElementById("SubscriptionMethod[" + i + "].PaperNumber1").value;
             var PaperNumber2 = document.getElementById("SubscriptionMethod[" + i + "].PaperNumber2").value;
@@ -456,16 +461,16 @@
                     var NextAmount = parseFloat(Amount1) - parseFloat(Amount);
 
                     t += '<div class="form-group mt-2 p-1 col-sm-12"><form  class="mt-3 border p-3 rounded">\
-                        <div class="mb-3"><h4 class="text-center">موعد القسط التالي</h4>\
-                            <label for="paymentDate" class="form-label">تاريخ الدفع</label>\
-                            <input type="date" class="form-control text-center" id="NewpaymentDate" required>\
-                        </div>\
-                        <div class="mb-3">\
-                            <label for="amount" class="form-label">المبلغ</label>\
-                            <input type="number" class="form-control text-center" id="NewAmount" readonly value="'+ NextAmount+'"  required>\
-                        </div>\
-    <button type="button" class="btn btn-success d-flex justify-content-center w-100" onclick="CollecttAndMakeInsgtallment(' + i + ')">حفظ</button>\
-                    </form></div>';
+                                <div class="mb-3"><h4 class="text-center">موعد القسط التالي</h4>\
+                                    <label for="paymentDate" class="form-label">تاريخ الدفع</label>\
+                                    <input type="date" class="form-control text-center" id="NewpaymentDate" required>\
+                                </div>\
+                                <div class="mb-3">\
+                                    <label for="amount" class="form-label">المبلغ</label>\
+                                    <input type="number" class="form-control text-center" id="NewAmount" readonly value="'+ NextAmount + '"  required>\
+                                </div>\
+            <button type="button" class="btn btn-success d-flex justify-content-center w-100" onclick="CollecttAndMakeInsgtallment(' + i + ')">حفظ</button>\
+                            </form></div>';
 
                 }
                 else {
@@ -491,11 +496,11 @@
         function Collectt(i) {
             var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
 
-            var Amount = document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value;
+            var Amount = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value);
             var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
             var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
 
-            var Amount1 = document.getElementById("SubscriptionMethod[" + i + "].Amount").value;
+            var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value) - parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Discount").value);
             var Date3 = document.getElementById("SubscriptionMethod[" + (i + 1) + "].Date").value;
 
             var sub = Amount1 - Amount;
@@ -571,12 +576,12 @@
             console.log(i);
             var Id = document.getElementById("SubscriptionMethod[" + i + "].Id").value;
 
-            var Amount = document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value;
+            var Amount = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].PaidAmount").value);
             var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
             var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
 
-            var Amount1 = document.getElementById("SubscriptionMethod[" + i + "].Amount").value;
-            var Date3 = document.getElementById("SubscriptionMethod[" + i  + "].Date").value;
+            var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value) - parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Discount").value);
+            var Date3 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
             var NewpaymentDate = document.getElementById("NewpaymentDate").value;
 
             var sub = Amount1 - Amount;
@@ -653,7 +658,7 @@
 
             var Date1 = document.getElementById("SubscriptionMethod[" + i + "].PaidDate").value;
 
-            var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value);
+            var Amount1 = parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Amount").value) - parseFloat(document.getElementById("SubscriptionMethod[" + i + "].Discount").value);
             var Date2 = document.getElementById("SubscriptionMethod[" + i + "].Date").value;
             var j = i + 1;
             var Date3 = "";

@@ -115,7 +115,7 @@
 
             <div class="row">
                 <div class="form-group mb-3 col-sm-6">
-                    @Html.Label("تاريخ الالتحاق ", htmlAttributes: new { @class = "control-label" })
+                    @Html.Label("تاريخ الالتحاق /الاشتراك ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", @Value = @ViewBag.JoiningDate, type = "date", required = "required" })
                         @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
@@ -215,8 +215,11 @@
 
                     $.each(data.result, function (key, value) {
 
-                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
-                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">خصم علي القسط </label><div class="col-12"><input class="form-control" value=' + value["Discount"] + ' id="SubscriptionMethod[' + i + '].Discount" name="SubscriptionMethod[' + i + '].Discount" /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">سبب الخصم </label><div class="col-12"><input class="form-control" value="' + value["DiscountReason"] + '" id="SubscriptionMethod[' + i + '].DiscountReason" name="SubscriptionMethod[' + i + '].DiscountReason" /></div></div>');
+
                         j++;
                         i++;
                     });
@@ -228,8 +231,11 @@
                     $("#SubscriptionDiv").append('<div class="form-group mt-4 p-1 col-sm-1"><div class="col-12"><button class="btn btn-success" id="" name="" type="button" onclick="Numbers()"><i class"fa fa-calculator"></i>احسب</button></div></div>')
 
                     $.each(data.result, function (key, value) {
-                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
-                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Date"] + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">خصم علي القسط </label><div class="col-12"><input class="form-control" value=' + value["Discount"] + '  id="SubscriptionMethod[' + i + '].Discount" name="SubscriptionMethod[' + i + '].Discount" /></div></div>');
+                        $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">سبب الخصم </label><div class="col-12"><input class="form-control" value="' + value["DiscountReason"] + '" id="SubscriptionMethod[' + i + '].DiscountReason" name="SubscriptionMethod[' + i + '].DiscountReason" /></div></div>');
+
                         j++;
                         i++;
                     });
@@ -259,8 +265,11 @@
 
                     var j = 1;
                     for (var i = 0; i < amount; i++) {
-                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] / value["InstallmentsNumber"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>')
-                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>')
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + value["Amount"] / value["InstallmentsNumber"] + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>')
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>')
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">خصم علي القسط </label><div class="col-12"><input class="form-control" value="0"  id="SubscriptionMethod[' + i + '].Discount" name="SubscriptionMethod[' + i + '].Discount" /></div></div>');
+                        $("#SubscriptionDiv").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">سبب الخصم </label><div class="col-12"><input class="form-control"  id="SubscriptionMethod[' + i + '].DiscountReason" name="SubscriptionMethod[' + i + '].DiscountReason" /></div></div>');
+
                         now1.setMonth(now1.getMonth() + 1);
                         j++;
                     }
@@ -302,8 +311,11 @@
             now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
             var j = 1;
             for (var i = 0; i < amount2; i++) {
-                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + amount1 / amount2 + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
-                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-6"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">قيمة القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + amount1 / amount2 + ' id="SubscriptionMethod[' + i + '].Amount" name="SubscriptionMethod[' + i + '].Amount" required /></div></div>');
+                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">تاريخ القسط رقم ' + j + '</label><div class="col-12"><input class="form-control" value=' + now1.toISOString().slice(0, 10) + ' id="SubscriptionMethod[' + i + '].Date" name="SubscriptionMethod[' + i + '].Date" type="date" required /></div></div>');
+                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">خصم علي القسط </label><div class="col-12"><input class="form-control" value="0"  id="SubscriptionMethod[' + i + '].Discount" name="SubscriptionMethod[' + i + '].Discount" /></div></div>');
+                $("#SubscriptionDiv2").append('<div class="form-group mb-3 col-sm-3"><label class="control-label">سبب الخصم </label><div class="col-12"><input class="form-control"  id="SubscriptionMethod[' + i + '].DiscountReason" name="SubscriptionMethod[' + i + '].DiscountReason" /></div></div>');
+
                 now1.setMonth(now1.getMonth() + 1);
                 j++;
             }

@@ -23,6 +23,7 @@ namespace NurseryProject.Models
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> LevelId { get; set; }
         public Nullable<System.Guid> SubscriptionTypeId { get; set; }
+        public string Name { get; set; }
         public string Amount { get; set; }
         public string InstallmentsNumber { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }

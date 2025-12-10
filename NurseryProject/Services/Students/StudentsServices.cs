@@ -24,10 +24,10 @@ namespace NurseryProject.Services.Students
                     StudyYearId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.StudyYearId).FirstOrDefault(),
                     LevelId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.Subscription.LevelId).FirstOrDefault(),
                     ClassId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.ClassId).FirstOrDefault(),
-
                     Code = x.Code,
                     Name = x.Name,
                     Phone = x.Phone,
+
                     Address = x.Address,
                     Image = x.Image,
                     BirthDate = x.BirthDate.ToString(),
@@ -41,6 +41,18 @@ namespace NurseryProject.Services.Students
                     CityName = x.DestrictId != null ? x.Destrict.City.Name : "",
                     DestrictId = x.DestrictId != null ? x.DestrictId.Value : Guid.Empty,
                     DestrictName = x.DestrictId != null ? x.Destrict.Name : "",
+
+                    NumberId = x.NumberId,
+                    PhoneMo = x.PhoneMo,
+                    PhoneAth = x.PhoneAth,
+                    PhoneOwner = x.PhoneOwner,
+                    FatherNumberId = x.FatherNumberId,
+                    MotherNumberId = x.MotherNumberId,
+                    FatherJob = x.FatherJob,
+                    MotherJob = x.MotherJob,
+
+                    StudentFiles = x.StudentFiles.Where(y => !y.IsDeleted).Select(y => new StudentFilesDto { Id = y.Id, Name = y.File, StudentId = x.Id, Notes = y.Notes }).ToList(),
+
                     Notes = x.Notes
                 }).ToList();
 
@@ -62,7 +74,7 @@ namespace NurseryProject.Services.Students
                             item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
                         }
                     }
-                   
+
                 }
                 return model;
             }
@@ -82,6 +94,8 @@ namespace NurseryProject.Services.Students
                     CountOfNormal = "",
                     CountOfPart = "",
                     CountOfPaidNoTime = "",
+
+
                     StudentClassId = x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Id).FirstOrDefault(),
                     LevelId = (Guid)x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.Class.LevelId).FirstOrDefault(),
                     ClassId = (Guid)x.StudentsClasses.Where(y => y.StudyYearId == StudyYearId && y.IsDeleted == false && y.IsCurrent == true).Select(y => y.ClassId).FirstOrDefault(),
@@ -240,11 +254,91 @@ namespace NurseryProject.Services.Students
                     CityName = x.DestrictId != null ? x.Destrict.City.Name : "",
                     DestrictId = x.DestrictId != null ? x.DestrictId.Value : Guid.Empty,
                     DestrictName = x.DestrictId != null ? x.Destrict.Name : "",
+
+                    NumberId = x.NumberId,
+                    PhoneMo = x.PhoneMo,
+                    PhoneAth = x.PhoneAth,
+                    PhoneOwner = x.PhoneOwner,
+                    FatherNumberId = x.FatherNumberId,
+                    MotherNumberId = x.MotherNumberId,
+                    FatherJob = x.FatherJob,
+                    MotherJob = x.MotherJob,
+
+                    StudentFiles = x.StudentFiles.Where(y => !y.IsDeleted).Select(y => new StudentFilesDto { Id = y.Id, Name = y.File, StudentId = x.Id, Notes = y.Notes }).ToList(),
+
                     Notes = x.Notes
                 }).ToList();
                 return model;
             }
         }
+
+        public List<StudentsDto> GetAllByClass(Guid Id)
+        {
+            using (var dbContext = new almohandes_DbEntities())
+            {
+                var model = dbContext.Students.Where(x => x.IsDeleted == false && x.StudentsClasses.Any(y => !y.IsDeleted&&y.IsCurrent==true && y.ClassId == Id)).OrderBy(x => x.CreatedOn).Select(x => new StudentsDto
+                {
+                    Id = x.Id,
+                    StudyTypeId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.Subscription.Level.StudyTypeId).FirstOrDefault(),
+                    StudyYearId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.StudyYearId).FirstOrDefault(),
+                    LevelId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.Subscription.LevelId).FirstOrDefault(),
+                    ClassId = x.StudentsClasses.Where(y => !y.IsDeleted && y.IsCurrent == true).Select(y => y.ClassId).FirstOrDefault(),
+                    Code = x.Code,
+                    Name = x.Name,
+                    Phone = x.Phone,
+
+                    Address = x.Address,
+                    Image = x.Image,
+                    BirthDate = x.BirthDate.ToString(),
+                    GenderId = x.GenderId != null ? (int)x.GenderId : 0,
+                    GenderName = x.GenderId != null ? ((Gender)x.GenderId).ToString() : "",
+                    MotherName = x.MotherName,
+                    RegistrationTypeId = x.RegistrationTypeId.Value,
+                    RegistrationTypeName = x.RegistrationType.Name,
+                    JoiningDate = x.JoiningDate,
+                    CityId = x.DestrictId != null ? x.Destrict.CityId.Value : Guid.Empty,
+                    CityName = x.DestrictId != null ? x.Destrict.City.Name : "",
+                    DestrictId = x.DestrictId != null ? x.DestrictId.Value : Guid.Empty,
+                    DestrictName = x.DestrictId != null ? x.Destrict.Name : "",
+
+                    NumberId = x.NumberId,
+                    PhoneMo = x.PhoneMo,
+                    PhoneAth = x.PhoneAth,
+                    PhoneOwner = x.PhoneOwner,
+                    FatherNumberId = x.FatherNumberId,
+                    MotherNumberId = x.MotherNumberId,
+                    FatherJob = x.FatherJob,
+                    MotherJob = x.MotherJob,
+
+                    StudentFiles = x.StudentFiles.Where(y => !y.IsDeleted).Select(y => new StudentFilesDto { Id = y.Id, Name = y.File, StudentId = x.Id, Notes = y.Notes }).ToList(),
+
+                    Notes = x.Notes
+                }).ToList();
+
+                foreach (var item in model)
+                {
+                    if (item.BirthDate != null && item.BirthDate.Trim() != "")
+                    {
+                        var date = DateTime.Now;
+                        if (DateTime.TryParse(item.BirthDate, out date))
+                        {
+                            item.BirthDate = DateTime.Parse(item.BirthDate).ToString("yyyy-MM-dd");
+                        }
+                    }
+                    if (item.JoiningDate != null && item.JoiningDate.Trim() != "")
+                    {
+                        var date = DateTime.Now;
+                        if (DateTime.TryParse(item.JoiningDate, out date))
+                        {
+                            item.JoiningDate = DateTime.Parse(item.JoiningDate).ToString("yyyy-MM-dd");
+                        }
+                    }
+
+                }
+                return model;
+            }
+        }
+
         public Student Get(Guid Id)
         {
             using (var dbContext = new almohandes_DbEntities())
@@ -299,6 +393,8 @@ namespace NurseryProject.Services.Students
                 model.IsDeleted = false;
                 dbContext.Students.Add(model);
                 dbContext.SaveChanges();
+
+
                 result.IsSuccess = true;
                 result.Message = "تم حفظ البيانات بنجاح";
                 return result;
@@ -343,7 +439,25 @@ namespace NurseryProject.Services.Students
                 if (model.DestrictId != null && model.RegistrationTypeId != Guid.Empty)
                     Oldmodel.DestrictId = model.DestrictId.Value;
 
+                Oldmodel.NumberId = model.NumberId;
+                Oldmodel.PhoneMo = model.PhoneMo;
+                Oldmodel.PhoneAth = model.PhoneAth;
+                Oldmodel.PhoneOwner = model.PhoneOwner;
+                Oldmodel.FatherNumberId = model.FatherNumberId;
+                Oldmodel.MotherNumberId = model.MotherNumberId;
+                Oldmodel.FatherJob = model.FatherJob;
+                Oldmodel.MotherJob = model.MotherJob;
+
+
                 Oldmodel.Notes = model.Notes;
+                var files = dbContext.StudentFiles.Where(x => !x.IsDeleted && x.StudentId == model.Id).ToList();
+                foreach (var item in files)
+                {
+                    item.IsDeleted = true;
+                }
+
+                dbContext.StudentFiles.AddRange(model.StudentFiles);
+
                 if (model.Image != null)
                 {
                     Oldmodel.Image = model.Image;
@@ -378,6 +492,11 @@ namespace NurseryProject.Services.Students
                     result.IsSuccess = false;
                     result.Message = "هذا الطالب لا يمكن حذفه ";
                     return result;
+                }
+                var files = dbContext.StudentFiles.Where(x => !x.IsDeleted && x.StudentId == Oldmodel.Id).ToList();
+                foreach (var item in files)
+                {
+                    item.IsDeleted = true;
                 }
                 Oldmodel.IsDeleted = true;
                 Oldmodel.DeletedOn = DateTime.UtcNow;

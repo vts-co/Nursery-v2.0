@@ -134,12 +134,12 @@ namespace NurseryProject.Views
         }
         public ActionResult getSubscriptions(Guid Id)
         {
-            var model = subscriptionsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + " جنيه/ عدد الاقساط : " + x.InstallmentsNumber) });
+            var model = subscriptionsServices.GetAll().Where(x => x.LevelId == Id).Select(x => new { x.Id, Name = x.IsAnother == true ? (x.Name + "/" + "أخري") : (x.SubscriptionTypeName + "/ المبلغ : " + x.Amount + " جنيه/ عدد الاقساط : " + x.InstallmentsNumber), Discount = x.Discount != null ? x.Discount : "0", DiscountReason = x.DiscountReason != null ? x.DiscountReason : "" });
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult getSubscriptionsMethods(Guid Id)
         {
-            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd HH:mm:ss.fff") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount, x.PaperNumber1, x.PaperNumber2 }).ToList();
+            var model = subscriptionsMethodsServices.GetAll().Where(x => x.StudentClassId == Id).OrderBy(x => x.OrderDisplay).Select(x => new { x.Id, x.Amount, Date = x.Date.Value.ToString("yyyy-MM-dd"), IsPaid = x.IsPaid, PaidDate = x.PaidDate != null ? x.PaidDate.Value.ToString("yyyy-MM-dd HH:mm:ss.fff") : "", PaidAmount = x.PaidAmount == null ? "" : x.PaidAmount, x.PaperNumber1, x.PaperNumber2, Discount = x.Discount != null ? x.Discount : "0", DiscountReason = x.DiscountReason != null ? x.DiscountReason : "" }).ToList();
             var model2 = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.Id == Id).FirstOrDefault();
 
             var IsAnother = false;
@@ -243,6 +243,9 @@ namespace NurseryProject.Views
             var studyTypes = studyTypesServices.GetAll();
             ViewBag.StudyTypeId = new SelectList(studyTypes, "Id", "Name");
 
+            var SubscriptionTypes = subscriptionsTypesServices.GetAll();
+            ViewBag.SubscriptionTypeId = new SelectList(SubscriptionTypes, "Id", "Name");
+
             ViewBag.LevelId = new SelectList("");
             ViewBag.ClassId = new SelectList("");
 
@@ -250,7 +253,7 @@ namespace NurseryProject.Views
         }
         [HttpPost]
         [Authorized(ScreenId = "56")]
-        public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null,Guid? BranchId=null)
+        public ActionResult LatecomersReports(Guid? StudyYearId = null, Guid? StudyTypeId = null, Guid? LevelId = null, Guid? ClassId = null,Guid? BranchId=null,Guid? SubscriptionTypeId=null)
         {
             var result = studentsClassServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Where(x => x.SubscriptionMethod.Where(y => y.IsPaid == false && DateTime.Parse(y.Date).Date.AddDays(15) < DateTime.Now.Date).Count() > 0).ToList();
 
@@ -259,6 +262,7 @@ namespace NurseryProject.Views
             var studyTypes = studyTypesServices.GetAll();
             var levels = levelsServices.GetAll();
             var classes = classesServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
+            var SubscriptionTypes = subscriptionsTypesServices.GetAll();
 
 
             if (BranchId != null && BranchId != Guid.Empty)
@@ -306,6 +310,16 @@ namespace NurseryProject.Views
             else
             {
                 ViewBag.ClassId = new SelectList(classes.Where(x => x.LevelId == LevelId).ToList(), "Id", "Name");
+            }
+
+            if (SubscriptionTypeId != null && SubscriptionTypeId != Guid.Empty)
+            {
+                result = result.Where(x => x.SubscriptionTypeId == SubscriptionTypeId).ToList();
+                ViewBag.SubscriptionTypeId = new SelectList(SubscriptionTypes, "Id", "Name", SubscriptionTypeId);
+            }
+            else
+            {
+                ViewBag.SubscriptionTypeId = new SelectList(SubscriptionTypes, "Id", "Name");
             }
 
             ViewBag.Reports = result;
@@ -541,13 +555,16 @@ namespace NurseryProject.Views
         {
             var StudyYear = studyYearsServices.GetAll();
             var Students = studentsServices.GetAllDropDown((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]);
-            var date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
-            var date2 = DateTime.Parse(Date2).ToString("yyyy-MM-dd");
+           
+            var date1 = DateTime.Now.ToString("yyyy-MM-dd");
+            var date2 = DateTime.Now.ToString("yyyy-MM-dd");
 
-            var result = studentsClassServices.GetCollectedDayMoney(date, date2);
+            if(DateTime.TryParse(Date,out DateTime date))
+                date1 = date.ToString("yyyy-MM-dd");
+            if (DateTime.TryParse(Date2, out DateTime date3))
+                date2 = date3.ToString("yyyy-MM-dd");
 
-
-
+            var result = studentsClassServices.GetCollectedDayMoney(date1, date2);
 
             ViewBag.Reports = result;
             ViewBag.Total = result.Select(x => x.Amount).DefaultIfEmpty(0).Sum();

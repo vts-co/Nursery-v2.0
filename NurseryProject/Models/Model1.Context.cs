@@ -36,7 +36,12 @@ namespace NurseryProject.Models
         public virtual DbSet<Destrict> Destricts { get; set; }
         public virtual DbSet<DiscountsType> DiscountsTypes { get; set; }
         public virtual DbSet<EmployeeClass> EmployeeClasses { get; set; }
+        public virtual DbSet<EmployeeFile> EmployeeFiles { get; set; }
         public virtual DbSet<EmployeeRegistrationType> EmployeeRegistrationTypes { get; set; }
+        public virtual DbSet<EmployeeReportItem> EmployeeReportItems { get; set; }
+        public virtual DbSet<EmployeeReport> EmployeeReports { get; set; }
+        public virtual DbSet<EmployeeReportTool> EmployeeReportTools { get; set; }
+        public virtual DbSet<EmployeeReportType> EmployeeReportTypes { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeesAttendance> EmployeesAttendances { get; set; }
         public virtual DbSet<EmployeesDelay> EmployeesDelays { get; set; }
@@ -57,8 +62,15 @@ namespace NurseryProject.Models
         public virtual DbSet<Level> Levels { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<RegistrationType> RegistrationTypes { get; set; }
+        public virtual DbSet<Revenue> Revenues { get; set; }
         public virtual DbSet<RevenuesType> RevenuesTypes { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<ShiftsTime> ShiftsTimes { get; set; }
+        public virtual DbSet<StudentFile> StudentFiles { get; set; }
+        public virtual DbSet<StudentReportItem> StudentReportItems { get; set; }
+        public virtual DbSet<StudentReport> StudentReports { get; set; }
+        public virtual DbSet<StudentReportTool> StudentReportTools { get; set; }
+        public virtual DbSet<StudentReportType> StudentReportTypes { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentsAttendance> StudentsAttendances { get; set; }
         public virtual DbSet<StudentsClass> StudentsClasses { get; set; }
@@ -70,13 +82,12 @@ namespace NurseryProject.Models
         public virtual DbSet<StudyYear> StudyYears { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<SubscriptionMethod> SubscriptionMethods { get; set; }
+        public virtual DbSet<SubscriptionPaymentType> SubscriptionPaymentTypes { get; set; }
         public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<SubscriptionsType> SubscriptionsTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<VacationsType> VacationsTypes { get; set; }
         public virtual DbSet<WorkShift> WorkShifts { get; set; }
-        public virtual DbSet<Revenue> Revenues { get; set; }
-        public virtual DbSet<Setting> Settings { get; set; }
     
         public virtual int DeleteAll()
         {

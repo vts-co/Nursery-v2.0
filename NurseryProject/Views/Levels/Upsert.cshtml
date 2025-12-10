@@ -1,7 +1,7 @@
 ﻿@model NurseryProject.Models.Level
 @using NurseryProject.Utilities
 @{
-    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " الصف   ";
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " الصف  ";
     string action = Model.Id == Guid.Empty ? "Create" : "Edit";
     ViewBag.MainPage = "الصفوف ";
 
@@ -32,7 +32,22 @@
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
-                </div> <div class="form-group mb-3 col-sm-6">
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("من عمر ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.FromAge, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.FromAge, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
+                    @Html.Label("الي عمر ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.ToAge, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.ToAge, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-sm-6">
                     @Html.Label("الترتيب ", htmlAttributes: new { @class = "control-label" })
                     <div class="col-12">
                         @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control", type = "number" } })

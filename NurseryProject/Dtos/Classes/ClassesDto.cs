@@ -15,6 +15,7 @@ namespace NurseryProject.Dtos.Classes
         public Guid StudyPlaceId { get; set; }
         public string StudyPlaceName { get; set; }
         public string Name { get; set; }
+        public string Capacity { get; set; }
         public string StudentsNum { get; set; }
         public string Notes { get; set; }
     }

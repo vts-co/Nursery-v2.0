@@ -1,0 +1,124 @@
+﻿@model IEnumerable<NurseryProject.Dtos.Students.StudentsDto>
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "طلاب فصل"+ " "+ ViewBag.Class;
+
+}
+<div class="card">
+    <div class="card-header">
+
+        <div class="row">
+            <h2 class="col"> @ViewBag.Title </h2>
+        </div>
+    </div>
+   
+    <div class="card-body">
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100 table-bordered ">
+            <thead class="bg-soft-primary">
+                <tr>
+                    <th>
+                        @Html.DisplayName("الكود")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الاسم")
+                    </th>
+                    <th>
+                        @Html.DisplayName("رقم التليفون")
+                    </th>
+                    <th>
+                        @Html.DisplayName("العنوان")
+                    </th>
+                   
+                    <th>
+                        @Html.DisplayName("تاريخ الميلاد")
+                    </th>
+                    <th>
+                        @Html.DisplayName("النوع")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("اسم الأم")
+                    </th>
+                    <th>
+                        @Html.DisplayName("تاريخ الالتحاق ")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("ملاحظات")
+                    </th>
+                    <th>
+                        @Html.DisplayName("عمليات")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                      
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BirthDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GenderName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MotherName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.JoiningDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#StudyTypeId").change(function () {
+            $.get('/Students/getLevels', { Id: $("#StudyTypeId").val() }, function (data) {
+                $("#LevelId").empty();
+                $("#LevelId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#LevelId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        $("#LevelId").change(function () {
+            $.get('/Students/getClasses', { Id: $("#LevelId").val() }, function (data) {
+                $("#ClassId").empty();
+                $("#ClassId").append("<option>--اختر--</option>")
+                $.each(data, function (key, value) {
+                    $("#ClassId").append("<option value=" + value["Id"] + ">" + value["Name"] + "</option>")
+                });
+            });
+        });
+        function excel() {
+            $("#exampleModal").modal('show');
+        }
+
+    </script>
+}

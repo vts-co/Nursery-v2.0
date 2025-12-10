@@ -20,6 +20,8 @@ namespace NurseryProject.Models
             this.BuildingSupervisors = new HashSet<BuildingSupervisor>();
             this.ClassesLeaders = new HashSet<ClassesLeader>();
             this.EmployeeClasses = new HashSet<EmployeeClass>();
+            this.EmployeeFiles = new HashSet<EmployeeFile>();
+            this.EmployeeReports = new HashSet<EmployeeReport>();
             this.EmployeesDelays = new HashSet<EmployeesDelay>();
             this.EmployeesDiscounts = new HashSet<EmployeesDiscount>();
             this.EmployeesIncreases = new HashSet<EmployeesIncreas>();
@@ -28,14 +30,15 @@ namespace NurseryProject.Models
             this.EmployeesVacations = new HashSet<EmployeesVacation>();
             this.EmployeesWorkShifts = new HashSet<EmployeesWorkShift>();
             this.Expenses = new HashSet<Expens>();
-            this.Users = new HashSet<User>();
             this.Revenues = new HashSet<Revenue>();
+            this.Users = new HashSet<User>();
         }
     
         public System.Guid Id { get; set; }
         public Nullable<System.Guid> JopId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
+        public string NumberId { get; set; }
         public string Image { get; set; }
         public string BirthDate { get; set; }
         public string Qualification { get; set; }
@@ -46,6 +49,7 @@ namespace NurseryProject.Models
         public string Address { get; set; }
         public string JoiningDate { get; set; }
         public Nullable<double> WorkDayCost { get; set; }
+        public bool ContractOrNo { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
@@ -61,7 +65,11 @@ namespace NurseryProject.Models
         public virtual ICollection<ClassesLeader> ClassesLeaders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeClass> EmployeeClasses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeFile> EmployeeFiles { get; set; }
         public virtual EmployeeRegistrationType EmployeeRegistrationType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeReport> EmployeeReports { get; set; }
         public virtual Jop Jop { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeesDelay> EmployeesDelays { get; set; }
@@ -80,8 +88,8 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Expens> Expenses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Revenue> Revenues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }

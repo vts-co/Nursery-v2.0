@@ -100,15 +100,20 @@ namespace NurseryProject.Controllers
             ViewBag.RegistrationTypeId = new SelectList(registrationTypes.GetAll(), "Id", "Name");
             ViewBag.CityId = new SelectList(citiesServices.GetAll(), "Id", "Name");
             ViewBag.DestrictId = new SelectList("");
-            return View("Upsert", new Student());
+            var studentsCount = studentsServices.GetAll((Guid)TempData["UserId"], (Guid)TempData["EmployeeId"], (Role)TempData["RoleId"]).Count();
+            studentsCount += 1;
+            return View("Upsert", new Student() { Code= studentsCount.ToString() });
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult Create(Student student, HttpPostedFileBase Image1)
         {
+            var studentFiles = Request.Files;
+
             student.Id = Guid.NewGuid();
             if (student.Code == null)
                 student.Code = randomCode.GenerateStudentCodeRandom();
 
+            var count = 0;
             if (Image1 != null)
             {
                 student.Image = "/Uploads/Studentes/";
@@ -117,6 +122,30 @@ namespace NurseryProject.Controllers
                     Directory.CreateDirectory(Server.MapPath("~" + student.Image + student.Id));
                 student.Image = student.Image + student.Id + "/" + student.Id + ".jpg";
                 Image1.SaveAs(Server.MapPath("~" + student.Image));
+                count += 1;
+            }
+            if ((Image1 != null&& studentFiles.Count>1)|| (Image1 == null && studentFiles.Count >= 1))
+            {
+                var studentFilesDto = new List<StudentFile>();
+                var j = 0;
+                for (int i = count; i < studentFiles.Count; i++)
+                {
+                    studentFilesDto[j].Id = Guid.NewGuid();
+                    studentFilesDto[j].StudentId = student.Id;
+
+                    studentFilesDto[j].CreatedOn = DateTime.UtcNow;
+                    studentFilesDto[j].CreatedBy = (Guid)TempData["UserId"];
+                    studentFilesDto[j].IsDeleted = false;
+
+                    studentFilesDto[j].File = "/Uploads/StudentFiles";
+
+                    if (!Directory.Exists(Server.MapPath("~" + studentFilesDto[j].File + student.Id)))
+                        Directory.CreateDirectory(Server.MapPath("~" + studentFilesDto[j].File + student.Id));
+                    studentFilesDto[j].File = studentFilesDto[j].File + student.Id + "/" + student.Id + ".jpg";
+                    Image1.SaveAs(Server.MapPath("~" + studentFilesDto[j].File));
+                    j++;
+                }
+                student.StudentFiles = studentFilesDto;
             }
             var result = studentsServices.Create(student, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
@@ -180,6 +209,9 @@ namespace NurseryProject.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(Student student, HttpPostedFileBase Image1)
         {
+            var studentFiles = Request.Files;
+            var count = 0;
+
             if (Image1 != null)
             {
                 student.Image = "/Uploads/Studentes/";
@@ -188,7 +220,33 @@ namespace NurseryProject.Controllers
                     Directory.CreateDirectory(Server.MapPath("~" + student.Image + student.Id));
                 student.Image = student.Image + student.Id + "/" + student.Id + ".jpg";
                 Image1.SaveAs(Server.MapPath("~" + student.Image));
+                count += 1;
+
             }
+            if ((Image1 != null && studentFiles.Count > 1) || (Image1 == null && studentFiles.Count >= 1))
+            {
+                var studentFilesDto = new List<StudentFile>();
+                var j = 0;
+                for (int i = count; i < studentFiles.Count; i++)
+                {
+                    studentFilesDto[j].Id = Guid.NewGuid();
+                    studentFilesDto[j].StudentId = student.Id;
+
+                    studentFilesDto[j].CreatedOn = DateTime.UtcNow;
+                    studentFilesDto[j].CreatedBy = (Guid)TempData["UserId"];
+                    studentFilesDto[j].IsDeleted = false;
+
+                    studentFilesDto[j].File = "/Uploads/StudentFiles";
+
+                    if (!Directory.Exists(Server.MapPath("~" + studentFilesDto[j].File + student.Id)))
+                        Directory.CreateDirectory(Server.MapPath("~" + studentFilesDto[j].File + student.Id));
+                    studentFilesDto[j].File = studentFilesDto[j].File + student.Id + "/" + student.Id + ".jpg";
+                    Image1.SaveAs(Server.MapPath("~" + studentFilesDto[j].File));
+                    j++;
+                }
+                student.StudentFiles = studentFilesDto;
+            }
+
             var result = studentsServices.Edit(student, (Guid)TempData["UserId"]);
             if (result.IsSuccess)
             {
