@@ -12,21 +12,18 @@ namespace NurseryProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class StudyPlace
+    public partial class Store
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public StudyPlace()
+        public Store()
         {
-            this.BuildingSupervisors = new HashSet<BuildingSupervisor>();
-            this.Classes = new HashSet<Class>();
-            this.Expenses = new HashSet<Expens>();
-            this.Revenues = new HashSet<Revenue>();
-            this.Stores = new HashSet<Store>();
+            this.PurchaseInvoices = new HashSet<PurchaseInvoice>();
         }
     
         public System.Guid Id { get; set; }
         public string Name { get; set; }
-        public string Notes { get; set; }
+        public string Location { get; set; }
+        public Nullable<System.Guid> StudyPlaceId { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.Guid> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
@@ -36,14 +33,10 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> DeletedBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BuildingSupervisor> BuildingSupervisors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Class> Classes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Expens> Expenses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Revenue> Revenues { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Store> Stores { get; set; }
+        public virtual ICollection<PurchaseInvoice> PurchaseInvoices { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
+        public virtual StudyPlace StudyPlace { get; set; }
     }
 }

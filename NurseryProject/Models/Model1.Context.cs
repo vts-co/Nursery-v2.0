@@ -58,14 +58,21 @@ namespace NurseryProject.Models
         public virtual DbSet<ExpensesType> ExpensesTypes { get; set; }
         public virtual DbSet<HomePage> HomePages { get; set; }
         public virtual DbSet<IncreasesType> IncreasesTypes { get; set; }
+        public virtual DbSet<ItemGroup> ItemGroups { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Jop> Jops { get; set; }
         public virtual DbSet<Level> Levels { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<PurchaseInvoiceDetail> PurchaseInvoiceDetails { get; set; }
+        public virtual DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
         public virtual DbSet<RegistrationType> RegistrationTypes { get; set; }
         public virtual DbSet<Revenue> Revenues { get; set; }
         public virtual DbSet<RevenuesType> RevenuesTypes { get; set; }
+        public virtual DbSet<SalesInvoiceDetail> SalesInvoiceDetails { get; set; }
+        public virtual DbSet<SalesInvoice> SalesInvoices { get; set; }
         public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<ShiftsTime> ShiftsTimes { get; set; }
+        public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<StudentFile> StudentFiles { get; set; }
         public virtual DbSet<StudentReportItem> StudentReportItems { get; set; }
         public virtual DbSet<StudentReport> StudentReports { get; set; }
@@ -85,6 +92,9 @@ namespace NurseryProject.Models
         public virtual DbSet<SubscriptionPaymentType> SubscriptionPaymentTypes { get; set; }
         public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<SubscriptionsType> SubscriptionsTypes { get; set; }
+        public virtual DbSet<SupplierGroup> SupplierGroups { get; set; }
+        public virtual DbSet<SupplierPayment> SupplierPayments { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<VacationsType> VacationsTypes { get; set; }
         public virtual DbSet<WorkShift> WorkShifts { get; set; }
@@ -97,26 +107,6 @@ namespace NurseryProject.Models
         public virtual int GenerateSchema()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GenerateSchema");
-        }
-    
-        public virtual int DeleteAll1()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteAll1");
-        }
-    
-        public virtual int GenerateSchema1()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GenerateSchema1");
-        }
-    
-        public virtual int DeleteAll2()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteAll2");
-        }
-    
-        public virtual int GenerateSchema2()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GenerateSchema2");
         }
     }
 }

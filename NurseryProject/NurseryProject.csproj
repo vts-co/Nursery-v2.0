@@ -323,13 +323,17 @@
     <Compile Include="Controllers\FinancialReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncreasesTypesController.cs" />
+    <Compile Include="Controllers\ItemGroupsController.cs" />
+    <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\JopsController.cs" />
     <Compile Include="Controllers\LevelsController.cs" />
     <Compile Include="Controllers\EmployeesRegistrationTypesController.cs" />
+    <Compile Include="Controllers\PurchaseInvoiceController.cs" />
     <Compile Include="Controllers\RegistrationTypesController.cs" />
     <Compile Include="Controllers\RevenuesController.cs" />
     <Compile Include="Controllers\RevenuesTypesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\StoresController.cs" />
     <Compile Include="Controllers\StudentReportsController.cs" />
     <Compile Include="Controllers\StudentReportToolsController.cs" />
     <Compile Include="Controllers\StudentReportTypesController.cs" />
@@ -358,6 +362,9 @@
     <Compile Include="Dtos\Destricts\DestrictsDto.cs" />
     <Compile Include="Dtos\EmployeeClasses\EmployeeClassesDto.cs" />
     <Compile Include="Dtos\EmployeeReports\EmployeeReportsDto.cs" />
+    <Compile Include="Dtos\Items\ItemDto.cs" />
+    <Compile Include="Dtos\PurchaseInvoices\PurchaseInvoicePostVM.cs" />
+    <Compile Include="Dtos\PurchaseInvoices\PurchaseInvoiceVM.cs" />
     <Compile Include="Dtos\StudentReports\StudentReportsDto.cs" />
     <Compile Include="Dtos\StudentReportTools\StudentReportToolsDto.cs" />
     <Compile Include="Dtos\EmployeeReportTools\EmployeeReportToolsDto.cs" />
@@ -489,6 +496,12 @@
     <Compile Include="Models\IncreasesType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Item.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ItemGroup.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Jop.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -513,6 +526,12 @@
     <Compile Include="Models\Page.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PurchaseInvoice.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PurchaseInvoiceDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RegistrationType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -522,10 +541,19 @@
     <Compile Include="Models\RevenuesType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SalesInvoice.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalesInvoiceDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Setting.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ShiftsTime.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Store.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Student.cs">
@@ -585,6 +613,15 @@
     <Compile Include="Models\SubscriptionsType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Supplier.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SupplierGroup.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SupplierPayment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -599,6 +636,10 @@
     <Compile Include="Services\EmployeeClasses\EmployeeClassesServices.cs" />
     <Compile Include="Services\DiscountsTypes\DiscountsTypesServices.cs" />
     <Compile Include="Services\EmployeeReports\EmployeeReportsServices.cs" />
+    <Compile Include="Services\ItemGroups\ItemGroupServices.cs" />
+    <Compile Include="Services\Items\ItemServices.cs" />
+    <Compile Include="Services\PurchaseInvoices\PurchaseInvoiceServices.cs" />
+    <Compile Include="Services\Stores\StoreServices.cs" />
     <Compile Include="Services\StudentReports\StudentReportsServices.cs" />
     <Compile Include="Services\StudentReportTools\StudentReportToolsServices.cs" />
     <Compile Include="Services\EmployeeReportTools\EmployeeReportToolsServices.cs" />
@@ -2252,13 +2293,6 @@
     <Content Include="assets\libs\twitter-bootstrap-wizard\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="assets\libs\wnumb\LICENSE.MD" />
     <Content Include="assets\fonts\TheSans Bold.otf" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="assets\trumbowygEditor\plugins\colors\ui\sass\trumbowyg.colors.scss" />
     <Content Include="assets\trumbowygEditor\plugins\emoji\ui\sass\trumbowyg.emoji.scss" />
     <Content Include="assets\trumbowygEditor\plugins\giphy\ui\sass\trumbowyg.giphy.scss" />
@@ -2271,6 +2305,13 @@
     <Content Include="assets\trumbowygEditor\ui\trumbowyg.min.css.map" />
     <Content Include="DataBackUp\DBBackup.bak" />
     <Content Include="Pages\PagesExcel.xlsx" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2430,6 +2471,14 @@
     <Content Include="Views\EmployeeReports\Index.cshtml" />
     <Content Include="Views\EmployeeReports\Upsert.cshtml" />
     <Content Include="Views\Classes\ClassStudents.cshtml" />
+    <Content Include="Views\ItemGroups\Index.cshtml" />
+    <Content Include="Views\ItemGroups\Upsert.cshtml" />
+    <Content Include="Views\Items\Index.cshtml" />
+    <Content Include="Views\Items\Upsert.cshtml" />
+    <Content Include="Views\Stores\Index.cshtml" />
+    <Content Include="Views\Stores\Upsert.cshtml" />
+    <Content Include="Views\PurchaseInvoice\Index.cshtml" />
+    <Content Include="Views\PurchaseInvoice\Upsert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

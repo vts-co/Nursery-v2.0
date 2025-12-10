@@ -1,0 +1,50 @@
+﻿@model NurseryProject.Models.Store
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + " مخزن   ";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = "ادارة المخازن";
+
+}
+@using (Html.BeginForm(action, "Stores", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+
+                <div class="form-group mb-3 col-sm-12">
+                    @Html.Label("المخزن", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

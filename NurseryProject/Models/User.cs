@@ -14,6 +14,41 @@ namespace NurseryProject.Models
     
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.ItemGroups = new HashSet<ItemGroup>();
+            this.ItemGroups1 = new HashSet<ItemGroup>();
+            this.ItemGroups2 = new HashSet<ItemGroup>();
+            this.Items = new HashSet<Item>();
+            this.Items1 = new HashSet<Item>();
+            this.Items2 = new HashSet<Item>();
+            this.PurchaseInvoiceDetails = new HashSet<PurchaseInvoiceDetail>();
+            this.PurchaseInvoiceDetails1 = new HashSet<PurchaseInvoiceDetail>();
+            this.PurchaseInvoiceDetails2 = new HashSet<PurchaseInvoiceDetail>();
+            this.PurchaseInvoices = new HashSet<PurchaseInvoice>();
+            this.PurchaseInvoices1 = new HashSet<PurchaseInvoice>();
+            this.PurchaseInvoices2 = new HashSet<PurchaseInvoice>();
+            this.SalesInvoiceDetails = new HashSet<SalesInvoiceDetail>();
+            this.SalesInvoiceDetails1 = new HashSet<SalesInvoiceDetail>();
+            this.SalesInvoiceDetails2 = new HashSet<SalesInvoiceDetail>();
+            this.SalesInvoices = new HashSet<SalesInvoice>();
+            this.SalesInvoices1 = new HashSet<SalesInvoice>();
+            this.SalesInvoices2 = new HashSet<SalesInvoice>();
+            this.Stores = new HashSet<Store>();
+            this.Stores1 = new HashSet<Store>();
+            this.Stores2 = new HashSet<Store>();
+            this.SupplierGroups = new HashSet<SupplierGroup>();
+            this.SupplierGroups1 = new HashSet<SupplierGroup>();
+            this.SupplierGroups2 = new HashSet<SupplierGroup>();
+            this.SupplierPayments = new HashSet<SupplierPayment>();
+            this.SupplierPayments1 = new HashSet<SupplierPayment>();
+            this.SupplierPayments2 = new HashSet<SupplierPayment>();
+            this.Suppliers = new HashSet<Supplier>();
+            this.Suppliers1 = new HashSet<Supplier>();
+            this.Suppliers2 = new HashSet<Supplier>();
+        }
+    
         public System.Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -29,5 +64,65 @@ namespace NurseryProject.Models
         public Nullable<System.Guid> DeletedBy { get; set; }
     
         public virtual Employee Employee { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ItemGroup> ItemGroups { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ItemGroup> ItemGroups1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ItemGroup> ItemGroups2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Item> Items { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Item> Items1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Item> Items2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseInvoiceDetail> PurchaseInvoiceDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseInvoiceDetail> PurchaseInvoiceDetails1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseInvoiceDetail> PurchaseInvoiceDetails2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseInvoice> PurchaseInvoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseInvoice> PurchaseInvoices1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseInvoice> PurchaseInvoices2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesInvoiceDetail> SalesInvoiceDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesInvoiceDetail> SalesInvoiceDetails1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesInvoiceDetail> SalesInvoiceDetails2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesInvoice> SalesInvoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesInvoice> SalesInvoices1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesInvoice> SalesInvoices2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Store> Stores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Store> Stores1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Store> Stores2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupplierGroup> SupplierGroups { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupplierGroup> SupplierGroups1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupplierGroup> SupplierGroups2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupplierPayment> SupplierPayments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupplierPayment> SupplierPayments1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupplierPayment> SupplierPayments2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Supplier> Suppliers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Supplier> Suppliers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Supplier> Suppliers2 { get; set; }
     }
 }

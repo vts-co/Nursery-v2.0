@@ -1,0 +1,235 @@
+﻿@model NurseryProject.Models.PurchaseInvoice
+@{
+    ViewBag.Title = "إضافة فاتورة مشتريات";
+}
+
+<form method="post">
+
+    <!-- ================== البيانات الأساسية ================== -->
+    <div class="card mb-3">
+        <div class="card-header bg-light">
+            <strong>البيانات الأساسية</strong>
+        </div>
+        <div class="card-body row">
+
+            <div class="col-md-3">
+                <label>رقم الفاتورة</label>
+                @Html.TextBoxFor(x => x.InvoiceNumber, new { @class = "form-control" })
+            </div>
+
+            <div class="col-md-3">
+                <label>التاريخ</label>
+                @Html.TextBoxFor(x => x.InvoiceDate, "{0:yyyy-MM-dd}",
+                    new { @type = "date", @class = "form-control" })
+            </div>
+
+            <div class="col-md-3">
+                <label>المورد</label>
+                @Html.DropDownListFor(x => x.SupplierId,
+       ViewBag.SupplierId as SelectList,
+       "اختر المورد",
+       new { @class = "form-control" })
+
+            </div>
+
+            <div class="col-md-3">
+                <label>المخزن</label>
+                @Html.DropDownListFor(x => x.StoreId,
+            ViewBag.StoreId as SelectList,
+            "اختر المخزن",
+            new { @class = "form-control" })
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================== إضافة الأصناف ================== -->
+    <div class="card mb-3">
+        <div class="card-header bg-light">
+            <strong>الأصناف</strong>
+        </div>
+        <div class="card-body row align-items-end">
+
+            <div class="col-md-4">
+                <label>الصنف</label>
+                <select id="itemId" class="form-control">
+                    <option value="">اختر الصنف</option>
+                    @foreach (var i in ViewBag.Items)
+                    {
+                        <option value="@i.Id"
+                                data-price="@i.SellPrice">
+                            @i.Name
+                        </option>
+                    }
+                </select>
+
+            </div>
+
+            <div class="col-md-2">
+                <label>الكمية</label>
+                <input type="number" id="qty" class="form-control" min="1" />
+            </div>
+
+            <div class="col-md-2">
+                <label>السعر</label>
+                <input type="number" id="price" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label>الإجمالي</label>
+                <input type="text" id="amount" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-success w-100" onclick="addItem()">
+                    إضافة
+                </button>
+            </div>
+
+        </div>
+
+        <!-- جدول الأصناف -->
+        <div class="card-body">
+            <table class="table table-bordered" id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>الصنف</th>
+                        <th>الكمية</th>
+                        <th>السعر</th>
+                        <th>الإجمالي</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ================== إجماليات الفاتورة ================== -->
+    <div class="card">
+        <div class="card-body row">
+
+            <div class="col-md-3">
+                <label>إجمالي الأصناف</label>
+                <input type="text" id="totalItems" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-3">
+                <label>الخصم</label>
+                @Html.TextBoxFor(x => x.Discount, new { @class = "form-control", oninput = "calcNet()" })
+            </div>
+
+            <div class="col-md-3">
+                <label>الإجمالي بعد الخصم</label>
+                <input type="text" id="netTotal" class="form-control" readonly />
+            </div>
+            <input type="hidden" id="ItemsJson" name="ItemsJson" />
+
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100" onclick="prepareSubmit()">
+                    حفظ الفاتورة
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+</form>
+<script>
+    function prepareSubmit() {
+        $('#ItemsJson').val(JSON.stringify(items));
+    }
+</script>
+
+<script>
+    let items = [];
+    let total = 0;
+
+    document.getElementById('qty').oninput =
+        document.getElementById('price').oninput = function () {
+            let q = parseFloat(qty.value || 0);
+            let p = parseFloat(price.value || 0);
+            amount.value = (q * p).toFixed(2);
+        };
+
+    function addItem() {
+        if (!itemId.value || qty.value <= 0 || price.value <= 0) return;
+
+        let amt = parseFloat(amount.value);
+        total += amt;
+
+        items.push({
+            ItemId: itemId.value,
+            Quantity: qty.value,
+            PurchasePrice: price.value,
+            Amount: amt
+        });
+
+        $('#itemsTable tbody').append(`
+        <tr>
+            <td>${$("#itemId option:selected").text()}</td>
+            <td>${qty.value}</td>
+            <td>${price.value}</td>
+            <td>${amt.toFixed(2)}</td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this,${amt})">X</button></td>
+        </tr>
+    `);
+
+        updateTotals();
+        clearInputs();
+    }
+
+    function removeItem(btn, amt) {
+        total -= amt;
+        $(btn).closest('tr').remove();
+        updateTotals();
+    }
+
+    function updateTotals() {
+        $('#totalItems').val(total.toFixed(2));
+        calcNet();
+    }
+
+    function calcNet() {
+        let discount = parseFloat($('#Discount').val() || 0);
+        $('#netTotal').val((total - discount).toFixed(2));
+    }
+
+    function clearInputs() {
+        qty.value = '';
+        price.value = '';
+        amount.value = '';
+    }
+</script>
+<script>
+    $('#itemId').on('change', function () {
+
+        let selected = $('#itemId option:selected');
+        let price = selected.data('price');
+
+        if (price !== undefined) {
+            $('#price').val(price);   // السعر
+            $('#qty').val(1);         // الكمية الافتراضية
+            $('#amount').val((1 * price).toFixed(2)); // الإجمالي
+        } else {
+            $('#price').val('');
+            $('#qty').val('');
+            $('#amount').val('');
+        }
+    });
+    $('#qty, #price').on('input', function () {
+        let q = parseFloat($('#qty').val() || 0);
+        let p = parseFloat($('#price').val() || 0);
+        $('#amount').val((q * p).toFixed(2));
+    });
+    if (items.some(x => x.ItemId === itemId.value)) {
+        alert("الصنف مضاف بالفعل");
+        return;
+    }
+
+    $('#itemId').on('change', function () {
+        $('#addBtn').focus();
+    });
+
+</script>

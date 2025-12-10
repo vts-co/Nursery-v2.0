@@ -17,6 +17,7 @@ namespace NurseryProject.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Student()
         {
+            this.SalesInvoices = new HashSet<SalesInvoice>();
             this.StudentFiles = new HashSet<StudentFile>();
             this.StudentReports = new HashSet<StudentReport>();
             this.StudentsAttendances = new HashSet<StudentsAttendance>();
@@ -55,6 +56,8 @@ namespace NurseryProject.Models
     
         public virtual Destrict Destrict { get; set; }
         public virtual RegistrationType RegistrationType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesInvoice> SalesInvoices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentFile> StudentFiles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

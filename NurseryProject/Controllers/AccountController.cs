@@ -28,7 +28,7 @@ namespace NurseryProject.Controllers
             var model = settingsServices.GetAll();
             TempData["SettingLogo"] = model.Logo;
             TempData["SettingTitle"] = model.Title;
-            var pass = Security.Encrypt("futureacademy@123");
+            var pass = Security.Decrypt("9PzqbH9TTiReZ3WqgkfLyA==");
 
             using (var dbContext = new almohandes_DbEntities())
             {

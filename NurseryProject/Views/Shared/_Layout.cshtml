@@ -438,7 +438,7 @@
                                 </ul>
                             </li>
                         }
-                       
+
                         @if (ViewBag.userscreens.ToString().Contains(",80,") || ViewBag.userscreens.ToString().Contains(",82,") || ViewBag.userscreens.ToString().Contains(",85,"))
                         {
                             <li class="Stund">
@@ -546,6 +546,45 @@
                             </li>
                         }
                         @*//53-69 =>12*@
+
+
+
+
+
+                        @if (ViewBag.userscreens.ToString().Contains(",4,") || ViewBag.userscreens.ToString().Contains(",5,") || ViewBag.userscreens.ToString().Contains(",6,") || ViewBag.userscreens.ToString().Contains(",7,") || ViewBag.userscreens.ToString().Contains(",8,"))
+                        {
+                            <li class="Stund">
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="fa fa-list"></i>
+                                    <span data-key="t-apps">الخدمات  </span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false" id="side-menu2">
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","Stores")"><i class="fas fa-city p-1"></i> المخازن </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","ItemGroups")"><i class="fas fa-building p-1"></i>مجموعات الاصناف  </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","Items")"><i class="fas fa-search-minus p-1"></i> الاصناف </a></li>
+                                    }
+                                
+
+                                </ul>
+                            </li>
+                        }
+
+
+
+
+
+
+
+
+
                         @if (ViewBag.userscreens.ToString().Contains(",52,") || ViewBag.userscreens.ToString().Contains(",53,") || ViewBag.userscreens.ToString().Contains(",54,") || ViewBag.userscreens.ToString().Contains(",55,") || ViewBag.userscreens.ToString().Contains(",56,") || ViewBag.userscreens.ToString().Contains(",57,") || ViewBag.userscreens.ToString().Contains(",58,") || ViewBag.userscreens.ToString().Contains(",59,") || ViewBag.userscreens.ToString().Contains(",60,") || ViewBag.userscreens.ToString().Contains(",61,") || ViewBag.userscreens.ToString().Contains(",62,") || ViewBag.userscreens.ToString().Contains(",63,") || ViewBag.userscreens.ToString().Contains(",64,") || ViewBag.userscreens.ToString().Contains(",65,") || ViewBag.userscreens.ToString().Contains(",66,") || ViewBag.userscreens.ToString().Contains(",67,"))
                         {
                             <li class="Stund">
@@ -653,6 +692,8 @@
                             </li>
                         }
                         @*//70-71 =>13*@
+
+
                         @if (ViewBag.userscreens.ToString().Contains(",69,"))
                         {
                             <li class="Stund">
