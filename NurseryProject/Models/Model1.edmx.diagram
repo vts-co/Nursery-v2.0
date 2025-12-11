@@ -4,78 +4,78 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1b1bee368b7a475eba79145d1ec68b81" Name="Diagram1">
-        <EntityTypeShape EntityType="NurseryDBModel.BuildingSupervisor" Width="1.5" PointX="7.5" PointY="50" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.City" Width="1.5" PointX="5.25" PointY="20.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Class" Width="1.5" PointX="5.25" PointY="38.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.ClassesLeader" Width="1.5" PointX="10.5" PointY="53" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.ClassExam" Width="1.5" PointX="15.75" PointY="37.875" IsExpanded="true" />
+      <Diagram DiagramId="92352bb8b0e84506bea67b2e01296506" Name="Diagram1">
+        <EntityTypeShape EntityType="NurseryDBModel.BuildingSupervisor" Width="1.5" PointX="7.5" PointY="50.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.City" Width="1.5" PointX="5.25" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Class" Width="1.5" PointX="5.25" PointY="38.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.ClassesLeader" Width="1.5" PointX="10.5" PointY="53.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.ClassExam" Width="1.5" PointX="15.75" PointY="38" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.Department" Width="1.5" PointX="0.75" PointY="53.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Destrict" Width="1.5" PointX="7.5" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Destrict" Width="1.5" PointX="7.5" PointY="20" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.DiscountsType" Width="1.5" PointX="5.25" PointY="66.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeeClass" Width="1.5" PointX="10.5" PointY="47.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeeFile" Width="1.5" PointX="7.5" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeeClass" Width="1.5" PointX="10.5" PointY="47.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeeFile" Width="1.5" PointX="7.5" PointY="54.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.EmployeeRegistrationType" Width="1.5" PointX="3" PointY="48.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReportItem" Width="1.5" PointX="12.75" PointY="62.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReport" Width="1.5" PointX="10.5" PointY="57.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReportTool" Width="1.5" PointX="10.5" PointY="63" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReportType" Width="1.5" PointX="8.25" PointY="68.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReportItem" Width="1.5" PointX="12.75" PointY="63" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReport" Width="1.5" PointX="10.5" PointY="57.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReportTool" Width="1.5" PointX="10.5" PointY="63.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeeReportType" Width="1.5" PointX="8.25" PointY="68.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.Employee" Width="1.5" PointX="5.25" PointY="50.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeesAttendance" Width="1.5" PointX="15.75" PointY="59.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeesAttendance" Width="1.5" PointX="15.75" PointY="59.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.EmployeesDelay" Width="1.5" PointX="7.5" PointY="63.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.EmployeesDiscount" Width="1.5" PointX="7.5" PointY="58.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.EmployeesIncreas" Width="1.5" PointX="13.5" PointY="52.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeesReceipt" Width="1.5" PointX="7.5" PointY="77.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeesTransferAllowance" Width="1.5" PointX="7.5" PointY="82.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeesReceipt" Width="1.5" PointX="7.5" PointY="77.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeesTransferAllowance" Width="1.5" PointX="7.5" PointY="82.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.EmployeesVacation" Width="1.5" PointX="13.5" PointY="47.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.EmployeesWorkShift" Width="1.5" PointX="13.5" PointY="57.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.ExamDegree" Width="1.5" PointX="15.75" PointY="21.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Exam" Width="1.5" PointX="13.5" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.EmployeesWorkShift" Width="1.5" PointX="13.5" PointY="57.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.ExamDegree" Width="1.5" PointX="15.75" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Exam" Width="1.5" PointX="13.5" PointY="37.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.ExamsType" Width="1.5" PointX="11.25" PointY="15.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.Expens" Width="1.5" PointX="7.5" PointY="43" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.ExpensesType" Width="1.5" PointX="5.25" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.ExpensesType" Width="1.5" PointX="5.25" PointY="45.375" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.HomePage" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.IncreasesType" Width="1.5" PointX="11.25" PointY="39.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.ItemGroup" Width="1.5" PointX="9.75" PointY="109.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.ItemGroup" Width="1.5" PointX="9.75" PointY="109.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.Item" Width="1.5" PointX="12" PointY="111.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Jop" Width="1.5" PointX="3" PointY="53" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Level" Width="1.5" PointX="3" PointY="36.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Jop" Width="1.5" PointX="3" PointY="53.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Level" Width="1.5" PointX="3" PointY="36.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.Page" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.PurchaseInvoiceDetail" Width="1.5" PointX="17.25" PointY="111.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.PurchaseInvoice" Width="1.5" PointX="9.75" PointY="113.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.PurchaseInvoiceDetail" Width="1.5" PointX="17.25" PointY="111.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.PurchaseInvoice" Width="1.5" PointX="9.75" PointY="114" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.RegistrationType" Width="1.5" PointX="7.5" PointY="24.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Revenue" Width="1.5" PointX="16.5" PointY="51.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Revenue" Width="1.5" PointX="16.5" PointY="52" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.RevenuesType" Width="1.5" PointX="14.25" PointY="43.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.SalesInvoiceDetail" Width="1.5" PointX="20" PointY="111.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.SalesInvoiceDetail" Width="1.5" PointX="20" PointY="111.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.SalesInvoice" Width="1.5" PointX="14.75" PointY="111.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.Setting" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.ShiftsTime" Width="1.5" PointX="13.5" PointY="68" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Store" Width="1.5" PointX="12.75" PointY="105.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudentFile" Width="1.5" PointX="12" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.ShiftsTime" Width="1.5" PointX="13.5" PointY="68.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Store" Width="1.5" PointX="12.75" PointY="105.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudentFile" Width="1.5" PointX="12" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.StudentReportItem" Width="1.5" PointX="16.25" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudentReport" Width="1.5" PointX="14" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudentReport" Width="1.5" PointX="14" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.StudentReportTool" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.StudentReportType" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Student" Width="1.5" PointX="9.75" PointY="19.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudentsAttendance" Width="1.5" PointX="17" PointY="29.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudentsClass" Width="1.5" PointX="12" PointY="23.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudentsClassesTransfer" Width="1.5" PointX="14.25" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Student" Width="1.5" PointX="9.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudentsAttendance" Width="1.5" PointX="17" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudentsClass" Width="1.5" PointX="12" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudentsClassesTransfer" Width="1.5" PointX="14.25" PointY="31.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.StudentsExamDegree" Width="1.5" PointX="20" PointY="27.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudyClass" Width="1.5" PointX="14.75" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudyPlace" Width="1.5" PointX="3" PointY="41.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.StudyType" Width="1.5" PointX="0.75" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudyClass" Width="1.5" PointX="14.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudyPlace" Width="1.5" PointX="3" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.StudyType" Width="1.5" PointX="0.75" PointY="37.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.StudyYear" Width="1.5" PointX="5.25" PointY="60.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Subject" Width="1.5" PointX="8.25" PointY="37.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.SubscriptionMethod" Width="1.5" PointX="14.25" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Subject" Width="1.5" PointX="8.25" PointY="38" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.SubscriptionMethod" Width="1.5" PointX="14.25" PointY="25.375" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.SubscriptionPaymentType" Width="1.5" PointX="12" PointY="33.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Subscription" Width="1.5" PointX="9.75" PointY="28.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.SubscriptionsType" Width="1.5" PointX="7.5" PointY="28.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.SupplierGroup" Width="1.5" PointX="9.75" PointY="129.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.SupplierPayment" Width="1.5" PointX="14.25" PointY="117" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.Supplier" Width="1.5" PointX="12" PointY="118.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.User" Width="1.5" PointX="7.5" PointY="108.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Subscription" Width="1.5" PointX="9.75" PointY="28.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.SubscriptionsType" Width="1.5" PointX="7.5" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.SupplierGroup" Width="1.5" PointX="9.75" PointY="130.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.SupplierPayment" Width="1.5" PointX="14.25" PointY="117.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.Supplier" Width="1.5" PointX="12" PointY="119.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.User" Width="1.5" PointX="7.5" PointY="108.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NurseryDBModel.VacationsType" Width="1.5" PointX="11.25" PointY="43.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NurseryDBModel.WorkShift" Width="1.5" PointX="11.25" PointY="68.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NurseryDBModel.WorkShift" Width="1.5" PointX="11.25" PointY="68.25" IsExpanded="true" />
         <AssociationConnector Association="NurseryDBModel.FK_BuildingSupervisors_Employees" ManuallyRouted="false" />
         <AssociationConnector Association="NurseryDBModel.FK_BuildingSupervisors_StudyPlaces" ManuallyRouted="false" />
         <AssociationConnector Association="NurseryDBModel.FK_Destricts_Cities" ManuallyRouted="false" />

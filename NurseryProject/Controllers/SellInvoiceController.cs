@@ -1,7 +1,7 @@
 ﻿using NurseryProject.Authorization;
 using NurseryProject.Dtos.PurchaseInvoices;
 using NurseryProject.Models;
-using NurseryProject.Services.PurchaseInvoices;
+using NurseryProject.Services.SellInvoices;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,15 +13,15 @@ namespace NurseryProject.Controllers
 {
     [Authorized(ScreenId = "4")]
 
-    public class PurchaseInvoiceController : Controller
+    public class SellInvoiceController : Controller
     {
-        PurchaseInvoiceServices purchaseInvoiceServices = new PurchaseInvoiceServices();
-        // GET: PurchaseInvoice
+        SellInvoiceServices sellInvoiceServices = new SellInvoiceServices();
+        // GET: SellInvoice
         public ActionResult Index()
         {
 
 
-            return View(purchaseInvoiceServices.GetAll());
+            return View(sellInvoiceServices.GetAll());
         }
 
 
@@ -30,8 +30,8 @@ namespace NurseryProject.Controllers
         {
             using (var db = new almohandes_DbEntities())
             {
-                ViewBag.SupplierId = new SelectList(
-                    db.Suppliers.Where(x => !x.IsDeleted).ToList(),
+                ViewBag.StudentId = new SelectList(
+                    db.Students.Where(x => !x.IsDeleted).ToList(),
                     "Id",
                     "Name"
                 );
@@ -59,7 +59,6 @@ namespace NurseryProject.Controllers
         {
             try
             {
-                ViewBag.ItemsJson = model.ItemsJson;
 
                 // 1️⃣ التحقق من الأصناف
                 if (string.IsNullOrEmpty(model.ItemsJson))
@@ -68,14 +67,23 @@ namespace NurseryProject.Controllers
                     LoadLists(); // إعادة تحميل الدروب داون
                     return View("Upsert", model);
                 }
+                var items = Newtonsoft.Json.JsonConvert
+                    .DeserializeObject<List<PurchaseInvoiceItemVM>>(model.ItemsJson);
+                ViewBag.ItemsJson = model.ItemsJson;
+
                 if (model.StoreId == Guid.Empty || model.StoreId == null)
                 {
                     TempData["warning"] = "من فضلك اختر المخزن";
                     LoadLists(); // إعادة تحميل الدروب داون
                     return View("Upsert", model);
                 }
-                var items = Newtonsoft.Json.JsonConvert
-                              .DeserializeObject<List<PurchaseInvoiceItemVM>>(model.ItemsJson);
+                if (model.StudentId == Guid.Empty|| model.StudentId==null)
+                {
+                    TempData["warning"] = "من فضلك اختر المخزن";
+                    LoadLists(); // إعادة تحميل الدروب داون
+                    return View("Upsert", model);
+                }
+             
 
                 if (items == null || !items.Any())
                 {
@@ -85,24 +93,24 @@ namespace NurseryProject.Controllers
                 }
 
                 // 2️⃣ معالجة الـ Supplier لو فاضي
-                Guid? supplierId = null;
-                if (model.SupplierId != Guid.Empty)
-                    supplierId = model.SupplierId;
+                Guid? StudentId = null;
+                if (model.StudentId != Guid.Empty)
+                    StudentId = model.StudentId;
 
                 using (var db = new almohandes_DbEntities())
                 using (var tx = db.Database.BeginTransaction())
                 {
                     if (string.IsNullOrEmpty(model.InvoiceNumber))
                     {
-                        model.InvoiceNumber = (db.PurchaseInvoices.Count() + 1).ToString();
+                        model.InvoiceNumber = (db.SalesInvoices.Count() + 1).ToString();
                     }
                     try
                     {
                         // 3️⃣ إنشاء الفاتورة
-                        var invoice = new PurchaseInvoice
+                        var invoice = new SalesInvoice
                         {
                             Id = Guid.NewGuid(),
-                            SupplierId = supplierId,
+                            StudentId = (Guid)StudentId,
                             StoreId = model.StoreId,
                             InvoiceNumber = model.InvoiceNumber,
                             InvoiceDate = model.InvoiceDate,
@@ -112,7 +120,7 @@ namespace NurseryProject.Controllers
                             IsDeleted = false
                         };
 
-                        db.PurchaseInvoices.Add(invoice);
+                        db.SalesInvoices.Add(invoice);
                         db.SaveChanges();
 
                         // 4️⃣ إضافة تفاصيل الفاتورة
@@ -123,10 +131,10 @@ namespace NurseryProject.Controllers
                             var amount = (item.Quantity * item.PurchasePrice);
                             total += amount;
 
-                            db.PurchaseInvoiceDetails.Add(new PurchaseInvoiceDetail
+                            db.SalesInvoiceDetails.Add(new SalesInvoiceDetail
                             {
                                 Id = Guid.NewGuid(),
-                                PurchaseInvoiceId = invoice.Id,
+                                SalesInvoiceId = invoice.Id,
                                 ItemId = item.ItemId,
                                 Quantity = item.Quantity,
                                 Price = item.PurchasePrice,
@@ -144,7 +152,7 @@ namespace NurseryProject.Controllers
                         db.SaveChanges();
                         tx.Commit();
 
-                        TempData["success"] = "تم حفظ فاتورة المشتريات بنجاح ✔";
+                        TempData["success"] = "تم حفظ فاتورة  بنجاح ✔";
                         return RedirectToAction("Index");
                     }
                     catch (Exception ex)
@@ -168,32 +176,31 @@ namespace NurseryProject.Controllers
         {
             using (var db = new almohandes_DbEntities())
             {
-                ViewBag.SupplierId = new SelectList(db.Suppliers.Where(x => !x.IsDeleted).ToList(), "Id", "Name");
+                ViewBag.StudentId = new SelectList(db.Students.Where(x => !x.IsDeleted).ToList(), "Id", "Name");
                 ViewBag.StoreId = new SelectList(db.Stores.Where(x => !x.IsDeleted).ToList(), "Id", "Name");
-                ViewBag.Items = db.Items.Where(x => !x.IsDeleted).ToList();
+                ViewBag.itemId = new SelectList(db.Items.Where(x => !x.IsDeleted).ToList(), "Id", "Name");
             }
         }
         public ActionResult Edit(Guid id)
         {
             using (var db = new almohandes_DbEntities())
             {
-                var invoice = db.PurchaseInvoices
-                    .Include("PurchaseInvoiceDetails")
+                var invoice = db.SalesInvoices
+                    .Include("SalesInvoiceDetails")
                     .FirstOrDefault(x => x.Id == id && !x.IsDeleted);
+                var model = db.SalesInvoices
+                  .Include("SalesInvoiceDetails").Where(x => x.Id == id && !x.IsDeleted).Select(x => new PurchaseInvoicePostVM
+                  {
 
-                var model = db.PurchaseInvoices
-             .Include("PurchaseInvoiceDetails").Where(x => x.Id == id && !x.IsDeleted).Select(x => new PurchaseInvoicePostVM
-             {
-
-                 Id = x.Id,
-                 StoreId = (Guid)x.StoreId,
-                 SupplierId = x.SupplierId,
-                 Discount = x.Discount,
-                 InvoiceDate = x.InvoiceDate,
-                 InvoiceNumber = x.InvoiceNumber,
-
-             })
-             .FirstOrDefault();
+                      Id=x.Id,
+                      StoreId= (Guid)x.StoreId,
+                      StudentId=x.StudentId,
+                      Discount=x.Discount,
+                      InvoiceDate=x.InvoiceDate,
+                      InvoiceNumber=x.InvoiceNumber,
+                      
+                  })
+                  .FirstOrDefault();
                 if (invoice == null)
                 {
                     TempData["warning"] = "الفاتورة غير موجودة";
@@ -202,12 +209,12 @@ namespace NurseryProject.Controllers
 
                 // تحميل القوائم
                 //LoadLists();
-                ViewBag.SupplierId = new SelectList(db.Suppliers.Where(x => !x.IsDeleted).ToList(), "Id", "Name", invoice.SupplierId);
+                ViewBag.StudentId = new SelectList(db.Students.Where(x => !x.IsDeleted).ToList(), "Id", "Name", invoice.StudentId);
                 ViewBag.StoreId = new SelectList(db.Stores.Where(x => !x.IsDeleted).ToList(), "Id", "Name", invoice.StoreId);
                 ViewBag.itemId = new SelectList(db.Items.Where(x => !x.IsDeleted).ToList(), "Id", "Name");
 
 
-                var itemsVm = invoice.PurchaseInvoiceDetails.Where(x=>!x.IsDeleted).Select(d => new
+                var itemsVm = invoice.SalesInvoiceDetails.Where(x => !x.IsDeleted).Select(d => new
                 {
                     ItemId = d.ItemId,
                     Quantity = d.Quantity,
@@ -230,10 +237,10 @@ namespace NurseryProject.Controllers
                 using (var db = new almohandes_DbEntities())
                 using (var tx = db.Database.BeginTransaction())
                 {
-                    var invoice = db.PurchaseInvoices
-                    .Include("PurchaseInvoiceDetails")
+                    var invoice = db.SalesInvoices
+                    .Include("SalesInvoiceDetails")
                     .FirstOrDefault(x => x.Id == model.Id && !x.IsDeleted);
-                
+
 
                     ViewBag.ItemsJson = model.ItemsJson;
                     if (string.IsNullOrEmpty(model.ItemsJson))
@@ -255,7 +262,7 @@ namespace NurseryProject.Controllers
                         return View("Upsert", model);
                     }
 
-                    if (model.StoreId == null || model.StoreId==Guid.Empty)
+                    if (model.StoreId == null || model.StoreId == Guid.Empty)
                     {
                         TempData["warning"] = "تأكد من اختيار المخزن";
                         LoadLists();
@@ -269,7 +276,7 @@ namespace NurseryProject.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    invoice.SupplierId = model.SupplierId == Guid.Empty ? (Guid?)null : model.SupplierId;
+                    invoice.StudentId = (Guid)model.StudentId;
                     invoice.StoreId = model.StoreId;
                     invoice.InvoiceNumber = model.InvoiceNumber;
                     invoice.InvoiceDate = model.InvoiceDate;
@@ -278,7 +285,7 @@ namespace NurseryProject.Controllers
                     invoice.ModifiedBy = (Guid)TempData["UserId"];
 
                     // حذف التفاصيل القديمة
-                    var olditems = db.PurchaseInvoiceDetails.Where(x => x.PurchaseInvoiceId == model.Id).ToList();
+                    var olditems = db.SalesInvoiceDetails.Where(x => x.SalesInvoiceId == model.Id).ToList();
                     foreach (var item in olditems)
                     {
                         item.IsDeleted = true;
@@ -294,10 +301,10 @@ namespace NurseryProject.Controllers
                         var amount = item.Quantity * item.PurchasePrice;
                         total += amount;
 
-                        db.PurchaseInvoiceDetails.Add(new PurchaseInvoiceDetail
+                        db.SalesInvoiceDetails.Add(new SalesInvoiceDetail
                         {
                             Id = Guid.NewGuid(),
-                            PurchaseInvoiceId = invoice.Id,
+                            SalesInvoiceId = invoice.Id,
                             ItemId = item.ItemId,
                             Quantity = item.Quantity,
                             Price = item.PurchasePrice,
@@ -331,7 +338,7 @@ namespace NurseryProject.Controllers
             {
                 using (var db = new almohandes_DbEntities())
                 {
-                    var invoice = db.PurchaseInvoices
+                    var invoice = db.SalesInvoices
                         .FirstOrDefault(x => x.Id == id && !x.IsDeleted);
 
                     if (invoice == null)
@@ -346,8 +353,8 @@ namespace NurseryProject.Controllers
                     invoice.DeletedBy = (Guid)TempData["UserId"];
 
                     // حذف تفاصيل الفاتورة أيضًا (Soft delete)
-                    var details = db.PurchaseInvoiceDetails
-                        .Where(x => x.PurchaseInvoiceId == id && !x.IsDeleted)
+                    var details = db.SalesInvoiceDetails
+                        .Where(x => x.SalesInvoiceId == id && !x.IsDeleted)
                         .ToList();
 
                     foreach (var d in details)
@@ -372,23 +379,29 @@ namespace NurseryProject.Controllers
 
 
         [HttpGet]
-        public JsonResult GetItemPrice(Guid id)
+        public JsonResult GetItemPrice(Guid id,Guid StoreId)
         {
             using (var db = new almohandes_DbEntities())
             {
+                var PurchaseInvoice = db.PurchaseInvoiceDetails.Where(x => !x.IsDeleted && x.ItemId == id&&x.PurchaseInvoice.StoreId== StoreId).Select(x => x.Quantity).DefaultIfEmpty(0).Sum();
+                var SalesInvoice = db.SalesInvoiceDetails.Where(x => !x.IsDeleted && x.ItemId == id && x.SalesInvoice.StoreId == StoreId).Select(x => x.Quantity).DefaultIfEmpty(0).Sum();
+
+                var quantity = PurchaseInvoice - SalesInvoice;
+
                 var item = db.Items
                     .Where(x => x.Id == id)
                     .Select(x => new
                     {
                         SellPrice = x.SellPrice,
-                        PurchasePrice = x.PurchasePrice
+                        PurchasePrice = x.PurchasePrice,
+                        quantity= quantity
                     })
                     .FirstOrDefault();
+
 
                 return Json(item, JsonRequestBehavior.AllowGet);
             }
         }
-
 
     }
 }

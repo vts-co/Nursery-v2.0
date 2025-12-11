@@ -9,6 +9,7 @@ namespace NurseryProject.Dtos.PurchaseInvoices
     {
         public Guid Id { get; set; }
         public Guid? SupplierId { get; set; }
+        public Guid? StudentId { get; set; }
         public Guid StoreId { get; set; }
 
         public string InvoiceNumber { get; set; }

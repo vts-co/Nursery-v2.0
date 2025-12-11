@@ -1,6 +1,6 @@
 ﻿@model NurseryProject.Dtos.PurchaseInvoices.PurchaseInvoicePostVM
 @{
-    ViewBag.Title = "فاتورة مشتريات";
+    ViewBag.Title = "فاتورة مبيعات";
 }
 
 <form method="post">
@@ -24,9 +24,9 @@
             </div>
 
             <div class="col-md-3">
-                <label>المورد</label>
-                @Html.DropDownListFor(x => x.SupplierId,
-                    null, "اختر المورد", new { @class = "form-control searchable" })
+                <label>الطالب</label>
+                @Html.DropDownListFor(x => x.StudentId,
+                    null, "اختر الطالب", new { @class = "form-control searchable" })
             </div>
 
             <div class="col-md-3">
@@ -35,7 +35,6 @@
                     null, "اختر المخزن", new { @class = "form-control " })
             </div>
             <input type="hidden" id="StoreIdHidden" name="StoreId" />
-
 
         </div>
     </div>
@@ -51,33 +50,36 @@
             <div class="col-md-4">
                 <label>الصنف</label>
 
-
                 @Html.DropDownList("itemId",
                 null, "--اختر-- ", new { @class = "form-control searchable" })
             </div>
-
-            <div class="col-md-2">
+            <div class="col-md-4">
+                <label>الكمية المتاحة</label>
+                <input type="number" id="availablequantity" class="form-control text-center" readonly />
+            </div>
+            <div class="col-md-4">
                 <label>الكمية</label>
                 <input type="number" id="qty" class="form-control text-center" min="1" />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>السعر</label>
                 <input type="number" id="price" class="form-control text-center" />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>الإجمالي</label>
                 <input type="text" id="amount" class="form-control text-center" readonly />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3 ms-auto">
                 <button type="button" class="btn btn-success w-100" onclick="addItem()">
                     إضافة
                 </button>
             </div>
 
         </div>
+
 
         <!-- جدول الأصناف -->
         <div class="card-body">
@@ -117,12 +119,15 @@
 
             <input type="hidden" id="ItemsJson" name="ItemsJson" />
 
-            <div class="col-md-3 d-flex align-items-end">
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-3 ms-auto">
                 <button type="button" class="btn btn-primary w-100" onclick="submitForm()">
                     حفظ الفاتورة
                 </button>
             </div>
-
         </div>
     </div>
 
@@ -142,6 +147,7 @@
 
         </script>
     }
+
     <script>
 
 // =======================
@@ -156,6 +162,7 @@ let total = 0;
 
 @if (ViewBag.ItemsJson != null)
 {
+
     <text>
         items = @Html.Raw(ViewBag.ItemsJson);
         total = items.reduce((s, x) => s + x.Amount, 0);
@@ -197,19 +204,26 @@ function addRow(id, name, qty, price, amount) {
 // =======================
 function addItem() {
 
-    let StoreId = $('#StoreId').val();
     let id = $('#itemId').val();
+    let StoreId = $('#StoreId').val();
+
     let name = $('#itemId option:selected').text();
     let qty = parseFloat($('#qty').val());
     let price = parseFloat($('#price').val());
+    let availablequantity = parseFloat($('#availablequantity').val());
 
-    if (!id || qty <= 0 || price <= 0) {
-        invokeAlert('أدخل بيانات صحيحة', '', 'warning', 2000);
+    if (availablequantity <= 0 || availablequantity < qty) {
+        invokeAlert('الكمية المتاحة لا تكفي', '', 'warning', 2000);
 
         return;
     }
-    if (!StoreId ) {
+    if (!StoreId) {
         invokeAlert('أختر المخزن', '', 'warning', 2000);
+
+        return;
+    }
+    if (!id || qty <= 0 || price <= 0) {
+        invokeAlert('أدخل بيانات صحيحة', '', 'warning', 2000);
 
         return;
     }
@@ -240,6 +254,7 @@ function addItem() {
         .prop('disabled', true);
 
     $('#StoreIdHidden').val(StoreId);
+
 
 
 }
@@ -300,6 +315,7 @@ function clearInputs() {
         $('#itemId').on('change', function () {
 
             let itemId = $(this).val();
+            let StoreId = $('#StoreId').val();
 
             if (!itemId) {
                 clearInputs();
@@ -307,13 +323,14 @@ function clearInputs() {
             }
 
             $.ajax({
-                url: '/PurchaseInvoice/GetItemPrice',
+                url: '/SellInvoice/GetItemPrice',
                 type: 'GET',
-                data: { id: itemId},
+                data: { id: itemId, StoreId: StoreId},
                 success: function (res) {
                     if (res) {
-                        let p = res.PurchasePrice;   // 👈 سعر الشراء من الداتا بيز
+                        let p = res.SellPrice;
 
+                        $('#availablequantity').val(res.quantity);
                         $('#price').val(p);
                         $('#qty').val(1);
                         $('#amount').val((1 * p).toFixed(2));
@@ -322,7 +339,7 @@ function clearInputs() {
                     }
                 },
                 error: function () {
-                    invokeAlert('خطأ في تحميل سعر الصنف', '', 'warning', 2000);
+                    invokeAlert('تأكد من اختيار المخزن اولا', '', 'warning', 2000);
 
                 }
             });

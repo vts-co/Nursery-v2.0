@@ -633,7 +633,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="InvoiceDate" Type="datetime" Nullable="false" />
           <Property Name="SupplierId" Type="uniqueidentifier" />
           <Property Name="TotalAmount" Type="float" Nullable="false" />
@@ -726,7 +726,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="InvoiceDate" Type="datetime" Nullable="false" />
           <Property Name="StudentId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TotalAmount" Type="float" Nullable="false" />
@@ -739,6 +739,7 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="DeletedBy" Type="uniqueidentifier" />
+          <Property Name="StoreId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Settings">
           <Key>
@@ -4013,7 +4014,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SupplierId" Type="Guid" />
           <Property Name="TotalAmount" Type="Double" Nullable="false" />
@@ -4127,7 +4128,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="StudentId" Type="Guid" Nullable="false" />
           <Property Name="TotalAmount" Type="Double" Nullable="false" />
@@ -4140,6 +4141,7 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedOn" Type="DateTime" Precision="3" />
           <Property Name="DeletedBy" Type="Guid" />
+          <Property Name="StoreId" Type="Guid" />
           <NavigationProperty Name="SalesInvoiceDetails" Relationship="Self.FK_SalesInvoiceDetails_Invoice" FromRole="SalesInvoices" ToRole="SalesInvoiceDetails" />
           <NavigationProperty Name="User" Relationship="Self.FK_SalesInvoices_CreatedBy" FromRole="SalesInvoices" ToRole="Users" />
           <NavigationProperty Name="User1" Relationship="Self.FK_SalesInvoices_DeletedBy" FromRole="SalesInvoices" ToRole="Users" />
@@ -6223,7 +6225,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="NurseryDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BuildingSupervisors" EntityType="Self.BuildingSupervisor" />
           <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Classes" EntityType="Self.Class" />
@@ -6795,7 +6797,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="NurseryDBModelStoreContainer" CdmEntityContainer="Entities">
+        <EntityContainerMapping StorageEntityContainer="NurseryDBModelStoreContainer" CdmEntityContainer="NurseryDBEntities">
           <EntitySetMapping Name="BuildingSupervisors">
             <EntityTypeMapping TypeName="NurseryDBModel.BuildingSupervisor">
               <MappingFragment StoreEntitySet="BuildingSupervisors">
@@ -7571,6 +7573,7 @@
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

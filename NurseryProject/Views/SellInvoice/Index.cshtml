@@ -1,0 +1,55 @@
+﻿@model IEnumerable<NurseryProject.Dtos.PurchaseInvoices.PurchaseInvoiceVM>
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = "ادارة المبيعات";
+
+}
+<div class="card">
+    <div class="card-header">
+
+        <div class="row">
+            <h2 class="col">  </h2>
+            <p class="col-auto">
+                @Url.Create()
+            </p>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="datatable" class="table table-striped dt-responsive  nowrap w-100 table-bordered">
+            <thead class="bg-soft-primary">
+                <tr>
+
+                    <th>رقم الفاتورة</th>
+                    <th>الطالب </th>
+                    <th>التاريخ</th>
+                    <th>الإجمالي</th>
+
+                    <th>
+                        @Html.DisplayName("عمليات")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.InvoiceNumber</td>
+                        <td>@item.StudentName</td>
+                        <td>@item.InvoiceDate.ToShortDateString()</td>
+                        <td>@item.TotalAmount</td>
+
+
+                        <td>
+                            @Url.Edit(routeValues: new { id = item.Id })
+                            @Url.Delete(routeValues: new { id = item.Id })
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

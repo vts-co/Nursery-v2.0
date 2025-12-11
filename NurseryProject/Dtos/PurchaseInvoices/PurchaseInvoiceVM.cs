@@ -7,10 +7,13 @@ namespace NurseryProject.Dtos.PurchaseInvoices
 {
     public class PurchaseInvoiceVM
     {
+        public Guid? Id { get; set; }
         public Guid? SupplierId { get; set; }
         public DateTime InvoiceDate { get; set; }
         public double Total { get; set; }
         public string InvoiceNumber { get; set; }
+        public string StudentName { get; set; }
+        public double TotalAmount { get; set; }
 
         public List<PurchaseInvoiceItemVM> Items { get; set; }
     }

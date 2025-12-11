@@ -1,0 +1,272 @@
+CREATE TABLE ItemGroups (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    Name NVARCHAR(max) NULL,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT FK_ItemGroups_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_ItemGroups_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_ItemGroups_DeletedBy FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+
+
+CREATE TABLE Items (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    GroupId UNIQUEIDENTIFIER NOT NULL,
+    Name NVARCHAR(max)  NULL,
+    Code NVARCHAR(max) NULL,
+	SellPrice float  NOT null DEFAULT 0,
+
+    PurchasePrice float NOT NULL DEFAULT 0,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT FK_Items_Group FOREIGN KEY (GroupId) REFERENCES ItemGroups(Id),
+    CONSTRAINT FK_Items_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_Items_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_Items_DeletedBy FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+
+CREATE TABLE Stores (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    Name NVARCHAR(max)  NULL,
+    Location NVARCHAR(max) NULL,
+    StudyPlaceId UNIQUEIDENTIFIER NULL,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+    CONSTRAINT FK_Stores_StudyPlace FOREIGN KEY (StudyPlaceId) REFERENCES StudyPlaces(Id),
+
+    CONSTRAINT FK_Stores_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_Stores_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_Stores_DeletedBy FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+CREATE TABLE SupplierGroups (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    Name NVARCHAR(max)  NULL,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT FK_SupplierGroups_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_SupplierGroups_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_SupplierGroups_DeletedBy FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+CREATE TABLE Suppliers (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    GroupId UNIQUEIDENTIFIER NOT NULL,
+    Name NVARCHAR(max)  NULL,
+    Phone NVARCHAR(100) NULL,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT FK_Suppliers_Group FOREIGN KEY (GroupId) REFERENCES SupplierGroups(Id),
+    CONSTRAINT FK_Suppliers_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_Suppliers_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_Suppliers_DeletedBy FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+CREATE TABLE SupplierPayments (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    SupplierId UNIQUEIDENTIFIER NOT NULL,
+    Amount float NOT NULL  DEFAULT 0,
+    PaymentDate DATETIME NOT NULL,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT FK_SupplierPayments_Supplier FOREIGN KEY (SupplierId) REFERENCES Suppliers(Id),
+    CONSTRAINT FK_SupplierPayments_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_SupplierPayments_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+    CONSTRAINT FK_SupplierPayments_DeletedBy FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+
+CREATE TABLE SalesInvoices (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    InvoiceNumber NVARCHAR(50)  NULL,
+    InvoiceDate DATETIME NOT NULL,
+
+    StudentId UNIQUEIDENTIFIER NOT NULL,
+	  StoreId UNIQUEIDENTIFIER NOT NULL,
+    TotalAmount float NOT NULL DEFAULT 0,
+    Discount float NOT NULL DEFAULT 0,
+    Safy float NOT NULL DEFAULT 0,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+	   CONSTRAINT FK_PurchaseInvoices_Stores
+        FOREIGN KEY (StoreId) REFERENCES Stores(Id),
+
+    CONSTRAINT FK_SalesInvoices_Student 
+        FOREIGN KEY (StudentId) REFERENCES Students(Id),
+
+    CONSTRAINT FK_SalesInvoices_CreatedBy 
+        FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_SalesInvoices_ModifiedBy 
+        FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_SalesInvoices_DeletedBy 
+        FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+CREATE TABLE SalesInvoiceDetails (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+
+    SalesInvoiceId UNIQUEIDENTIFIER NOT NULL,
+    ItemId UNIQUEIDENTIFIER NOT NULL,
+
+    Quantity float NOT NULL,
+    Price float NOT NULL,
+    Amount AS (Quantity * Price), -- محسوبة تلقائي
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT FK_SalesInvoiceDetails_Invoice 
+        FOREIGN KEY (SalesInvoiceId) REFERENCES SalesInvoices(Id),
+
+    CONSTRAINT FK_SalesInvoiceDetails_Item 
+        FOREIGN KEY (ItemId) REFERENCES Items(Id),
+
+    CONSTRAINT FK_SalesInvoiceDetails_CreatedBy 
+        FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_SalesInvoiceDetails_ModifiedBy 
+        FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_SalesInvoiceDetails_DeletedBy 
+        FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+
+CREATE TABLE PurchaseInvoices (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    InvoiceNumber NVARCHAR(50)  NULL,
+    InvoiceDate DATETIME NOT NULL,
+
+    SupplierId UNIQUEIDENTIFIER NOT NULL,
+    StoreId UNIQUEIDENTIFIER NOT NULL,
+
+       TotalAmount float NOT NULL DEFAULT 0,
+    Discount float NOT NULL DEFAULT 0,
+    Safy float NOT NULL DEFAULT 0,
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+	    CONSTRAINT FK_PurchaseInvoices_Stores
+        FOREIGN KEY (StoreId) REFERENCES Stores(Id),
+
+    CONSTRAINT FK_PurchaseInvoices_Supplier 
+        FOREIGN KEY (SupplierId) REFERENCES Suppliers(Id),
+
+    CONSTRAINT FK_PurchaseInvoices_CreatedBy 
+        FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_PurchaseInvoices_ModifiedBy 
+        FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_PurchaseInvoices_DeletedBy 
+        FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+CREATE TABLE PurchaseInvoiceDetails (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+
+    PurchaseInvoiceId UNIQUEIDENTIFIER NOT NULL,
+    ItemId UNIQUEIDENTIFIER NOT NULL,
+
+    Quantity float NOT NULL DEFAULT 0,
+    Price float NOT NULL DEFAULT 0,
+    Amount AS (Quantity * Price), -- محسوبة تلقائي
+
+    CreatedOn DATETIME NULL,
+    CreatedBy UNIQUEIDENTIFIER NULL,
+    ModifiedOn DATETIME NULL,
+    ModifiedBy UNIQUEIDENTIFIER NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DeletedOn DATETIME NULL,
+    DeletedBy UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT FK_PurchaseInvoiceDetails_Invoice 
+        FOREIGN KEY (PurchaseInvoiceId) REFERENCES PurchaseInvoices(Id),
+
+    CONSTRAINT FK_PurchaseInvoiceDetails_Item 
+        FOREIGN KEY (ItemId) REFERENCES Items(Id),
+
+    CONSTRAINT FK_PurchaseInvoiceDetails_CreatedBy 
+        FOREIGN KEY (CreatedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_PurchaseInvoiceDetails_ModifiedBy 
+        FOREIGN KEY (ModifiedBy) REFERENCES Users(Id),
+
+    CONSTRAINT FK_PurchaseInvoiceDetails_DeletedBy 
+        FOREIGN KEY (DeletedBy) REFERENCES Users(Id)
+);
+
+
+
+ALTER TABLE PurchaseInvoices
+DROP CONSTRAINT FK_PurchaseInvoices_Supplier;
+
+ALTER TABLE PurchaseInvoices
+ALTER COLUMN SupplierId UNIQUEIDENTIFIER NULL;
+
+ALTER TABLE PurchaseInvoices
+ADD CONSTRAINT FK_PurchaseInvoices_Supplier
+FOREIGN KEY (SupplierId) REFERENCES Suppliers(Id);

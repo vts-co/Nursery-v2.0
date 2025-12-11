@@ -332,6 +332,7 @@
     <Compile Include="Controllers\RegistrationTypesController.cs" />
     <Compile Include="Controllers\RevenuesController.cs" />
     <Compile Include="Controllers\RevenuesTypesController.cs" />
+    <Compile Include="Controllers\SellInvoiceController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\StoresController.cs" />
     <Compile Include="Controllers\StudentReportsController.cs" />
@@ -639,6 +640,7 @@
     <Compile Include="Services\ItemGroups\ItemGroupServices.cs" />
     <Compile Include="Services\Items\ItemServices.cs" />
     <Compile Include="Services\PurchaseInvoices\PurchaseInvoiceServices.cs" />
+    <Compile Include="Services\SellInvoices\SellInvoiceServices.cs" />
     <Compile Include="Services\Stores\StoreServices.cs" />
     <Compile Include="Services\StudentReports\StudentReportsServices.cs" />
     <Compile Include="Services\StudentReportTools\StudentReportToolsServices.cs" />
@@ -2199,6 +2201,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="DataBackUp\invoices query nursery.txt" />
     <Content Include="DataBackUp\nurseryDb 12-1-2025 .sql" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -2479,6 +2482,8 @@
     <Content Include="Views\Stores\Upsert.cshtml" />
     <Content Include="Views\PurchaseInvoice\Index.cshtml" />
     <Content Include="Views\PurchaseInvoice\Upsert.cshtml" />
+    <Content Include="Views\SellInvoice\Index.cshtml" />
+    <Content Include="Views\SellInvoice\Upsert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
