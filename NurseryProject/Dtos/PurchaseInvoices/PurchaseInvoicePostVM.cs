@@ -7,6 +7,7 @@ namespace NurseryProject.Dtos.PurchaseInvoices
 {
     public class PurchaseInvoicePostVM
     {
+        public Guid Id { get; set; }
         public Guid? SupplierId { get; set; }
         public Guid StoreId { get; set; }
 

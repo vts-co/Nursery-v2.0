@@ -570,6 +570,10 @@
                                     @if (ViewBag.userscreens.ToString().Contains(",4,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index","Items")"><i class="fas fa-search-minus p-1"></i> الاصناف </a></li>
+                                    }   
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","PurchaseInvoice")"><i class="fas fa-search-minus p-1"></i> فواتير المشتريات </a></li>
                                     }
                                 
 

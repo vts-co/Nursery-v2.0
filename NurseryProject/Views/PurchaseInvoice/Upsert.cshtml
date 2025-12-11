@@ -1,6 +1,6 @@
 ﻿@model NurseryProject.Models.PurchaseInvoice
 @{
-    ViewBag.Title = "إضافة فاتورة مشتريات";
+    ViewBag.Title = "فاتورة مشتريات";
 }
 
 <form method="post">
@@ -26,43 +26,35 @@
             <div class="col-md-3">
                 <label>المورد</label>
                 @Html.DropDownListFor(x => x.SupplierId,
-       ViewBag.SupplierId as SelectList,
-       "اختر المورد",
-       new { @class = "form-control" })
-
+                    null, "اختر المورد", new { @class = "form-control" })
             </div>
 
             <div class="col-md-3">
                 <label>المخزن</label>
                 @Html.DropDownListFor(x => x.StoreId,
-            ViewBag.StoreId as SelectList,
-            "اختر المخزن",
-            new { @class = "form-control" })
+                    null, "اختر المخزن", new { @class = "form-control" })
             </div>
 
         </div>
     </div>
 
-    <!-- ================== إضافة الأصناف ================== -->
+    <!-- ================== الأصناف ================== -->
     <div class="card mb-3">
         <div class="card-header bg-light">
             <strong>الأصناف</strong>
         </div>
+
         <div class="card-body row align-items-end">
 
             <div class="col-md-4">
                 <label>الصنف</label>
-                <select id="itemId" class="form-control">
+                <select id="itemId" class="form-control searchable">
                     <option value="">اختر الصنف</option>
                     @foreach (var i in ViewBag.Items)
                     {
-                        <option value="@i.Id"
-                                data-price="@i.SellPrice">
-                            @i.Name
-                        </option>
+                        <option value="@i.Id" data-price="@i.SellPrice">@i.Name</option>
                     }
                 </select>
-
             </div>
 
             <div class="col-md-2">
@@ -105,7 +97,7 @@
         </div>
     </div>
 
-    <!-- ================== إجماليات الفاتورة ================== -->
+    <!-- ================== إجماليات ================== -->
     <div class="card">
         <div class="card-body row">
 
@@ -123,113 +115,197 @@
                 <label>الإجمالي بعد الخصم</label>
                 <input type="text" id="netTotal" class="form-control" readonly />
             </div>
+
             <input type="hidden" id="ItemsJson" name="ItemsJson" />
 
             <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100" onclick="prepareSubmit()">
+                <button type="button" class="btn btn-primary w-100" onclick="submitForm()">
                     حفظ الفاتورة
                 </button>
-
             </div>
 
         </div>
     </div>
 
 </form>
-<script>
-    function prepareSubmit() {
-        $('#ItemsJson').val(JSON.stringify(items));
-    }
-</script>
 
-<script>
-    let items = [];
-    let total = 0;
+@section scripts {
 
-    document.getElementById('qty').oninput =
-        document.getElementById('price').oninput = function () {
-            let q = parseFloat(qty.value || 0);
-            let p = parseFloat(price.value || 0);
-            amount.value = (q * p).toFixed(2);
-        };
+    <script>
 
-    function addItem() {
-        if (!itemId.value || qty.value <= 0 || price.value <= 0) return;
+// =======================
+// المتغيرات الأساسية
+// =======================
+let items = [];
+let total = 0;
 
-        let amt = parseFloat(amount.value);
-        total += amt;
+// =======================
+// تحميل بيانات التعديل
+// =======================
 
-        items.push({
-            ItemId: itemId.value,
-            Quantity: qty.value,
-            PurchasePrice: price.value,
-            Amount: amt
-        });
+@if (ViewBag.ItemsJson != null)
+{
+    <text>
+        items = @Html.Raw(ViewBag.ItemsJson);
+        total = items.reduce((s, x) => s + x.Amount, 0);
+    </text>
+}
 
-        $('#itemsTable tbody').append(`
-        <tr>
-            <td>${$("#itemId option:selected").text()}</td>
-            <td>${qty.value}</td>
-            <td>${price.value}</td>
-            <td>${amt.toFixed(2)}</td>
-            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this,${amt})">X</button></td>
+// بناء الجدول عند التحميل
+$(document).ready(function () {
+
+    items.forEach(function (i) {
+        addRow(i.ItemId, i.ItemName, i.Quantity, i.PurchasePrice, i.Amount);
+    });
+
+    updateTotals();
+});
+
+// =======================
+// إضافة صف للجدول فقط
+// =======================
+function addRow(id, name, qty, price, amount) {
+
+    $('#itemsTable tbody').append(`
+        <tr data-item-id="${id}">
+            <td>${name}</td>
+            <td>${qty}</td>
+            <td>${price}</td>
+            <td>${amount.toFixed(2)}</td>
+            <td>
+                <button class="btn btn-danger btn-sm"
+                    onclick="removeItem(this, '${id}', ${amount})">X</button>
+            </td>
         </tr>
     `);
+}
 
-        updateTotals();
-        clearInputs();
+// =======================
+// إضافة صنف
+// =======================
+function addItem() {
+
+    let id = $('#itemId').val();
+    let name = $('#itemId option:selected').text();
+    let qty = parseFloat($('#qty').val());
+    let price = parseFloat($('#price').val());
+
+    if (!id || qty <= 0 || price <= 0) {
+        alert("أدخل بيانات صحيحة");
+        return;
     }
 
-    function removeItem(btn, amt) {
-        total -= amt;
-        $(btn).closest('tr').remove();
-        updateTotals();
-    }
-
-    function updateTotals() {
-        $('#totalItems').val(total.toFixed(2));
-        calcNet();
-    }
-
-    function calcNet() {
-        let discount = parseFloat($('#Discount').val() || 0);
-        $('#netTotal').val((total - discount).toFixed(2));
-    }
-
-    function clearInputs() {
-        qty.value = '';
-        price.value = '';
-        amount.value = '';
-    }
-</script>
-<script>
-    $('#itemId').on('change', function () {
-
-        let selected = $('#itemId option:selected');
-        let price = selected.data('price');
-
-        if (price !== undefined) {
-            $('#price').val(price);   // السعر
-            $('#qty').val(1);         // الكمية الافتراضية
-            $('#amount').val((1 * price).toFixed(2)); // الإجمالي
-        } else {
-            $('#price').val('');
-            $('#qty').val('');
-            $('#amount').val('');
-        }
-    });
-    $('#qty, #price').on('input', function () {
-        let q = parseFloat($('#qty').val() || 0);
-        let p = parseFloat($('#price').val() || 0);
-        $('#amount').val((q * p).toFixed(2));
-    });
-    if (items.some(x => x.ItemId === itemId.value)) {
+    if (items.some(x => x.ItemId === id)) {
         alert("الصنف مضاف بالفعل");
         return;
     }
 
-    $('#itemId').on('change', function () {
-        $('#addBtn').focus();
+    let amount = qty * price;
+
+    items.push({
+        ItemId: id,
+        ItemName: name,
+        Quantity: qty,
+        PurchasePrice: price,
+        Amount: amount
     });
 
-</script>
+    addRow(id, name, qty, price, amount);
+
+    total += amount;
+    updateTotals();
+    clearInputs();
+}
+
+// =======================
+// حذف صنف
+// =======================
+function removeItem(btn, id, amt) {
+
+    items = items.filter(x => x.ItemId !== id);
+
+    $(btn).closest('tr').remove();
+
+    total -= amt;
+    updateTotals();
+}
+
+// =======================
+// إجماليات
+// =======================
+function updateTotals() {
+    $('#totalItems').val(total.toFixed(2));
+    calcNet();
+}
+
+function calcNet() {
+    let discount = parseFloat($('#Discount').val() || 0);
+    $('#netTotal').val((total - discount).toFixed(2));
+}
+
+// =======================
+// فورم الحفظ
+// =======================
+function submitForm() {
+
+    if (items.length === 0) {
+        alert("أضف صنف واحد على الأقل");
+        return;
+    }
+
+    $('#ItemsJson').val(JSON.stringify(items));
+    $("form").submit();
+}
+
+// =======================
+// تفريغ
+// =======================
+function clearInputs() {
+    $('#qty').val('');
+    $('#price').val('');
+    $('#amount').val('');
+}
+
+// =======================
+// تغيير الصنف
+// =======================
+        $('#itemId').on('change', function () {
+
+            let itemId = $(this).val();
+
+            if (!itemId) {
+                clearInputs();
+                return;
+            }
+
+            $.ajax({
+                url: '/PurchaseInvoice/GetItemPrice',
+                type: 'GET',
+                data: { id: itemId },
+                success: function (res) {
+                    if (res) {
+                        let p = res.PurchasePrice;   // 👈 سعر الشراء من الداتا بيز
+
+                        $('#price').val(p);
+                        $('#qty').val(1);
+                        $('#amount').val((1 * p).toFixed(2));
+                    } else {
+                        clearInputs();
+                    }
+                },
+                error: function () {
+                    alert("خطأ في تحميل سعر الصنف");
+                }
+            });
+
+        });
+
+// تحديث الإجمالي
+$('#qty, #price').on('input', function () {
+    let q = parseFloat($('#qty').val() || 0);
+    let p = parseFloat($('#price').val() || 0);
+    $('#amount').val((q * p).toFixed(2));
+});
+
+    </script>
+}
