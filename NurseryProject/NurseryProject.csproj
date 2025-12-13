@@ -351,6 +351,9 @@
     <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Controllers\SubscriptionsController.cs" />
     <Compile Include="Controllers\SubscriptionsTypesController.cs" />
+    <Compile Include="Controllers\SupplierGroupController.cs" />
+    <Compile Include="Controllers\SupplierPaymentsController.cs" />
+    <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VacationsTypesController.cs" />
     <Compile Include="Controllers\WorkShiftsController.cs" />
@@ -400,6 +403,8 @@
     <Compile Include="Dtos\StudyClasses\StudyClassesDto.cs" />
     <Compile Include="Dtos\Subjects\SubjectsDto.cs" />
     <Compile Include="Dtos\Subscriptions\SubscriptionsDto.cs" />
+    <Compile Include="Dtos\Supplier\SupplierDto.cs" />
+    <Compile Include="Dtos\Supplier\SupplierPaymentDto.cs" />
     <Compile Include="Dtos\Users\UsersDto.cs" />
     <Compile Include="Dtos\WorkShifts\WorkShiftsDto.cs" />
     <Compile Include="Enums\InstallmentTypes.cs" />
@@ -663,6 +668,9 @@
     <Compile Include="Services\StudentsClass\StudentsClassServices.cs" />
     <Compile Include="Services\SubscriptionsTypes\SubscriptionsTypesServices.cs" />
     <Compile Include="Services\Subscriptions\SubscriptionsServices.cs" />
+    <Compile Include="Services\SupplierGroups\SupplierGroupServices.cs" />
+    <Compile Include="Services\Suppliers\SupplierPayementServices.cs" />
+    <Compile Include="Services\Suppliers\SupplierServices.cs" />
     <Compile Include="Services\Users\UsersServices.cs" />
     <Compile Include="Services\VacationsTypes\VacationsTypesServices.cs" />
     <Compile Include="Enums\Gender.cs" />
@@ -2484,6 +2492,12 @@
     <Content Include="Views\PurchaseInvoice\Upsert.cshtml" />
     <Content Include="Views\SellInvoice\Index.cshtml" />
     <Content Include="Views\SellInvoice\Upsert.cshtml" />
+    <Content Include="Views\SupplierGroup\Index.cshtml" />
+    <Content Include="Views\SupplierGroup\Upsert.cshtml" />
+    <Content Include="Views\Suppliers\Index.cshtml" />
+    <Content Include="Views\Suppliers\Upsert.cshtml" />
+    <Content Include="Views\SupplierPayments\Index.cshtml" />
+    <Content Include="Views\SupplierPayments\Upsert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

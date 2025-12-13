@@ -570,7 +570,7 @@
                                     @if (ViewBag.userscreens.ToString().Contains(",4,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index","Items")"><i class="fas fa-search-minus p-1"></i> الاصناف </a></li>
-                                    }   
+                                    }
                                     @if (ViewBag.userscreens.ToString().Contains(",4,"))
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index","PurchaseInvoice")"><i class="fas fa-search-minus p-1"></i> فواتير المشتريات </a></li>
@@ -578,8 +578,19 @@
                                     {
                                         <li class="Stund2"><a href="@Url.Action("Index","SellInvoice")"><i class="fas fa-search-minus p-1"></i> فواتير المبيعات </a></li>
                                     }
-                                
 
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","SupplierGroup")"><i class="fas fa-search-minus p-1"></i> مجموعات الموردين  </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","Suppliers")"><i class="fas fa-search-minus p-1"></i>  الموردين  </a></li>
+                                    }
+                                    @if (ViewBag.userscreens.ToString().Contains(",4,"))
+                                    {
+                                        <li class="Stund2"><a href="@Url.Action("Index","SupplierPayments")"><i class="fas fa-search-minus p-1"></i>  دفعات الموردين  </a></li>
+                                    }
                                 </ul>
                             </li>
                         }

@@ -1,0 +1,127 @@
+﻿@model NurseryProject.Models.SupplierPayment
+@using NurseryProject.Utilities
+@{
+    ViewBag.Title = (Model.Id == Guid.Empty ? "إضافة " : "تعديل ") + "دفعة مورد";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    ViewBag.MainPage = " دفعات الموردين";
+
+}
+@using (Html.BeginForm(action, "SupplierPayments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <h4 class="col-auto">@ViewBag.Title</h4>
+                @Url.BackToList()
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="row">
+                <div class="col-md-4">
+                    <label>التاريخ</label>
+                    @Html.TextBoxFor(x => x.PaymentDate, "{0:yyyy-MM-dd}",
+                        new { @type = "date", @class = "form-control" })
+                </div>
+                <div class="form-group mb-3 col-md-4">
+                    @Html.Label("المورد", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.DropDownListFor(model => model.SupplierId, new SelectList(ViewBag.Groups, "Id", "Name"), "--اختر--", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.SupplierId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-md-4">
+                    @Html.Label("المديونية", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        <input type="number" id="Balance" class="form-control text-center" readonly />
+                    </div>
+                </div>
+
+
+
+                <div class="form-group mb-3 col-sm-4">
+                    @Html.Label("المبلغ", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-12">
+                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", required = "required", type = "number" } })
+                        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                @if (Model.Id == Guid.Empty)
+                {
+                    @Url.SubmitAdd()
+                }
+                else
+                {
+                    @Url.SubmitSave()
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @if (Model.Id!=Guid.Empty)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+
+
+
+                $.ajax({
+                    url: '/SupplierPayments/GetSupplierBalance',
+                    type: 'GET',
+                    data: { id: '@Model.SupplierId' },
+                    success: function (res) {
+                        if (res) {
+
+                            $('#Balance').val(res.quantity);
+
+                        }
+                    },
+                    error: function () {
+                        //invokeAlert('خطأ', '', 'warning', 2000);
+                        $('#Balance').val(0);
+
+                    }
+                });
+
+            });
+        </script>
+
+    }
+    <script>
+        $('#SupplierId').on('change', function () {
+
+            let SupplierId = $(this).val();
+
+        
+
+            $.ajax({
+                url: '/SupplierPayments/GetSupplierBalance',
+                type: 'GET',
+                data: { id: SupplierId },
+                success: function (res) {
+                    if (res) {
+
+                        $('#Balance').val(res.quantity);
+                   
+                    } 
+                },
+                error: function () {
+                    //invokeAlert('خطأ', '', 'warning', 2000);
+                    $('#Balance').val(0);
+
+                }
+            });
+
+        });
+
+    </script>
+}
